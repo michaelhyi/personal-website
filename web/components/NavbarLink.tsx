@@ -8,7 +8,7 @@ interface Props {
 const NavbarLink: React.FC<Props> = ({ text }) => {
   return (
     <Link
-      to={text.toLowerCase()}
+      to={text === "Research" ? "portfolio" : text.toLowerCase()}
       spy={true}
       smooth={true}
       offset={-100}

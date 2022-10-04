@@ -35,7 +35,7 @@ const Projects = () => {
   ];
 
   return (
-    <div>
+    <div id="projects">
       <div className="font-bold text-5xl mt-24 mb-16">Projects</div>
       <div className="grid grid-cols-2 gap-8">
         {data.map((v) => (
