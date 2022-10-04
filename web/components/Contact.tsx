@@ -3,7 +3,7 @@ import { useState } from "react";
 import Input from "./Input";
 
 const Contact = () => {
-  const [state, handleSubmit] = useForm("mpznrllv");
+  const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORM!);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
