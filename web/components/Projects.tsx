@@ -3,6 +3,7 @@ import Project from "./Project";
 const Projects = () => {
   const data = [
     {
+      key: 1,
       name: "CarCam",
       desc: "Bridging the digital divide by providing mobile dashcam technology to low-income demographics.",
       logo: "/CarCam.png",
@@ -10,12 +11,14 @@ const Projects = () => {
       code: "https://github.com/23yimichael/carcam",
     },
     {
+      key: 2,
       name: "ChestRay",
       desc: "A powerful bridge between doctors and patients. Coding Your Future Hackathon 2nd Place Winner.",
       video: "https://www.youtube.com/watch?v=QvViKKw8zeM",
       code: "https://github.com/23yimichael/chestray",
     },
     {
+      key: 3,
       name: "MelaModel",
       desc: "A simple, but powerful app that detects for abnormal growth on skin using Artificial Intelligence.",
       logo: "/MelaModel.png",
@@ -23,7 +26,8 @@ const Projects = () => {
       code: "https://github.com/23yimichael/melamodel",
     },
     {
-      name: "LeafX  ",
+      key: 4,
+      name: "LeafX",
       desc: `A simple, yet powerful medical tool for plants. Unlock Hacks "Best Environmental Hack" Winner.`,
       video: "https://www.youtube.com/watch?v=TsIxvBIPTZg",
       code: "https://github.com/23yimichael/leafx",
@@ -35,7 +39,7 @@ const Projects = () => {
       <div className="font-bold text-5xl mt-24 mb-16">Projects</div>
       <div className="grid grid-cols-2 gap-8">
         {data.map((v) => (
-          <Project data={v} />
+          <Project key={v.key} data={v} />
         ))}
       </div>
     </div>

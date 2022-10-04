@@ -3,13 +3,11 @@ import Fade from "react-reveal/Fade";
 
 const Head = () => {
   return (
-    // <Fade up delay={800} distance="25px">
-    //   {" "}
     <div className="flex items-center justify-between mt-12">
       <div>
         <div className="font-bold text-7xl">Michael Yi</div>
         <div className="font-semibold text-3xl mt-6">
-          Portola High School '23
+          {"Portola High School '23"}
         </div>
         <div className="text-xl mt-6">
           {"VP of Sponsorships & Finance "}{" "}
@@ -44,7 +42,6 @@ const Head = () => {
         className="h-[300px] w-[300px] rounded-[150px]"
       />
     </div>
-    // </Fade>
   );
 };
 

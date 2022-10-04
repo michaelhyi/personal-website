@@ -1,6 +1,7 @@
 import React from "react";
 
 interface Props {
+  key: number;
   data: {
     name: string;
     desc: string;
@@ -11,7 +12,7 @@ interface Props {
   };
 }
 
-const Project: React.FC<Props> = ({ data }) => {
+const Project: React.FC<Props> = ({ key, data }) => {
   return (
     <div className="flex flex-col items-center text-center bg-zinc-800 h-[500px] w-[500px] rounded-3xl">
       <div className="font-semibold text-4xl mt-12">{data.name}</div>
