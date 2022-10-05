@@ -1,3 +1,6 @@
+import { experience } from "../data/experience";
+import Experience from "./Experience";
+
 const Head = () => {
   return (
     <div className="flex sm:text-center md:text-left sm:flex-col-reverse md:flex-row items-center justify-between mt-12">
@@ -8,33 +11,10 @@ const Head = () => {
         <div className="font-semibold md:text-xl xl:text-3xl md:mt-4 lg:mt-6">
           {"Portola High School '23"}
         </div>
-        <div className="md:text-sm lg:text-base xl:text-xl mt-6">
-          {"VP of Sponsorships & Finance "}{" "}
-          <a
-            className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
-            href="https://health-hacks.tech/"
-          >
-            {"@ health{hacks}"}
-          </a>
-        </div>
-        <div className="md:text-sm lg:text-base xl:text-xl ">
-          Research Intern{" "}
-          <a
-            className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
-            href="https://sites.uci.edu/mcnaughtonlab/"
-          >
-            @ UCI McNaughton Lab
-          </a>
-        </div>
-        <div className="md:text-sm lg:text-base xl:text-xl ">
-          Founder{" "}
-          <a
-            className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
-            href="https://www.healthrelay.tech/"
-          >
-            @ HealthRelay
-          </a>
-        </div>
+        <div className="mt-6" />
+        {experience.map((v, i) => (
+          <Experience key={i} data={v} />
+        ))}
       </div>
       <img
         src="/Michael Yi.png"

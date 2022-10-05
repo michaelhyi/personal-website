@@ -29,7 +29,7 @@ const Project: React.FC<Props> = ({ key, data }) => {
           />
         )}
       </div>
-      <div className="font-medium text-sm sm:mt-4 mt-12">
+      <div className="font-medium text-sm sm:mt-4 md:mt-12">
         {data.video && (
           <a
             className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"

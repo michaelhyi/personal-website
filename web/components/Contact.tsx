@@ -52,7 +52,7 @@ const Contact = () => {
         <button
           disabled={state.submitting}
           type="submit"
-          className="hover:cursor-pointer bg-400 font-poppins text-white border-[1px] border-white text-center p-4 rounded-xl text-semibold text-xl duration-200 hover:bg-300 mt-12 w-full"
+          className="duration-300 hover:opacity-25 hover:cursor-pointer bg-400 font-poppins text-white border-[1px] border-white text-center p-4 rounded-xl text-semibold text-xl mt-12 w-full"
         >
           Submit
         </button>
