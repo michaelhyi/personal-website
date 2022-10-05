@@ -12,7 +12,7 @@ import Music from "../components/Music";
 
 const Home: NextPage = () => {
   return (
-    <div className="min-h-screen sm:bg-[#1E1E1E] font-main text-white w-screen">
+    <div className="min-h-screen sm:bg-[#1E1E1E] font-main text-white w-full">
       <div className="flex justify-center pt-12">
         <div className="sm:w-[282px] md:w-[563px] lg:w-[683px] xl:w-[1024px]">
           <Navbar />
