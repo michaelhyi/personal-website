@@ -14,7 +14,7 @@ const Contact = () => {
       <div className="font-bold text-5xl mt-24 mb-4">Contact</div>
       <form
         onSubmit={handleSubmit}
-        className="mt-12 flex-col space-y-6 sm:w-[350px] md:w-[512px]"
+        className="mt-12 flex-col space-y-6 sm:w-[300px] md:w-[512px]"
       >
         <Input
           type="text"
