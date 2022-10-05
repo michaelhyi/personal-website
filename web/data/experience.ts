@@ -10,7 +10,7 @@ export const experience = [
     link: "https://sites.uci.edu/mcnaughtonlab/",
   },
   {
-    position: "Founder & CTO",
+    position: "Founder & CEO",
     organization: "HealthRelay",
     link: "https://www.healthrelay.tech/",
   },

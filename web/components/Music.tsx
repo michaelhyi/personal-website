@@ -22,7 +22,7 @@ const Music = () => {
         className="rounded-[12px]"
       ></iframe>
       <div className="flex justify-between mt-6 sm:text-xs md:text-base">
-        <div>My top 10 favorite songs of all time ranked.</div>
+        <div>My top 10 favorite songs of all time, ranked.</div>
         <div>09.28.22</div>
       </div>
     </div>
