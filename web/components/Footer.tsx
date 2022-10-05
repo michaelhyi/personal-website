@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="flex flex-col items-center mt-24">
       <div className="grid grid-cols-3 gap-x-96 gap-y-2">
         <NavbarLink text="About" />
-        <NavbarLink text="Misc" />
+        <NavbarLink text="Music" />
         <div className="text-xl hover:cursor-pointer duration-300 hover:opacity-25">
           <a
             href="mailto: 23yimichael@gmail.com"

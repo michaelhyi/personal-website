@@ -3,25 +3,25 @@ import About from "../components/About";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import Head from "../components/Head";
-import Misc from "../components/Misc";
 import Navbar from "../components/Navbar";
 import Projects from "../components/Projects";
 import Research from "../components/Research";
 //@ts-ignore
 import Fade from "react-reveal/Fade";
+import Music from "../components/Music";
 
 const Home: NextPage = () => {
   return (
-    <div className="min-h-screen bg-[#1E1E1E] font-main text-white">
+    <div className="min-h-screen sm:bg-[#1E1E1E] font-main text-white">
       <div className="flex justify-center pt-12">
-        <div className="w-[1024px]">
+        <div className="sm:w-[282px] md:w-[563px] lg:w-[683px] xl:w-[1024px]">
           <Navbar />
           <Fade up delay={500} distance="25px">
             <Head />
             <About />
             <Research />
             <Projects />
-            <Misc />
+            <Music />
             <Contact />
             <Footer />
           </Fade>
