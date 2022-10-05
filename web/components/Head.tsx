@@ -4,7 +4,7 @@ import Experience from "./Experience";
 const Head = () => {
   return (
     <div>
-      <div className="flex sm:text-center md:text-left sm:flex-col-reverse md:flex-row items-center justify-between mt-12 pt-8">
+      <div className="flex sm:text-center md:text-left sm:flex-col-reverse md:flex-row items-center justify-between mt-8">
         <div>
           <div className="sm:mt-8 font-bold sm:text-4xl lg:text-5xl xl:text-7xl">
             Michael Yi
