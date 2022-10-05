@@ -35,9 +35,12 @@ const Projects = () => {
   ];
 
   return (
-    <div id="projects">
+    <div
+      id="projects"
+      className="sm:flex sm:flex-col sm:items-center md:items-start"
+    >
       <div className="font-bold text-5xl mt-24 mb-16">Projects</div>
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-1 xl:grid-cols-2 gap-8 md:m-auto">
         {data.map((v) => (
           <Project key={v.key} data={v} />
         ))}

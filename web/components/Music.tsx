@@ -1,12 +1,14 @@
 const Music = () => {
   return (
     <div id="music">
-      <div className="font-bold text-5xl mt-24 mb-16">Music</div>
+      <div className="font-bold text-5xl mt-24 mb-16 sm:text-center md:text-left">
+        Music
+      </div>
       <a href="/Topster.png" target="_blank" rel="noreferrer">
         <img src="/Topster.png" />
       </a>
-      <div className="flex justify-between">
-        <div>All my favorite music in one image.</div>
+      <div className="flex justify-between sm:text-xs md:text-base">
+        <div>All my favorite music in one image. (click to enlarge)</div>
         <div>10.03.22</div>
       </div>
       <div className="mt-20"></div>
@@ -19,7 +21,7 @@ const Music = () => {
         loading="lazy"
         className="rounded-[12px]"
       ></iframe>
-      <div className="flex justify-between mt-6">
+      <div className="flex justify-between mt-6 sm:text-xs md:text-base">
         <div>My top 10 favorite songs of all time ranked.</div>
         <div>09.28.22</div>
       </div>
