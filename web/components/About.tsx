@@ -1,6 +1,6 @@
 const About = () => {
   return (
-    <div id="about" className="sm:text-center md:text-left">
+    <div id="about" className="pt-8 sm:text-center md:text-left">
       <div className="font-bold text-5xl mb-6">About Me</div>
       <div>
         Hwanjun (Michael) Yi is a senior at Portola High School in Irvine,

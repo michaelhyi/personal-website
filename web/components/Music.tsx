@@ -1,7 +1,7 @@
 const Music = () => {
   return (
     <div id="music">
-      <div className="font-bold text-5xl mt-24 mb-16 sm:text-center md:text-left">
+      <div className="pt-8 font-bold text-5xl mt-24 mb-16 sm:text-center md:text-left">
         Music
       </div>
       <a href="/Topster.png" target="_blank" rel="noreferrer">

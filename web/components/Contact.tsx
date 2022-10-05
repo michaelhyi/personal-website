@@ -10,7 +10,7 @@ const Contact = () => {
   const [message, setMessage] = useState("");
 
   return (
-    <div id="contact" className="flex flex-col items-center">
+    <div id="contact" className="pt-8 flex flex-col items-center">
       <div className="font-bold text-5xl mt-24 mb-4">Contact</div>
       <form
         onSubmit={handleSubmit}
