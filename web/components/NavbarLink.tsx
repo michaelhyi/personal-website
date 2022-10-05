@@ -14,7 +14,7 @@ const NavbarLink: React.FC<Props> = ({ text }) => {
       offset={-100}
       duration={1000}
     >
-      <div className="text-xl hover:cursor-pointer duration-300 hover:opacity-25">
+      <div className="sm:text-sm md:text-lg xl:text-xl hover:cursor-pointer duration-300 hover:opacity-25">
         {text}
       </div>
     </Link>

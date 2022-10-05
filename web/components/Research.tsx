@@ -1,6 +1,6 @@
 const Research = () => {
   return (
-    <div id="portfolio">
+    <div id="portfolio" className="sm:text-center md:text-left">
       <div className="font-bold text-5xl mt-24 mb-8">Research</div>
       <div>
         <div className="font-semibold text-3xl">
@@ -36,7 +36,7 @@ const Research = () => {
           </a>
         </div>
       </div>
-      <div className="mt-8">
+      <div className="sm:mt-16 md:mt-8">
         <div className="font-semibold text-3xl">
           Enhancing Generative Commonsense Reasoning Using Image Cues
         </div>
