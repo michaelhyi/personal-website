@@ -5,8 +5,8 @@ import NavbarLink from "./NavbarLink";
 const Navbar = () => {
   return (
     <Fade up delay={200} distance="25px">
-      <div className="flex p-8 w-full sticky top-0 z-50 items-center bg-[#1E1E1E]">
-        <div className="flex ml-auto items-center sm:space-x-4 md:space-x-8 space-x-12 ">
+      <div className="flex p-8 w-full sticky top-0 z-50 items-center bg-[#1E1E1E] sm:justify-center md:justify-start">
+        <div className="flex sm:m-auto md:ml-auto items-center sm:space-x-4 md:space-x-8 space-x-12 ">
           <NavbarLink text="About" />
           <NavbarLink text="Portfolio" />
           <NavbarLink text="Music" />
