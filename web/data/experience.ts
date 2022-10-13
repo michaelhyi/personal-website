@@ -1,6 +1,6 @@
 export const experience = [
   {
-    position: "VP of Sponsorships & Finance",
+    position: "VP of Sponsorships",
     organization: "health{hacks}",
     link: "https://health-hacks.tech/",
   },
@@ -11,7 +11,7 @@ export const experience = [
   },
   {
     position: "Founder & CEO",
-    organization: "HealthRelay",
+    organization: "HealthRelay LLC",
     link: "https://www.healthrelay.tech/",
   },
 ];
