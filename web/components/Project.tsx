@@ -8,7 +8,8 @@ interface Props {
     logo?: string;
     video?: string;
     devpost?: string;
-    code: string;
+    code?: string;
+    website?: string;
   };
 }
 
@@ -22,14 +23,17 @@ const Project: React.FC<Props> = ({ key, data }) => {
         {data.desc}
       </div>
       <div className="flex sm:h-[150px] sm:w-[150px] md:h-[200px] md:w-[200px] rounded-xl bg-white items-center justify-center mt-8">
-        {data.logo && (
+        {data.logo && data.name !== "HealthRelay" && (
           <img
             src={data.logo}
             className="sm:h-[112.5px] sm:w-[112.5px] md:h-[150px] md:w-[150px]"
           />
         )}
+        {data.logo && data.name === "HealthRelay" && (
+          <img src={data.logo} className="sm:w-[150px] md:w-[175px]" />
+        )}
       </div>
-      <div className="font-medium text-sm sm:mt-4 md:mt-12">
+      <div className="flex font-medium text-sm sm:mt-4 md:mt-12">
         {data.video && (
           <a
             className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
@@ -49,16 +53,30 @@ const Project: React.FC<Props> = ({ key, data }) => {
           >
             Devpost
           </a>
-        )}{" "}
-        |{" "}
-        <a
-          className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
-          href={data.code}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Code
-        </a>
+        )}
+        {data.website && (
+          <a
+            className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
+            href={data.website}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Website
+          </a>
+        )}
+        {data.code && (
+          <a
+            className="flex text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
+            href={data.code}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {data.name !== "RetinaOCT" && data.name !== "Medixly" && (
+              <div className="text-white">&nbsp;|&nbsp;</div>
+            )}
+            Code
+          </a>
+        )}
       </div>
     </div>
   );

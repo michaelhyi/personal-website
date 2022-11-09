@@ -5,9 +5,9 @@ export const research = [
     authors:
       "Hwanjun Yi (Portola High School), John I. Woo (Portola High School), Ian Park (Northwood High School), Hwanseok Yi (Portola High School), Shikhar N. Sahaai (Northwood High School)",
     conference:
-      "2022 Sigma Xi International Forum on Research Excellence Student Summit Research Conference",
+      "2022 Sigma Xi International Forum on Research Excellence Research Conference",
     abstract: "/RetinaOCT Abstract.pdf",
-    poster: "",
+    poster: "/RetinaOCT Poster.pdf",
     code: "https://github.com/23yimichael/retinaoct",
   },
   {

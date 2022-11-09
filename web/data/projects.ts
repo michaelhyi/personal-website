@@ -1,10 +1,27 @@
 export const projects = [
   {
+    name: "HealthRelay",
+    desc: "A software that streamlines communication between radiologists and ordering physicians.",
+    logo: "/HealthRelay.png",
+    website: "https://www.healthrelay.tech/",
+  },
+  {
+    name: "RetinaOCT",
+    desc: "Enhancing Retinal Abnormality Detection Through Deep-Learning-Based OCT Analysis",
+    code: "https://github.com/23yimichael/retinaoct",
+  },
+  {
     name: "CarCam",
     desc: "Bridging the digital divide by providing mobile dashcam technology to low-income demographics.",
     logo: "/CarCam.png",
     video: "https://www.youtube.com/watch?v=oFE0Inj-pr8",
     code: "https://github.com/23yimichael/carcam",
+  },
+  {
+    name: "Medixly",
+    desc: "An image-recognition software that differentiates between benign and malignant skin moles.",
+    logo: "/Medixly.png",
+    code: "https://github.com/medixly/medixly",
   },
   {
     name: "ChestRay",
@@ -21,7 +38,7 @@ export const projects = [
   },
   {
     name: "LeafX",
-    desc: `A simple, yet powerful medical tool for plants. Unlock Hacks "Best Environmental Hack" Winner.`,
+    desc: `A powerful medical tool for plant health. Unlock Hacks "Best Environmental Hack" Winner.`,
     video: "https://www.youtube.com/watch?v=TsIxvBIPTZg",
     code: "https://github.com/23yimichael/leafx",
   },

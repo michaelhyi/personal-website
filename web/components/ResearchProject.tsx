@@ -18,7 +18,7 @@ const ResearchProject: React.FC<Props> = ({ key, data }) => {
       <div className="font-semibold text-3xl">{data.title}</div>
       <div className="font-medium mt-2 text-sm">{data.authors}</div>
       <div className="font-medium mt-2 text-sm">{data.conference}</div>
-      <div className="font-medium mt-2 text-sm">
+      <div className="font-medium mt-2 text-sm flex">
         {data.abstract.length !== 0 && (
           <a
             className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
@@ -31,23 +31,28 @@ const ResearchProject: React.FC<Props> = ({ key, data }) => {
         )}
         {data.poster.length !== 0 && (
           <a
-            className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
+            className="flex text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
             href={data.poster}
             target="_blank"
             rel="noreferrer"
           >
+            {data.abstract.length !== 0 && (
+              <div className="text-white">&nbsp;|&nbsp;</div>
+            )}
             Poster
           </a>
-        )}{" "}
-        |{" "}
-        <a
-          className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
-          href={data.code}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Code
-        </a>
+        )}
+        {data.code && (
+          <a
+            className="flex text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
+            href={data.code}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div className="text-white">&nbsp;|&nbsp;</div>
+            Code
+          </a>
+        )}
       </div>
       <div className="sm:mt-16 md:mt-8" />
     </div>
