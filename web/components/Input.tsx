@@ -22,7 +22,7 @@ const Input: React.FC<Props> = ({ label, value, setValue, type, name }) => {
           id={name}
           type={type}
           name={name}
-          className="border-[1px] border-white bg-400 p-4 rounded-xl text-white w-full"
+          className="border-[1px] border-white p-4 bg-[#1E1E1E] rounded-xl w-full"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
@@ -31,7 +31,7 @@ const Input: React.FC<Props> = ({ label, value, setValue, type, name }) => {
         <textarea
           id={name}
           name={name}
-          className="border-[1px] border-white bg-400 p-4 rounded-xl text-white h-96 w-full resize-none"
+          className="border-[1px] border-white bg-[#1E1E1E] p-4 rounded-xl h-96 w-full resize-none"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />

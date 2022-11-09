@@ -5,13 +5,13 @@ export const experience = [
     link: "https://health-hacks.tech/",
   },
   {
-    position: "Research Intern",
-    organization: "UCI McNaughton Lab",
-    link: "https://sites.uci.edu/mcnaughtonlab/",
-  },
-  {
     position: "Founder & CEO",
     organization: "HealthRelay LLC",
     link: "https://www.healthrelay.tech/",
+  },
+  {
+    position: "SWE Intern",
+    organization: "MegaEvolution",
+    link: "https://megaevolution.io/",
   },
 ];
