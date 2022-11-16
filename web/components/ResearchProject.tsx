@@ -14,11 +14,11 @@ interface Props {
 
 const ResearchProject: React.FC<Props> = ({ key, data }) => {
   return (
-    <div>
+    <div className="flex flex-col">
       <div className="font-semibold text-3xl">{data.title}</div>
       <div className="font-medium mt-2 text-sm">{data.authors}</div>
       <div className="font-medium mt-2 text-sm">{data.conference}</div>
-      <div className="font-medium mt-2 text-sm flex">
+      <div className="sm:mx-auto md:mx-0 font-medium mt-2 text-sm flex">
         {data.abstract.length !== 0 && (
           <a
             className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
