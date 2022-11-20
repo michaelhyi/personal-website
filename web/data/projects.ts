@@ -8,6 +8,7 @@ export const projects = [
   {
     name: "RetinaOCT",
     desc: "Enhancing Retinal Abnormality Detection Through Deep-Learning-Based OCT Analysis",
+    logo: "/RetinaOCT.png",
     code: "https://github.com/23yimichael/retinaoct",
   },
   {
@@ -26,6 +27,7 @@ export const projects = [
   {
     name: "ChestRay",
     desc: "A powerful bridge between doctors and patients. Coding Your Future Hackathon 2nd Place Winner.",
+    logo: "/ChestRay.png",
     video: "https://www.youtube.com/watch?v=QvViKKw8zeM",
     code: "https://github.com/23yimichael/chestray",
   },
@@ -39,6 +41,7 @@ export const projects = [
   {
     name: "LeafX",
     desc: `A powerful medical tool for plant health. Unlock Hacks "Best Environmental Hack" Winner.`,
+    logo: "/LeafX.png",
     video: "https://www.youtube.com/watch?v=TsIxvBIPTZg",
     code: "https://github.com/23yimichael/leafx",
   },
