@@ -12,7 +12,7 @@ const Footer = () => {
         <NavbarLink text="Research" />
         <NavbarLink text="Contact" />
         <FooterLink
-          href="https://www.linkedin.com/in/michael-yi-9a185a212/"
+          href="https://www.linkedin.com/in/23yimichael/"
           text="LinkedIn"
         />
         <NavbarLink text="Projects" />
