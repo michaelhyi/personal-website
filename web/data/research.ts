@@ -8,7 +8,7 @@ export const research = [
       "2022 Sigma Xi International Forum on Research Excellence Research Conference",
     abstract: "/RetinaOCT Abstract.pdf",
     poster: "/RetinaOCT Poster.pdf",
-    code: "https://github.com/23yimichael/retinaoct",
+    code: "https://github.com/michaelhyi/retinaoct",
   },
   {
     title: "Enhancing Generative Commonsense Reasoning Using Image Cues",
@@ -18,6 +18,6 @@ export const research = [
       "2022 USC Summer High-School Intensive in Next-Generation Engineering (SHINE) Program",
     abstract: "",
     poster: "/S22-Yi-M-Poster-Final.pdf",
-    code: "https://github.com/23yimichael/usc-shine",
+    code: "https://github.com/michaelhyi/usc-shine",
   },
 ];

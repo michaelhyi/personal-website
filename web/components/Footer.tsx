@@ -17,7 +17,7 @@ const Footer = () => {
         />
         <NavbarLink text="Projects" />
         <FooterLink href="/Resume.pdf" text="Resume" />
-        <FooterLink href="https://github.com/23yimichael" text="Github" />
+        <FooterLink href="https://github.com/michaelhyi" text="Github" />
       </div>
       <div className="mt-12 sm:text-base md:text-lg pb-12">
         © 2022 Michael Yi. All rights reserved.
