@@ -12,11 +12,13 @@ const About = () => {
         <br />
         In his free time, he plays baseball and is extremely passionate about
         music and cinema. He has played the violin for 8 years and recently
-        picked up the guitar this year. His favorite bands are The Beatles, The
-        Velvet Underground, and King Crimson; his favorite films are 2001: A
-        Space Odyssey, Come and See, and No Country For Old Men. Lastly, his
-        favorite pastimes are eating acai bowls and hiking to the top of a
-        nearby mountain to practice guitar with his friends.
+        picked up the guitar last year. His favorite bands are The Beatles, The
+        Velvet Underground, King Crimson, and Pink Floyd; his favorite composers
+        are Chopin and Beethoven; his favorite films are 2001: A Space Odyssey,
+        Come and See, Memories of Murder, and No Country For Old Men. Lastly,
+        his favorite pastimes are eating acai bowls, going to the jacuzzi, and
+        hiking mountains/hills to jam and play guitar with his friends at the
+        top.
       </div>
     </div>
   );

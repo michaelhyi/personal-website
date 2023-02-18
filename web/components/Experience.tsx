@@ -16,6 +16,8 @@ const Experience: React.FC<Props> = ({ key, data }) => {
       <a
         className="text-blue-400 hover:cursor-pointer duration-300 hover:opacity-50"
         href={data.link}
+        target="_blank"
+        rel="noreferrer"
       >
         {"@ "}
         {data.organization}

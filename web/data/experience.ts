@@ -2,7 +2,7 @@ export const experience = [
   {
     position: "VP of Sponsorships",
     organization: "health{hacks}",
-    link: "https://health-hacks.tech/",
+    link: "https://joinhealthhacks.com/",
   },
   {
     position: "Founder & CEO",

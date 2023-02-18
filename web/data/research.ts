@@ -15,7 +15,7 @@ export const research = [
     authors:
       "Hwanjun (Michael) Yi (Portola High School), Soumya Sanyal (University of Southern California), Xiang Ren (University of Southern California)",
     conference:
-      "2022 USC Summer High-School Intensive in Next-Generation Engineering (SHINE) Program",
+      "2022 University of Southern California Summer High-School Intensive in Next-Generation Engineering (SHINE) Program",
     abstract: "",
     poster: "/S22-Yi-M-Poster-Final.pdf",
     code: "https://github.com/michaelhyi/usc-shine",
