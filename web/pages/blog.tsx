@@ -6,7 +6,7 @@ const Blog = () => {
   return (
     <div className="min-h-screen sm:bg-[#1E1E1E] font-main text-white w-full">
       <div className="flex flex-col items-center pt-12">
-        <div className="sm:w-[282px] md:w-[563px] lg:w-[683px] xl:w-[1024px]">
+        <div className="sm:w-[375px] md:w-[563px] lg:w-[683px] xl:w-[1024px]">
           <div className="font-bold text-3xl mt-12">
             An Essay on Black Country, New Road’s <i>Ants From Up There</i>
           </div>
@@ -23,7 +23,7 @@ const Blog = () => {
             storytelling.
           </div>
           <div
-            className="mt-8 mb-32"
+            className="mt-8 mb-64"
             dangerouslySetInnerHTML={{ __html: html }}
           />
         </div>
