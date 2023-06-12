@@ -10,7 +10,7 @@ const Head = () => {
             Michael Yi
           </div>
           <div className="font-semibold md:text-xl xl:text-3xl md:mt-4 lg:mt-6">
-            {"Portola High School '23"}
+            {"CS @ Georgia Tech"}
           </div>
           <div className="mt-6" />
           {experience.map((v, i) => (
