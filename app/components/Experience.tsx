@@ -42,9 +42,11 @@ const Experience = () => {
       </div>
       <ul className="mt-2">
         {experience[index].desc.map((v) => (
-          <li key={v} className="list-disc ml-6">
-            {v}
-          </li>
+          <li
+            dangerouslySetInnerHTML={{ __html: v }}
+            key={v}
+            className="list-disc ml-6"
+          />
         ))}
       </ul>
     </div>

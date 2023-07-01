@@ -34,9 +34,9 @@ const About = () => {
       <br />
       <div>
         I <span className="font-bold">love</span> building. I'm interested in
-        the intersection of software, AI, & entrepreneurship where I apply my
-        aptitude for leadership, communication, & passion to deliver exceptional
-        results. I'm currently a SWE Intern&nbsp;
+        the intersection of software, AI, and entrepreneurship where I apply my
+        aptitude for leadership, communication, and passion to deliver
+        exceptional results. I'm currently a SWE Intern&nbsp;
         <Link href="https://www.ardentlabs.io/">@ Ardent Labs</Link>, but I
         previously was the Executive Director&nbsp;
         <Link href="https://www.joinhealthhacks.com/">@ {`health{hacks}`}</Link>
@@ -47,10 +47,10 @@ const About = () => {
       </div>
       <br />
       <div>
-        In my free time, I love listening to & performing music. I play the
-        violin, piano, & guitar. My favorite composers are Chopin, Mendelssohn,
-        & Tchaikovsky, & my favorite bands are The Beatles & The Velvet
-        Underground.
+        In my free time, I love listening to and performing music. I play the
+        violin, piano, and guitar. My favorite composers are Chopin,
+        Mendelssohn, and Tchaikovsky; my favorite bands are The Beatles and The
+        Velvet Underground.
       </div>
     </div>
   );
