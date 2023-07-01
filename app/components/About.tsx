@@ -47,10 +47,10 @@ const About = () => {
       </div>
       <br />
       <div>
-        In my free time, I love listening to and performing music. I play the
-        violin, piano, and guitar. My favorite composers are Chopin,
-        Mendelssohn, and Tchaikovsky; my favorite bands are The Beatles and The
-        Velvet Underground.
+        Apart from engineering, I love music. I've played the violin for 9
+        years, and I'm currently learning the piano and guitar. My favorite
+        composers are Chopin, Mendelssohn, and Tchaikovsky; my favorite bands
+        are The Beatles and The Velvet Underground.
       </div>
     </div>
   );
