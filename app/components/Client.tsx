@@ -13,6 +13,8 @@ const Client: React.FC<Props> = ({ children }) => {
     setMounted(true);
   }, []);
 
+  if (!mounted) return <></>;
+
   return <>{children}</>;
 };
 
