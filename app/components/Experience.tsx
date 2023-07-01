@@ -22,8 +22,8 @@ const Experience = () => {
             onClick={() => handleClick(i)}
             className={`flex-grow text-center ${
               i === index
-                ? "border-blue-500 border-b-2  text-blue-500"
-                : "text-black border-0"
+                ? "font-bold text-blue-500 border-blue-500 border-b-2"
+                : "font-normal text-black border-b-2"
             } cursor-pointer duration-300 hover:opacity-50 hover:text-blue-500 hover:border-b-2 hover:border-blue-500`}
           >
             {v.company}
@@ -40,9 +40,9 @@ const Experience = () => {
         </div>
         <div>{experience[index].date}</div>
       </div>
-      <ul>
+      <ul className="mt-2">
         {experience[index].desc.map((v) => (
-          <li className="list-disc ml-6" key={v}>
+          <li key={v} className="list-disc ml-6">
             {v}
           </li>
         ))}
