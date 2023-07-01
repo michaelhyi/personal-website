@@ -1,6 +1,4 @@
-![Michael](https://www.michael-yi.com/Michael.png)
-
-<div align="center"><h1>michael-yi.com</h1></div>
+<div align="center"><img src="https://www.michael-yi.com/Michael.png" width="100" height="100" /><h1>michael-yi.com</h1></div>
 <hr/>
 
 <h1>Quick Start</h1>
