@@ -37,8 +37,8 @@ const About = () => {
         the intersection of software, AI, and entrepreneurship where I apply my
         aptitude for leadership, communication, and passion to deliver
         exceptional results. I'm currently a SWE Intern&nbsp;
-        <Link href="https://www.ardentlabs.io/">@ Ardent Labs</Link>, but I
-        previously was the Executive Director&nbsp;
+        <Link href="https://www.ardentlabs.io/">@ Ardent Labs</Link>, but I was
+        previously the Executive Director&nbsp;
         <Link href="https://www.joinhealthhacks.com/">@ {`health{hacks}`}</Link>
         , a SWE Intern&nbsp;
         <Link href="https://megaevolution.io/">@ MegaEvolution</Link>, and a

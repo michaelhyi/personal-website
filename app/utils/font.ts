@@ -8,19 +8,9 @@ export const font = localFont({
       style: "normal",
     },
     {
-      path: "../../public/fonts/SF-Pro-Text-RegularItalic.otf",
-      weight: "400",
-      style: "italic",
-    },
-    {
       path: "../../public/fonts/SF-Pro-Text-Bold.otf",
       weight: "700",
       style: "bold",
-    },
-    {
-      path: "../../public/fonts/SF-Pro-Text-BoldItalic.otf",
-      weight: "700",
-      style: "italic",
     },
   ],
 });

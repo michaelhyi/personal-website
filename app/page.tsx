@@ -1,7 +1,6 @@
 import About from "@/app/components/About";
 import Container from "@/app/components/Container";
 import Experience from "@/app/components/Experience";
-import Footer from "@/app/components/Footer";
 import Projects from "@/app/components/Projects";
 
 const Home = () => {

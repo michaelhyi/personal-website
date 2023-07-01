@@ -1,6 +1,11 @@
 import Client from "@/app/components/Client";
+import { ReactNode } from "react";
 import "./globals.css";
 import { font } from "./utils/font";
+
+interface Props {
+  children: ReactNode;
+}
 
 export const metadata = {
   title: "Michael Yi",
@@ -10,11 +15,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout: React.FC<Props> = ({ children }) => {
   return (
     <html lang="en">
       <body className={font.className}>
@@ -22,4 +23,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

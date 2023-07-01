@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "@/app/components/Link";
 import { IconType } from "react-icons";
 
