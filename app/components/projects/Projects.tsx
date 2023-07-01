@@ -1,5 +1,6 @@
 "use client";
 
+import Project from "@/app/components/projects/Project";
 import { projects } from "@/app/data/projects";
 import Link from "next/link";
 
@@ -20,17 +21,13 @@ const Projects = () => {
         {projects.map((v, i) => {
           if (i <= 3)
             return (
-              <a
-                rel="noopener noreferrer"
-                target="_blank"
-                className="p-4 shadow-md cursor-pointer duration-300 hover:shadow-lg hover:bg-neutral-50"
+              <Project
                 key={v.name}
                 href={v.href}
-              >
-                <div className="font-bold text-lg">{v.name}</div>
-                <div className="text-sm">{v.desc}</div>
-                <div className="text-xs mt-2 opacity-75">{v.tech}</div>
-              </a>
+                desc={v.desc}
+                name={v.name}
+                tech={v.tech}
+              />
             );
 
           return <></>;

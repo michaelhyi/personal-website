@@ -1,7 +1,7 @@
 import About from "@/app/components/About";
 import Container from "@/app/components/Container";
 import Experience from "@/app/components/Experience";
-import Projects from "@/app/components/Projects";
+import Projects from "@/app/components/projects/Projects";
 
 const Home = () => {
   return (

@@ -1,4 +1,5 @@
 import Container from "@/app/components/Container";
+import Project from "@/app/components/projects/Project";
 import { projects } from "@/app/data/projects";
 import Link from "next/link";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -16,17 +17,13 @@ const Projects = () => {
       <br />
       <div className="flex flex-col gap-4">
         {projects.map((v) => (
-          <a
-            rel="noopener noreferrer"
-            target="_blank"
-            className="p-4 shadow-md cursor-pointer duration-300 hover:shadow-lg hover:bg-neutral-50"
+          <Project
             key={v.name}
+            name={v.name}
+            desc={v.desc}
             href={v.href}
-          >
-            <div className="font-bold text-lg">{v.name}</div>
-            <div className="text-sm">{v.desc}</div>
-            <div className="text-xs mt-2 opacity-75">{v.tech}</div>
-          </a>
+            tech={v.tech}
+          />
         ))}
       </div>
     </Container>

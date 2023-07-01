@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "@/app/components/Link";
+import Link from "@/app/components/links/Link";
 import { experience } from "@/app/data/experience";
 import { useCallback, useState } from "react";
 
