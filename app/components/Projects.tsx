@@ -6,7 +6,7 @@ import Link from "next/link";
 const Projects = () => {
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between">
         <div className="font-bold text-2xl">Projects</div>
         <Link
           href="/projects"

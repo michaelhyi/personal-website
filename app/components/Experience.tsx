@@ -15,7 +15,7 @@ const Experience = () => {
     <div>
       <div className="font-bold text-2xl">Experience</div>
       <br />
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between">
         {experience.map((v, i) => (
           <div
             key={v.company}
@@ -31,7 +31,7 @@ const Experience = () => {
         ))}
       </div>
       <br />
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between">
         <div>
           {experience[index].position}{" "}
           <Link href={experience[index].href}>
