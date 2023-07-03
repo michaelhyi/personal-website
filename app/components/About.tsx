@@ -17,7 +17,7 @@ const About = () => {
         B.S. in Computer Science.
       </div>
       <br />
-      <div className="flex gap-16 items-center">
+      <div className="flex sm:flex-col md:flex-row sm:gap-8 md:gap-16 items-center">
         <Image
           unoptimized={true}
           src="/Michael.png"
