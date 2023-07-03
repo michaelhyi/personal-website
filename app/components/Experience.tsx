@@ -31,7 +31,7 @@ const Experience = () => {
         ))}
       </div>
       <br />
-      <div className="flex items-center justify-between">
+      <div className="flex sm:flex-col md:flex-row md:items-center justify-between">
         <div>
           {experience[index].position}{" "}
           <Link href={experience[index].href}>

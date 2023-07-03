@@ -15,6 +15,7 @@ const Container: React.FC<Props> = ({ children }) => {
           {children}
         </div>
       </div>
+      <br/>
       <Footer />
     </div>
   );
