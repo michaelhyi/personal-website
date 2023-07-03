@@ -15,7 +15,7 @@ const Experience = () => {
     <div>
       <div className="font-bold text-2xl">Experience</div>
       <br />
-      <div className="flex items-center justify-between">
+      <div className="flex sm:flex-col md:flex-row sm:gap-2 md:gap-0 md:items-center justify-between">
         {experience.map((v, i) => (
           <div
             key={v.company}
@@ -23,7 +23,7 @@ const Experience = () => {
             className={`flex-grow text-center ${
               i === index
                 ? "font-bold text-blue-500 border-blue-500 border-b-2"
-                : "font-normal text-black border-b-2"
+                : "font-normal text-black md:border-b-2"
             } cursor-pointer duration-300 hover:opacity-50 hover:text-blue-500 hover:border-b-2 hover:border-blue-500`}
           >
             {v.company}
