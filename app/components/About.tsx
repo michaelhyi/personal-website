@@ -50,7 +50,8 @@ const About = () => {
         Apart from engineering, I love music. I&apos;ve played the violin for 9
         years, and I&apos;m currently learning the piano and guitar. My favorite
         composers are Chopin, Mendelssohn, and Tchaikovsky; my favorite bands
-        are The Beatles and The Velvet Underground.
+        are The Beatles and The Velvet Underground. I also love going on walks
+        and eating açaí bowls, bingsu, and mangoes.
       </div>
     </div>
   );
