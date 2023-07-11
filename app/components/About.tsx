@@ -14,7 +14,8 @@ const About = () => {
         Hi! I&apos;m <span className="font-bold">Michael</span>, a software
         engineer based in Los Angeles, CA. I&apos;m a first-year&nbsp;
         <Link href="https://www.gatech.edu/">@ Georgia Tech</Link> pursuing a
-        B.S. in Computer Science.
+        B.S. in Computer Science with concentration in Intelligence &amp;
+        Information Internetworks.
       </div>
       <br />
       <div className="flex sm:flex-col md:flex-row sm:gap-8 md:gap-16 items-center">
