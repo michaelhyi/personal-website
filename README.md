@@ -13,16 +13,16 @@
 
 <h1>Codebase</h1>
 
-| Codebase | Description             |
-| -------- | ----------------------- |
-| web      | Next.js Frontend Client |
+| Codebase                                                          | Description             |
+| ----------------------------------------------------------------- | ----------------------- |
+| [web](https://github.com/michaelhyi/michael-yi.com/tree/prod/web) | Next.js Frontend Client |
 
 <h1>Branches</h1>
 
-| Codebase | Description                                                                  |
-| -------- | ---------------------------------------------------------------------------- |
-| prod     | Production Branch: Do not push commits or merge pr's unless providing update |
-| dev      | Development Branch: Do not push commits, merge pr's instead                  |
+| Branch                                                         | Description                                                                  |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [prod](https://github.com/michaelhyi/michael-yi.com/tree/prod) | Production Branch: Do not push commits or merge pr's unless providing update |
+| [dev](https://github.com/michaelhyi/michael-yi.com/tree/dev)   | Development Branch: Do not push commits, merge pr's instead                  |
 
 <h1>Quick Start</h1>
 
