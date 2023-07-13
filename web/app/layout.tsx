@@ -9,7 +9,7 @@ interface Props {
 
 export const metadata = {
   title: "Michael Yi",
-  description: "Copyright 2023 Michael Yi, All Rights Reserved.",
+  description: "© 2023 Michael Yi, All Rights Reserved.",
   icons: {
     icon: "/Michael.png",
   },
