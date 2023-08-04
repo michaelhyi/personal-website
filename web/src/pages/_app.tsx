@@ -1,19 +1,15 @@
 import type { AppProps } from "next/app";
+import Metadata from "../metadata";
 import Providers from "../providers";
 import "../styles/globals.css";
 
-export const metadata = {
-  title: "Michael Yi",
-  description: "© 2023 Michael Yi, All Rights Reserved.",
-  icons: {
-    icon: "/Michael.png",
-  },
-};
-
-export default function App({ Component, pageProps }: AppProps) {
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <Providers>
+      <Metadata />
       <Component {...pageProps} />
     </Providers>
   );
-}
+};
+
+export default App;
