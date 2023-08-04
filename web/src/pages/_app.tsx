@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import Client from "../components/Client";
+import Providers from "../providers";
 import "../styles/globals.css";
 
 export const metadata = {
@@ -12,8 +12,8 @@ export const metadata = {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Client>
+    <Providers>
       <Component {...pageProps} />
-    </Client>
+    </Providers>
   );
 }

@@ -4,7 +4,7 @@ interface Props {
   children: ReactNode;
 }
 
-const Client: React.FC<Props> = ({ children }) => {
+const Providers: React.FC<Props> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -16,4 +16,4 @@ const Client: React.FC<Props> = ({ children }) => {
   return <>{children}</>;
 };
 
-export default Client;
+export default Providers;
