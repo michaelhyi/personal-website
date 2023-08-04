@@ -10,7 +10,8 @@ const About = () => {
       <br />
       <div>
         Hi! I&apos;m <span className="font-bold">Michael</span>, a software
-        engineer based in Los Angeles, CA. I&apos;m a first-year&nbsp;
+        engineer based in Los Angeles, CA. I&apos;m a first-year &#40;sophomore
+        standing&#41;&nbsp;
         <Link href="https://www.gatech.edu/">@ Georgia Tech</Link> pursuing a
         B.S. in Computer Science with concentrations in&nbsp;
         <Link href="https://www.cc.gatech.edu/academics/threads/intelligence">
@@ -53,11 +54,14 @@ const About = () => {
       </div>
       <br />
       <div>
-        Apart from engineering, I love music. I&apos;ve played the violin for 9
-        years, and I&apos;m currently learning the piano and guitar. My favorite
-        composers are Chopin, Mendelssohn, and Tchaikovsky; my favorite bands
-        are The Beatles and The Velvet Underground. I also love going on walks
-        and eating açaí bowls, bingsu, and mangoes.
+        I also love music. I&apos;ve played the violin for 9 years and the
+        guitar for a year. My favorite composers are Tchaikovsky, Chopin, and
+        Mendelssohn; my favorite bands are The Beatles and The Velvet
+        Underground.
+      </div>
+      <br />
+      <div>
+        I also enjoy going on walks and eating açaí bowls, bingsu, and mangoes.
       </div>
     </div>
   );
