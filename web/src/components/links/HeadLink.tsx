@@ -1,7 +1,5 @@
-"use client";
-
-import Link from "@/app/components/links/Link";
 import { IconType } from "react-icons";
+import Link from "./Link";
 
 interface Props {
   icon: IconType;

@@ -1,9 +1,7 @@
-"use client";
-
-import HeadLink from "@/app/components/links/HeadLink";
-import Link from "@/app/components/links/Link";
-import { headLinks } from "@/app/data/headLinks";
 import Image from "next/image";
+import { headLinks } from "../data/headLinks";
+import HeadLink from "./links/HeadLink";
+import Link from "./links/Link";
 
 const About = () => {
   return (

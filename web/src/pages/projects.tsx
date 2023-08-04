@@ -1,8 +1,8 @@
-import Container from "@/app/components/Container";
-import Project from "@/app/components/projects/Project";
-import { projects } from "@/app/data/projects";
 import Link from "next/link";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import Container from "../components/Container";
+import Project from "../components/projects/Project";
+import { projects } from "../data/projects";
 
 const Projects = () => {
   return (

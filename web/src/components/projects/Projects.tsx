@@ -1,8 +1,6 @@
-"use client";
-
-import Project from "@/app/components/projects/Project";
-import { projects } from "@/app/data/projects";
 import Link from "next/link";
+import { projects } from "../../data/projects";
+import Project from "../projects/Project";
 
 const Projects = () => {
   return (
