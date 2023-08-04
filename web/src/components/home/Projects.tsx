@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { projects } from "../../data/projects";
-import Project from "../projects/Project";
+import ProjectCard from "../ProjectCard";
 
 const Projects = () => {
   return (
@@ -19,7 +19,7 @@ const Projects = () => {
         {projects.map((v, i) => {
           if (i <= 3)
             return (
-              <Project
+              <ProjectCard
                 key={v.name}
                 href={v.href}
                 desc={v.desc}

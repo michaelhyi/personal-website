@@ -7,7 +7,7 @@ interface Props {
   text: string;
 }
 
-const HeadLink: React.FC<Props> = ({ icon: Icon, href, text }) => {
+const IconLink: React.FC<Props> = ({ icon: Icon, href, text }) => {
   return (
     <div className="flex gap-2 items-center">
       <Icon size={20} className="text-blue-500" />
@@ -16,4 +16,4 @@ const HeadLink: React.FC<Props> = ({ icon: Icon, href, text }) => {
   );
 };
 
-export default HeadLink;
+export default IconLink;

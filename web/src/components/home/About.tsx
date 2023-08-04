@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { headLinks } from "../data/headLinks";
-import HeadLink from "./links/HeadLink";
-import Link from "./links/Link";
+import { iconLinks } from "../../data/iconLinks";
+import IconLink from "../links/IconLink";
+import Link from "../links/Link";
 
 const About = () => {
   return (
@@ -32,8 +32,8 @@ const About = () => {
           width={225}
         />
         <div className="flex flex-col gap-2">
-          {headLinks.map((v) => (
-            <HeadLink key={v.text} icon={v.icon} href={v.href} text={v.text} />
+          {iconLinks.map((v) => (
+            <IconLink key={v.text} icon={v.icon} href={v.href} text={v.text} />
           ))}
         </div>
       </div>

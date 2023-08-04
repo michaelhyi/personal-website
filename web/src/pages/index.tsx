@@ -1,6 +1,6 @@
-import About from "../components/About";
 import Container from "../components/Container";
-import Projects from "../components/projects/Projects";
+import About from "../components/home/About";
+import Projects from "../components/home/Projects";
 
 const Home = () => {
   return (
