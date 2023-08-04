@@ -10,10 +10,9 @@ const About = () => {
       <br />
       <div>
         Hi! I&apos;m <span className="font-bold">Michael</span>, a software
-        engineer based in Los Angeles, CA. I&apos;m a first-year &#40;sophomore
-        standing&#41;&nbsp;
-        <Link href="https://www.gatech.edu/">@ Georgia Tech</Link> pursuing a
-        B.S. in Computer Science with concentrations in&nbsp;
+        engineer based in Los Angeles, CA. I&apos;m pursuing a B.S. in Computer
+        Science&nbsp;<Link href="https://www.gatech.edu/">@ Georgia Tech</Link>
+        &nbsp;with concentrations in&nbsp;
         <Link href="https://www.cc.gatech.edu/academics/threads/intelligence">
           Intelligence
         </Link>
@@ -43,25 +42,21 @@ const About = () => {
         I <span className="font-bold">love</span> building. I&apos;m interested
         in the intersection of software, AI, and entrepreneurship where I apply
         my aptitude for leadership, communication, and passion to deliver
-        exceptional results. I&apos;m currently a SWE Intern&nbsp;
-        <Link href="https://www.ardentlabs.io/">@ Ardent Labs</Link>, but I was
-        previously the Executive Director&nbsp;
-        <Link href="https://www.joinhealthhacks.com/">@ {`health{hacks}`}</Link>
-        , a SWE Intern&nbsp;
-        <Link href="https://megaevolution.io/">@ MegaEvolution</Link>, and a
-        Research Intern&nbsp;
-        <Link href="https://inklab.usc.edu/">@ USC INK Lab</Link>.
+        exceptional results.
       </div>
       <br />
       <div>
         I also love music. I&apos;ve played the violin for 9 years and the
         guitar for a year. My favorite composers are Tchaikovsky, Chopin, and
         Mendelssohn; my favorite bands are The Beatles and The Velvet
-        Underground.
+        Underground. I also enjoy going on walks and eating açaí bowls, bingsu,
+        and mangoes.
       </div>
       <br />
       <div>
-        I also enjoy going on walks and eating açaí bowls, bingsu, and mangoes.
+        I'm <span className="font-bold">open to freelance</span>, please&nbsp;
+        <Link href="mailto:michaelyi@gatech.edu">contact</Link>&nbsp;me if
+        interested.
       </div>
     </div>
   );
