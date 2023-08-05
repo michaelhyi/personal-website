@@ -54,7 +54,8 @@ const About = () => {
       </div>
       <br />
       <div>
-        I'm <span className="font-bold">open to freelance</span>, please&nbsp;
+        I&apos;m <span className="font-bold">open to freelance</span>,
+        please&nbsp;
         <Link href="mailto:michaelyi@gatech.edu">contact</Link>&nbsp;me if
         interested.
       </div>
