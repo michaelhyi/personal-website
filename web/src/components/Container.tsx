@@ -1,7 +1,5 @@
-"use client";
-
-import Footer from "@/app/components/Footer";
 import { ReactNode } from "react";
+import Footer from "./Footer";
 
 interface Props {
   children: ReactNode;
@@ -15,7 +13,7 @@ const Container: React.FC<Props> = ({ children }) => {
           {children}
         </div>
       </div>
-      <br/>
+      <br />
       <Footer />
     </div>
   );

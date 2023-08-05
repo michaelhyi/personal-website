@@ -1,8 +1,8 @@
-import Container from "@/app/components/Container";
-import Project from "@/app/components/projects/Project";
-import { projects } from "@/app/data/projects";
 import Link from "next/link";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import Container from "../components/Container";
+import ProjectCard from "../components/ProjectCard";
+import { projects } from "../data/projects";
 
 const Projects = () => {
   return (
@@ -17,7 +17,7 @@ const Projects = () => {
       <br />
       <div className="flex flex-col gap-4">
         {projects.map((v) => (
-          <Project
+          <ProjectCard
             key={v.name}
             name={v.name}
             desc={v.desc}
