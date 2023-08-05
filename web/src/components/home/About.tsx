@@ -10,7 +10,7 @@ const About = () => {
       <br />
       <div>
         Hi! I&apos;m <span className="font-bold">Michael</span>, a software
-        engineer based in Los Angeles, CA. I&apos;m pursuing a B.S. in Computer
+        engineer based in Atlanta, GA. I&apos;m pursuing a B.S. in Computer
         Science&nbsp;<Link href="https://www.gatech.edu/">@ Georgia Tech</Link>
         &nbsp;with concentrations in&nbsp;
         <Link href="https://www.cc.gatech.edu/academics/threads/intelligence">

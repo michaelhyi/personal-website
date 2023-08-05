@@ -4,7 +4,7 @@
 © 2023 Michael Yi, All Rights Reserved.
 <br/>
 <br/>
-<a rel="noopener noreferrer" target="_blank" href="https://www.michael-yi.com/">Website</a>
+<a href="https://www.michael-yi.com/">Website</a>
 </div>
 <hr/>
 

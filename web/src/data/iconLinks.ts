@@ -9,7 +9,7 @@ export const iconLinks = [
   },
   {
     icon: HiDocumentText,
-    href: "/Michael Yi <> Resume.pdf",
+    href: "/Resume.pdf",
     text: "Resume",
   },
   {
