@@ -1,5 +1,3 @@
-"use client";
-
 interface Props {
   name: string;
   href: string;
@@ -7,7 +5,7 @@ interface Props {
   tech: string;
 }
 
-const Project: React.FC<Props> = ({ name, href, desc, tech }) => {
+const ProjectCard: React.FC<Props> = ({ name, href, desc, tech }) => {
   return (
     <a
       rel="noopener noreferrer"
@@ -22,4 +20,4 @@ const Project: React.FC<Props> = ({ name, href, desc, tech }) => {
   );
 };
 
-export default Project;
+export default ProjectCard;

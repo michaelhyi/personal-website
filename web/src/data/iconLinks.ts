@@ -1,7 +1,7 @@
 import { AiFillGithub, AiFillLinkedin, AiOutlineMail } from "react-icons/ai";
 import { HiDocumentText } from "react-icons/hi";
 
-export const headLinks = [
+export const iconLinks = [
   {
     icon: AiOutlineMail,
     href: "mailto:michaelyi@gatech.edu",
@@ -9,7 +9,7 @@ export const headLinks = [
   },
   {
     icon: HiDocumentText,
-    href: "/Michael Yi <> Resume.pdf",
+    href: "/Resume.pdf",
     text: "Resume",
   },
   {

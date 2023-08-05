@@ -1,8 +1,6 @@
-"use client";
-
-import Project from "@/app/components/projects/Project";
-import { projects } from "@/app/data/projects";
 import Link from "next/link";
+import { projects } from "../../data/projects";
+import ProjectCard from "../ProjectCard";
 
 const Projects = () => {
   return (
@@ -21,7 +19,7 @@ const Projects = () => {
         {projects.map((v, i) => {
           if (i <= 3)
             return (
-              <Project
+              <ProjectCard
                 key={v.name}
                 href={v.href}
                 desc={v.desc}
