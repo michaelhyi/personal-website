@@ -8,12 +8,12 @@ interface Props {
 const font = localFont({
   src: [
     {
-      path: "../../public/fonts/SF-Pro-Text-Regular.otf",
+      path: "../../public/fonts/HelveticaNeue-Regular.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/fonts/SF-Pro-Text-Bold.otf",
+      path: "../../public/fonts/HelveticaNeue-Bold.otf",
       weight: "700",
       style: "bold",
     },
