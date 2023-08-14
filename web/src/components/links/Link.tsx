@@ -8,7 +8,7 @@ interface Props {
 const Link: React.FC<Props> = ({ href, children }) => {
   return (
     <a
-      className="text-blue-500 cursor-pointer duration-500 hover:opacity-50 font-bold"
+      className="text-pink-300 cursor-pointer duration-500 hover:opacity-50 font-bold"
       rel="noopener noreferrer"
       target="_blank"
       href={href}

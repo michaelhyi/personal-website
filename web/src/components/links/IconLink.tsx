@@ -10,7 +10,7 @@ interface Props {
 const IconLink: React.FC<Props> = ({ icon: Icon, href, text }) => {
   return (
     <div className="flex gap-2 items-center">
-      <Icon size={20} className="text-blue-500" />
+      <Icon size={20} className="text-pink-300" />
       <Link href={href}>{text}</Link>
     </div>
   );
