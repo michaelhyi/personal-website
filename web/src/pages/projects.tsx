@@ -9,7 +9,7 @@ const Projects = () => {
     <Container>
       <Link
         href="/"
-        className="mt-24 flex items-center gap-2 text-sm cursor-pointer duration-300 hover:opacity-50 text-blue-500"
+        className="mt-24 flex items-center gap-2 text-sm cursor-pointer duration-300 hover:opacity-50 text-pink-300 font-bold"
       >
         <AiOutlineArrowLeft /> Home
       </Link>

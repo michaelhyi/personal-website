@@ -9,7 +9,7 @@ const Projects = () => {
         <div className="font-bold text-2xl">Projects</div>
         <Link
           href="/projects"
-          className="text-sm text-blue-500 cursor-pointer duration-500 hover:opacity-50"
+          className="text-sm text-pink-300 cursor-pointer duration-500 hover:opacity-50 font-bold"
         >
           See All
         </Link>

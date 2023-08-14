@@ -8,19 +8,10 @@ const About = () => {
     <div>
       <div className="mt-36 text-3xl font-bold">Michael Yi</div>
       <br />
+      <div>Software Engineer based in Atlanta, GA</div>
       <div>
-        Hi! I&apos;m <span className="font-bold">Michael</span>, a software
-        engineer based in Atlanta, GA. I&apos;m pursuing a B.S. in Computer
-        Science&nbsp;<Link href="https://www.gatech.edu/">@ Georgia Tech</Link>
-        &nbsp;with concentrations in&nbsp;
-        <Link href="https://www.cc.gatech.edu/academics/threads/intelligence">
-          Intelligence
-        </Link>
-        &nbsp;&amp;&nbsp;
-        <Link href="https://www.cc.gatech.edu/academics/threads/information-internetworks">
-          Information Internetworks
-        </Link>
-        .
+        B.S. in Computer Science&nbsp;
+        <Link href="https://www.gatech.edu/">@ Georgia Tech</Link>
       </div>
       <br />
       <div className="flex sm:flex-col md:flex-row sm:gap-8 md:gap-16 items-center">
@@ -46,11 +37,8 @@ const About = () => {
       </div>
       <br />
       <div>
-        I also love music. I&apos;ve played the violin for 9 years and the
-        guitar for a year. My favorite composers are Tchaikovsky, Chopin, and
-        Mendelssohn; my favorite bands are The Beatles and The Velvet
-        Underground. I also enjoy going on walks and eating açaí bowls, bingsu,
-        and mangoes.
+        In my free time, I enjoy playing the violin/guitar. I also enjoy going
+        on walks and eating açaí bowls, bingsu, and mangoes.
       </div>
       <br />
       <div>
