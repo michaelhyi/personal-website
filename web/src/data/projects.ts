@@ -4,24 +4,28 @@ export const projects = [
     desc: "Assembling the future innovators of medicine.",
     tech: "TypeScript, Next.js, MongoDB, Prisma, TailwindCSS, NextAuth, Node.js, PostgreSQL, GraphQL",
     href: "https://www.joinhealthhacks.com/",
+    img: "/joinhealthhacks.png",
   },
   {
     name: "HealthRelay",
     desc: "Streamlining secure communication between radiologists and ordering physicians.",
     tech: "TypeScript, React Native, PostgreSQL, GraphQL",
     href: "https://www.healthrelay.tech/",
+    img: "/healthrelay.png",
   },
   {
     name: "RetinaOCT",
     desc: "Enhancing Retinal Abnormality Detection through Deep-Learning-based Optical Coherence Tomography Analysis",
     tech: "Python, Tensorflow, Keras, TypeScript, React Native, PostgreSQL, GraphQL",
     href: "https://github.com/michaelhyi/retinaoct",
+    img: "/retinaoct.png",
   },
   {
     name: "Enhancing Generative Commonsense Reasoning Using Image Cues",
     desc: "An NLP + Vision model that generates coherent sentences given respective keywords (concepts) and a coresponding image.",
     tech: "Python, PyTorch",
     href: "https://github.com/michaelhyi/usc-shine",
+    img: "/shine.png",
   },
   {
     name: "CarCam",
