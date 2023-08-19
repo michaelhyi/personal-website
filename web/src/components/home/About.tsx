@@ -32,8 +32,7 @@ const About = () => {
       </div>
       <div className="text-sm font-light mt-8">
         I love building. With my aptitude for leadership, communication, and
-        passion, I deliver exceptional results in the intersection of software
-        and entrepreneurship.
+        passion, I deliver exceptional results in software and entrepreneurship.
       </div>
     </div>
   );
