@@ -1,24 +1,11 @@
-import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import { ReactNode, useEffect, useState } from "react";
 
 interface Props {
   children: ReactNode;
 }
 
-const font = localFont({
-  src: [
-    {
-      path: "../../public/fonts/SF-Pro-Text-Regular.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/SF-Pro-Text-Bold.otf",
-      weight: "700",
-      style: "bold",
-    },
-  ],
-});
+const font = Inter({ subsets: ["latin"] });
 
 const Providers: React.FC<Props> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
