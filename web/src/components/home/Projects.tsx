@@ -4,7 +4,7 @@ import ProjectCard from "../ProjectCard";
 
 const Projects = () => {
   return (
-    <div>
+    <div className="mt-12">
       <div className="flex items-center justify-between">
         <div className="font-bold text-2xl">Projects</div>
         <Link
@@ -14,8 +14,7 @@ const Projects = () => {
           See All
         </Link>
       </div>
-      <br />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 mt-6">
         {projects.map((v, i) => {
           if (i <= 3)
             return (

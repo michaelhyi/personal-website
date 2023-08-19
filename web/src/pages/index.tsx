@@ -6,11 +6,7 @@ const Home = () => {
   return (
     <Container>
       <About />
-      <br />
-      <br />
       <Projects />
-      <br />
-      <br />
     </Container>
   );
 };

@@ -13,11 +13,8 @@ const Projects = () => {
       >
         <AiOutlineArrowLeft /> Home
       </Link>
-      <br />
-      <br />
-      <div className="text-3xl font-bold">Projects</div>
-      <br />
-      <div className="flex flex-col gap-4">
+      <div className="text-3xl font-bold mt-12">Projects</div>
+      <div className="flex flex-col gap-4 mt-6">
         {projects.map((v) => (
           <ProjectCard
             key={v.name}
