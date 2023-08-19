@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { iconLinks } from "../../data/iconLinks";
+import { icons } from "../../data/icons";
 import Link from "./Link";
 
 const About = () => {
@@ -22,7 +22,7 @@ const About = () => {
             <Link href="https://www.gatech.edu/">@ Georgia Tech</Link>
           </div>
           <div className="flex gap-2 mt-2">
-            {iconLinks.map(({ icon: Icon, href }, i) => (
+            {icons.map(({ icon: Icon, href }, i) => (
               <Link key={i} href={href}>
                 <Icon size={20} className="text-pink-300" />
               </Link>
