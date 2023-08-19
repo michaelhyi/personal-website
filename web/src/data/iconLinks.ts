@@ -5,21 +5,17 @@ export const iconLinks = [
   {
     icon: AiOutlineMail,
     href: "mailto:michaelyi@gatech.edu",
-    text: "michaelyi@gatech.edu",
   },
   {
     icon: HiDocumentText,
     href: "/Resume.pdf",
-    text: "Resume",
   },
   {
     icon: AiFillGithub,
     href: "https://github.com/michaelhyi",
-    text: "GitHub",
   },
   {
     icon: AiFillLinkedin,
     href: "https://www.linkedin.com/in/michaelhyi/",
-    text: "LinkedIn",
   },
 ];
