@@ -9,7 +9,7 @@ const Projects = () => {
       <div className="mt-24" />
       <ArrowLink href="/" left text="Home" />
       <div className="text-xl font-semibold mt-12">Projects</div>
-      <div className="flex flex-col gap-8 mt-12">
+      <div className="flex flex-col gap-10 mt-12">
         {projects.map((v) => (
           <ProjectCard
             key={v.name}

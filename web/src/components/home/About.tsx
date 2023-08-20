@@ -5,9 +5,8 @@ import Link from "../links/Link";
 const About = () => {
   return (
     <div>
-      <div className="flex mt-36 gap-8">
+      <div className="flex mt-36 gap-8 sm:flex-col md:flex-row">
         <Image
-          unoptimized={true}
           src="/Michael.png"
           alt="me"
           height={115}

@@ -6,7 +6,7 @@ const Projects = () => {
   return (
     <div className="mt-12">
       <div className="flex items-center justify-between">
-        <div className="text-xl font-semibold">Projects</div>
+        <div className="sm:text-lg md:text-xl font-semibold">Projects</div>
         <ArrowLink href="/projects" left={false} text="See All" />
       </div>
       <div className="flex flex-col gap-10 mt-12">
