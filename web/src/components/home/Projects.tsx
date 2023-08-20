@@ -1,21 +1,15 @@
-import Link from "next/link";
 import { projects } from "../../data/projects";
 import ProjectCard from "../ProjectCard";
+import ArrowLink from "../links/ArrowLink";
 
 const Projects = () => {
   return (
-    <div>
+    <div className="mt-12">
       <div className="flex items-center justify-between">
-        <div className="font-bold text-2xl">Projects</div>
-        <Link
-          href="/projects"
-          className="text-sm text-pink-300 cursor-pointer duration-500 hover:opacity-50 font-bold"
-        >
-          See All
-        </Link>
+        <div className="sm:text-lg md:text-xl font-semibold">Projects</div>
+        <ArrowLink href="/projects" left={false} text="See All" />
       </div>
-      <br />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-10 mt-12">
         {projects.map((v, i) => {
           if (i <= 3)
             return (
@@ -25,6 +19,7 @@ const Projects = () => {
                 desc={v.desc}
                 name={v.name}
                 tech={v.tech}
+                img={v.img}
               />
             );
 
