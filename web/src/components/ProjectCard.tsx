@@ -13,7 +13,7 @@ const ProjectCard: React.FC<Props> = ({ name, href, desc, tech, img }) => {
     <a
       rel="noopener noreferrer"
       target="_blank"
-      className="flex gap-4 cursor-pointer duration-300 hover:opacity-50"
+      className="flex gap-4 cursor-pointer duration-500 hover:opacity-50"
       href={href}
     >
       {img && (
@@ -27,7 +27,7 @@ const ProjectCard: React.FC<Props> = ({ name, href, desc, tech, img }) => {
       )}
       <div>
         <div className="font-semibold">{name}</div>
-        <div className="text-sm">{desc}</div>
+        <div>{desc}</div>
         <div className="text-xs mt-2 opacity-75">{tech}</div>
       </div>
     </a>

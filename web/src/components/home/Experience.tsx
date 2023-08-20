@@ -1,10 +1,10 @@
 import { experience } from "../../data/experience";
-import Link from "./Link";
+import Link from "../Link";
 
 const Experience = () => {
   return (
     <div className="mt-12">
-      <div className="font-bold mb-4">Experience</div>
+      <div className="text-2xl font-bold mb-8">Experience</div>
       {experience.map((v, i) => (
         <div key={i} className="flex mb-2">
           <div>{v.date}</div>

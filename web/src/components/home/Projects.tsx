@@ -6,15 +6,15 @@ const Projects = () => {
   return (
     <div className="mt-12">
       <div className="flex items-center justify-between">
-        <div className="font-bold">Projects</div>
+        <div className="text-2xl font-bold">Projects</div>
         <Link
           href="/projects"
-          className="text-sm text-pink-300 cursor-pointer duration-500 hover:opacity-50 font-bold"
+          className="text-pink-300 cursor-pointer duration-500 hover:opacity-50 font-bold"
         >
           See All
         </Link>
       </div>
-      <div className="flex flex-col gap-10 mt-6">
+      <div className="flex flex-col gap-10 mt-12">
         {projects.map((v, i) => {
           if (i <= 3)
             return (

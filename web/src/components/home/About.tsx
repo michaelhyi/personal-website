@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { icons } from "../../data/icons";
-import Link from "./Link";
+import Link from "../Link";
 
 const About = () => {
   return (
     <div>
-      <div className="flex mt-36 gap-8 text-sm font-light">
+      <div className="flex mt-36 gap-8">
         <Image
           unoptimized={true}
           src="/Michael.png"
@@ -30,7 +30,7 @@ const About = () => {
           </div>
         </div>
       </div>
-      <div className="text-sm font-light mt-8">
+      <div className="mt-8">
         I love building. With my aptitude for leadership, communication, and
         passion, I deliver exceptional results in software and entrepreneurship.
       </div>

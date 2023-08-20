@@ -3,12 +3,12 @@ import { HiDocumentText } from "react-icons/hi";
 
 export const icons = [
   {
-    icon: AiOutlineMail,
-    href: "mailto:michaelyi@gatech.edu",
-  },
-  {
     icon: HiDocumentText,
     href: "/Resume.pdf",
+  },
+  {
+    icon: AiOutlineMail,
+    href: "mailto:michaelyi@gatech.edu",
   },
   {
     icon: AiFillGithub,
