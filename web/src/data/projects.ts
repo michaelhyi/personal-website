@@ -2,7 +2,7 @@ export const projects = [
   {
     name: "joinhealthhacks.com",
     desc: "Assembling the future innovators of medicine.",
-    tech: "TypeScript, Next.js, MongoDB, Prisma, TailwindCSS, NextAuth, Node.js, PostgreSQL, GraphQL",
+    tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
     href: "https://www.joinhealthhacks.com/",
     img: "/projects/joinhealthhacks.png",
   },
