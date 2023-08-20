@@ -1,19 +1,14 @@
-import Link from "next/link";
-import { AiOutlineArrowLeft } from "react-icons/ai";
 import Container from "../components/Container";
 import ProjectCard from "../components/ProjectCard";
+import ArrowLink from "../components/links/ArrowLink";
 import { projects } from "../data/projects";
 
 const Projects = () => {
   return (
     <Container>
-      <Link
-        href="/"
-        className="mt-24 flex items-center gap-2 cursor-pointer duration-500 hover:opacity-50 text-pink-300 font-bold"
-      >
-        <AiOutlineArrowLeft /> Home
-      </Link>
-      <div className="text-3xl font-bold mt-12">Projects</div>
+      <div className="mt-24" />
+      <ArrowLink href="/" left text="Home" />
+      <div className="text-xl font-semibold mt-12">Projects</div>
       <div className="flex flex-col gap-8 mt-12">
         {projects.map((v) => (
           <ProjectCard
