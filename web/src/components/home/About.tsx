@@ -17,8 +17,7 @@ const About = () => {
           <div className="text-3xl font-bold">Michael Yi</div>
           <div className="mt-2">Software Engineer</div>
           <div>
-            B.S. in Computer Science&nbsp;
-            <Link href="https://www.gatech.edu/">@ Georgia Tech</Link>
+            CS <Link href="https://www.gatech.edu/">@ Georgia Tech</Link>
           </div>
           <div className="flex gap-2 mt-2">
             {icons.map(({ icon: Icon, href }, i) => (
