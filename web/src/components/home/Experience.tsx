@@ -10,11 +10,12 @@ const Experience = () => {
         <ArrowLink href="/Resume.pdf" left={false} text="Resume" newTab />
       </div>
       {experience.map((v, i) => (
-        <div key={i} className="flex mb-2">
-          <div className="font-extralight opacity-50 sm:text-xs md:text-sm">
-            {v.date}
-          </div>
-          <div className="absolute sm:ml-24 md:ml-36 sm:text-xs md:text-sm">
+        <div
+          key={i}
+          className="flex sm:flex-col-reverse md:flex-row sm:mb-4 md:mb-2 sm:gap-1 md:gap-0"
+        >
+          <div className="font-extralight opacity-50">{v.date}</div>
+          <div className="sm:static md:absolute md:ml-36">
             {v.position} <Link href={v.href}>@ {v.company}</Link>
           </div>
         </div>
