@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { AppProps } from "next/app";
 import Metadata from "../metadata";
 import Providers from "../providers";
@@ -8,6 +9,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     <Providers>
       <Metadata />
       <Component {...pageProps} />
+      <Analytics />
     </Providers>
   );
 };
