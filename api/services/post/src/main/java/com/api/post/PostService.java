@@ -5,6 +5,8 @@ import com.api.post.dto.PostUpdateRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
     private final PostRepository repository;
@@ -24,6 +26,10 @@ public class PostService {
                 .orElseThrow(() -> new IllegalStateException("Post does not exist."));
 
         return post;
+    }
+
+    public List<Post> readAllPosts() {
+        return repository.findAll();
     }
 
     @Transactional

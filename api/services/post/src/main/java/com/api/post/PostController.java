@@ -5,6 +5,8 @@ import com.api.post.dto.PostUpdateRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/post")
 public class PostController {
@@ -22,6 +24,11 @@ public class PostController {
     @GetMapping("{id}")
     public ResponseEntity<Post> readPost(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.readPost(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Post>> readAllPosts() {
+        return ResponseEntity.ok(service.readAllPosts());
     }
 
     @PutMapping("{id}")
