@@ -22,7 +22,7 @@ eureka:
     register-with-eureka: true
 
 cors:
-  allowed-origins: "*"
+  allowed-origins: "http://localhost:3000"
   allowed-methods: "*"
   allowed-headers: "*"
   exposed-headers: "*"

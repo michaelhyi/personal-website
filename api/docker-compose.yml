@@ -13,6 +13,20 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+  postgres-user:
+    container_name: postgres-user
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - postgres-user:/data/postgres
+    ports:
+      - "5434:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
 
   pgadmin:
     container_name: pgadmin
@@ -35,4 +49,5 @@ networks:
 
 volumes:
   postgres-post:
+  postgres-user:
   pgadmin:

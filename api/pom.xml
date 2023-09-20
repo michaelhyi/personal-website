@@ -13,9 +13,10 @@
   <!-- FIXME change it to the project's website -->
   <url>https://michael-yi.com</url>
   <modules>
+    <module>apigw</module>
     <module>eureka-server</module>
     <module>services/post</module>
-    <module>apigw</module>
+    <module>services/user</module>
   </modules>
 
   <properties>
