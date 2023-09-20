@@ -17,6 +17,7 @@
     <module>eureka-server</module>
     <module>services/post</module>
     <module>services/user</module>
+    <module>services/token</module>
   </modules>
 
   <properties>

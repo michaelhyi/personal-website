@@ -10,6 +10,7 @@
         <module name="post" />
         <module name="eureka-server" />
         <module name="user" />
+        <module name="token" />
       </profile>
     </annotationProcessing>
   </component>
