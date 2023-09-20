@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="post" />
         <module name="eureka-server" />
+        <module name="apigw" />
       </profile>
     </annotationProcessing>
   </component>
