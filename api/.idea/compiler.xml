@@ -9,9 +9,12 @@
         <module name="apigw" />
         <module name="post" />
         <module name="eureka-server" />
-        <module name="user" />
-        <module name="token" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="auth" target="20" />
+      <module name="token" target="20" />
+      <module name="user" target="20" />
+    </bytecodeTargetLevel>
   </component>
 </project>

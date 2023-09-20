@@ -14,36 +14,6 @@ services:
       - postgres
     restart: unless-stopped
 
-  postgres-user:
-    container_name: postgres-user
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /data/postgres
-    volumes:
-      - postgres-user:/data/postgres
-    ports:
-      - "5434:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
-
-  postgres-token:
-    container_name: postgres-token
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /data/postgres
-    volumes:
-      - postgres-token:/data/postgres
-    ports:
-      - "5435:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
-
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -65,6 +35,4 @@ networks:
 
 volumes:
   postgres-post:
-  postgres-user:
-  postgres-token:
   pgadmin:

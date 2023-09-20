@@ -15,9 +15,7 @@
   <modules>
     <module>apigw</module>
     <module>eureka-server</module>
-    <module>services/post</module>
-    <module>services/user</module>
-    <module>services/token</module>
+    <module>post</module>
   </modules>
 
   <properties>
