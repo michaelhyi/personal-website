@@ -11,9 +11,18 @@ spring:
           uri: lb://POST
           predicates:
             - Path=/api/v1/post/**
+  main:
+    allow-bean-definition-overriding: true
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+
+cors:
+  allowed-origins: "http://localhost:3000"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
