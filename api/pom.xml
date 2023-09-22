@@ -13,8 +13,8 @@
   <!-- FIXME change it to the project's website -->
   <url>https://michael-yi.com</url>
   <modules>
+    <module>service-registry</module>
     <module>apigw</module>
-    <module>eureka-server</module>
     <module>post</module>
   </modules>
 

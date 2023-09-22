@@ -6,13 +6,17 @@ spring:
     name: apigw
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods: "*"
+            allowedHeaders: "*"
       routes:
         - id: post
           uri: lb://POST
           predicates:
             - Path=/api/v1/post/**
-  main:
-    allow-bean-definition-overriding: true
 
 eureka:
   client:
@@ -20,9 +24,3 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
-
-cors:
-  allowed-origins: "http://localhost:3000"
-  allowed-methods: "*"
-  allowed-headers: "*"
-  exposed-headers: "*"

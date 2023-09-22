@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/post")
 public class PostController {
-    private PostService service;
+    private final PostService service;
 
     public PostController(PostService service) {
         this.service = service;

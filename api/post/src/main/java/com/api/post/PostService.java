@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class PostService {
-    private PostRepository repository;
+    private final PostRepository repository;
 
     public PostService(PostRepository repository) {
         this.repository = repository;
@@ -22,10 +22,8 @@ public class PostService {
     }
 
     public Post readPost(Long id) {
-        Post post = repository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Post does not exist."));
-
-        return post;
     }
 
     public List<Post> readAllPosts() {

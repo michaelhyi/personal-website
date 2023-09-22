@@ -27,6 +27,18 @@ public class Post {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
