@@ -1,5 +1,6 @@
 package com.api.post;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -13,6 +14,7 @@ public class Post {
     private Long id;
     private String title;
     private Date date;
+    @Column(columnDefinition="TEXT")
     private String body;
 
     public Post(String title, Date date, String body) {
