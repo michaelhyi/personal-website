@@ -27,7 +27,7 @@ public class PostService {
     }
 
     public List<Post> readAllPosts() {
-        return repository.findAll();
+        return repository.findAllByOrderByDateDesc();
     }
 
     @Transactional
