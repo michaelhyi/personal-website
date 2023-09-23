@@ -1,19 +1,4 @@
 services:
-  postgres-auth:
-    container_name: postgres-auth
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /data/postgres
-    volumes:
-      - postgres-auth:/data/postgres
-    ports:
-      - "5433:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
-
   postgres-post:
     container_name: postgres-post
     image: postgres
@@ -24,7 +9,7 @@ services:
     volumes:
       - postgres-post:/data/postgres
     ports:
-      - "5434:5432"
+      - "5433:5432"
     networks:
       - postgres
     restart: unless-stopped
@@ -49,6 +34,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres-auth:
   postgres-post:
   pgadmin:
