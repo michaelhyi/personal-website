@@ -12,7 +12,7 @@ const PostCard: React.FC<Props> = ({ id, title, body, date }) => {
   return (
     <Link
       className="flex sm:flex-col md:flex-row gap-4 cursor-pointer duration-500 hover:opacity-50"
-      href={`/${id}`}
+      href={`/blog/${id}`}
     >
       <div>
         <div className="font-semibold">{title}</div>
