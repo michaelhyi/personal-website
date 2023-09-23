@@ -21,7 +21,6 @@ const Blog = () => {
     <Container>
       <div className="mt-24" />
       <ArrowLink href="/" left text="Home" />
-      <div className="text-xl font-semibold mt-12">Blog</div>
       <div className="flex flex-col gap-10 mt-12">
         {data.map((v) => (
           <PostCard

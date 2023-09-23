@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { icons } from "../../data/icons";
 import Link from "../links/Link";
+import NextLink from "next/link";
 
 const About = () => {
   return (
@@ -31,6 +32,16 @@ const About = () => {
       <div className="mt-8">
         I love building. With my aptitude for leadership, communication, and
         passion, I deliver exceptional results in software and entrepreneurship.
+      </div>
+      <div className="mt-6">
+        Check out my&nbsp;
+        <NextLink
+          className="text-pink-300 cursor-pointer duration-500 hover:opacity-50 font-bold underline"
+          href="/blog"
+        >
+          blog
+        </NextLink>
+        &nbsp;where I write about my passion for music and cinema!
       </div>
     </div>
   );
