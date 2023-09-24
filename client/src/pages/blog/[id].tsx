@@ -25,10 +25,14 @@ const View = () => {
     <Container>
       <div className="mt-24" />
       <ArrowLink href="/blog" left text="Blog" />
+      <div className="mt-12 font-semibold text-2xl">{data.title}</div>
+      <div className="text-xs mt-6 opacity-75">
+        {format(new Date(data.date), "PPP")}
+      </div>
       <div
-        className="mt-12"
+        className="mt-8"
         dangerouslySetInnerHTML={{
-          __html: data.post,
+          __html: data.body,
         }}
       />
     </Container>

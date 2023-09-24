@@ -34,8 +34,9 @@ public class PostController {
     @PutMapping("{id}")
     public ResponseEntity<Void> updatePost(
             @PathVariable("id") Long id,
-            @RequestParam("post") String post) {
-        service.updatePost(id, new PostUpdateRequest(post));
+            @RequestParam("title") String title,
+            @RequestParam("body") String body) {
+        service.updatePost(id, new PostUpdateRequest(title, body));
         return ResponseEntity.ok().build();
     }
 

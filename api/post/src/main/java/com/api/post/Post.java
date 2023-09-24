@@ -13,13 +13,15 @@ public class Post {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(columnDefinition = "TEXT")
-    private String post;
+    private String title;
     @CreationTimestamp
     private Date date;
+    @Column(columnDefinition = "TEXT")
+    private String body;
 
-    public Post(String post) {
-        this.post = post;
+    public Post(String title, String body) {
+        this.title = title;
+        this.body = body;
     }
 
     public Post() {
@@ -29,11 +31,23 @@ public class Post {
         return id;
     }
 
-    public String getPost() {
-        return post;
+    public String getTitle() {
+        return title;
     }
 
-    public void setPost(String post) {
-        this.post = post;
+    public Date getDate() {
+        return date;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

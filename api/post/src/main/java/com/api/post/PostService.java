@@ -16,7 +16,7 @@ public class PostService {
     }
 
     public Long createPost(PostCreateRequest req) {
-        Post post = new Post(req.post());
+        Post post = new Post(req.title(), req.body());
         repository.saveAndFlush(post);
         return post.getId();
     }
@@ -35,7 +35,8 @@ public class PostService {
         Post post = repository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Post does not exist."));
 
-        post.setPost(req.post());
+        post.setTitle(req.title());
+        post.setBody((req.body()));
     }
 
     public void deletePost(Long id) {

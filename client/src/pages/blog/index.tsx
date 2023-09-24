@@ -23,13 +23,7 @@ const Blog = () => {
       <ArrowLink href="/" left text="Home" />
       <div className="flex flex-col gap-10 mt-12">
         {data.map((v: any) => (
-          <PostCard
-            key={v.id}
-            id={v.id}
-            title={v.title}
-            body={v.body.substring(0, 200) + "..."}
-            date={v.date}
-          />
+          <PostCard key={v.id} id={v.id} title={v.title} date={v.date} />
         ))}
       </div>
     </Container>
