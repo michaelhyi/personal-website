@@ -6,12 +6,6 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "http://localhost:3000"
-            allowedMethods: "*"
-            allowedHeaders: "*"
       routes:
         - id: post
           uri: lb://POST
@@ -38,6 +32,10 @@ security:
   jjwt:
     secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength
     expiration: 28800
+  cors:
+    allowed-origins: "http://localhost:3000"
+    allowed-headers: "*"
+    allowed-methods: "*"
 
 eureka:
   client:
