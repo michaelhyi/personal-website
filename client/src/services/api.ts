@@ -14,3 +14,8 @@ export const login = async (data: { email: string; password: string }) => {
   const res = await http("/auth/login", "POST", data);
   return res.json();
 };
+
+export const readUserByToken = async (token: string) => {
+  const res = await http("/user/" + token, "GET");
+  return res.json();
+};

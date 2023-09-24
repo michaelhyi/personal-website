@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -12,15 +13,13 @@ public class Post {
     @Id
     @GeneratedValue
     private Long id;
-    private String title;
-    private Date date;
     @Column(columnDefinition = "TEXT")
-    private String body;
+    private String post;
+    @CreationTimestamp
+    private Date date;
 
-    public Post(String title, Date date, String body) {
-        this.title = title;
-        this.date = date;
-        this.body = body;
+    public Post(String post) {
+        this.post = post;
     }
 
     public Post() {
@@ -30,23 +29,11 @@ public class Post {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getPost() {
+        return post;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
+    public void setPost(String post) {
+        this.post = post;
     }
 }

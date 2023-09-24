@@ -71,6 +71,8 @@ public class SecurityConfig {
                 .authorizeExchange(auth -> auth
                         .pathMatchers("/api/v1/auth/**")
                         .permitAll()
+                        .pathMatchers("/api/v1/user/**")
+                        .permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/v1/post/**")
                         .permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/v1/post/**")
