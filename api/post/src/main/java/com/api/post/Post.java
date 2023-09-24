@@ -14,7 +14,7 @@ public class Post {
     private Long id;
     private String title;
     private Date date;
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String body;
 
     public Post(String title, Date date, String body) {
@@ -23,7 +23,8 @@ public class Post {
         this.body = body;
     }
 
-    public Post() {}
+    public Post() {
+    }
 
     public Long getId() {
         return id;

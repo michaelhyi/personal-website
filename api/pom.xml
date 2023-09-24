@@ -14,7 +14,7 @@
   <url>https://michael-yi.com</url>
   <modules>
     <module>service-registry</module>
-    <module>apigw</module>
+    <module>api-gateway</module>
     <module>post</module>
   </modules>
 
