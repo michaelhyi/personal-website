@@ -1,7 +1,9 @@
+import { Spinner } from "@chakra-ui/react";
+
 const Loading = () => {
   return (
     <div className="flex h-full justify-center items-center">
-      <div>Loading...</div>
+      <Spinner size="xs" />
     </div>
   );
 };
