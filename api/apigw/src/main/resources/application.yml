@@ -17,6 +17,27 @@ spring:
           uri: lb://POST
           predicates:
             - Path=/api/v1/post/**
+  datasource:
+    password: postgres
+    url: jdbc:postgresql://localhost:5433/auth
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+      show-sql: true
+
+security:
+  encoder:
+    secret: mysecret
+    iteration: 33
+    keylength: 256
+  jjwt:
+    secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength
+    expiration: 28800
 
 eureka:
   client:
