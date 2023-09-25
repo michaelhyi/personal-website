@@ -1,13 +1,32 @@
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Container from "../../components/Container";
 import Loading from "../../components/Loading";
 import ArrowLink from "../../components/links/ArrowLink";
-import { readUserByToken } from "../../services/api";
+import { createPost, readUserByToken } from "../../services/api";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { Spinner } from "@chakra-ui/react";
 
 const Create = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const { register, handleSubmit } = useForm<FieldValues>({
+    defaultValues: {
+      title: "",
+      body: "",
+    },
+  });
+
+  const handleUpload: SubmitHandler<FieldValues> = useCallback(
+    async (data) => {
+      setSubmitting(true);
+      await createPost(data as { title: string; body: string })
+        .then((res) => router.push("/blog/" + res))
+        .finally(() => setSubmitting(false));
+    },
+    [setSubmitting, router]
+  );
 
   useEffect(() => {
     readUserByToken(localStorage.getItem("token") as string)
@@ -28,17 +47,23 @@ const Create = () => {
       <div className="mt-12 font-semibold text-2xl">Title</div>
       <input
         className="border-b-2 w-full mt-2"
-        // {...register("email")}
-        id="email"
-        // disabled={submitting}
+        {...register("title")}
+        id="title"
+        disabled={submitting}
       />
       <div className="mt-12 font-semibold text-2xl">Body</div>
       <textarea
         className="border-b-2 w-full mt-2"
-        // {...register("email")}
-        id="email"
-        // disabled={submitting}
+        {...register("body")}
+        id="body"
+        disabled={submitting}
       />
+      <button
+        onClick={(e) => handleSubmit(handleUpload)(e)}
+        className="text-center w-full py-3 bg-pink-300 text-white mt-8 duration-500 hover:opacity-50"
+      >
+        {submitting ? <Spinner size="xs" /> : "Upload Post"}
+      </button>
     </Container>
   );
 };

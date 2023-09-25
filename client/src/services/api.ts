@@ -1,4 +1,5 @@
 import { http } from "./http";
+import qs from "query-string";
 
 export const readPost = async (id: string) => {
   const res = await http("/post/" + id, "GET");
@@ -6,7 +7,7 @@ export const readPost = async (id: string) => {
 };
 
 export const readAllPosts = async () => {
-  const res = await http("/post", "GET");
+  const res = await http("/post?" + qs.stringify({ date: new Date() }), "GET");
   return res.json();
 };
 
@@ -18,4 +19,9 @@ export const login = async (data: { email: string; password: string }) => {
 export const readUserByToken = async (token: string) => {
   const res = await http("/user/" + token, "GET");
   return res.json();
+};
+
+export const createPost = async (data: { title: string; body: string }) => {
+  const res = await http("/post", "POST", data);
+  return res.text();
 };
