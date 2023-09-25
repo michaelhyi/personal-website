@@ -28,7 +28,7 @@ const Edit = () => {
   const handleUpdate: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       setSubmitting(true);
-      await updatePost(id as string, data.title, data.body)
+      await updatePost(id as string, data as { title: string; body: string })
         .then(() => router.push("/blog/" + id))
         .finally(() => setSubmitting(false));
     },
@@ -40,7 +40,7 @@ const Edit = () => {
     await deletePost(id as string)
       .then(() => router.push("/blog"))
       .finally(() => setSubmitting(false));
-  }, [id]);
+  }, [id, router]);
 
   useEffect(() => {
     readUserByToken(localStorage.getItem("token") as string)

@@ -31,12 +31,12 @@ public class PostController {
         return ResponseEntity.ok(service.readAllPosts());
     }
 
-    @PutMapping("{id}")
+    @PostMapping("{id}")
     public ResponseEntity<Void> updatePost(
             @PathVariable("id") Long id,
-            @RequestParam("title") String title,
-            @RequestParam("body") String body) {
-        service.updatePost(id, new PostUpdateRequest(title, body));
+            @RequestBody PostUpdateRequest req
+    ) {
+        service.updatePost(id, req);
         return ResponseEntity.ok().build();
     }
 
