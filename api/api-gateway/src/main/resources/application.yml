@@ -13,7 +13,7 @@ spring:
             - Path=/api/v1/post/**
   datasource:
     password: postgres
-    url: jdbc:postgresql://localhost:5433/auth
+    url: jdbc:postgresql://postgres-auth:5433/auth
     username: postgres
   jpa:
     hibernate:

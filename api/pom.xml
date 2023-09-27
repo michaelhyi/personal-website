@@ -10,7 +10,6 @@
   <packaging>pom</packaging>
 
   <name>api</name>
-  <!-- FIXME change it to the project's website -->
   <url>https://michael-yi.com</url>
   <modules>
     <module>service-registry</module>
@@ -58,7 +57,7 @@
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
-          <version>${spring.boot.maven.plugin.version}</version>
+          <version>3.1.2</version>
         </plugin>
       </plugins>
     </pluginManagement>

@@ -1,0 +1,13 @@
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/user/UserService.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/auth/AuthController.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/user/UserRole.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/user/User.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/security/JwtService.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/security/SecurityContextRepository.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/auth/dto/LoginRequest.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/ApiGatewayApplication.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/user/UserRepository.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/security/AuthenticationManager.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/security/Encoder.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/security/SecurityConfig.java
+/Users/michaelyi/dev/personal/michael-yi.com/api/api-gateway/src/main/java/com/api/gateway/user/UserController.java
