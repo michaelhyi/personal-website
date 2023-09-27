@@ -4,6 +4,7 @@ import com.api.gateway.auth.dto.LoginRequest;
 import com.api.gateway.auth.dto.LoginResponse;
 import com.api.gateway.security.Encoder;
 import com.api.gateway.security.JwtUtil;
+import com.api.gateway.user.User;
 import com.api.gateway.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -31,11 +33,25 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Mono<ResponseEntity<LoginResponse>> login(@RequestBody LoginRequest req) {
-        return service.findByUsername(req.email())
-                .filter(userDetails -> encoder.encode(req.password()).equals(userDetails.getPassword()))
-                .map(userDetails -> ResponseEntity.ok(new LoginResponse(jwtUtil.generateToken(userDetails))))
-                .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest req) {
+        Optional<User> user = service.findByUsername(req.email());
+
+        //email does not exist
+        if (user.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
+
+        //wrong credentials
+        if (!encoder.encode(req.password()).equals(user.get().getPassword())) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build();
+        }
+
+
+        return ResponseEntity.ok(new LoginResponse(jwtUtil.generateToken(user.get())));
     }
 
 }

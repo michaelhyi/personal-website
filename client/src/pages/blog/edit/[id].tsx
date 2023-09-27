@@ -48,12 +48,15 @@ const Edit = () => {
         if (!res.roles.includes("ROLE_ADMIN")) {
           router.push("/login");
         }
+
         if (!id) return;
+
         await readPost(id as string).then(async (data) => {
           setValue("title", data.title);
           setValue("body", data.body);
         });
       })
+      .catch(() => router.push("/login"))
       .finally(() => setLoading(false));
   }, [router, setLoading, id, setValue]);
 

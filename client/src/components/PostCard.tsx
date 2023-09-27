@@ -4,7 +4,7 @@ import { format } from "date-fns";
 interface Props {
   id: number;
   title: string;
-  date: string;
+  date: Date;
 }
 
 const PostCard: React.FC<Props> = ({ id, title, date }) => {

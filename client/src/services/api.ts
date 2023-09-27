@@ -13,10 +13,10 @@ export const readAllPosts = async () => {
 
 export const login = async (data: { email: string; password: string }) => {
   const res = await http("/auth/login", "POST", data);
-  return res.json();
+  return res;
 };
 
-export const readUserByToken = async (token: string) => {
+export const readUserByToken = async (token: string | null) => {
   const res = await http("/user/" + token, "GET");
   return res.json();
 };

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
@@ -21,23 +23,24 @@ public class UserController {
     }
 
     @GetMapping("{token}")
-    public Mono<ResponseEntity<User>> readByToken(@PathVariable("token") String token) {
-        if(!jwtUtil.validateToken(token)) return Mono.just(
-                ResponseEntity
-                        .status(HttpStatus.UNAUTHORIZED)
-                        .build()
-        );
+    public ResponseEntity<User> readByToken(@PathVariable("token") String token) {
+        if(token.equals("null") || token.equals("undefined")) return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .build();
+
+        if(!jwtUtil.validateToken(token)) return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .build();
 
          String email = jwtUtil.getUsernameFromToken(token);
+         Optional<User> user = service.findByUsername(email);
 
-        return service.findByUsername(email)
-                .map(u -> ResponseEntity.ok(u))
-                .switchIfEmpty(
-                        Mono.just(
-                                ResponseEntity
-                                        .status(HttpStatus.NOT_FOUND)
-                                        .build()
-                        )
-                );
+         if(user.isEmpty()) {
+             return ResponseEntity
+                     .status(HttpStatus.NOT_FOUND)
+                     .build();
+         }
+
+         return ResponseEntity.ok(user.get());
     }
 }

@@ -1,18 +1,21 @@
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import params from "next/router";
 import { useEffect, useState } from "react";
+import { BsFillPencilFill } from "react-icons/bs";
 import Container from "../../components/Container";
 import Loading from "../../components/Loading";
 import ArrowLink from "../../components/links/ArrowLink";
 import { readPost, readUserByToken } from "../../services/api";
-import params from "next/router";
-import { useRouter } from "next/navigation";
-import { BsFillPencilFill } from "react-icons/bs";
+import Post from "../../types/dto/Post";
+import NotFound from "../404";
 
 const View = () => {
   const { id } = params.query;
   const router = useRouter();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<null | Post>(null);
   const [user, setUser] = useState(null);
+  const [found, setFound] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,11 +27,14 @@ const View = () => {
 
         const token = await localStorage.getItem("token");
         if (token) await readUserByToken(token).then((res) => setUser(res));
+
+        setLoading(false);
       })
-      .finally(() => setLoading(false));
+      .catch(() => setFound(false));
   }, [id]);
 
   if (loading) return <Loading />;
+  if (!found) return <NotFound />;
 
   return (
     <Container>
@@ -44,14 +50,14 @@ const View = () => {
           </button>
         )}
       </div>
-      <div className="mt-12 font-semibold text-2xl">{data.title}</div>
+      <div className="mt-12 font-semibold text-2xl">{data!.title}</div>
       <div className="text-xs mt-6 opacity-75">
-        {format(new Date(data.date), "PPP")}
+        {format(new Date(data!.date), "PPP")}
       </div>
       <div
         className="mt-8"
         dangerouslySetInnerHTML={{
-          __html: data.body,
+          __html: data!.body,
         }}
       />
     </Container>

@@ -1,11 +1,11 @@
+import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Container from "../../components/Container";
 import Loading from "../../components/Loading";
 import ArrowLink from "../../components/links/ArrowLink";
 import { createPost, readUserByToken } from "../../services/api";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { Spinner } from "@chakra-ui/react";
 
 const Create = () => {
   const router = useRouter();
@@ -33,9 +33,11 @@ const Create = () => {
       .then((res) => {
         if (!res.roles.includes("ROLE_ADMIN")) {
           router.push("/login");
+        } else {
+          setLoading(false);
         }
       })
-      .finally(() => setLoading(false));
+      .catch(() => router.push("/login"));
   }, [router, setLoading]);
 
   if (loading) return <Loading />;

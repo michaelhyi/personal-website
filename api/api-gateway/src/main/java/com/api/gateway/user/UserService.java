@@ -3,6 +3,8 @@ package com.api.gateway.user;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserRepository repository;
@@ -11,7 +13,7 @@ public class UserService {
         this.repository = repository;
     }
 
-    public Mono<User> findByUsername(String username) {
-        return Mono.justOrEmpty(repository.findByEmail(username));
+    public Optional<User> findByUsername(String username) {
+        return repository.findByEmail(username);
     }
 }
