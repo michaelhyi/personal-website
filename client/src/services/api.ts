@@ -1,38 +1,33 @@
-import { http } from "./http";
 import qs from "query-string";
+import { http } from "./http";
 
 export const readPost = async (id: string) => {
-  const res = await http("/post/" + id, "GET");
-  return res;
+  return await http("/post/" + id, "GET");
 };
 
 export const readAllPosts = async () => {
-  const res = await http("/post?" + qs.stringify({ date: new Date() }), "GET");
-  return await res.json();
+  return await http("/post?" + qs.stringify({ date: new Date() }), "GET");
 };
 
 export const login = async (data: { email: string; password: string }) => {
-  const res = await http("/auth/login", "POST", data);
-  return res;
+  return await http("/auth/login", "POST", data);
 };
 
 export const readUserByToken = async (token: string | null) => {
-  const res = await http("/user/" + token, "GET");
-  return res;
+  return await http("/user/" + token, "GET");
 };
 
 export const createPost = async (data: { title: string; body: string }) => {
-  const res = await http("/post", "POST", data);
-  return await res.text();
+  return await http("/post", "POST", data);
 };
 
 export const updatePost = async (
   id: string,
   data: { title: string; body: string }
 ) => {
-  await http("/post/" + id, "POST", data);
+  return await http("/post/" + id, "POST", data);
 };
 
 export const deletePost = async (id: string) => {
-  await http("/post/" + id, "DELETE");
+  return await http("/post/" + id, "DELETE");
 };

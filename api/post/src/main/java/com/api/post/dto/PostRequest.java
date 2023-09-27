@@ -1,6 +1,6 @@
 package com.api.post.dto;
 
-public record PostCreateRequest(
+public record PostRequest(
         String title,
         String body
 ) {

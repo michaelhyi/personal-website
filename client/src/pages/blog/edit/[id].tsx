@@ -4,6 +4,7 @@ import params from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Container from "../../../components/Container";
+import Error from "../../../components/Error";
 import Loading from "../../../components/Loading";
 import ArrowLink from "../../../components/links/ArrowLink";
 import {
@@ -18,6 +19,7 @@ const Edit = () => {
   const { id } = params.query;
   const router = useRouter();
   const [found, setFound] = useState(true);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const { register, handleSubmit, setValue } = useForm<FieldValues>({
@@ -30,18 +32,33 @@ const Edit = () => {
   const handleUpdate: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       setSubmitting(true);
-      await updatePost(id as string, data as { title: string; body: string })
-        .then(() => router.push("/blog/" + id))
-        .finally(() => setSubmitting(false));
+      await updatePost(
+        id as string,
+        data as { title: string; body: string }
+      ).then((res) => {
+        if (res.status === 200) {
+          setError(false);
+          router.push("/blog/" + id);
+        } else {
+          setError(true);
+          setSubmitting(false);
+        }
+      });
     },
     [setSubmitting, router, id]
   );
 
   const handleDelete = useCallback(async () => {
     setSubmitting(true);
-    await deletePost(id as string)
-      .then(() => router.push("/blog"))
-      .finally(() => setSubmitting(false));
+    await deletePost(id as string).then((res) => {
+      if (res.status === 200) {
+        setError(false);
+        router.push("/blog");
+      } else {
+        setError(true);
+        setSubmitting(false);
+      }
+    });
   }, [id, router]);
 
   useEffect(() => {
@@ -95,6 +112,7 @@ const Edit = () => {
         id="body"
         disabled={submitting}
       />
+      {error && <Error text="Something went wrong." />}
       <button
         onClick={(e) => handleSubmit(handleUpdate)(e)}
         className="text-center w-full py-3 bg-pink-300 text-white mt-8 duration-500 hover:opacity-50"

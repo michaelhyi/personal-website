@@ -1,12 +1,10 @@
 package com.api.post;
 
-import com.api.post.dto.PostCreateRequest;
-import com.api.post.dto.PostUpdateRequest;
+import com.api.post.dto.PostRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +18,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createPost(@RequestBody PostCreateRequest req) {
+    public ResponseEntity<Long> createPost(@RequestBody PostRequest req) {
         return ResponseEntity.ok(service.createPost(req));
     }
 
@@ -45,7 +43,7 @@ public class PostController {
     @PostMapping("{id}")
     public ResponseEntity<Void> updatePost(
             @PathVariable("id") Long id,
-            @RequestBody PostUpdateRequest req
+            @RequestBody PostRequest req
     ) {
         service.updatePost(id, req);
         return ResponseEntity.ok().build();

@@ -7,12 +7,22 @@ import { readAllPosts } from "../../services/api";
 import Post from "../../types/dto/Post";
 
 const Blog = () => {
-  const [data, setData] = useState<Post[] | null>(null);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<Post[] | null>(null);
 
   useEffect(() => {
     readAllPosts()
-      .then((data) => setData(data))
+      .then(async (res) => {
+        if (res.status === 200) {
+          const body: any = await res.json();
+          setData(body);
+
+          setError(false);
+        } else {
+          setError(true);
+        }
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -23,9 +33,11 @@ const Blog = () => {
       <div className="mt-24" />
       <ArrowLink href="/" left text="Home" />
       <div className="flex flex-col gap-10 mt-12">
-        {data!.map((v: Post) => (
-          <PostCard key={v.id} id={v.id} title={v.title} date={v.date} />
-        ))}
+        {error && <div>Something went wrong.</div>}
+        {!error &&
+          data!.map((v: Post) => (
+            <PostCard key={v.id} id={v.id} title={v.title} date={v.date} />
+          ))}
       </div>
     </Container>
   );

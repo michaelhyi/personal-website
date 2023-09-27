@@ -2,6 +2,7 @@ import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import Error from "../components/Error";
 import Footer from "../components/Footer";
 import Loading from "../components/Loading";
 import { login, readUserByToken } from "../services/api";
@@ -27,8 +28,11 @@ const Login = () => {
       await login(data as { email: string; password: string }).then(
         async (res) => {
           if (res.status === 200) {
+            setError({ email: "", password: "" });
+
             const token: any = await res.text();
             await localStorage.setItem("token", token);
+
             router.push("/");
           } else if (res.status === 404) {
             setError({ email: "Email does not exist.", password: "" });
@@ -65,9 +69,7 @@ const Login = () => {
             id="email"
             disabled={submitting}
           />
-          {error.email.length > 0 && (
-            <div className="mt-4 text-red-500">{error.email}</div>
-          )}
+          {error.email.length > 0 && <Error text={error.email} />}
           <div className="mt-6">Password</div>
           <input
             className="border-b-2 w-full mt-2"
@@ -76,9 +78,7 @@ const Login = () => {
             disabled={submitting}
             type="password"
           />
-          {error.password.length > 0 && (
-            <div className="mt-4 text-red-500">{error.password}</div>
-          )}
+          {error.password.length > 0 && <Error text={error.password} />}
           <button
             onClick={(e) => handleSubmit(handleLogin)(e)}
             className="text-center w-full py-3 bg-pink-300 text-white mt-8 duration-500 hover:opacity-50"

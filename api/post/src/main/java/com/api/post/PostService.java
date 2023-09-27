@@ -1,11 +1,9 @@
 package com.api.post;
 
-import com.api.post.dto.PostCreateRequest;
-import com.api.post.dto.PostUpdateRequest;
+import com.api.post.dto.PostRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +15,7 @@ public class PostService {
         this.repository = repository;
     }
 
-    public Long createPost(PostCreateRequest req) {
+    public Long createPost(PostRequest req) {
         Post post = new Post(req.title(), req.body());
         repository.saveAndFlush(post);
         return post.getId();
@@ -32,7 +30,7 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(Long id, PostUpdateRequest req) {
+    public void updatePost(Long id, PostRequest req) {
         Post post = repository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Post does not exist."));
 

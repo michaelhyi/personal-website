@@ -2,7 +2,7 @@ package com.api.gateway.auth;
 
 import com.api.gateway.auth.dto.LoginRequest;
 import com.api.gateway.security.Encoder;
-import com.api.gateway.security.JwtUtil;
+import com.api.gateway.security.JwtService;
 import com.api.gateway.user.User;
 import com.api.gateway.user.UserService;
 import org.springframework.http.HttpStatus;
@@ -17,16 +17,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/auth")
 public class AuthController {
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
     private final Encoder encoder;
     private final UserService service;
 
     public AuthController(
-            JwtUtil jwtUtil,
+            JwtService jwtService,
             Encoder encoder,
             UserService service
     ) {
-        this.jwtUtil = jwtUtil;
+        this.jwtService = jwtService;
         this.encoder = encoder;
         this.service = service;
     }
@@ -50,7 +50,7 @@ public class AuthController {
         }
 
 
-        return ResponseEntity.ok(jwtUtil.generateToken(user.get()));
+        return ResponseEntity.ok(jwtService.generate(user.get()));
     }
 
 }

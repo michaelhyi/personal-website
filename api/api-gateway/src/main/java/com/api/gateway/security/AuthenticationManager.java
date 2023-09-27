@@ -13,22 +13,22 @@ import java.util.stream.Collectors;
 
 @Component
 public class AuthenticationManager implements ReactiveAuthenticationManager {
-    private JwtUtil jwtUtil;
+    private JwtService jwtService;
 
-    public AuthenticationManager(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
+    public AuthenticationManager(JwtService jwtService) {
+        this.jwtService = jwtService;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Mono<Authentication> authenticate(Authentication authentication) {
-        String authToken = authentication.getCredentials().toString();
-        String username = jwtUtil.getUsernameFromToken(authToken);
-        return Mono.just(jwtUtil.validateToken(authToken))
+        String token = authentication.getCredentials().toString();
+        String username = jwtService.getUsernameFromToken(token);
+        return Mono.just(jwtService.validate(token))
                 .filter(valid -> valid)
                 .switchIfEmpty(Mono.empty())
                 .map(valid -> {
-                    Claims claims = jwtUtil.getAllClaimsFromToken(authToken);
+                    Claims claims = jwtService.getAllClaimsFromToken(token);
                     List<String> rolesMap = claims.get("role", List.class);
                     return new UsernamePasswordAuthenticationToken(
                             username,
