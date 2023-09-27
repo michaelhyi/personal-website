@@ -1,7 +1,6 @@
 package com.api.gateway.auth;
 
 import com.api.gateway.auth.dto.LoginRequest;
-import com.api.gateway.auth.dto.LoginResponse;
 import com.api.gateway.security.Encoder;
 import com.api.gateway.security.JwtUtil;
 import com.api.gateway.user.User;
@@ -33,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest req) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
         Optional<User> user = service.findByUsername(req.email());
 
         //email does not exist
@@ -51,7 +50,7 @@ public class AuthController {
         }
 
 
-        return ResponseEntity.ok(new LoginResponse(jwtUtil.generateToken(user.get())));
+        return ResponseEntity.ok(jwtUtil.generateToken(user.get()));
     }
 
 }

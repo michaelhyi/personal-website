@@ -29,15 +29,20 @@ const Create = () => {
   );
 
   useEffect(() => {
-    readUserByToken(localStorage.getItem("token") as string)
-      .then((res) => {
-        if (!res.roles.includes("ROLE_ADMIN")) {
-          router.push("/login");
+    readUserByToken(localStorage.getItem("token") as string).then(
+      async (res) => {
+        if (res.status === 200) {
+          const body: any = await res.json();
+          if (!body.roles.includes("ROLE_ADMIN")) {
+            router.push("/login");
+          } else {
+            setLoading(false);
+          }
         } else {
-          setLoading(false);
+          router.push("/login");
         }
-      })
-      .catch(() => router.push("/login"));
+      }
+    );
   }, [router, setLoading]);
 
   if (loading) return <Loading />;

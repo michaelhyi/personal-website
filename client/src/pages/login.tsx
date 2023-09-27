@@ -27,8 +27,8 @@ const Login = () => {
       await login(data as { email: string; password: string }).then(
         async (res) => {
           if (res.status === 200) {
-            const body: any = res.json();
-            await localStorage.setItem("token", body.token);
+            const token: any = await res.text();
+            await localStorage.setItem("token", token);
             router.push("/");
           } else if (res.status === 404) {
             setError({ email: "Email does not exist.", password: "" });
@@ -46,9 +46,10 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    readUserByToken(token)
-      .then(() => router.push("/"))
-      .catch(() => setLoading(false));
+    readUserByToken(token).then((res) => {
+      if (res.status === 200) router.push("/");
+      else setLoading(false);
+    });
   }, [router]);
 
   if (loading) return <Loading />;

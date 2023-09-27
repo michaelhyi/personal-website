@@ -5,7 +5,9 @@ import com.api.post.dto.PostUpdateRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -21,9 +23,8 @@ public class PostService {
         return post.getId();
     }
 
-    public Post readPost(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Post does not exist."));
+    public Optional<Post> readPost(Long id) {
+        return repository.findById(id);
     }
 
     public List<Post> readAllPosts() {

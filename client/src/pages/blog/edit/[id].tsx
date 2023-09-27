@@ -12,10 +12,12 @@ import {
   readUserByToken,
   updatePost,
 } from "../../../services/api";
+import NotFound from "../../404";
 
 const Edit = () => {
   const { id } = params.query;
   const router = useRouter();
+  const [found, setFound] = useState(true);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const { register, handleSubmit, setValue } = useForm<FieldValues>({
@@ -43,24 +45,37 @@ const Edit = () => {
   }, [id, router]);
 
   useEffect(() => {
-    readUserByToken(localStorage.getItem("token") as string)
-      .then(async (res) => {
-        if (!res.roles.includes("ROLE_ADMIN")) {
+    readUserByToken(localStorage.getItem("token") as string).then(
+      async (res) => {
+        if (res.status === 200) {
+          const body: any = await res.json();
+          if (!body.roles.includes("ROLE_ADMIN")) {
+            router.push("/login");
+          }
+        } else {
           router.push("/login");
         }
 
         if (!id) return;
 
-        await readPost(id as string).then(async (data) => {
-          setValue("title", data.title);
-          setValue("body", data.body);
+        await readPost(id as string).then(async (res) => {
+          if (res.status === 200) {
+            const body = await res.json();
+            setValue("title", body.title);
+            setValue("body", body.body);
+
+            setLoading(false);
+          } else {
+            setLoading(false);
+            setFound(false);
+          }
         });
-      })
-      .catch(() => router.push("/login"))
-      .finally(() => setLoading(false));
+      }
+    );
   }, [router, setLoading, id, setValue]);
 
   if (loading) return <Loading />;
+  if (!found) return <NotFound />;
 
   return (
     <Container>

@@ -3,12 +3,12 @@ import qs from "query-string";
 
 export const readPost = async (id: string) => {
   const res = await http("/post/" + id, "GET");
-  return res.json();
+  return res;
 };
 
 export const readAllPosts = async () => {
   const res = await http("/post?" + qs.stringify({ date: new Date() }), "GET");
-  return res.json();
+  return await res.json();
 };
 
 export const login = async (data: { email: string; password: string }) => {
@@ -18,12 +18,12 @@ export const login = async (data: { email: string; password: string }) => {
 
 export const readUserByToken = async (token: string | null) => {
   const res = await http("/user/" + token, "GET");
-  return res.json();
+  return res;
 };
 
 export const createPost = async (data: { title: string; body: string }) => {
   const res = await http("/post", "POST", data);
-  return res.text();
+  return await res.text();
 };
 
 export const updatePost = async (

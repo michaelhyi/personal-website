@@ -14,23 +14,31 @@ const View = () => {
   const { id } = params.query;
   const router = useRouter();
   const [data, setData] = useState<null | Post>(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any | null>(null);
   const [found, setFound] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
 
-    readPost(id as string)
-      .then(async (data) => {
-        setData(data);
+    readPost(id as string).then(async (res) => {
+      if (res.status === 200) {
+        const body = await res.json();
+        setData(body);
 
         const token = await localStorage.getItem("token");
-        if (token) await readUserByToken(token).then((res) => setUser(res));
+        if (token)
+          await readUserByToken(token).then(async (res) => {
+            const body = await res.json();
+            setUser(body);
+          });
 
         setLoading(false);
-      })
-      .catch(() => setFound(false));
+      } else {
+        setLoading(false);
+        setFound(false);
+      }
+    });
   }, [id]);
 
   if (loading) return <Loading />;

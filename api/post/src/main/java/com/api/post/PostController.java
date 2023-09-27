@@ -2,10 +2,13 @@ package com.api.post;
 
 import com.api.post.dto.PostCreateRequest;
 import com.api.post.dto.PostUpdateRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/post")
@@ -23,7 +26,15 @@ public class PostController {
 
     @GetMapping("{id}")
     public ResponseEntity<Post> readPost(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(service.readPost(id));
+        Optional<Post> post = service.readPost(id);
+
+        if(post.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
+
+        return ResponseEntity.ok(post.get());
     }
 
     @GetMapping
