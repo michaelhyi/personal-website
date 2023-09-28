@@ -16,3 +16,14 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
       show-sql: true
+
+application:
+  security:
+    jwt:
+      secret-key: 598C9BE2CBF56AC55CD6B2EB6E5E5E79CC9D581BFF6C7CD2FF77C84599
+      expiration: 86400000
+    cors:
+      allowed-origins: "http://localhost:3000"
+      allowed-methods: "*"
+      allowed-headers: "*"
+      exposed-headers: "*"
