@@ -29,10 +29,11 @@ const View = () => {
         const token = await localStorage.getItem("token");
         if (token)
           await readUserByToken(token).then(async (res) => {
-            const body = await res.json();
-            setUser(body);
+            if (res.status === 200) {
+              const body = await res.json();
+              setUser(body);
+            }
           });
-
         setLoading(false);
       } else {
         setLoading(false);
