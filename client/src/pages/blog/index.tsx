@@ -17,7 +17,6 @@ const Blog = () => {
         if (res.status === 200) {
           const body: any = await res.json();
           setData(body);
-
           setError(false);
         } else {
           setError(true);
@@ -35,6 +34,7 @@ const Blog = () => {
       <div className="flex flex-col gap-10 mt-12">
         {error && <div>Something went wrong.</div>}
         {!error &&
+          data !== null &&
           data!.map((v: Post) => (
             <PostCard key={v.id} id={v.id} title={v.title} date={v.date} />
           ))}

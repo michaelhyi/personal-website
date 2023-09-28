@@ -25,10 +25,10 @@ public class AuthController {
             String token = service.login(req);
             return ResponseEntity.ok(token);
         } catch (Exception e) {
-            if (e.toString().contains("AuthenticationException"))
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            else if (e.toString().contains("NoSuchElementException"))
+            if (e.toString().contains("Email does not exist."))
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            else if (e.toString().contains("Bad credentials"))
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

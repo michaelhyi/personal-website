@@ -1,13 +1,10 @@
 package com.personalwebsite.api.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.personalwebsite.api.token.Token;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 
 @Entity
@@ -21,9 +18,6 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-    @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
 
     public User(String email, String password, UserRole role) {
         this.email = email;
@@ -44,7 +38,6 @@ public class User implements UserDetails {
     }
 
     @Override
-    @JsonIgnore
     public String getPassword() {
         return password;
     }

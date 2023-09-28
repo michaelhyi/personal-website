@@ -24,8 +24,8 @@ const Create = () => {
     async (data) => {
       setSubmitting(true);
 
-      await createPost(data as { title: string; body: string })
-        .then(async (res) => {
+      await createPost(data as { title: string; body: string }).then(
+        async (res) => {
           if (res.status === 200) {
             setError(false);
 
@@ -35,8 +35,8 @@ const Create = () => {
             setError(true);
             setSubmitting(false);
           }
-        })
-        .finally(() => setSubmitting(false));
+        }
+      );
     },
     [setSubmitting, router]
   );
@@ -46,7 +46,8 @@ const Create = () => {
       async (res) => {
         if (res.status === 200) {
           const body: any = await res.json();
-          if (!body.roles.includes("ROLE_ADMIN")) {
+          console.log(body);
+          if (!body.authorities[0].authority.includes("admin")) {
             router.push("/login");
           } else {
             setLoading(false);

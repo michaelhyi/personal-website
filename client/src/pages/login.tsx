@@ -25,6 +25,7 @@ const Login = () => {
   const handleLogin: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       setSubmitting(true);
+
       await login(data as { email: string; password: string }).then(
         async (res) => {
           if (res.status === 200) {
