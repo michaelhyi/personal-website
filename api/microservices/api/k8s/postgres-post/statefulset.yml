@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-post
+  labels:
+    app: postgres-post
+spec:
+  serviceName: postgres-post
+  replicas: 1
+  template:
+    metadata:
+      name: postgres-post
+      labels:
+        app: postgres-post
+    spec:
+      volumes:
+        - name: postgres-post
+          persistentVolumeClaim:
+            claimName: postgres-post-pc-volume-claim
+      containers:
+        - name: postgres-post
+          image: postgres
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: postgres-post
+          envFrom:
+            - configMapRef:
+                name: postgres-post-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: postgres-post

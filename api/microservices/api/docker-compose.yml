@@ -1,0 +1,90 @@
+version: "0.0.1"
+services:
+  postgres-auth:
+    container_name: postgres-auth
+    image: postgres
+    environment:
+      POSTGRES_DB: auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - postgres-auth:/data/postgres
+    ports:
+      - "5433:5433"
+    expose:
+      - "5433"
+    command: -p 5433
+    restart: always
+
+  postgres-post:
+    container_name: postgres-post
+    image: postgres
+    environment:
+      POSTGRES_DB: post
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - postgres-post:/data/postgres
+    ports:
+      - "5434:5434"
+    expose:
+      - "5434"
+    command: -p 5434
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  service-registry:
+    image: michaelyi/personal-website-api-service-registry:0.0.1
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  api-gateway:
+    image: michaelyi/personal-website-api-api-gateway:0.0.1
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres-auth
+      - service-registry
+
+  post:
+    image: michaelyi/personal-website-api-post:0.0.1
+    container_name: post
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres-post
+      - service-registry
+      - api-gateway
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres-auth:
+  postgres-post:
+  pgadmin:
