@@ -66,7 +66,7 @@ const Edit = () => {
       async (res) => {
         if (res.status === 200) {
           const body: any = await res.json();
-          if (!body.authorities[0].authority.includes("admin")) {
+          if (!body.authorities[0].authority.includes("ROLE_ADMIN")) {
             router.push("/login");
           }
         } else {

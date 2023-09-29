@@ -11,7 +11,6 @@ import java.util.List;
 
 @Configuration
 public class CorsConfig {
-
     @Value("#{'${application.security.cors.allowed-origins}'.split(',')}")
     private List<String> allowedOrigins;
 

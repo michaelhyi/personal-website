@@ -47,7 +47,7 @@ const Create = () => {
         if (res.status === 200) {
           const body: any = await res.json();
           console.log(body);
-          if (!body.authorities[0].authority.includes("admin")) {
+          if (!body.authorities[0].authority.includes("ROLE_ADMIN")) {
             router.push("/login");
           } else {
             setLoading(false);

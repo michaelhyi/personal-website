@@ -1,6 +1,7 @@
 package com.personalwebsite.api.auth;
 
 import com.personalwebsite.api.security.JwtService;
+import com.personalwebsite.api.user.User;
 import com.personalwebsite.api.user.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,9 @@ public class AuthService {
     }
 
     public String login(AuthDto req) {
+        User user = repository.findByEmail(req.email())
+                .orElseThrow(() -> new IllegalStateException("Email does not exist."));
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         req.email(),
@@ -28,10 +32,8 @@ public class AuthService {
                 )
         );
 
-        var user = repository.findByEmail(req.email())
-                .orElseThrow(() -> new IllegalStateException("User does not exist."));
-        var jwtToken = jwtService.generateToken(user);
-        return jwtToken;
+        String token = jwtService.generateToken(user);
+        return token;
     }
 
 }

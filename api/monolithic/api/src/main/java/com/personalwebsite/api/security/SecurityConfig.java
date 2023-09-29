@@ -1,5 +1,6 @@
 package com.personalwebsite.api.security;
 
+import com.personalwebsite.api.user.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -40,11 +41,11 @@ public class SecurityConfig {
                         .requestMatchers(GET, "/api/v1/post/**")
                         .permitAll()
                         .requestMatchers(POST, "/api/v1/post/**")
-                        .hasAnyAuthority(ADMIN_CREATE.name())
+                        .hasAnyRole("ADMIN")
                         .requestMatchers(PUT, "/api/v1/post/**")
-                        .hasAnyAuthority(ADMIN_UPDATE.name())
+                        .hasAnyRole("ADMIN")
                         .requestMatchers(DELETE, "/api/v1/post/**")
-                        .hasAnyAuthority(ADMIN_DELETE.name())
+                        .hasAnyRole("ADMIN")
                         .anyRequest()
                         .authenticated()
                 )

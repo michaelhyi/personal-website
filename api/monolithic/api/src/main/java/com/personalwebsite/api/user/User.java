@@ -1,5 +1,6 @@
 package com.personalwebsite.api.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Long id;
+
     private String email;
     private String password;
 
@@ -38,6 +40,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
