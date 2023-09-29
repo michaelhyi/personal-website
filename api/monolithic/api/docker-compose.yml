@@ -38,7 +38,7 @@ services:
     image: michaelyi/personal-website-api:1.0.0
     container_name: api
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=dev
     ports:
       - "8080:8080"
     depends_on:
