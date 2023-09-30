@@ -36,7 +36,13 @@ const Blog = () => {
         {!error &&
           data !== null &&
           data!.map((v: Post) => (
-            <PostCard key={v.id} id={v.id} title={v.title} date={v.date} />
+            <PostCard
+              key={v.id}
+              id={v.id}
+              title={v.title}
+              description={v.description}
+              date={v.date}
+            />
           ))}
       </div>
     </Container>

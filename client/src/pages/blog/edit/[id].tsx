@@ -25,6 +25,7 @@ const Edit = () => {
   const { register, handleSubmit, setValue } = useForm<FieldValues>({
     defaultValues: {
       title: "",
+      description: "",
       body: "",
     },
   });
@@ -34,7 +35,7 @@ const Edit = () => {
       setSubmitting(true);
       await updatePost(
         id as string,
-        data as { title: string; body: string }
+        data as { title: string; description: string; body: string }
       ).then((res) => {
         if (res.status === 200) {
           setError(false);
@@ -79,6 +80,7 @@ const Edit = () => {
           if (res.status === 200) {
             const body = await res.json();
             setValue("title", body.title);
+            setValue("description", body.description);
             setValue("body", body.body);
 
             setLoading(false);
@@ -105,6 +107,13 @@ const Edit = () => {
         id="title"
         disabled={submitting}
       />
+      <div className="mt-12 font-semibold text-2xl">Description</div>
+      <input
+        className="border-b-2 w-full mt-2"
+        {...register("description")}
+        id="description"
+        disabled={submitting}
+      />
       <div className="mt-12 font-semibold text-2xl">Body</div>
       <textarea
         className="border-b-2 w-full mt-2"
@@ -114,12 +123,14 @@ const Edit = () => {
       />
       {error && <Error text="Something went wrong." />}
       <button
+        disabled={submitting}
         onClick={(e) => handleSubmit(handleUpdate)(e)}
         className="text-center w-full py-3 bg-pink-300 text-white mt-8 duration-500 hover:opacity-50"
       >
         {submitting ? <Spinner size="xs" /> : "Update Post"}
       </button>
       <button
+        disabled={submitting}
         onClick={(e) => handleSubmit(handleDelete)(e)}
         className="text-center w-full py-3 bg-red-300 text-white mt-8 duration-500 hover:opacity-50"
       >
