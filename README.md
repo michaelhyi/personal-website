@@ -17,6 +17,7 @@
 | Next.js (Pages Router) | React Frontend Framework |
 | TailwindCSS            | Styling Library          |
 | Vercel                 | Deployment               |
+| Spring                 | Backend                  |
 
 # Codebase
 
