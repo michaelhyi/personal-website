@@ -15,8 +15,8 @@ services:
     expose:
       - "5433"
     command: -p 5433
-#    networks:
-#      - postgres
+    # networks:
+    #   - postgres
     restart: always
 
   pgadmin:
@@ -34,15 +34,15 @@ services:
       - postgres
     restart: unless-stopped
 
-  api:
-    image: michaelyi/personal-website-api:1.0.0
-    container_name: api
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
+ api:
+   image: michaelyi/personal-website-api:1.0.0
+   container_name: api
+   environment:
+     - SPRING_PROFILES_ACTIVE=dev
+   ports:
+     - "8080:8080"
+   depends_on:
+     - postgres
 
 networks:
   postgres:
