@@ -10,6 +10,10 @@ const Metadata = () => {
       />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="icon" href="/Michael.png" />
+      <meta
+        http-equiv="Content-Security-Policy"
+        content="upgrade-insecure-requests"
+      />
     </Head>
   );
 };
