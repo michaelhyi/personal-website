@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-auth
+  labels:
+    app: postgres-auth
+spec:
+  serviceName: postgres-auth
+  replicas: 1
+  template:
+    metadata:
+      name: postgres-auth
+      labels:
+        app: postgres-auth
+    spec:
+      volumes:
+        - name: postgres-auth
+          persistentVolumeClaim:
+            claimName: postgres-auth-pc-volume-claim
+      containers:
+        - name: postgres-auth
+          image: postgres
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: postgres-auth
+          envFrom:
+            - configMapRef:
+                name: postgres-auth-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: postgres-auth
