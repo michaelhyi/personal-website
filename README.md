@@ -10,15 +10,27 @@
 
 # Tech Stack
 
+## API
+
+| Technology                  | Description             |
+| --------------------------- | ----------------------- |
+| Java                        | Programming Language    |
+| Spring                      | API Framework           |
+| PostgreSQL                  | Database                |
+| Docker                      | Containerization        |
+| Kubernetes                  | Container Orchestration |
+| AWS EC2 & Elastic Beanstalk | Spring Deployment       |
+| AWS RDS                     | Database Deployment     |
+
+## Client
+
 | Technology             | Description              |
 | ---------------------- | ------------------------ |
-| Java                   | Backend Language         |
 | TypeScript             | Programming Language     |
 | Node.js                | JS Runtime               |
 | Next.js (Pages Router) | React Frontend Framework |
 | TailwindCSS            | Styling Library          |
 | Vercel                 | Deployment               |
-| Spring                 | Backend                  |
 
 # Codebase
 
