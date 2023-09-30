@@ -12,6 +12,7 @@
 
 | Technology             | Description              |
 | ---------------------- | ------------------------ |
+| Java                   | Backend Language         |
 | TypeScript             | Programming Language     |
 | Node.js                | JS Runtime               |
 | Next.js (Pages Router) | React Frontend Framework |
