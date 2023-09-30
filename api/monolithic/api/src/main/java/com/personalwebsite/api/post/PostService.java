@@ -16,7 +16,7 @@ public class PostService {
     }
 
     public Long createPost(PostDto req) {
-        Post post = new Post(req.title(), req.desc(), req.body());
+        Post post = new Post(req.title(), req.description(), req.body());
         repository.saveAndFlush(post);
         return post.getId();
     }
@@ -35,7 +35,7 @@ public class PostService {
                 .orElseThrow(() -> new IllegalStateException("Post does not exist."));
 
         post.setTitle(req.title());
-        post.setDesc(req.desc());
+        post.setDescription(req.description());
         post.setBody((req.body()));
     }
 

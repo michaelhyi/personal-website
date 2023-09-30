@@ -19,14 +19,14 @@ public class Post {
 
     private String title;
 
-    private String desc;
+    private String description;
 
     @Column(columnDefinition = "TEXT")
     private String body;
 
-    public Post(String title, String desc, String body) {
+    public Post(String title, String description, String body) {
         this.title = title;
-        this.desc = desc;
+        this.description = description;
         this.body = body;
     }
 
@@ -41,8 +41,8 @@ public class Post {
         return title;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
     public String getBody() {
@@ -58,8 +58,8 @@ public class Post {
         this.title = title;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setBody(String body) {

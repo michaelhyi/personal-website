@@ -1,7 +1,8 @@
 type Post = {
   id: number;
-  title: string;
   date: Date;
+  title: string;
+  description: string;
   body: string;
 };
 
