@@ -11,13 +11,10 @@ services:
     volumes:
       - postgres:/data/postgres
     ports:
-      - "5433:5433"
-    expose:
-      - "5433"
-    command: -p 5433
-    # networks:
-    #   - postgres
-    restart: always
+      - "5433:5432"
+    networks:
+       - postgres
+    restart: unless-stopped
 
   pgadmin:
     container_name: pgadmin
@@ -33,16 +30,6 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-
- api:
-   image: michaelyi/personal-website-api:1.0.0
-   container_name: api
-   environment:
-     - SPRING_PROFILES_ACTIVE=dev
-   ports:
-     - "8080:8080"
-   depends_on:
-     - postgres
 
 networks:
   postgres:

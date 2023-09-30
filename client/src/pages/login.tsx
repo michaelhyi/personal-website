@@ -81,6 +81,7 @@ const Login = () => {
           />
           {error.password.length > 0 && <Error text={error.password} />}
           <button
+            disabled={submitting}
             onClick={(e) => handleSubmit(handleLogin)(e)}
             className="text-center w-full py-3 bg-pink-300 text-white mt-8 duration-500 hover:opacity-50"
           >

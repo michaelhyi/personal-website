@@ -17,13 +17,17 @@ export const readUserByToken = async (token: string | null) => {
   return await http("/user/" + token, "GET");
 };
 
-export const createPost = async (data: { title: string; body: string }) => {
+export const createPost = async (data: {
+  title: string;
+  description: string;
+  body: string;
+}) => {
   return await http("/post", "POST", data);
 };
 
 export const updatePost = async (
   id: string,
-  data: { title: string; body: string }
+  data: { title: string; description: string; body: string }
 ) => {
   return await http("/post/" + id, "POST", data);
 };

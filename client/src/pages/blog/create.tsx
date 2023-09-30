@@ -16,6 +16,7 @@ const Create = () => {
   const { register, handleSubmit } = useForm<FieldValues>({
     defaultValues: {
       title: "",
+      description: "",
       body: "",
     },
   });
@@ -24,19 +25,19 @@ const Create = () => {
     async (data) => {
       setSubmitting(true);
 
-      await createPost(data as { title: string; body: string }).then(
-        async (res) => {
-          if (res.status === 200) {
-            setError(false);
+      await createPost(
+        data as { title: string; description: string; body: string }
+      ).then(async (res) => {
+        if (res.status === 200) {
+          setError(false);
 
-            const id: string = await res.text();
-            router.push("/blog/" + id);
-          } else {
-            setError(true);
-            setSubmitting(false);
-          }
+          const id: string = await res.text();
+          router.push("/blog/" + id);
+        } else {
+          setError(true);
+          setSubmitting(false);
         }
-      );
+      });
     },
     [setSubmitting, router]
   );
@@ -46,7 +47,6 @@ const Create = () => {
       async (res) => {
         if (res.status === 200) {
           const body: any = await res.json();
-          console.log(body);
           if (!body.authorities[0].authority.includes("ROLE_ADMIN")) {
             router.push("/login");
           } else {
@@ -72,6 +72,13 @@ const Create = () => {
         id="title"
         disabled={submitting}
       />
+      <div className="mt-12 font-semibold text-2xl">Description</div>
+      <input
+        className="border-b-2 w-full mt-2"
+        {...register("description")}
+        id="description"
+        disabled={submitting}
+      />
       <div className="mt-12 font-semibold text-2xl">Body</div>
       <textarea
         className="border-b-2 w-full mt-2"
@@ -81,6 +88,7 @@ const Create = () => {
       />
       {error && <Error text="Something went wrong." />}
       <button
+        disabled={submitting}
         onClick={(e) => handleSubmit(handleUpload)(e)}
         className="text-center w-full py-3 bg-pink-300 text-white mt-8 duration-500 hover:opacity-50"
       >
