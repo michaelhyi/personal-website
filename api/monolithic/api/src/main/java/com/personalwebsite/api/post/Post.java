@@ -14,16 +14,19 @@ public class Post {
     @GeneratedValue
     private Long id;
 
-    private String title;
-
     @CreationTimestamp
     private Date date;
+
+    private String title;
+
+    private String desc;
 
     @Column(columnDefinition = "TEXT")
     private String body;
 
-    public Post(String title, String body) {
+    public Post(String title, String desc, String body) {
         this.title = title;
+        this.desc = desc;
         this.body = body;
     }
 
@@ -38,16 +41,25 @@ public class Post {
         return title;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDesc() {
+        return desc;
     }
 
     public String getBody() {
         return body;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public void setBody(String body) {

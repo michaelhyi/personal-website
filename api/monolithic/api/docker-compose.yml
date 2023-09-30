@@ -34,7 +34,7 @@ services:
       - postgres
     restart: unless-stopped
 
- api:
+  api:
    image: michaelyi/personal-website-api:1.0.0
    container_name: api
    environment:
