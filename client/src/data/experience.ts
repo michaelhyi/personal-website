@@ -1,5 +1,11 @@
 export const experience = [
   {
+    company: "Fintech @ Georgia Tech",
+    position: "Researcher",
+    href: "https://fintechgt.substack.com/p/fast-track-1",
+    date: "2023",
+  },
+  {
     company: "Ardent Labs",
     position: "SWE Intern",
     href: "https://www.ardentlabs.io/",
@@ -7,7 +13,7 @@ export const experience = [
   },
   {
     company: "health{hacks}",
-    position: "Executive Director & Software Engineer",
+    position: "Executive Director",
     href: "https://www.joinhealthhacks.com/",
     date: "2022 - 2023",
   },

@@ -34,9 +34,10 @@
 
 # Codebase
 
-| Codebase                                                          | Description             |
-| ----------------------------------------------------------------- | ----------------------- |
-| [web](https://github.com/michaelhyi/michael-yi.com/tree/prod/web) | Next.js Frontend Client |
+| Codebase                                                                | Description               |
+| ----------------------------------------------------------------------- | ------------------------- |
+| [api](https://github.com/michaelhyi/michael-yi.com/tree/prod/api)       | Spring API Backend Client |
+| [client](https://github.com/michaelhyi/michael-yi.com/tree/prod/client) | Next.js Frontend Client   |
 
 # Branches
 
@@ -53,5 +54,7 @@ git clone https://github.com/michaelhyi/michael-yi.com.git
 cd michael-yi.com
 
 #install dependencies and run project
-yarn install && yarn dev
+# npm i && npm run dev
+# yarn install && yarn dev
+bun install && bun dev
 ```
