@@ -8,13 +8,14 @@ import Loading from "../../components/Loading";
 import ArrowLink from "../../components/links/ArrowLink";
 import { readPost, readUserByToken } from "../../services/api";
 import Post from "../../types/dto/Post";
+import User from "../../types/dto/User";
 import NotFound from "../404";
 
 const View = () => {
   const { id } = params.query;
   const router = useRouter();
-  const [data, setData] = useState<null | Post>(null);
-  const [user, setUser] = useState<any | null>(null);
+  const [data, setData] = useState<Post | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [found, setFound] = useState(true);
   const [loading, setLoading] = useState(true);
 

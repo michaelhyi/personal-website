@@ -31,7 +31,7 @@ const Login = () => {
           if (res.status === 200) {
             setError({ email: "", password: "" });
 
-            const token: any = await res.text();
+            const token = await res.text();
             await localStorage.setItem("token", token);
 
             router.push("/");
