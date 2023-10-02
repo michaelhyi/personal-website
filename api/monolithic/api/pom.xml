@@ -10,7 +10,7 @@
 
     <packaging>jar</packaging>
 
-    <name>personal-website-api</name>
+    <name>api</name>
     <url>https://www.michael-yi.com</url>
 
     <properties>
