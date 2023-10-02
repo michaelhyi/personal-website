@@ -15,7 +15,7 @@ const Blog = () => {
     readAllPosts()
       .then(async (res) => {
         if (res.status === 200) {
-          const body: any = await res.json();
+          const body: Post[] = await res.json();
           setData(body);
           setError(false);
         } else {

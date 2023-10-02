@@ -7,6 +7,7 @@ import Error from "../../components/Error";
 import Loading from "../../components/Loading";
 import ArrowLink from "../../components/links/ArrowLink";
 import { createPost, readUserByToken } from "../../services/api";
+import User from "../../types/dto/User";
 
 const Create = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const Create = () => {
         if (res.status === 200) {
           setError(false);
 
-          const id: string = await res.text();
+          const id = await res.text();
           router.push("/blog/" + id);
         } else {
           setError(true);
@@ -46,7 +47,7 @@ const Create = () => {
     readUserByToken(localStorage.getItem("token") as string).then(
       async (res) => {
         if (res.status === 200) {
-          const body: any = await res.json();
+          const body: User = await res.json();
           if (!body.authorities[0].authority.includes("ROLE_ADMIN")) {
             router.push("/login");
           } else {
