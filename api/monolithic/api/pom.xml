@@ -6,11 +6,11 @@
 
     <groupId>com.personalwebsite.api</groupId>
     <artifactId>api</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <packaging>jar</packaging>
 
-    <name>personal-website-api</name>
+    <name>api</name>
     <url>https://www.michael-yi.com</url>
 
     <properties>

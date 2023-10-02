@@ -16,20 +16,16 @@ public class AuthController {
         this.service = service;
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public ResponseEntity<String> login(
             @RequestBody AuthDto req
     ) {
         try {
-            String token = service.login(req);
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok(service.login(req));
         } catch (Exception e) {
             if (e.toString().contains("Email does not exist."))
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            else if (e.toString().contains("Bad credentials"))
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }
