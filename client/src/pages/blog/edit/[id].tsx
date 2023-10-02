@@ -13,6 +13,7 @@ import {
   readUserByToken,
   updatePost,
 } from "../../../services/api";
+import User from "../../../types/dto/User";
 import NotFound from "../../404";
 
 const Edit = () => {
@@ -66,7 +67,7 @@ const Edit = () => {
     readUserByToken(localStorage.getItem("token") as string).then(
       async (res) => {
         if (res.status === 200) {
-          const body: any = await res.json();
+          const body: User = await res.json();
           if (!body.authorities[0].authority.includes("ROLE_ADMIN")) {
             router.push("/login");
           }

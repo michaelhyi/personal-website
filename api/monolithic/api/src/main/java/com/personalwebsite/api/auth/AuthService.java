@@ -32,8 +32,7 @@ public class AuthService {
                 )
         );
 
-        String token = jwtService.generateToken(user);
-        return token;
+        return jwtService.generateToken(user);
     }
 
 }
