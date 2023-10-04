@@ -48,21 +48,8 @@
 
 # Quick Start
 
-Clone the project
-
 ```shell
 git clone https://github.com/michaelhyi/michael-yi.com.git
 cd michael-yi.com
-```
-
-Initialize Postgres, Package API, run.
-
-```shell
-sh run-api.sh
-```
-
-Install dependencies of client and run.
-
-```shell
-sh run-client.sh
+bun dev
 ```
