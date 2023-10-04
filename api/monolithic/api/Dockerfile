@@ -1,4 +1,4 @@
-FROM openjdk:17
-WORKDIR /opt
-COPY target/*.jar /opt/app.jar
-ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
+FROM --platform=linux/amd64 openjdk:17
+VOLUME /tmp
+COPY target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
