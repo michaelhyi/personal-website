@@ -48,13 +48,21 @@
 
 # Quick Start
 
+Clone the project
+
 ```shell
-#clone the project and navigate to directory
 git clone https://github.com/michaelhyi/michael-yi.com.git
 cd michael-yi.com
+```
 
-#install dependencies and run project
-# npm i && npm run dev
-# yarn install && yarn dev
-bun install && bun dev
+Initialize Postgres, Package API, run.
+
+```shell
+sh run-api.sh
+```
+
+Install dependencies of client and run.
+
+```shell
+sh run-client.sh
 ```
