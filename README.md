@@ -34,10 +34,10 @@
 
 # Codebase
 
-| Codebase                                                                | Description               |
-| ----------------------------------------------------------------------- | ------------------------- |
-| [api](https://github.com/michaelhyi/michael-yi.com/tree/prod/api)       | Spring API Backend Client |
-| [client](https://github.com/michaelhyi/michael-yi.com/tree/prod/client) | Next.js Frontend Client   |
+| Codebase                                                                | Description             |
+| ----------------------------------------------------------------------- | ----------------------- |
+| [api](https://github.com/michaelhyi/michael-yi.com/tree/prod/api)       | Spring Backend API      |
+| [client](https://github.com/michaelhyi/michael-yi.com/tree/prod/client) | Next.js Frontend Client |
 
 # Branches
 
