@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { icons } from "../../data/icons";
 import Link from "../links/Link";
-import NextLink from "next/link";
 
 const About = () => {
   return (
