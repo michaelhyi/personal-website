@@ -2,7 +2,7 @@ name: Actions
 
 on:
   push:
-    branches: ["prod", "dev"]
+    branches: ["prod"]
   pull_request:
     branches: ["prod", "dev"]
 
