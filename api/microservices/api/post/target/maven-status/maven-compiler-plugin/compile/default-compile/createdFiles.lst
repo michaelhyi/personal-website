@@ -1,6 +1,0 @@
-com/api/post/PostApplication.class
-com/api/post/dto/PostRequest.class
-com/api/post/PostService.class
-com/api/post/Post.class
-com/api/post/PostController.class
-com/api/post/PostRepository.class
