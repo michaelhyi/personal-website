@@ -34,10 +34,6 @@ jobs:
 
       - name: Build the Docker image
         working-directory: ./api
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
-          API_VERSION: ${{ secrets.API_VERSION }}
         run: |
-          docker build . -t ${DOCKER_USERNAME}/${DOCKER_RESPOSITORY}:${API_VERSION}
-          docker push ${DOCKER_USERNAME}/${DOCKER_RESPOSITORY}:${API_VERSION}
+          docker build . -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:${{ secrets.API_VERSION }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:${{ secrets.API_VERSION }}
