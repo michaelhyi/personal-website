@@ -9,7 +9,7 @@ import ArrowLink from "../../components/links/ArrowLink";
 import { readPost, readUserByToken } from "../../services/api";
 import Post from "../../types/dto/Post";
 import User from "../../types/dto/User";
-import NotFound from "../404";
+import NotFound from "../../pages/404";
 
 const View = () => {
   const { id } = params.query;

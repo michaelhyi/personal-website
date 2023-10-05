@@ -14,7 +14,7 @@ import {
   updatePost,
 } from "../../../services/api";
 import User from "../../../types/dto/User";
-import NotFound from "../../404";
+import NotFound from "../../../pages/404";
 
 const Edit = () => {
   const { id } = params.query;

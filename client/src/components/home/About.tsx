@@ -33,7 +33,7 @@ const About = () => {
         I love building. With my aptitude for leadership, communication, and
         passion, I deliver exceptional results in software and entrepreneurship.
       </div>
-      <div className="mt-6">
+      {/* <div className="mt-6">
         Check out my&nbsp;
         <NextLink
           className="text-pink-300 cursor-pointer duration-500 hover:opacity-50 font-bold underline"
@@ -42,7 +42,7 @@ const About = () => {
           blog
         </NextLink>
         &nbsp;where I write about my passion for music and cinema!
-      </div>
+      </div> */}
     </div>
   );
 };
