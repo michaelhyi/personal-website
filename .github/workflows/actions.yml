@@ -37,6 +37,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
+          API_VERSION: ${{ secrets.API_VERSION }}
         run: |
-          docker build -t ${DOCKER_USERNAME}/${DOCKER_RESPOSITORY}:1.0.1 .
-          docker push ${DOCKER_USERNAME}/${DOCKER_RESPOSITORY}:1.0.1
+          docker build . -t ${DOCKER_USERNAME}/${DOCKER_RESPOSITORY}:${API_VERSION}
+          docker push ${DOCKER_USERNAME}/${DOCKER_RESPOSITORY}:${API_VERSION}
