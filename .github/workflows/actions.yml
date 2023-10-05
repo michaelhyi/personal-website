@@ -1,0 +1,42 @@
+name: Actions
+
+on:
+  push:
+    branches: ["prod", "dev"]
+  pull_request:
+    branches: ["prod", "dev"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Build with Maven
+        working-directory: ./api
+        run: mvn clean package
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build the Docker image
+        working-directory: ./api
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
+        run: |
+          docker build -t ${DOCKER_USERNAME}/${DOCKER_RESPOSITORY}:latest .
+          docker push ${DOCKER_USERNAME}/${DOCKER_RESPOSITORY}:latest
