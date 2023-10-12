@@ -34,22 +34,23 @@
 
 # Codebase
 
-| Codebase                                                                | Description             |
-| ----------------------------------------------------------------------- | ----------------------- |
-| [api](https://github.com/michaelhyi/michael-yi.com/tree/prod/api)       | Spring Backend API      |
-| [client](https://github.com/michaelhyi/michael-yi.com/tree/prod/client) | Next.js Frontend Client |
+| Codebase                                                                  | Description             |
+| ------------------------------------------------------------------------- | ----------------------- |
+| [api](https://github.com/michaelhyi/personal-website/tree/prod/api)       | Spring Backend API      |
+| [client](https://github.com/michaelhyi/personal-website/tree/prod/client) | Next.js Frontend Client |
 
 # Branches
 
-| Branch                                                         | Description                                                                  |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [prod](https://github.com/michaelhyi/michael-yi.com/tree/prod) | Production Branch: Do not push commits or merge pr's unless providing update |
-| [dev](https://github.com/michaelhyi/michael-yi.com/tree/dev)   | Development Branch: Do not push commits, merge pr's instead                  |
+| Branch                                                           | Description                                                                  |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [prod](https://github.com/michaelhyi/personal-website/tree/prod) | Production Branch: Do not push commits or merge pr's unless providing update |
+| [dev](https://github.com/michaelhyi/personal-website/tree/dev)   | Development Branch: Do not push commits, merge pr's instead                  |
 
 # Quick Start
 
 ```shell
-git clone https://github.com/michaelhyi/michael-yi.com.git
-cd michael-yi.com
-bun dev
+git clone https://github.com/michaelhyi/personal-website.git
+cd personal-website
+
+sh run.sh
 ```
