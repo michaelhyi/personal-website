@@ -1,6 +1,6 @@
 {
-  "name": "michael-yi.com",
-  "version": "4.0.1",
+  "name": "personal-website",
+  "version": "4.0.3",
   "main": "index.ts",
   "scripts": {
     "dev": "bun install && ts-node index.ts"
