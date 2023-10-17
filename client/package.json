@@ -1,35 +1,37 @@
 {
-  "name": "michael-yi.com",
-  "version": "4.0.1",
+  "name": "personal-website",
+  "version": "4.0.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prod": "next build && next start"
+    "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/next-js": "^2.1.5",
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@types/node": "20.4.7",
-    "@types/react": "18.2.18",
-    "@types/react-dom": "18.2.7",
-    "@vercel/analytics": "^1.0.2",
-    "autoprefixer": "10.4.14",
+    "@vercel/analytics": "^1.1.1",
     "date-fns": "^2.30.0",
-    "eslint": "8.46.0",
-    "eslint-config-next": "13.4.12",
     "framer-motion": "^10.16.4",
-    "next": "13.4.12",
-    "postcss": "8.4.27",
+    "next": "13.5.5",
     "query-string": "^8.1.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-hook-form": "^7.46.2",
-    "react-icons": "^4.10.1",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.47.0",
+    "react-icons": "^4.11.0"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10",
+    "postcss": "^8",
+    "tailwindcss": "^3",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.5"
   }
 }
