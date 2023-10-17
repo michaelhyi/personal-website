@@ -1,6 +1,13 @@
 export const projects = [
   {
-    name: "joinhealthhacks.com",
+    name: "ScribeAI",
+    desc: "1st Place @ HackGT X. HIPAA-compliant, decentralized healthcare management platform that uses AI to transform physical healthcare documents into electronic health records.",
+    tech: "Java, JavaScript, Spring, PostgreSQL, Docker, Kubernetes, React, Tesseract, OpenAI",
+    href: "https://devpost.com/software/scribeai",
+    img: "/projects/scribeai.png",
+  },
+  {
+    name: "health{hacks} Website",
     desc: "Assembling the future innovators of medicine.",
     tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
     href: "https://www.joinhealthhacks.com/",
@@ -10,7 +17,7 @@ export const projects = [
     name: "HealthRelay",
     desc: "Streamlining secure communication between radiologists and ordering physicians.",
     tech: "TypeScript, React Native, PostgreSQL, GraphQL",
-    href: "https://www.healthrelay.tech/",
+    href: "https://healthrelay.vercel.app/",
     img: "/projects/healthrelay.png",
   },
   {

@@ -16,7 +16,7 @@ const ProjectCard: React.FC<Props> = ({ name, href, desc, tech, img }) => {
       className="flex sm:flex-col md:flex-row gap-4 cursor-pointer duration-500 hover:opacity-50"
       href={href}
     >
-      {img && <Image src={img} alt={name} width={160} height={120} />}
+      {img && <Image src={img} alt={name} width={200} height={120} />}
       <div>
         <div className="font-semibold">{name}</div>
         <div>{desc}</div>
