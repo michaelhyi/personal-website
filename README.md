@@ -24,13 +24,13 @@
 
 ## Client
 
-| Technology             | Description              |
-| ---------------------- | ------------------------ |
-| TypeScript             | Programming Language     |
-| Node.js                | JS Runtime               |
-| Next.js (Pages Router) | React Frontend Framework |
-| TailwindCSS            | Styling Library          |
-| Vercel                 | Deployment               |
+| Technology  | Description              |
+| ----------- | ------------------------ |
+| TypeScript  | Programming Language     |
+| Node.js     | JS Runtime               |
+| Next.js     | React Frontend Framework |
+| TailwindCSS | Styling Library          |
+| Vercel      | Deployment               |
 
 # Codebase
 
