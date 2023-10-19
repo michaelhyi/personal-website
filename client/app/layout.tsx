@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   icons: {
     icon: "/Michael.png",
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+  },
 };
 
 const RootLayout: React.FC<Props> = ({ children }) => {
