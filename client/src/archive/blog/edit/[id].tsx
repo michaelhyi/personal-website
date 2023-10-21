@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import params from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import NotFound from "../../../[not-found]/page";
 import Container from "../../../components/Container";
 import Error from "../../../components/Error";
 import Loading from "../../../components/Loading";
@@ -11,6 +10,7 @@ import ArrowLink from "../../../components/links/ArrowLink";
 import { readUserByToken } from "../../../services/auth";
 import { deletePost, readPost, updatePost } from "../../../services/post";
 import User from "../../../types/dto/User";
+import NotFound from "../../../app/[not-found]/page";
 
 const Edit = () => {
   const { id } = params.query;

@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import params from "next/router";
 import { useEffect, useState } from "react";
 import { BsFillPencilFill } from "react-icons/bs";
-import NotFound from "../../[not-found]/page";
 import Container from "../../components/Container";
 import Loading from "../../components/Loading";
 import ArrowLink from "../../components/links/ArrowLink";
@@ -11,6 +10,7 @@ import { readUserByToken } from "../../services/auth";
 import { readPost } from "../../services/post";
 import Post from "../../types/dto/Post";
 import User from "../../types/dto/User";
+import NotFound from "../../app/[not-found]/page";
 
 const View = () => {
   const { id } = params.query;
