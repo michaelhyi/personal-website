@@ -1,7 +1,7 @@
-import Container from "../components/Container";
-import ProjectCard from "../components/ProjectCard";
-import ArrowLink from "../components/links/ArrowLink";
-import { projects } from "../data/projects";
+import Container from "../../components/Container";
+import ProjectCard from "../../components/ProjectCard";
+import ArrowLink from "../../components/links/ArrowLink";
+import { projects } from "../../data/projects";
 
 const Projects = () => {
   return (
