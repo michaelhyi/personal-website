@@ -1,23 +1,24 @@
+"use client";
+
 import { Spinner } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
-import params from "next/router";
+import { notFound, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Container from "../../../components/Container";
-import Error from "../../../components/Error";
-import Loading from "../../../components/Loading";
-import ArrowLink from "../../../components/links/ArrowLink";
-import { readUserByToken } from "../../../services/auth";
-import { deletePost, readPost, updatePost } from "../../../services/post";
-import User from "../../../types/dto/User";
-import NotFound from "../../../app/[not-found]/page";
+import Container from "../../../../components/Container";
+import Error from "../../../../components/Error";
+import ArrowLink from "../../../../components/links/ArrowLink";
+import { deletePost, updatePost } from "../../../../services/post";
+import Post from "../../../../types/dto/Post";
 
-const Edit = () => {
-  const { id } = params.query;
+interface Props {
+  id: string;
+  authorized: boolean;
+  data: Post;
+}
+
+const Client: React.FC<Props> = ({ id, authorized, data }) => {
   const router = useRouter();
-  const [found, setFound] = useState(true);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const { register, handleSubmit, setValue } = useForm<FieldValues>({
     defaultValues: {
@@ -30,68 +31,46 @@ const Edit = () => {
   const handleUpdate: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       setSubmitting(true);
-      await updatePost(
+
+      const res = await updatePost(
         id as string,
         data as { title: string; description: string; body: string }
-      ).then((res) => {
-        if (res.status === 200) {
-          setError(false);
-          router.push("/blog/" + id);
-        } else {
-          setError(true);
-          setSubmitting(false);
-        }
-      });
+      );
+
+      if (res.status === 200) {
+        setError(false);
+        router.push("/blog/" + id);
+      } else {
+        setError(true);
+        setSubmitting(false);
+      }
     },
     [setSubmitting, router, id]
   );
 
   const handleDelete = useCallback(async () => {
     setSubmitting(true);
-    await deletePost(id as string).then((res) => {
-      if (res.status === 200) {
-        setError(false);
-        router.push("/blog");
-      } else {
-        setError(true);
-        setSubmitting(false);
-      }
-    });
+
+    const res = await deletePost(id as string);
+
+    if (res.status === 200) {
+      setError(false);
+      router.push("/blog");
+    } else {
+      setError(true);
+      setSubmitting(false);
+    }
   }, [id, router]);
 
   useEffect(() => {
-    readUserByToken(localStorage.getItem("token") as string).then(
-      async (res) => {
-        if (res.status === 200) {
-          const body: User = await res.json();
-          if (!body.authorities[0].authority.includes("ROLE_ADMIN")) {
-            router.push("/login");
-          }
-        } else {
-          router.push("/login");
-        }
-
-        if (!id) return;
-
-        await readPost(id as string).then(async (res) => {
-          if (res.status === 200) {
-            const body = await res.json();
-            setValue("title", body.title);
-            setValue("description", body.description);
-            setValue("body", body.body);
-
-            setLoading(false);
-          } else {
-            setLoading(false);
-            setFound(false);
-          }
-        });
-      }
-    );
-  }, [router, setLoading, id, setValue]);
-
-  if (loading) return <Loading />;
-  if (!found) return <NotFound />;
+    if (!id || !data) notFound();
+    else if (!authorized) router.push("/login");
+    else {
+      setValue("title", data.title);
+      setValue("description", data.description);
+      setValue("body", data.body);
+    }
+  }, [id, authorized, data, setValue, router]);
 
   return (
     <Container>
@@ -137,4 +116,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default Client;

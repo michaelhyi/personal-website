@@ -1,15 +1,19 @@
+"use client";
+
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Error from "../components/Error";
-import Footer from "../components/Footer";
-import Loading from "../components/Loading";
-import { login, readUserByToken } from "../services/auth";
+import Error from "../../components/Error";
+import Footer from "../../components/Footer";
+import { login } from "../../services/auth";
 
-const Login = () => {
+interface Props {
+  authenticated: boolean;
+}
+
+const LoginClient: React.FC<Props> = ({ authenticated }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState({
     email: "",
@@ -25,39 +29,27 @@ const Login = () => {
   const handleLogin: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       setSubmitting(true);
+      const res = await login(data as { email: string; password: string });
 
-      await login(data as { email: string; password: string }).then(
-        async (res) => {
-          if (res.status === 200) {
-            setError({ email: "", password: "" });
-
-            const token = await res.text();
-            await localStorage.setItem("token", token);
-
-            router.push("/");
-          } else if (res.status === 404) {
-            setError({ email: "Email does not exist.", password: "" });
-            setSubmitting(false);
-          } else if (res.status === 401) {
-            setError({ email: "", password: "Wrong password." });
-            setSubmitting(false);
-          }
-        }
-      );
+      if (res.status === 200) {
+        setError({ email: "", password: "" });
+        const token = await res.text();
+        await localStorage.setItem("token", token);
+        router.push("/");
+      } else if (res.status === 404) {
+        setError({ email: "Email does not exist.", password: "" });
+        setSubmitting(false);
+      } else if (res.status === 401) {
+        setError({ email: "", password: "Wrong password." });
+        setSubmitting(false);
+      }
     },
     [setSubmitting, router, setError]
   );
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    readUserByToken(token).then((res) => {
-      if (res.status === 200) router.push("/");
-      else setLoading(false);
-    });
-  }, [router]);
-
-  if (loading) return <Loading />;
+    if (authenticated) router.push("/");
+  }, [authenticated, router]);
 
   return (
     <div className="h-screen">
@@ -96,4 +88,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginClient;
