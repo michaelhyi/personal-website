@@ -14,7 +14,9 @@ export const readPost = async (id: string) => {
 };
 
 export const readAllPosts = async () => {
-  return await http("/post?" + qs.stringify({ date: new Date() }), "GET");
+  const res = await http("/post?" + qs.stringify({ date: new Date() }), "GET");
+
+  return await res.json();
 };
 
 export const updatePost = async (

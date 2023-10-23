@@ -1,19 +1,21 @@
+"use client";
+
 import { Spinner } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Container from "../../components/Container";
-import Error from "../../components/Error";
-import Loading from "../../components/Loading";
-import ArrowLink from "../../components/links/ArrowLink";
-import { readUserByToken } from "../../services/auth";
-import { createPost } from "../../services/post";
-import User from "../../types/dto/User";
+import Container from "../../../components/Container";
+import Error from "../../../components/Error";
+import ArrowLink from "../../../components/links/ArrowLink";
+import { createPost } from "../../../services/post";
 
-const Create = () => {
+interface Props {
+  authorized: boolean;
+}
+
+const Client: React.FC<Props> = ({ authorized }) => {
   const router = useRouter();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const { register, handleSubmit } = useForm<FieldValues>({
     defaultValues: {
@@ -27,41 +29,25 @@ const Create = () => {
     async (data) => {
       setSubmitting(true);
 
-      await createPost(
+      const res = await createPost(
         data as { title: string; description: string; body: string }
-      ).then(async (res) => {
-        if (res.status === 200) {
-          setError(false);
+      );
 
-          const id = await res.text();
-          router.push("/blog/" + id);
-        } else {
-          setError(true);
-          setSubmitting(false);
-        }
-      });
+      if (res.status === 200) {
+        setError(false);
+        const id = await res.text();
+        router.push("/blog/" + id);
+      } else {
+        setError(true);
+        setSubmitting(false);
+      }
     },
     [setSubmitting, router]
   );
 
   useEffect(() => {
-    readUserByToken(localStorage.getItem("token") as string).then(
-      async (res) => {
-        if (res.status === 200) {
-          const body: User = await res.json();
-          if (!body.authorities[0].authority.includes("ROLE_ADMIN")) {
-            router.push("/login");
-          } else {
-            setLoading(false);
-          }
-        } else {
-          router.push("/login");
-        }
-      }
-    );
-  }, [router, setLoading]);
-
-  if (loading) return <Loading />;
+    if (!authorized) router.push("/login");
+  }, [authorized, router]);
 
   return (
     <Container>
@@ -100,4 +86,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Client;
