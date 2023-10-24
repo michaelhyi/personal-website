@@ -1,14 +1,14 @@
 "use client";
 
-import { Spinner } from "@chakra-ui/react";
-import { notFound, useRouter } from "next/navigation";
-import { FC, useCallback, useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Container from "@/components/Container";
 import Error from "@/components/Error";
 import ArrowLink from "@/components/links/ArrowLink";
 import { deletePost, updatePost } from "@/services/post";
 import Post from "@/types/dto/Post";
+import { Spinner } from "@chakra-ui/react";
+import { notFound, useRouter } from "next/navigation";
+import { FC, useCallback, useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 interface Props {
    id: string;

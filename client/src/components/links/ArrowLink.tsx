@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { FC } from "react";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 interface Props {
    href: string;

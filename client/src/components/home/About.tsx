@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { icons } from "@/data/icons";
+import Image from "next/image";
 import Link from "../links/Link";
 
 const About = () => {

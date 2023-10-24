@@ -1,8 +1,8 @@
 import { readUserByToken } from "@/services/auth";
 import { readPost } from "@/services/post";
 import User from "@/types/dto/User";
-import Client from "./client";
 import { FC } from "react";
+import Client from "./client";
 
 interface IParams {
    params: { id: string };

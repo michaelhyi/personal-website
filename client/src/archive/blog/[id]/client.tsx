@@ -1,12 +1,12 @@
 "use client";
 
+import Container from "@/components/Container";
+import ArrowLink from "@/components/links/ArrowLink";
+import Post from "@/types/dto/Post";
 import { format } from "date-fns";
 import { notFound, useRouter } from "next/navigation";
 import { FC, useEffect } from "react";
 import { BsFillPencilFill } from "react-icons/bs";
-import Container from "@/components/Container";
-import ArrowLink from "@/components/links/ArrowLink";
-import Post from "@/types/dto/Post";
 
 interface Props {
    id: string;

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import Providers from "../components/Providers";
 import { FC, ReactNode } from "react";
+import Providers from "../components/Providers";
+import "./globals.css";
 
 interface Props {
    children: ReactNode;

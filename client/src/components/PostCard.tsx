@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { format } from "date-fns";
+import Link from "next/link";
 import { FC } from "react";
 
 interface Props {
