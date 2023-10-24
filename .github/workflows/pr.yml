@@ -23,12 +23,12 @@ jobs:
       - name: Build with Maven
         working-directory: ./api
         run: mvn clean package
-      
+
       - name: Install Bun to Format, Lint, and Build Client
         uses: oven-sh/setup-bun@v1
         working-directory: ./client
-        run: bun install
-        run: bun format
-        run: bun lint
-        run: bun run build 
-
+        run: |
+          bun install
+          bun format
+          bun lint
+          bun run build
