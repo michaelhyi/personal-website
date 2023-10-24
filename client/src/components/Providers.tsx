@@ -3,29 +3,29 @@
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
-import { ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 
 interface Props {
-  children: ReactNode;
+   children: ReactNode;
 }
 
-const Providers: React.FC<Props> = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
+const Providers: FC<Props> = ({ children }) => {
+   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+   useEffect(() => {
+      setMounted(true);
+   }, []);
 
-  if (!mounted) return <></>;
+   if (!mounted) return <></>;
 
-  return (
-    <CacheProvider>
-      <ChakraProvider resetCSS={false}>
-        <Analytics />
-        {children}
-      </ChakraProvider>
-    </CacheProvider>
-  );
+   return (
+      <CacheProvider>
+         <ChakraProvider resetCSS={false}>
+            <Analytics />
+            {children}
+         </ChakraProvider>
+      </CacheProvider>
+   );
 };
 
 export default Providers;
