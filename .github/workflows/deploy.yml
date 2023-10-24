@@ -41,6 +41,6 @@ jobs:
         working-directory: ./client
         run: |
           bun install
-          bun format
+          bun format:check
           bun lint
           bun run build
