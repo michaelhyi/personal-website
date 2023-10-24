@@ -1,35 +1,37 @@
-import { readUserByToken } from "../../../services/auth";
-import { readPost } from "../../../services/post";
+import { readUserByToken } from "@/services/auth";
+import { readPost } from "@/services/post";
 import Client from "./client";
+import { FC } from "react";
 
 interface IParams {
-  params: { id: string };
+   params: { id: string };
 }
 
-const View: React.FC<IParams> = async ({ params }) => {
-  const { id } = params;
+const View: FC<IParams> = async ({ params }) => {
+   const { id } = params;
 
-  let data = null,
-    admin = false;
+   let data = null,
+      admin = false;
 
-  if (id) {
-    let res = await readPost(id);
+   if (id) {
+      let res = await readPost(id);
 
-    if (res.status === 200) {
-      data = await res.json();
+      if (res.status === 200) {
+         data = await res.json();
 
-      const token = await localStorage.getItem("token");
+         const token = await localStorage.getItem("token");
 
-      if (token) res = await readUserByToken(token);
-      if (token && res.status === 200) {
-        const user = await res.json();
+         if (token) res = await readUserByToken(token);
+         if (token && res.status === 200) {
+            const user = await res.json();
 
-        if (user.authorities[0].authority.includes("ROLE_ADMIN")) admin = true;
+            if (user.authorities[0].authority.includes("ROLE_ADMIN"))
+               admin = true;
+         }
       }
-    }
-  }
+   }
 
-  return <Client id={id} data={data} admin={admin} />;
+   return <Client id={id} data={data} admin={admin} />;
 };
 
 export default View;

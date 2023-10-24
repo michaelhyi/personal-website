@@ -1,7 +1,7 @@
-import Client from "../../../components/Loading";
+import Client from "@/components/Loading";
 
 const Loading = () => {
-  return <Client />;
+   return <Client />;
 };
 
 export default Loading;
