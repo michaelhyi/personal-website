@@ -1,0 +1,11 @@
+.github/
+api/
+client/
+node_modules/
+scripts/
+
+.gitignore
+.prettierignore
+bun.lockb
+LICENSE
+README.md

@@ -37,10 +37,14 @@ jobs:
           docker build . -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      - name: Install Bun to Format, Lint, and Build Client
-        working-directory: ./client
+      - name: Install Bun to Check Formatting, Lint, and Build Client
         run: |
           bun install
           bun format:check
           bun lint
+          cd client
+          bun install
+          bun format:check
+          bun lint
           bun run build
+
