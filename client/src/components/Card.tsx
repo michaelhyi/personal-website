@@ -26,8 +26,9 @@ const Card: FC<Props> = ({ name, date, desc, href, tech, img }) => {
          <div className="w-96">
             <div className="font-normal text-sm">{name}</div>
             <div className="text-xs mt-2 text-neutral-500">{desc}</div>
-            {tech
-               && <div className="mt-2 text-[10px] text-neutral-400">{tech}</div>}
+            {tech && (
+               <div className="mt-2 text-[10px] text-neutral-400">{tech}</div>
+            )}
             {img && (
                <Image
                   className="mt-4 
