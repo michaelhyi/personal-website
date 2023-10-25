@@ -1,6 +1,6 @@
 "use client";
 
-import Error from "@/components/Error";
+import Error from "@/archive/components/Error";
 import Footer from "@/components/Footer";
 import { login } from "@/services/auth";
 import { Spinner } from "@chakra-ui/react";

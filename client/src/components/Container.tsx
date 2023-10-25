@@ -9,12 +9,8 @@ interface Props {
 
 const Container: FC<Props> = ({ children }) => {
    return (
-      <div className="text-sm font-light">
-         <div className="flex min-h-screen w-full justify-center">
-            <div className="sm:w-[320px] md:w-[480px] lg:w-[512px] xl:w-[640px]">
-               {children}
-            </div>
-         </div>
+      <div className="flex flex-col mx-auto pt-20 sm:w-[320px] md:w-[480px] lg:w-[512px] xl:w-[576px]">
+         {children}
          <Footer />
       </div>
    );
