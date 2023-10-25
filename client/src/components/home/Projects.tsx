@@ -1,14 +1,14 @@
 "use client";
 
 import { projects } from "@/data/projects";
-import ProjectCard from "../ProjectCard";
+import Card from "../Card";
 import Section from "../Section";
 
 const Projects = () => {
    return (
       <Section title="Projects">
          {projects.map((v, i) => (
-            <ProjectCard
+            <Card
                key={v.name}
                href={v.href}
                desc={v.desc}
