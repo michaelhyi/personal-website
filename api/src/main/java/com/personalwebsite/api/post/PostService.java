@@ -32,7 +32,9 @@ public class PostService {
     @Transactional
     public void updatePost(Long id, PostDto req) {
         Post post = repository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Post does not exist."));
+                .orElseThrow(() ->
+                        new IllegalStateException("Post does not exist.")
+                );
 
         post.setTitle(req.title());
         post.setDescription(req.description());

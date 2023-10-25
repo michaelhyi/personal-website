@@ -23,7 +23,9 @@ jobs:
 
       - name: Build with Maven
         working-directory: ./api
-        run: mvn clean package
+        run: |
+          mvn validate
+          mvn clean package
 
       - name: Install Bun to Check Formatting, Lint, and Build Client
         run: |

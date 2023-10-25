@@ -25,8 +25,9 @@ public class PostController {
     public ResponseEntity<Post> readPost(@PathVariable("id") Long id) {
         Optional<Post> post = service.readPost(id);
 
-        if (post.isEmpty())
+        if (post.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
         return ResponseEntity.ok(post.get());
     }

@@ -53,7 +53,6 @@ public class Post {
         return date;
     }
 
-
     public void setTitle(String title) {
         this.title = title;
     }
