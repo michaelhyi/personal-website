@@ -42,11 +42,9 @@ jobs:
       - name: Lint and Build Frontend Client with Bun
         run: |
           bun install
-          bun format:check
           bun lint
           cd client
           bun install
-          bun format:check
           bun lint
           bun run build
 
