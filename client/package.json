@@ -6,9 +6,8 @@
       "dev": "next dev",
       "build": "next build",
       "start": "next start",
-      "lint": "next lint",
-      "format": "prettier --write .",
-      "format:check": "prettier --check ."
+      "lint": "prettier --check . && next lint",
+      "format": "prettier --write ."
    },
    "dependencies": {
       "@chakra-ui/next-js": "^2.1.5",
@@ -32,7 +31,6 @@
       "autoprefixer": "^10",
       "eslint": "^8",
       "eslint-config-next": "13.5.5",
-      "eslint-config-prettier": "^9.0.0",
       "postcss": "^8",
       "prettier": "^3.0.3",
       "prettier-plugin-organize-imports": "^3.2.3",
