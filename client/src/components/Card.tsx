@@ -6,8 +6,8 @@ import { FC } from "react";
 interface Props {
    name: string;
    date: string;
-   desc: string;
-   href: string;
+   desc?: string;
+   href?: string;
    tech?: string;
    img?: string;
 }
@@ -17,15 +17,15 @@ const Card: FC<Props> = ({ name, date, desc, href, tech, img }) => {
       <a
          rel="noopener noreferrer"
          target="_blank"
-         className="flex cursor-pointer duration-500 hover:opacity-50 sm:flex-col md:flex-row"
-         href={href}
+         className={`flex ${href && "cursor-pointer duration-500 hover:opacity-50"} sm:flex-col md:flex-row`}
+         href={href && href}
       >
-         <div className="font-light text-[13px] text-neutral-400 w-48">
+         <div className="font-light text-[13px] text-neutral-400 w-48 sm:mb-2 md:mb-0">
             {date}
          </div>
-         <div className="w-96">
+         <div className="sm:w-72 md:w-96">
             <div className="font-normal text-sm">{name}</div>
-            <div className="text-xs mt-2 text-neutral-500">{desc}</div>
+            {desc && <div className="text-xs mt-2 text-neutral-500">{desc}</div>}
             {tech && (
                <div className="mt-2 text-[10px] text-neutral-400">{tech}</div>
             )}
