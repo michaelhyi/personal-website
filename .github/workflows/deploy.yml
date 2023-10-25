@@ -21,7 +21,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Build with Maven
+      - name: Lint and Build Backend API with Maven
         working-directory: ./api
         run: |
           mvn validate
@@ -39,7 +39,7 @@ jobs:
           docker build . -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      - name: Install Bun to Check Formatting, Lint, and Build Client
+      - name: Lint and Build Frontend Client with Bun
         run: |
           bun install
           bun format:check
