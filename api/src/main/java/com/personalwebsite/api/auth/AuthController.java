@@ -23,8 +23,9 @@ public class AuthController {
         try {
             return ResponseEntity.ok(service.login(req));
         } catch (Exception e) {
-            if (e.toString().contains("Email does not exist."))
+            if (e.toString().contains("Email does not exist.")) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }

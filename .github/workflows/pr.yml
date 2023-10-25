@@ -21,11 +21,13 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Build with Maven
+      - name: Lint and Build Backend API with Maven
         working-directory: ./api
-        run: mvn clean package
+        run: |
+          mvn validate
+          mvn clean package
 
-      - name: Install Bun to Check Formatting, Lint, and Build Client
+      - name: Lint and Build Frontend Client with Bun
         run: |
           bun install
           bun format:check

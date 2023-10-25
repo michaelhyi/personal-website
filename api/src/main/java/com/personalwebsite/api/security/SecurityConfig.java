@@ -2,6 +2,7 @@ package com.personalwebsite.api.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -10,8 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -27,7 +26,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
@@ -36,20 +37,24 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/api/v1/user/**")
                         .permitAll()
-                        .requestMatchers(GET, "/api/v1/post/**")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/post/**")
                         .permitAll()
-                        .requestMatchers(POST, "/api/v1/post/**")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/post/**")
                         .hasAnyRole("ADMIN")
-                        .requestMatchers(PUT, "/api/v1/post/**")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/post/**")
                         .hasAnyRole("ADMIN")
-                        .requestMatchers(DELETE, "/api/v1/post/**")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/post/**")
                         .hasAnyRole("ADMIN")
                         .anyRequest()
                         .authenticated()
                 )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(sess ->
+                        sess.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        ))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

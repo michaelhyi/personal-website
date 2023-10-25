@@ -19,7 +19,6 @@ import java.util.function.Function;
 public class JwtService {
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
-    
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
 
@@ -27,7 +26,8 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    public <T> T extractClaim(String token,
+                              Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -53,14 +53,17 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(
+                        System.currentTimeMillis() + expiration
+                ))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return (username.equals(userDetails.getUsername()))
+                && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

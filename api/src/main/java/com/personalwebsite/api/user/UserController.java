@@ -22,24 +22,30 @@ public class UserController {
     }
 
     @GetMapping("{token}")
-    public ResponseEntity<User> readByToken(@PathVariable("token") String token) {
-        if (token.equals("null") || token.equals("undefined"))
+    public ResponseEntity<User> readByToken(
+            @PathVariable("token") String token) {
+        if (token.equals("null") || token.equals("undefined")) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
+        }
+
 
         String email = jwtService.extractUsername(token);
         Optional<User> user = repository.findByEmail(email);
 
-        if (user.isEmpty())
+        if (user.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .build();
+        }
 
-        if (!jwtService.isTokenValid(token, user.get()))
+
+        if (!jwtService.isTokenValid(token, user.get())) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .build();
+        }
 
         return ResponseEntity.ok(user.get());
     }
