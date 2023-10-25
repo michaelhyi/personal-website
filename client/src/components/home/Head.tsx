@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 const About = () => {
    return (
@@ -14,12 +15,26 @@ const About = () => {
          />
          <div>
             <div className="font-normal text-2xl">Michael Yi</div>
-            <div className="font-light text-sm text-neutral-500">
+            <div className="font-light text-sm text-neutral-500 mb-2">
                Software Engineer
             </div>
-            <div className="text-neutral-500 font-light text-[10px] mt-1">
-               Atlanta, GA
-            </div>
+            <Link
+               href="/Resume.pdf"
+               className="text-center
+                          cursor-pointer
+                          rounded-2xl 
+                          duration-500
+                          hover:opacity-50
+                          bg-neutral-100
+                          text-neutral-500
+                          font-light 
+                          text-xs 
+                          py-1
+                          px-5
+                          underline"
+            >
+               Resume
+            </Link>
          </div>
       </div>
    );
