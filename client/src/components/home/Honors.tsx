@@ -1,17 +1,17 @@
 "use client";
 
-import { experience } from "@/data/experience";
+import { honors } from "../../data/honors";
 import Section from "../Section";
 
-const Experience = () => {
+const Honors = () => {
    return (
-      <Section title="Experience">
-         {experience.map((v, i) => (
+      <Section title="Honors">
+         {honors.map((v, i) => (
             <div
                key={i}
                className={`
                flex 
-               ${i !== experience.length - 1 && "sm:mb-4 md:mb-0"} 
+               ${i !== honors.length - 1 && "sm:mb-4 md:mb-0"} 
                sm:flex-col-reverse 
                sm:gap-1 
                md:flex-row 
@@ -23,10 +23,7 @@ const Experience = () => {
                </div>
                <div className="w-96">
                   <div className="text-sm font-normal text-neutral-800">
-                     {v.position} at {v.company}
-                  </div>
-                  <div className="text-neutral-400 text-xs mt-2">
-                     {v.description}
+                     {v.title}
                   </div>
                </div>
             </div>
@@ -35,4 +32,4 @@ const Experience = () => {
    );
 };
 
-export default Experience;
+export default Honors;

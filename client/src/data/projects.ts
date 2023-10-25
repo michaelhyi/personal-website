@@ -5,6 +5,7 @@ export const projects = [
       tech: "Java, JavaScript, Spring, PostgreSQL, Docker, Kubernetes, React, Tesseract, OpenAI",
       href: "https://devpost.com/software/scribeai",
       img: "/projects/scribeai.png",
+      date: "2023",
    },
    {
       name: "health{hacks} Website",
@@ -12,6 +13,7 @@ export const projects = [
       tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
       href: "https://www.joinhealthhacks.com/",
       img: "/projects/joinhealthhacks.png",
+      date: "2023",
    },
    {
       name: "HealthRelay",
@@ -19,6 +21,7 @@ export const projects = [
       tech: "TypeScript, React Native, PostgreSQL, GraphQL",
       href: "https://healthrelay.vercel.app/",
       img: "/projects/healthrelay.png",
+      date: "2021 - 2022",
    },
    {
       name: "RetinaOCT",
@@ -26,6 +29,7 @@ export const projects = [
       tech: "Python, Tensorflow, Keras, TypeScript, React Native, PostgreSQL, GraphQL",
       href: "https://github.com/michaelhyi/retinaoct",
       img: "/projects/retinaoct.png",
+      date: "2021 - 2022",
    },
    {
       name: "Enhancing Generative Commonsense Reasoning Using Image Cues",
@@ -33,29 +37,34 @@ export const projects = [
       tech: "Python, PyTorch",
       href: "https://github.com/michaelhyi/usc-shine",
       img: "/projects/shine.png",
+      date: "2022",
    },
    {
       name: "CarCam",
       desc: "Bridging the digital divide by providing powerful dashcam technology to your phone. 2021 Congressional App Challenge CA45 3rd Place.",
       tech: "JavaScript, React Native",
       href: "https://github.com/michaelhyi/carcam",
+      date: "2021",
    },
    {
       name: "MelaModel",
       desc: `An image-recognition software that differentiates between benign and malignant skin moles using Artificial Intelligence. PennApps HealthHacks "Best Access to Healthcare."`,
       tech: "Python, Tensorflow, Keras, TypeScript, React Native, Node.js, AWS Lambda, AWS DynamoDB, AWS CloudWatch",
       href: "https://github.com/michaelhyi/melamodel",
+      date: "2022",
    },
    {
       name: "ChestRay",
       desc: "A powerful bridge between doctors, patients, and Artificial Intelligence based x-ray diagnosis. Coding Your Future Hackathon 2nd Place.",
       tech: "Python, Tensorflow, Keras, JavaScript, React Native, Firebase",
       href: "https://github.com/michaelhyi/chestray",
+      date: "2022",
    },
    {
       name: "LeafX",
       desc: `A powerful medical tool for plant health. Unlock Hacks "Best Environmental Hack."`,
       tech: "Python, Tensorflow, Keras, JavaScript, React Native",
       href: "https://github.com/michaelhyi/leafx",
+      date: "2022",
    },
 ];

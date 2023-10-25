@@ -1,8 +1,8 @@
 "use client";
 
+import PostCard from "@/archive/components/PostCard";
+import ArrowLink from "@/archive/components/links/ArrowLink";
 import Container from "@/components/Container";
-import PostCard from "@/components/PostCard";
-import ArrowLink from "@/components/links/ArrowLink";
 import Post from "@/types/dto/Post";
 import { FC } from "react";
 

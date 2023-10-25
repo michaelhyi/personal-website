@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { FC, ReactNode } from "react";
 import Providers from "../components/Providers";
+import { font } from "../utils/font";
 import "./globals.css";
 
 interface Props {
    children: ReactNode;
 }
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
    title: "Michael Yi",
@@ -25,7 +23,7 @@ export const metadata: Metadata = {
 const RootLayout: FC<Props> = ({ children }) => {
    return (
       <html lang="en">
-         <body className={inter.className}>
+         <body className={font.className}>
             <Providers>{children}</Providers>
          </body>
       </html>

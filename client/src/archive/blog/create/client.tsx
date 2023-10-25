@@ -1,8 +1,8 @@
 "use client";
 
+import Error from "@/archive/components/Error";
+import ArrowLink from "@/archive/components/links/ArrowLink";
 import Container from "@/components/Container";
-import Error from "@/components/Error";
-import ArrowLink from "@/components/links/ArrowLink";
 import { createPost } from "@/services/post";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
