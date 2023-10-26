@@ -18,7 +18,6 @@ public class Post {
     private Date date;
 
     private String title;
-
     private String description;
 
     @Column(columnDefinition = "TEXT")

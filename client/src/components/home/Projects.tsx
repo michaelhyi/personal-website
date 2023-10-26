@@ -10,7 +10,7 @@ interface Props {
 
 const Projects: React.FC<Props> = ({ extended = false }) => {
    return (
-      <Section title="Projects" href="/projects">
+      <Section title="Projects" href={extended ? undefined : "/projects"}>
          {projects.map((v, i) => {
             if (!extended) {
                if (i <= 4)

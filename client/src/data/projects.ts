@@ -42,7 +42,7 @@ export const projects = [
    {
       name: "CarCam",
       date: "2021",
-      desc: "Bridging the digital divide by providing powerful dashcam technology to your phone. 2021 Congressional App Challenge CA45 3rd Place.",
+      desc: "3rd Place @ 2021 Congressional App Challenge CA45 District. Bridging the digital divide by providing powerful dashcam technology to your phone.",
       tech: "JavaScript, React Native",
       href: "https://github.com/michaelhyi/carcam",
    },
