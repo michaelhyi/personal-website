@@ -1,6 +1,6 @@
 {
    "name": "personal-website",
-   "version": "4.0.3",
+   "version": "4.1.0",
    "main": "index.ts",
    "scripts": {
       "dev": "bun install && ts-node index.ts",
