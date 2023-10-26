@@ -18,10 +18,7 @@ const Lauren = () => {
                   height={250}
                   alt="mimi and lala"
                />
-               <div className="text-sm font-light">
-                  GOOD LUCK ON CHEMMMMMM. YOU&apos;LL KILL IT IM SO PROUD OF YOU
-                  💯😘
-               </div>
+               <div className="text-sm font-light">coming soon...</div>
             </div>
          </div>
       </Container>
