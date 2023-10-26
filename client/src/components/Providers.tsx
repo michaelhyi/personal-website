@@ -3,6 +3,7 @@
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
+import { AnimatePresence } from "framer-motion";
 import { FC, ReactNode, useEffect, useState } from "react";
 
 interface Props {
@@ -22,7 +23,7 @@ const Providers: FC<Props> = ({ children }) => {
       <CacheProvider>
          <ChakraProvider resetCSS={false}>
             <Analytics />
-            {children}
+            <AnimatePresence>{children}</AnimatePresence>
          </ChakraProvider>
       </CacheProvider>
    );
