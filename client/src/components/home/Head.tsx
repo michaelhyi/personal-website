@@ -19,7 +19,7 @@ const About = () => {
                Software Engineer
             </div>
             <Link
-               href="/Resume.pdf"
+               href="https://michael-yi.com/Resume.pdf"
                className="text-center
                           cursor-pointer
                           rounded-2xl 
