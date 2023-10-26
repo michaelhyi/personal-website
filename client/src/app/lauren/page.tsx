@@ -1,11 +1,13 @@
+import Container from "@/components/Container";
 import Image from "next/image";
 
 const Lauren = () => {
    return (
-      <div className="flex h-screen items-center justify-center">
-         <div className="sm:w-[320px] md:w-[480px] lg:w-[512px] xl:w-[640px] flex flex-col items-center gap-8">
+      <Container>
+         {" "}
+         <div className="flex flex-col items-center gap-8">
             <Image
-               src="/maur.JPG"
+               src="/maur.jpg"
                width={250}
                height={250}
                alt="mimi and lala"
@@ -15,7 +17,7 @@ const Lauren = () => {
                💯😘
             </div>
          </div>
-      </div>
+      </Container>
    );
 };
 

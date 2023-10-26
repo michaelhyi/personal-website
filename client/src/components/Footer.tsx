@@ -1,6 +1,6 @@
 "use client";
 
-import { icons } from "@/data/icons";
+import { contact } from "@/data/contact";
 import Link from "next/link";
 import { FC } from "react";
 
@@ -11,12 +11,20 @@ interface Props {
 const Footer: FC<Props> = ({ absolute = false }) => {
    return (
       <div
-         className={`flex flex-col ${
-            absolute ? "absolute bottom-4 left-0 right-0" : "mt-16 pb-4"
-         } items-center gap-3 text-[10px] text-neutral-400`}
+         className={`flex 
+                     flex-col
+                     items-center
+                     gap-3
+                     text-[10px]
+                     text-neutral-400
+                     ${
+                        absolute
+                           ? "absolute bottom-4 left-0 right-0"
+                           : "mt-16 pb-4"
+                     }`}
       >
          <div className="flex gap-2">
-            {icons.map(({ icon: Icon, href }) => (
+            {contact.map(({ icon: Icon, href }) => (
                <Link
                   key={href}
                   href={href}
@@ -28,7 +36,6 @@ const Footer: FC<Props> = ({ absolute = false }) => {
                </Link>
             ))}
          </div>
-
          <div>&copy; 2023 Michael Yi, All Rights Reserved.</div>
       </div>
    );
