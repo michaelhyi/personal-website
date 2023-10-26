@@ -1,6 +1,6 @@
 "use client";
 
-import ArrowLink from "@/archive/components/links/ArrowLink";
+import ArrowLink from "@/archive/components/ArrowLink";
 import Container from "@/components/Container";
 import Post from "@/types/dto/Post";
 import { format } from "date-fns";

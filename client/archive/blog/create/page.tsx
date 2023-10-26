@@ -1,5 +1,5 @@
-import { readUserByToken } from "@/services/auth";
-import User from "@/types/dto/User";
+import { readUserByToken } from "../../../services/auth";
+import User from "../../../types/dto/User";
 import Client from "./client";
 
 const Create = async () => {
