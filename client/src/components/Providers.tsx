@@ -17,7 +17,7 @@ const Providers: FC<Props> = ({ children }) => {
       setMounted(true);
    }, []);
 
-   if (!mounted) return <></>;
+   if (!mounted) return;
 
    return (
       <CacheProvider>

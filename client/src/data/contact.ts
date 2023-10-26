@@ -1,6 +1,6 @@
 import { AiFillGithub, AiFillLinkedin, AiOutlineMail } from "react-icons/ai";
 
-export const icons = [
+export const contact = [
    {
       icon: AiOutlineMail,
       href: "mailto:michaelyi@gatech.edu",

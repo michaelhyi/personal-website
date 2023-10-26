@@ -1,12 +1,12 @@
 "use client";
 
 import Footer from "@/components/Footer";
-import { login } from "@/services/auth";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { FC, useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Error from "../components/Error";
+import { login } from "../services/http/auth";
 
 interface Props {
    authenticated: boolean;

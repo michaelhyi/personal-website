@@ -1,3 +1,5 @@
 .gitignore
 bun.lockb
 .env.example
+
+archive/
