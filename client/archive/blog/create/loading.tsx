@@ -1,4 +1,4 @@
-import Client from "@/archive/components/Loading";
+import Client from "../../components/Loading";
 
 const Loading = () => {
    return <Client />;

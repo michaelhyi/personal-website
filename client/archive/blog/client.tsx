@@ -1,10 +1,10 @@
 "use client";
 
-import PostCard from "@/archive/components/PostCard";
-import ArrowLink from "@/archive/components/links/ArrowLink";
-import Container from "@/components/Container";
-import Post from "@/types/dto/Post";
 import { FC } from "react";
+import Container from "../../components/Container";
+import Post from "../../types/dto/Post";
+import ArrowLink from "../components/ArrowLink";
+import PostCard from "../components/PostCard";
 
 interface Props {
    data: Post[];

@@ -1,7 +1,7 @@
 "use client";
 
-import Card from "@/components/Card";
-import Section from "@/components/Section";
+import Card from "../Card";
+import Section from "../Section";
 
 const Education = () => {
    return (
