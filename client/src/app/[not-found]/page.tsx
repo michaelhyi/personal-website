@@ -2,7 +2,7 @@ import Footer from "@/components/Footer";
 
 const NotFound = () => {
    return (
-      <div>
+      <>
          <div
             className="absolute
                         left-1/2
@@ -16,7 +16,7 @@ const NotFound = () => {
             404, not found.
          </div>
          <Footer absolute />
-      </div>
+      </>
    );
 };
 

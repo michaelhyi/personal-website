@@ -12,7 +12,7 @@ const Footer: FC<Props> = ({ absolute = false }) => {
    return (
       <div
          className={`flex flex-col ${
-            absolute ? "absolute bottom-4 left-0 right-0" : "mt-12 pb-4"
+            absolute ? "absolute bottom-4 left-0 right-0" : "mt-16 pb-4"
          } items-center gap-3 text-[10px] text-neutral-400`}
       >
          <div className="flex gap-2">
