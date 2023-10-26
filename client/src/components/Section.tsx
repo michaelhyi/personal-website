@@ -2,6 +2,7 @@
 
 import { FC, ReactNode } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
+import Link from "next/link";
 
 interface Props {
    title: string;
@@ -15,19 +16,17 @@ const Section: FC<Props> = ({ title, children, nonDesc = false, href }) => {
       <div className="mt-10">
          <div className="font-normal">
             {href ? (
-               <a
+               <Link
                   href={href}
                   className="flex
                                   gap-1
-                                  font-normal
-                                  text-sm
                                   cursor-pointer
                                   duration-500
                                   hover:opacity-50"
                >
                   {title}
                   {<FiArrowUpRight size={12} />}
-               </a>
+               </Link>
             ) : (
                title
             )}

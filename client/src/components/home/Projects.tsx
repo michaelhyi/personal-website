@@ -6,7 +6,7 @@ import Section from "../Section";
 
 const Projects = () => {
    return (
-      <Section title="Projects" href="https://michael-yi.com/Resume.pdf">
+      <Section title="Projects" href="/projects">
          {projects.map((v, i) => {
             if (i <= 4)
                return (
