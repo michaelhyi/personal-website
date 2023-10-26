@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const About = () => {
    return (
-      <div className="flex sm:flex-col sm:text-center md:text-left md:flex-row gap-8 items-center">
+      <div className="flex sm:flex-col sm:text-center md:text-left md:flex-row  items-center gap-8">
          <Image
             src="/Michael.png"
             alt="michael"

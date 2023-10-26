@@ -8,12 +8,12 @@ interface Props {
    name: string;
    date: string;
    desc?: string;
-   href?: string;
    tech?: string;
    img?: string;
+   href?: string;
 }
 
-const Card: FC<Props> = ({ name, date, desc, href, tech, img }) => {
+const Card: FC<Props> = ({ name, date, desc, tech, img, href }) => {
    return (
       <div className="flex sm:flex-col md:flex-row">
          <div className="font-light text-[13px] text-neutral-400 w-48 sm:mb-2 md:mb-0">
@@ -24,9 +24,14 @@ const Card: FC<Props> = ({ name, date, desc, href, tech, img }) => {
                rel="noopener noreferrer"
                target="_blank"
                href={href && href}
-               className={`flex gap-1 font-normal text-sm ${
-                  href && "cursor-pointer duration-500 hover:opacity-50"
-               }`}
+               className={`flex 
+                           gap-1
+                           font-normal
+                           text-sm
+                           ${
+                              href &&
+                              "cursor-pointer duration-500 hover:opacity-50"
+                           }`}
             >
                {name}
                {href && <FiArrowUpRight size={12} />}
@@ -35,7 +40,7 @@ const Card: FC<Props> = ({ name, date, desc, href, tech, img }) => {
                <div className="text-xs mt-2 text-neutral-500">{desc}</div>
             )}
             {tech && (
-               <div className="mt-2 text-[10px] text-neutral-400">{tech}</div>
+               <div className="text-[10px] mt-2 text-neutral-400">{tech}</div>
             )}
             {img && (
                <Image

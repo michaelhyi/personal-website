@@ -1,21 +1,31 @@
+import Container from "@/components/Container";
 import Image from "next/image";
 
 const Lauren = () => {
    return (
-      <div className="flex h-screen items-center justify-center">
-         <div className="sm:w-[320px] md:w-[480px] lg:w-[512px] xl:w-[640px] flex flex-col items-center gap-8">
-            <Image
-               src="/maur.JPG"
-               width={250}
-               height={250}
-               alt="mimi and lala"
-            />
-            <div className="text-sm font-light">
-               GOOD LUCK ON CHEMMMMMM. YOU&apos;LL KILL IT IM SO PROUD OF YOU
-               💯😘
+      <Container absoluteFooter>
+         <div
+            className="absolute
+                        left-1/2
+                        top-1/2
+                        -translate-x-1/2
+                        -translate-y-1/2
+                        "
+         >
+            <div className="flex flex-col items-center gap-8">
+               <Image
+                  src="/maur.jpg"
+                  width={250}
+                  height={250}
+                  alt="mimi and lala"
+               />
+               <div className="text-sm font-light">
+                  GOOD LUCK ON CHEMMMMMM. YOU&apos;LL KILL IT IM SO PROUD OF YOU
+                  💯😘
+               </div>
             </div>
          </div>
-      </div>
+      </Container>
    );
 };
 

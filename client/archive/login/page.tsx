@@ -1,4 +1,4 @@
-import { readUserByToken } from "@/services/auth";
+import { readUserByToken } from "../services/http/auth";
 import Client from "./client";
 
 const Login = async () => {

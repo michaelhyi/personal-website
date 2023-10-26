@@ -1,6 +1,6 @@
-import { readUserByToken } from "@/services/auth";
-import { readPost } from "@/services/post";
 import { FC } from "react";
+import { readUserByToken } from "../../services/http/auth";
+import { readPost } from "../../services/http/post";
 import Client from "./client";
 
 interface IParams {
