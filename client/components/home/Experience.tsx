@@ -1,7 +1,7 @@
 "use client";
 
-import Card from "@/components/Card";
 import { experience } from "@/data/experience";
+import Card from "../Card";
 import Section from "../Section";
 
 const Experience = () => {
