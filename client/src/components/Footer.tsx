@@ -1,6 +1,8 @@
 "use client";
 
 import { FC } from "react";
+import { icons } from "@/data/icons";
+import Link from "next/link";
 
 interface Props {
    absolute?: boolean;
@@ -9,11 +11,16 @@ interface Props {
 const Footer: FC<Props> = ({ absolute = false }) => {
    return (
       <div
-         className={`${
+         className={`flex flex-col ${
             absolute ? "absolute bottom-4 left-0 right-0" : "mt-12 pb-4"
-         } text-center text-[10px] text-neutral-400`}
+         } items-center gap-3 text-[10px] text-neutral-400`}
       >
-         &copy; 2023 Michael Yi, All Rights Reserved.
+         <div className="flex gap-2">{icons.map(({ icon: Icon, href }) => (
+            <Link key={href} href={href} rel="noopener noreferrer"
+                  target="_blank" className="duration-500 hover:opacity-50"><Icon size={15} /></Link>
+         ))}</div>
+
+         <div>&copy; 2023 Michael Yi, All Rights Reserved.</div>
       </div>
    );
 };
