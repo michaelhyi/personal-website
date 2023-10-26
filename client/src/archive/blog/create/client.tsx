@@ -1,13 +1,13 @@
 "use client";
 
+import ArrowLink from "@/archive/components/ArrowLink";
+import Error from "@/archive/components/Error";
 import Container from "@/components/Container";
 import { createPost } from "@/services/post";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import ArrowLink from "../../components/ArrowLink";
-import Error from "../../components/Error";
 
 interface Props {
    authorized: boolean;
