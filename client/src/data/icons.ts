@@ -1,11 +1,6 @@
 import { AiFillGithub, AiFillLinkedin, AiOutlineMail } from "react-icons/ai";
-import { HiDocumentText } from "react-icons/hi";
 
 export const icons = [
-   {
-      icon: HiDocumentText,
-      href: "/Resume.pdf",
-   },
    {
       icon: AiOutlineMail,
       href: "mailto:michaelyi@gatech.edu",
