@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { FC, ReactNode } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 
@@ -16,7 +15,7 @@ const Section: FC<Props> = ({ title, children, nonDesc = false, href }) => {
       <div className="mt-10">
          <div className="font-normal">
             {href ? (
-               <Link
+               <a
                   href={href}
                   className="flex
                                   gap-1
@@ -28,7 +27,7 @@ const Section: FC<Props> = ({ title, children, nonDesc = false, href }) => {
                >
                   {title}
                   {<FiArrowUpRight size={12} />}
-               </Link>
+               </a>
             ) : (
                title
             )}
