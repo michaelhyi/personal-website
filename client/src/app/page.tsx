@@ -1,3 +1,4 @@
+import Education from "@/components/home/Education";
 import Container from "../components/Container";
 import Experience from "../components/home/Experience";
 import Head from "../components/home/Head";
@@ -8,6 +9,7 @@ const Home = () => {
       <Container>
          <Head />
          <Experience />
+         <Education />
          <Projects />
       </Container>
    );
