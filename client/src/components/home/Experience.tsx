@@ -14,7 +14,6 @@ const Experience = () => {
                desc={v.desc}
                name={v.name}
                date={v.date}
-               img={v.img}
             />
          ))}
       </Section>

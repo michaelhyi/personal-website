@@ -32,6 +32,7 @@ const About = () => {
                           py-1
                           px-5
                           underline"
+               locale={false}
             >
                Resume
             </Link>
