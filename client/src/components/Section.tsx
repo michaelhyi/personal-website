@@ -1,8 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { FC, ReactNode } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
-import Link from "next/link";
 
 interface Props {
    title: string;
