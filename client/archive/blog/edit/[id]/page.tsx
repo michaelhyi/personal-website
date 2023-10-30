@@ -1,5 +1,5 @@
 import { FC } from "react";
-import User from "../../../../src/types/dto/User";
+import User from "../../../../types/dto/User";
 import { readUserByToken } from "../../../services/http/auth";
 import { readPost } from "../../../services/http/post";
 import Client from "./client";

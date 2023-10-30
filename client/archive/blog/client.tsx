@@ -1,8 +1,8 @@
 "use client";
 
 import { FC } from "react";
-import Container from "../../src/components/Container";
-import Post from "../../src/types/dto/Post";
+import Container from "../../components/Container";
+import Post from "../../types/dto/Post";
 import ArrowLink from "../components/ArrowLink";
 import PostCard from "../components/PostCard";
 
