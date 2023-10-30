@@ -1,4 +1,4 @@
-import User from "../../../src/types/dto/User";
+import User from "../../../types/dto/User";
 import { readUserByToken } from "../../services/http/auth";
 import Client from "./client";
 
