@@ -7,4 +7,4 @@ cd api &&
 mvn validate && 
 
 cd ../web && 
-npm lint
+npm run lint
