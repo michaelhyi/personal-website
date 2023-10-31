@@ -1,9 +1,10 @@
 .github/
+.husky/
 api/
 node_modules/
 scripts/
-.husky/
 
+.eslintignore
 .gitignore
 .prettierignore
 bun.lockb
