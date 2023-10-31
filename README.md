@@ -37,7 +37,7 @@
 | Codebase                                                                  | Description             |
 | ------------------------------------------------------------------------- | ----------------------- |
 | [api](https://github.com/michaelhyi/personal-website/tree/prod/api)       | Spring Backend API      |
-| [client](https://github.com/michaelhyi/personal-website/tree/prod/client) | Next.js Frontend Client |
+| [web](https://github.com/michaelhyi/personal-website/tree/prod/web) | Next.js Frontend Client |
 
 # Branches
 

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd ../client &&
+cd ../web &&
 bun install &&
 bun dev

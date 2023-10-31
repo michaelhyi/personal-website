@@ -2,5 +2,5 @@ import concurrently from "concurrently";
 
 concurrently([
    { command: "cd scripts && sh run-api.sh" },
-   { command: "cd scripts && sh run-client.sh" },
+   { command: "cd scripts && sh run-web.sh" },
 ]);

@@ -1,6 +1,6 @@
 .github/
 api/
-client/
+web/
 node_modules/
 scripts/
 
