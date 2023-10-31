@@ -1,5 +1,5 @@
 .github/
-.husky.
+.husky/
 api/
 node_modules/
 scripts/

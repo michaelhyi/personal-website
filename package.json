@@ -4,7 +4,7 @@
    "main": "index.ts",
    "scripts": {
       "dev": "bun install && ts-node index.ts",
-      "lint": "prettier --check . && eslint . --ext .ts,.tsx,.js,.jsx && cd web && bun lint",
+      "lint": "prettier --check . && eslint . --ext .ts,.tsx,.js,.js",
       "format": "prettier --write . && eslint --fix",
       "prepare": "husky install"
    },

@@ -33,4 +33,5 @@ jobs:
           bun lint
           cd web
           bun install
+          bun lint
           bun run build
