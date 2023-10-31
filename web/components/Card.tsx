@@ -16,7 +16,7 @@ interface Props {
 const Card: FC<Props> = ({ name, date, desc, tech, img, href }) => {
    return (
       <div className="flex sm:flex-col md:flex-row">
-         <div className="font-light text-[13px] text-neutral-400 w-48 sm:mb-2 md:mb-0">
+         <div className="w-48 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
             {date}
          </div>
          <div className="sm:w-72 md:w-96">
@@ -26,8 +26,8 @@ const Card: FC<Props> = ({ name, date, desc, tech, img, href }) => {
                href={href && href}
                className={`flex 
                            gap-1
-                           font-normal
                            text-sm
+                           font-normal
                            ${
                               href &&
                               "cursor-pointer duration-500 hover:opacity-50"
@@ -37,17 +37,17 @@ const Card: FC<Props> = ({ name, date, desc, tech, img, href }) => {
                {href && <FiArrowUpRight size={12} />}
             </a>
             {desc && (
-               <div className="text-xs mt-2 text-neutral-500">{desc}</div>
+               <div className="mt-2 text-xs text-neutral-500">{desc}</div>
             )}
             {tech && (
-               <div className="text-[10px] mt-2 text-neutral-400">{tech}</div>
+               <div className="mt-2 text-[10px] text-neutral-400">{tech}</div>
             )}
             {img && (
                <Image
                   className="mt-4 
-                                 border-neutral-300 
-                                 border-[1px] 
                                  rounded-lg 
+                                 border-[1px] 
+                                 border-neutral-300 
                                  shadow-md"
                   src={img}
                   alt={name}

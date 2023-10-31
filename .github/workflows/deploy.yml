@@ -41,10 +41,8 @@ jobs:
 
       - name: Lint and Build Frontend Client with Bun
         run: |
-          bun install
+          bun setup
           bun lint
           cd web
-          bun install
-          bun lint
           bun run build
 
