@@ -1,5 +1,10 @@
+.idea/
+.next/
+archive/
+node_modules/
+public/
+
+.env.example
+.eslintignore
 .gitignore
 bun.lockb
-.env.example
-
-archive/

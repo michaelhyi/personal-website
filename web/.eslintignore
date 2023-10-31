@@ -1,1 +1,9 @@
+.idea/
+.next/
 archive/
+node_modules/
+public/
+
+.gitignore
+.prettierignore
+bun.lockb

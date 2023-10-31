@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const About = () => {
    return (
-      <div className="flex sm:flex-col sm:text-center md:text-left md:flex-row  items-center gap-8">
+      <div className="flex items-center gap-8 sm:flex-col sm:text-center  md:flex-row md:text-left">
          <Image
             src="/Michael.png"
             alt="michael"
@@ -14,24 +14,24 @@ const About = () => {
             className="rounded-full"
          />
          <div>
-            <div className="font-normal text-2xl">Michael Yi</div>
-            <div className="font-light text-sm text-neutral-500 mb-2">
+            <div className="text-2xl font-normal">Michael Yi</div>
+            <div className="mb-2 text-sm font-light text-neutral-500">
                Software Engineer
             </div>
             <Link
                href="https://michael-yi.com/Resume.pdf"
-               className="text-center
-                          cursor-pointer
-                          rounded-2xl 
-                          duration-500
-                          hover:opacity-50
-                          bg-neutral-100
-                          text-neutral-500
-                          font-light 
-                          text-xs 
-                          py-1
+               className="cursor-pointer
+                          rounded-2xl
+                          bg-neutral-100 
                           px-5
-                          underline"
+                          py-1
+                          text-center
+                          text-xs
+                          font-light 
+                          text-neutral-500 
+                          underline
+                          duration-500
+                          hover:opacity-50"
             >
                Resume
             </Link>
