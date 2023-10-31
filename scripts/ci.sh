@@ -2,9 +2,8 @@
 
 cd ../ &&
 
-
 rm -rf node_modules/ && 
-bun install && 
+npm install && 
 
 cd api && 
 docker compose up -d && 
@@ -12,4 +11,4 @@ mvn clean &&
 
 cd ../web/ && 
 rm -rf node_modules/ && 
-bun install
+npm install

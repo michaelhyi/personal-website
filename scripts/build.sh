@@ -6,4 +6,4 @@ cd api &&
 mvn package && 
 
 cd ../web/ && 
-bun run build
+npm run build
