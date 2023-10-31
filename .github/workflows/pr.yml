@@ -21,9 +21,17 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Clean install, lint, test, build
+      - name: Clean install, lint, build
         run: |
           bun ci
           bun lint
-          bun run test
           bun run build
+      
+      - name: E2E Testing
+        uses: cypress-io/github-action@v3
+        with:
+          project: ./web
+          browser: chrome
+          build: bun run build
+          start: bun start
+          wait-on: "http://localhost:3000"
