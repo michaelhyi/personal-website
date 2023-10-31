@@ -9,7 +9,7 @@
       "prepare": "husky install"
    },
    "keywords": [],
-   "author": "michaelyi",
+   "author": "michaelhyi",
    "license": "MIT",
    "devDependencies": {
       "@types/node": "^20.8.2",
