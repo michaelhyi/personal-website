@@ -21,10 +21,11 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Clean install, lint, build
+      - name: Clean install, lint, test, build
         run: |
           bun ci
           bun lint
+          bun test
           bun run build
 
       - name: Login to Docker Hub
