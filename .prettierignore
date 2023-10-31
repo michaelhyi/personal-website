@@ -1,8 +1,8 @@
 .github/
 api/
-web/
 node_modules/
 scripts/
+.husky/
 
 .gitignore
 .prettierignore

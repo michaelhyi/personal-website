@@ -4,7 +4,7 @@
    "main": "index.ts",
    "scripts": {
       "dev": "bun install && ts-node index.ts",
-      "lint": "prettier --check . && eslint . --ext .ts",
+      "lint": "prettier --check . && eslint . --ext .ts && cd web && bun lint",
       "format": "prettier --write .",
       "prepare": "husky install"
    },
@@ -20,5 +20,8 @@
       "prettier-plugin-organize-imports": "^3.2.3",
       "ts-node": "^10.9.1",
       "typescript": "^5.2.2"
+   },
+   "dependencies": {
+      "prettier-plugin-tailwindcss": "^0.5.6"
    }
 }
