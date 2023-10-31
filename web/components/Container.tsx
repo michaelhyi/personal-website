@@ -15,7 +15,7 @@ const Container: FC<Props> = ({ children, absoluteFooter = false }) => {
          initial={{ opacity: 0 }}
          animate={{ opacity: 1 }}
          transition={{ duration: 0.75 }}
-         className="flex flex-col mx-auto pt-20 sm:w-[320px] md:w-[480px] lg:w-[512px] xl:w-[576px]"
+         className="mx-auto flex flex-col pt-20 sm:w-[320px] md:w-[480px] lg:w-[512px] xl:w-[576px]"
       >
          {children}
          <Footer absolute={absoluteFooter} />

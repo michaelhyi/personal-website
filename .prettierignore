@@ -1,9 +1,22 @@
 .github/
+.husky/
 api/
-web/
 node_modules/
 scripts/
 
+**/.idea
+**/.next
+**/archive
+**/node_modules
+**/public
+
+**/.env.example
+**/.eslintignore
+**/.gitignore
+**/.prettierignore
+**/bun.lockb
+
+.eslintignore
 .gitignore
 .prettierignore
 bun.lockb

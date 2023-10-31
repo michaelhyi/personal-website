@@ -46,11 +46,11 @@
 | [prod](https://github.com/michaelhyi/personal-website/tree/prod) | Production Branch: Do not push commits or merge pr's unless providing update |
 | [dev](https://github.com/michaelhyi/personal-website/tree/dev)   | Development Branch: Do not push commits, merge pr's instead                  |
 
-# Quick Start
+<!-- # Quick Start
 
 ```shell
 git clone https://github.com/michaelhyi/personal-website.git
 cd personal-website
 
 bun dev
-```
+``` -->
