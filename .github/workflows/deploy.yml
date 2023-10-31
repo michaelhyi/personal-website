@@ -28,13 +28,9 @@ jobs:
           bun run build
 
       - name: E2E Testing
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v6
         with:
           project: ./web
-          browser: chrome
-          build: bun run build
-          start: bun start
-          wait-on: "http://localhost:3000"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
