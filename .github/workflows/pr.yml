@@ -31,7 +31,7 @@ jobs:
         run: |
           bun install
           bun lint
-          cd client
+          cd web
           bun install
           bun lint
           bun run build
