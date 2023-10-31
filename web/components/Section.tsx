@@ -18,9 +18,9 @@ const Section: FC<Props> = ({ title, children, href, nonDesc = false }) => {
             <Link
                href={href}
                className="flex
+                             cursor-pointer
                              gap-1
                              font-normal
-                             cursor-pointer
                              duration-500
                              hover:opacity-50"
             >
