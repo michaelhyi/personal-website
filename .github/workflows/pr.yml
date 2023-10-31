@@ -25,5 +25,5 @@ jobs:
         run: |
           bun ci
           bun lint
-          bun test
+          bun run test
           bun run build

@@ -25,7 +25,7 @@ jobs:
         run: |
           bun ci
           bun lint
-          bun test
+          bun run test
           bun run build
 
       - name: Login to Docker Hub
