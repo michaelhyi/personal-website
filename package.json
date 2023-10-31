@@ -2,9 +2,10 @@
    "name": "personal-website",
    "version": "4.1.0",
    "scripts": {
-      "setup": "bun install && cd web && bun install",
-      "lint": "prettier --check . && cd web && bun lint",
+      "ci": "rm -rf node_modules/ && bun install && cd api && mvn clean && cd ../web/ && rm -rf node_modules/ && bun install",
       "format": "prettier --write . && eslint --fix",
+      "lint": "cd api && mvn validate && cd ../ && prettier --check . && cd web && bun lint",
+      "build": "cd api && mvn package && cd ../web/ && bun run build",
       "prepare": "husky install"
    },
    "keywords": [],

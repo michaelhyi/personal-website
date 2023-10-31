@@ -3,3 +3,7 @@
 archive/
 node_modules/
 public/
+
+.env.example
+.gitignore
+bun.lockb
