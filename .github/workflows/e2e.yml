@@ -1,11 +1,11 @@
-name: E2E Tests
+name: e2e
 
 on:
   pull_request:
     branches: ["prod", "dev"]
 
 jobs:
-  e2e-tests:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
