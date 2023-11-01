@@ -1,0 +1,19 @@
+name: E2E Tests
+
+on:
+  pull_request:
+    branches: ["prod", "dev"]
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        working-directory: ./web
+        with:
+          build: npm i && npm run build
+          start: npm start
