@@ -1,0 +1,23 @@
+name: lint
+
+on:
+  pull_request:
+    branches:
+      - prod
+      - dev
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+
+      - name: Clean install and lint
+        run: |
+          bun ci
+          bun lint
