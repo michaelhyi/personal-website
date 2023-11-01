@@ -5,7 +5,7 @@ on:
     branches: ["prod", "dev"]
 
 jobs:
-  build:
+  pr:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,7 +29,11 @@ jobs:
           bun run build
       
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: |
+          cd web
+          npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: |
+          cd web
+          npx playwright test
