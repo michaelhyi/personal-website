@@ -1,11 +1,10 @@
-name: pr
+name: lint
 
 on:
   pull_request:
-    branches: ["prod", "dev"]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,9 +20,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Clean install, lint, test, build
+      - name: Clean Install & Lint
         run: |
           bun ci
           bun lint
-          bun test
-          bun run build

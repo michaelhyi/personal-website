@@ -1,6 +1,8 @@
 #!/bin/bash
 
 cd ../ &&
+
+
 prettier --check .
 
 cd api && 

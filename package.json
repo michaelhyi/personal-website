@@ -4,7 +4,7 @@
    "scripts": {
       "build": "cd scripts && sh build.sh",
       "ci": "cd scripts && sh ci.sh",
-      "test": "cd web && bun e2e",
+      "test": "cd scripts && sh test.sh",
       "format": "cd scripts && sh format.sh",
       "lint": "cd scripts && sh lint.sh",
       "prepare": "husky install"

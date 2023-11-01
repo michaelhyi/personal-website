@@ -2,5 +2,6 @@
 
 cd ../ &&
 
+
 prettier --write . &&
 eslint --fix
