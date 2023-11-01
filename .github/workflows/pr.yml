@@ -1,0 +1,40 @@
+name: pr
+
+on:
+  pull_request:
+    branches:
+      - prod
+      - dev
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+
+      - name: Clean install, lint, and build
+        run: |
+          bun ci
+          bun lint
+          bun run build
+    
+  e2e-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        working-directory: ./web
+        with:
+          build: npm i && npm run build
+          start: npm start
