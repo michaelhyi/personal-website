@@ -22,7 +22,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Clean Intsall and Build
+      - name: Clean Install and Build
         run: |
           bun ci
           bun run build
