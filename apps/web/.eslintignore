@@ -1,6 +1,6 @@
 .idea/
 .next/
-src/archive/
+archive/
 node_modules/
 public/
 

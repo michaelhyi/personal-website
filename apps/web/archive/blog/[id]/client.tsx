@@ -1,7 +1,7 @@
 "use client";
 
-import Container from "../../../components/container";
-import type Post from "../../../types/dto/post";
+import Container from "../../../src/components/container";
+import type Post from "../../../src/types/dto/post";
 import { format } from "date-fns";
 import { notFound, useRouter } from "next/navigation";
 import { FC, useEffect } from "react";

@@ -1,6 +1,6 @@
 "use client";
 
-import Footer from "../../components/footer";
+import Footer from "../../src/components/footer";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { FC, useCallback, useEffect, useState } from "react";

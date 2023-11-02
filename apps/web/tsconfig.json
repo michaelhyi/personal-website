@@ -9,6 +9,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "archive"  ],
   "exclude": ["node_modules"]
 }

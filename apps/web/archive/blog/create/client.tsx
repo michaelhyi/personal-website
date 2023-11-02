@@ -1,26 +1,23 @@
 "use client";
 
+import Container from "../../../src/components/container";
 import { Spinner } from "@chakra-ui/react";
-import { notFound, useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Container from "../../../../components/container";
-import Post from "../../../../types/dto/post";
-import ArrowLink from "../../../components/arrow-link";
-import Error from "../../../components/error";
-import { deletePost, updatePost } from "../../../services/http/post";
+import ArrowLink from "../../components/arrow-link";
+import Error from "../../components/error";
+import { createPost } from "../../services/http/post";
 
 interface Props {
-  id: string;
   authorized: boolean;
-  data: Post;
 }
 
-const Client: FC<Props> = ({ id, authorized, data }) => {
+const Client: FC<Props> = ({ authorized }) => {
   const router = useRouter();
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const { register, handleSubmit, setValue } = useForm<FieldValues>({
+  const { register, handleSubmit } = useForm<FieldValues>({
     defaultValues: {
       title: "",
       description: "",
@@ -28,54 +25,36 @@ const Client: FC<Props> = ({ id, authorized, data }) => {
     },
   });
 
-  const handleUpdate: SubmitHandler<FieldValues> = useCallback(
+  const handleUpload: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       setSubmitting(true);
 
-      const res = await updatePost(
-        id as string,
+      const res = await createPost(
         data as { title: string; description: string; body: string },
       );
 
       if (res.status === 200) {
         setError(false);
-        router.push("/blog/" + id);
+        const id = await res.text();
+        await router.push("/blog/" + id);
       } else {
         setError(true);
         setSubmitting(false);
       }
     },
-    [setSubmitting, router, id],
+    [setSubmitting, router],
   );
 
-  const handleDelete = useCallback(async () => {
-    setSubmitting(true);
-
-    const res = await deletePost(id as string);
-
-    if (res.status === 200) {
-      setError(false);
-      router.push("/blog");
-    } else {
-      setError(true);
-      setSubmitting(false);
-    }
-  }, [id, router]);
-
   useEffect(() => {
-    if (!id || !data) notFound();
-    else if (!authorized) router.push("/login");
-    else {
-      setValue("title", data.title);
-      setValue("description", data.description);
-      setValue("body", data.body);
+    if (!authorized) {
+      (async () => await router.push("/login"))();
     }
-  }, [id, authorized, data, setValue, router]);
+  }, [authorized, router]);
 
   return (
     <Container>
       <div className="mt-24" />
-      <ArrowLink href={"/blog/" + id} left text="Back" />
+      <ArrowLink href="/blog" left text="Blog" />
       <div className="mt-12 text-2xl font-semibold">Title</div>
       <input
         className="mt-2 w-full border-b-2"
@@ -100,17 +79,10 @@ const Client: FC<Props> = ({ id, authorized, data }) => {
       {error && <Error text="Something went wrong." />}
       <button
         disabled={submitting}
-        onClick={(e) => handleSubmit(handleUpdate)(e)}
+        onClick={(e) => handleSubmit(handleUpload)(e)}
         className="mt-8 w-full bg-pink-300 py-3 text-center text-white duration-500 hover:opacity-50"
       >
-        {submitting ? <Spinner size="xs" /> : "Update Post"}
-      </button>
-      <button
-        disabled={submitting}
-        onClick={(e) => handleSubmit(handleDelete)(e)}
-        className="mt-8 w-full bg-red-300 py-3 text-center text-white duration-500 hover:opacity-50"
-      >
-        {submitting ? <Spinner size="xs" /> : "Delete Post"}
+        {submitting ? <Spinner size="xs" /> : "Upload Post"}
       </button>
     </Container>
   );
