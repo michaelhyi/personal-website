@@ -2,9 +2,9 @@
 
 import { FC } from "react";
 import Container from "../../components/container";
-import Post from "../../types/dto/Post";
-import ArrowLink from "../components/ArrowLink";
-import PostCard from "../components/PostCard";
+import Post from "../../types/dto/post";
+import ArrowLink from "../components/arrow-link";
+import PostCard from "../components/post-card";
 
 interface Props {
   data: Post[];

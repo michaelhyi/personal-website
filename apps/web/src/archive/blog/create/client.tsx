@@ -1,12 +1,12 @@
 "use client";
 
-import Container from "@/components/Container";
+import Container from "../../../components/container";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import ArrowLink from "../../components/ArrowLink";
-import Error from "../../components/Error";
+import ArrowLink from "../../components/arrow-link";
+import Error from "../../components/error";
 import { createPost } from "../../services/http/post";
 
 interface Props {

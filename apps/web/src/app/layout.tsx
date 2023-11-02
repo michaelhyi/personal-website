@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 import type { Metadata } from "next";
-import Providers from "../components/Providers";
+import Providers from "../components/providers";
 import { font } from "../utils/font";
 import "./globals.css";
 

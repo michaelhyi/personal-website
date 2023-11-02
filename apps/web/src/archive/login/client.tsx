@@ -1,11 +1,11 @@
 "use client";
 
-import Footer from "@/components/Footer";
+import Footer from "../../components/footer";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { FC, useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Error from "../components/Error";
+import Error from "../components/error";
 import { login } from "../services/http/auth";
 
 interface Props {

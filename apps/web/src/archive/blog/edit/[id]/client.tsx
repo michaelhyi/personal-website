@@ -5,9 +5,9 @@ import { notFound, useRouter } from "next/navigation";
 import { FC, useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Container from "../../../../components/container";
-import Post from "../../../../types/dto/Post";
-import ArrowLink from "../../../components/ArrowLink";
-import Error from "../../../components/Error";
+import Post from "../../../../types/dto/post";
+import ArrowLink from "../../../components/arrow-link";
+import Error from "../../../components/error";
 import { deletePost, updatePost } from "../../../services/http/post";
 
 interface Props {
