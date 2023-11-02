@@ -1,0 +1,12 @@
+{
+  "name": "api",
+  "version": "1.0.1",
+  "author": "michaelhyi",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "mvn package",
+    "ci": "docker compose up -d && mvn clean",
+    "lint": "mvn validate"
+  }
+}
