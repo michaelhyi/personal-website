@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://www.michael-yi.com/Michael.png" width="100" height="100" />
+<img src="https://www.michael-yi.com/michael.png" width="100" height="100" />
 <h1>michael-yi.com</h1>
 © 2023 Michael Yi, All Rights Reserved.
 <br/>

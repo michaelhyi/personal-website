@@ -18,7 +18,7 @@ describe("links", () => {
       links.push(v.href);
     });
 
-    links.push("https://michael-yi.com/Resume.pdf");
+    links.push("https://michael-yi.com/resume.pdf");
 
     test("http://localhost:3000/");
     test("http://localhost:3000/projects");

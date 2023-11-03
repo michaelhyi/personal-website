@@ -4,7 +4,7 @@ import { Spinner } from "@chakra-ui/react";
 import { notFound, useRouter } from "next/navigation";
 import { FC, useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Container from "../../../../src/components/container";
+import Container from "../../../../src/components/Container";
 import Post from "../../../../src/types/dto/post";
 import ArrowLink from "../../../components/arrow-link";
 import Error from "../../../components/error";

@@ -1,6 +1,6 @@
 "use client";
 
-import Container from "../../../src/components/container";
+import Container from "../../../src/components/Container";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";

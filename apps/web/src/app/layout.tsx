@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 import type { Metadata } from "next";
-import Providers from "@/components/providers";
+import Providers from "@/components/Providers";
 import { font } from "@/utils/font";
 import "./globals.css";
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Michael Yi",
   description: "© 2023 Michael Yi, All Rights Reserved.",
   icons: {
-    icon: "/Michael.png",
+    icon: "/michael.png",
   },
   viewport: {
     width: "device-width",

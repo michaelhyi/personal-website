@@ -1,6 +1,6 @@
 "use client";
 
-import Container from "../../../src/components/container";
+import Container from "../../../src/components/Container";
 import type Post from "../../../src/types/dto/post";
 import { format } from "date-fns";
 import { notFound, useRouter } from "next/navigation";

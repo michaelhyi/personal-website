@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Container from "@/components/container";
+import Container from "@/components/Container";
 
 const Lauren = () => {
   return (
@@ -13,7 +13,7 @@ const Lauren = () => {
       >
         <div className="flex flex-col items-center gap-8">
           <Image
-            src="/Lauren.png"
+            src="/lauren.png"
             width={250}
             height={250}
             alt="mimi and lala"
