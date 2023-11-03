@@ -11,7 +11,7 @@ const About: FC = () => {
         alt="michael"
         className="rounded-full"
         height={100}
-        src="/Michael.png"
+        src="/michael.png"
         width={100}
       />
       <div>
@@ -20,7 +20,7 @@ const About: FC = () => {
           Software Engineer
         </div>
         <Link
-          href="https://michael-yi.com/Resume.pdf"
+          href="https://michael-yi.com/resume.pdf"
           className="cursor-pointer
                           rounded-2xl
                           bg-neutral-100 

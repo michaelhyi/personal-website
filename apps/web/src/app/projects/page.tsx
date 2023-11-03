@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import ProjectsClient from "@/components/home/projects";
+import Container from "@/components/Container";
+import ProjectsClient from "@/components/home/Projects";
 
 const Projects = () => {
   return (

@@ -3,8 +3,8 @@
 import type { FC } from "react";
 import { projects } from "@/data/projects";
 import type Project from "@/types/project";
-import Card from "../card";
-import Section from "../section";
+import Card from "../Card";
+import Section from "../Section";
 
 interface Props {
   extended?: boolean;

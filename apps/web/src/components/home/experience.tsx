@@ -1,8 +1,8 @@
 "use client";
 
 import { experience } from "@/data/experience";
-import Card from "../card";
-import Section from "../section";
+import Card from "../Card";
+import Section from "../Section";
 
 const Experience = () => {
   return (

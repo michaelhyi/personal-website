@@ -1,6 +1,6 @@
 "use client";
 
-import Container from "./container";
+import Container from "./Container";
 
 const NotFound = () => {
   return (

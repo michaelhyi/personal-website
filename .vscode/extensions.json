@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "ban.spellright",
+    "bradlc.vscode-tailwindcss",
+    "dbaeumer.vscode-eslint",
+    "dsznajder.es7-react-js-snippets",
+    "DavidAnson.vscode-markdownlint",
+    "esbenp.prettier-vscode",
+    "yzhang.markdown-all-in-one"
+  ]
+}

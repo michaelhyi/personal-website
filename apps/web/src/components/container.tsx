@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { FC, ReactNode } from "react";
-import Footer from "./footer";
+import Footer from "./Footer";
 
 interface Props {
   children: ReactNode;
