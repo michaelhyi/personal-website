@@ -45,7 +45,7 @@
 git clone https://github.com/michaelhyi/personal-website.git
 ```
 
-1. Navigate to the project directory.
+2. Navigate to the project directory.
 
 ```shell
 cd personal-website
@@ -75,31 +75,31 @@ cd apps/web
 cd ../../
 ```
 
-7. Run the project.
+1. Run the project, starting both Spring Boot and Next.js applications.
 
 ```shell
 bun dev
 ```
 
-8. Format the project.
+8. Format the project using Prettier and ESLint.
 
 ```shell
 bun format
 ```
 
-9. Build the project.
+9. Build the project using Maven packaging and Next.js.
 
 ```shell
 bun run build
 ```
 
-10. Lint the project.
+10. Lint the project using Checkstyle, Prettier, and ESLint.
 
 ```shell
 bun lint
 ```
 
-11. Test the project.
+11. Run unit and integration testing using JUnit and E2E testing using Cypress.
 
 ```shell
 bun run test
