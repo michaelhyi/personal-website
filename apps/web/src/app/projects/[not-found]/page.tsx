@@ -1,4 +1,4 @@
-import NotFoundClient from "../../../components/not-found";
+import NotFoundClient from "@/components/not-found";
 
 const NotFound = () => {
   return <NotFoundClient />;

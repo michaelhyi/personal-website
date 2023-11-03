@@ -1,5 +1,5 @@
 import { AiFillGithub, AiFillLinkedin, AiOutlineMail } from "react-icons/ai";
-import type Contact from "../types/contact";
+import type Contact from "@/types/contact";
 
 export const contact: Contact[] = [
   {

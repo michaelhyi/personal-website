@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import type { FC, ReactNode } from "react";
 import Footer from "./footer";
 
-interface Params {
+interface Props {
   children: ReactNode;
   absoluteFooter?: boolean;
 }
 
-const Container: FC<Params> = ({ children, absoluteFooter = false }) => {
+const Container: FC<Props> = ({ children, absoluteFooter = false }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}

@@ -22,7 +22,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["../../apps/web/src/*"]
     },
     "declaration": false,
     "declarationMap": false
