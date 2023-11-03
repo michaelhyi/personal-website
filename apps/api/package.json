@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "build": "mvn package",
-    "ci": "docker compose up -d && mvn clean",
+    "ci": "mvn clean",
     "dev": "mvn spring-boot:run",
     "lint": "mvn validate",
     "test": "mvn test"

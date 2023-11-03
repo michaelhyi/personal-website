@@ -8,5 +8,6 @@ web/
 .gitignore
 .prettierignore
 bun.lockb
+docker-compose.yml
 LICENSE
 README.md

@@ -1,56 +1,106 @@
 <div align="center">
-<img src="https://www.michael-yi.com/michael.png" width="100" height="100" />
-<h1>michael-yi.com</h1>
-© 2023 Michael Yi, All Rights Reserved.
-<br/>
-<br/>
-<a href="https://www.michael-yi.com/">Website</a>
+  <img src="https://www.michael-yi.com/michael.png" width="100" height="100" />
+  <h1>michael-yi.com</h1>
+  © 2023 Michael Yi, All Rights Reserved.
+  <br/>
+  <br/>
+  <a href="https://www.michael-yi.com/">Website</a>
 </div>
+
 <hr/>
 
-# Tech Stack
+### Built With 
 
-## API
+- [Turborepo](https://turbo.build/)
+- [Java](https://www.java.com/en/)
+- [Spring Framework](https://spring.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [JUnit](https://junit.org/junit5/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Next.js](https://nextjs.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Prisma](https://www.prisma.io/)
+- [Docker](https://www.docker.com/)
+- [Kubernetes](https://kubernetes.io/)
+- [AWS EC2, EBS, RDS](https://aws.amazon.com/)
 
-| Technology                  | Description             |
-| --------------------------- | ----------------------- |
-| Java                        | Programming Language    |
-| Spring                      | API Framework           |
-| PostgreSQL                  | Database                |
-| Docker                      | Containerization        |
-| Kubernetes                  | Container Orchestration |
-| AWS EC2 & Elastic Beanstalk | Spring Deployment       |
-| AWS RDS                     | Database Deployment     |
+### Repo Activity
 
-## Client
+![Alt](https://repobeats.axiom.co/api/embed/0d0e559984591c9b57adbc13a96171939ad77a0f.svg "Repobeats analytics image")
 
-| Technology  | Description              |
-| ----------- | ------------------------ |
-| TypeScript  | Programming Language     |
-| Node.js     | JS Runtime               |
-| Next.js     | React Frontend Framework |
-| TailwindCSS | Styling Library          |
-| Vercel      | Deployment               |
+### Getting Started
 
-# Codebase
+#### Prerequisites:
 
-| Codebase                                                                  | Description             |
-| ------------------------------------------------------------------------- | ----------------------- |
-| [api](https://github.com/michaelhyi/personal-website/tree/prod/api)       | Spring Backend API      |
-| [web](https://github.com/michaelhyi/personal-website/tree/prod/web) | Next.js Frontend Client |
+- Node
+- Maven
+- Docker
+- Bun
 
-# Branches
+#### Setup:
 
-| Branch                                                           | Description                                                                  |
-| ---------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [prod](https://github.com/michaelhyi/personal-website/tree/prod) | Production Branch: Do not push commits or merge pr's unless providing update |
-| [dev](https://github.com/michaelhyi/personal-website/tree/dev)   | Development Branch: Do not push commits, merge pr's instead                  |
-
-<!-- # Quick Start
+1. Clone the repo.
 
 ```shell
 git clone https://github.com/michaelhyi/personal-website.git
-cd personal-website
+```
 
+1. Navigate to the project directory.
+
+```shell
+cd personal-website
+```
+
+3. Run docker-compose and installation of Maven & Node dependencies/packages.
+
+```shell
+bun ci
+```
+
+4. Navigate to the website application directory.
+
+```shell
+cd apps/web
+```
+
+5. Create a file for environment variables.
+
+> Copy `.env.example` into a `.env.local` file in the root of the Next.js project.
+> 
+> Set `NEXT_PUBLIC_API_URL` equal to your Spring Boot / API url.
+
+6. Navigate back to the root of the project.
+
+```shell
+cd ../../
+```
+
+7. Run the project.
+
+```shell
 bun dev
-``` -->
+```
+
+8. Format the project.
+
+```shell
+bun format
+```
+
+9. Build the project.
+
+```shell
+bun run build
+```
+
+10. Lint the project.
+
+```shell
+bun lint
+```
+
+11. Test the project.
+
+```shell
+bun run test
+```
