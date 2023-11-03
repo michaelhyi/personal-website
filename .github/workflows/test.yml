@@ -20,8 +20,9 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Clean Install & Run Unit and Integration Testing using JUnit
+      - name: Clean Install, Build, Run Unit and Integration Testing using JUnit
         run: |
           bun ci
           cd apps/api
+          bun run build
           bun run test
