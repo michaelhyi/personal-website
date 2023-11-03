@@ -4,14 +4,14 @@ import Link from "next/link";
 import type { FC, ReactNode } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 
-interface Params {
+interface Props {
   title: string;
   children: ReactNode;
   href?: string;
   nonDesc?: boolean;
 }
 
-const Section: FC<Params> = ({ title, children, href, nonDesc = false }) => {
+const Section: FC<Props> = ({ title, children, href, nonDesc = false }) => {
   return (
     <div className="mt-10">
       {href ? (

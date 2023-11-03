@@ -1,16 +1,16 @@
 "use client";
 
 import type { FC } from "react";
-import { projects } from "../../data/projects";
-import type Project from "../../types/project";
+import { projects } from "@/data/projects";
+import type Project from "@/types/project";
 import Card from "../card";
 import Section from "../section";
 
-interface Params {
+interface Props {
   extended?: boolean;
 }
 
-const Projects: FC<Params> = ({ extended = false }) => {
+const Projects: FC<Props> = ({ extended = false }) => {
   return (
     <Section href={extended ? undefined : "/projects"} title="Projects">
       {projects.map((v: Project, i) => {

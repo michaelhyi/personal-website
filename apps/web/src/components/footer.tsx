@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import type { FC } from "react";
-import { contact } from "../data/contact";
+import { contact } from "@/data/contact";
 
-interface Params {
+interface Props {
   absolute?: boolean;
 }
 
-const Footer: FC<Params> = ({ absolute = false }) => {
+const Footer: FC<Props> = ({ absolute = false }) => {
   return (
     <div
       className={`flex 

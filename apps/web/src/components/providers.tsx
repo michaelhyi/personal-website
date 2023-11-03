@@ -7,11 +7,11 @@ import { AnimatePresence } from "framer-motion";
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-interface Params {
+interface Props {
   children: ReactNode;
 }
 
-const Providers: FC<Params> = ({ children }) => {
+const Providers: FC<Props> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

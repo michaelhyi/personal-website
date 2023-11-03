@@ -4,7 +4,7 @@ import Image from "next/image";
 import type { FC } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 
-interface Params {
+interface Props {
   name: string;
   date: string;
   desc?: string;
@@ -13,7 +13,7 @@ interface Params {
   href?: string;
 }
 
-const Card: FC<Params> = ({ name, date, desc, tech, img, href }) => {
+const Card: FC<Props> = ({ name, date, desc, tech, img, href }) => {
   return (
     <div className="flex sm:flex-col md:flex-row">
       <div className="w-48 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">

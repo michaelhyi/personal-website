@@ -1,6 +1,6 @@
 "use client";
 
-import { experience } from "../../data/experience";
+import { experience } from "@/data/experience";
 import Card from "../card";
 import Section from "../section";
 

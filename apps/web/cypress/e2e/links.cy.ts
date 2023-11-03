@@ -2,7 +2,7 @@ import { contact } from "../../src/data/contact";
 import { experience } from "../../src/data/experience";
 import { projects } from "../../src/data/projects";
 
-let links: string[] = [];
+const links: string[] = [];
 
 describe("links", () => {
   it("links", () => {

@@ -1,10 +1,10 @@
 import type { FC, ReactNode } from "react";
 import type { Metadata } from "next";
-import Providers from "../components/providers";
-import { font } from "../utils/font";
+import Providers from "@/components/providers";
+import { font } from "@/utils/font";
 import "./globals.css";
 
-interface Params {
+interface Props {
   children: ReactNode;
 }
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout: FC<Params> = ({ children }) => {
+const RootLayout: FC<Props> = ({ children }) => {
   return (
     <html lang="en">
       <body className={font.className}>
