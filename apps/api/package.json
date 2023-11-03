@@ -7,6 +7,8 @@
   "scripts": {
     "build": "mvn package",
     "ci": "docker compose up -d && mvn clean",
-    "lint": "mvn validate"
+    "dev": "mvn spring-boot:run",
+    "lint": "mvn validate",
+    "test": "mvn test"
   }
 }

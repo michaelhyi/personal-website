@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Providers from "@/components/Providers";
 import { font } from "@/utils/font";
 import "./globals.css";
@@ -14,10 +14,11 @@ export const metadata: Metadata = {
   icons: {
     icon: "/michael.png",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 const RootLayout: FC<Props> = ({ children }) => {

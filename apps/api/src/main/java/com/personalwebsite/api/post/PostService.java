@@ -39,6 +39,7 @@ public class PostService {
         post.setTitle(req.title());
         post.setDescription(req.description());
         post.setBody((req.body()));
+
     }
 
     public void deletePost(Long id) {
