@@ -20,7 +20,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Clean Install & Build
+      - name: Install Dependencies & Build using Bun
         run: |
-          bun ci
+          bun setup
           bun run build

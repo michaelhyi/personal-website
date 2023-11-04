@@ -22,9 +22,9 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Clean Install and Build
+      - name: Install Dependencies and Build using Bun
         run: |
-          bun ci
+          bun setup
           bun run build
 
       - name: Login to Docker Hub
