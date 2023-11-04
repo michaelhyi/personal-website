@@ -13,7 +13,7 @@
     "build": "turbo run build",
     "ci": "rm -rf node_modules && bun install && docker compose up -d && bun prepare && turbo run ci",
     "dev": "turbo run dev",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix && turbo run format",
     "lint": "prettier --check . && turbo run lint",
     "prepare": "husky install",
     "test": "turbo run test"

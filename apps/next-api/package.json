@@ -1,0 +1,28 @@
+{
+  "name": "next-api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "ci": "rm -rf node_modules && bun install",
+    "dev": "next dev --turbo",
+    "format": "bunx prisma format",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.5.2",
+    "next": "14.0.1",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.1",
+    "prisma": "^5.5.2",
+    "typescript": "^5"
+  }
+}
