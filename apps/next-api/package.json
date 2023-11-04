@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "bunx prisma generate && next build",
-    "clean": "rm-rf node_modules && rm -rf .next && rm -rf .turbo",
+    "clean": "rm -rf node_modules && rm -rf .next && rm -rf .turbo",
     "dev": "next dev --turbo",
     "format": "bunx prisma format",
     "setup": "bun install",
