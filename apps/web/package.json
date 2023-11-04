@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "ci": "rm -rf node_modules && bun install",
+    "clean": "rm -rf node_modules && rm -rf .next && rm -rf .turbo",
     "dev": "next dev --turbo",
     "lint": "next lint",
+    "setup": "bun install",
     "start": "next start",
     "test": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\""
   },
