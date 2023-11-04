@@ -6,7 +6,6 @@
   "private": true,
   "scripts": {
     "build": "mvn package",
-    "ci": "mvn clean",
     "dev": "mvn spring-boot:run",
     "lint": "mvn validate",
     "test": "mvn test"
