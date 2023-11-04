@@ -11,12 +11,13 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "clean": "rm -rf .turbo && rm -rf node_modules",
+    "ci": "turbo run clean && turbo run install",
+    "clean": "rm -rf .turbo && rm -rf node_modules && turbo run clean",
     "dev": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix && turbo run format",
     "lint": "prettier --check . && turbo run lint",
     "prepare": "husky install",
-    "setup": "bun install && docker compose up -d && bun prepare && turbo run ci",
+    "setup": "bun install && docker compose up -d && bun prepare && turbo run setup",
     "test": "turbo run test"
   },
   "devDependencies": {

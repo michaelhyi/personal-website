@@ -4,7 +4,7 @@
   "globalEnv": ["NODE_ENV"],
   "pipeline": {
     "build": {
-      "dependsOn": ["next-api#gen", "^build"],
+      "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "ci": {},
@@ -14,7 +14,6 @@
     },
     "format": {},
     "lint": {},
-    "next-api#gen": {},
     "prepare": {},
     "test": {}
   }

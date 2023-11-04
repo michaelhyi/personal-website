@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "bunx prisma generate && next build",
     "clean": "rm-rf node_modules && rm -rf .next && rm -rf .turbo",
     "dev": "next dev --turbo",
     "format": "bunx prisma format",
-    "gen": "bunx prisma generate",
     "setup": "bun install",
     "start": "next start",
     "lint": "next lint"
