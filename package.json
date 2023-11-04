@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "ci": "turbo run clean && bun install",
+    "ci": "bun clean && bun setup",
     "clean": "rm -rf .turbo && rm -rf node_modules && turbo run clean",
     "dev": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix && turbo run format",
