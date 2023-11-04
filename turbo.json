@@ -8,6 +8,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "ci": {},
+    "clean": {},
     "dev": {
       "cache": false,
       "persistent": true
@@ -15,6 +16,7 @@
     "format": {},
     "lint": {},
     "prepare": {},
+    "setup": {},
     "test": {}
   }
 }
