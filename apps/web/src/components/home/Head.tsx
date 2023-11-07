@@ -20,7 +20,7 @@ const About: FC = () => {
           Software Engineer
         </div>
         <Link
-          href="https://michael-yi.com/resume.pdf"
+          href="https://michael-yi.com/Resume.pdf"
           className="cursor-pointer
                           rounded-2xl
                           bg-neutral-600 
