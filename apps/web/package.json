@@ -1,6 +1,8 @@
 {
   "name": "personal-website",
   "version": "4.1.0",
+  "author": "michaelhyi",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -19,7 +21,7 @@
     "@vercel/analytics": "^1.1.1",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.4",
-    "next": "^14.0.0",
+    "next": "14.0.1",
     "query-string": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
