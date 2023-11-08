@@ -24,8 +24,7 @@ jobs:
         working-directory: ./apps/next-api
         run: |
           touch .env
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
-          echo ORIGIN=${{ secrets.ORIGIN }} >> .env
+          printf '%s\n %s' DATABASE_URL=${{ secrets.DATABASE_URL }} ORIGIN=${{ secrets.ORIGIN }} >> .env
 
       - name: Install Dependencies & Build using Bun
         run: |
