@@ -11,7 +11,7 @@ interface Props {
 
 const Container: FC<Props> = ({ children, absoluteFooter = false }) => {
   return (
-    <div className="bg-neutral-800 text-white">
+    <div className="bg-neutral-800 text-white min-h-screen">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
