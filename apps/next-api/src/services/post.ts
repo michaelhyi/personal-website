@@ -1,11 +1,11 @@
 import prisma from "../libs/prisma";
 
-export const readPost = async (id: string) => {
+export const readPost = (id: string) => {
   return prisma.post.findUnique({
     where: { id: parseInt(id) },
   });
 };
 
-export const readAllPosts = async () => {
+export const readAllPosts = () => {
   return prisma.post.findMany();
 };
