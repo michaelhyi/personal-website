@@ -16,7 +16,7 @@ const Footer: FC<Props> = ({ absolute = false }) => {
                      items-center
                      gap-3
                      text-[10px]
-                     text-neutral-400
+                     text-neutral-300
                      ${
                        absolute
                          ? "absolute bottom-4 left-0 right-0"

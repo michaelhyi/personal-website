@@ -2,7 +2,7 @@ interface Post {
   id: number;
   date: Date;
   title: string;
-  description: string;
+  desc: string;
   body: string;
 }
 

@@ -37,10 +37,10 @@ const Card: FC<Props> = ({ name, date, desc, tech, img, href }) => {
           {href !== undefined && <FiArrowUpRight size={12} />}
         </a>
         {desc !== undefined && (
-          <div className="mt-2 text-xs text-neutral-500">{desc}</div>
+          <div className="mt-2 text-xs text-neutral-400">{desc}</div>
         )}
         {tech !== undefined && (
-          <div className="mt-2 text-[10px] text-neutral-400">{tech}</div>
+          <div className="mt-2 text-[10px] text-neutral-300">{tech}</div>
         )}
         {img !== undefined && (
           <Image
