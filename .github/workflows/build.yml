@@ -20,12 +20,21 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       
-      - name: Setup .env File
+      - name: Setup .env File in @personal-website/next-api
         uses: SpicyPizza/create-envfile@v2.0
         with:
           envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
           envkey_ORIGIN: ${{ secrets.ORIGIN }}
           directory: ./apps/next-api
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
+      
+      - name: Setup .env File in @personal-website/web
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_API_URL: ${{ secrets.API_URL }}
+          directory: ./apps/web
           file_name: .env
           fail_on_empty: false
           sort_keys: false
