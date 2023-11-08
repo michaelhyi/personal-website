@@ -19,6 +19,13 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
+      
+      - name: create env file
+        working-directory: ./apps/next-api
+        run: |
+          touch .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+          echo ORIGIN=${{ secrets.ORIGIN }} >> .env
 
       - name: Install Dependencies & Build using Bun
         run: |
