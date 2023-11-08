@@ -13,7 +13,7 @@ const NotFound = () => {
                    -translate-y-1/2
                    transform
                    text-[10px]
-                   text-neutral-400"
+                   text-neutral-300"
       >
         404, not found.
       </div>

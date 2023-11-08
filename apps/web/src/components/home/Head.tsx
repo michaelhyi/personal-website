@@ -16,21 +16,20 @@ const About: FC = () => {
       />
       <div>
         <div className="text-2xl font-normal">Michael Yi</div>
-        <div className="mb-2 text-sm font-light text-neutral-500">
+        <div className="mb-2 text-sm font-light text-neutral-400">
           Software Engineer
         </div>
         <Link
-          href="https://michael-yi.com/resume.pdf"
+          href="https://michael-yi.com/Resume.pdf"
           className="cursor-pointer
                           rounded-2xl
-                          bg-neutral-100 
+                          bg-neutral-600 
                           px-5
                           py-1
                           text-center
                           text-xs
                           font-light 
-                          text-neutral-500 
-                          underline
+                          text-neutral-300 
                           duration-500
                           hover:opacity-50"
         >

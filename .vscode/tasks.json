@@ -10,7 +10,7 @@
   "tasks": [
     {
       "label": "Launch Dev Terminals",
-      "dependsOn": ["api (8080)", "web (3000)"],
+      "dependsOn": ["api (8080)", "next-api (3001)", "web (3000)"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -19,14 +19,21 @@
     {
       "label": "api (8080)",
       "type": "shell",
-      "command": "cd apps/api && java -jar target/api-1.0.1.jar",
+      "command": "cd apps/api && bun dev",
+      "isBackground": false,
+      "problemMatcher": []
+    },
+    {
+      "label": "next-api (3001)",
+      "type": "shell",
+      "command": "cd apps/next-api && bun dev",
       "isBackground": false,
       "problemMatcher": []
     },
     {
       "label": "web (3000)",
       "type": "shell",
-      "command": "cd apps/web && yarn dev",
+      "command": "cd apps/web && bun dev",
       "isBackground": false,
       "problemMatcher": []
     }
