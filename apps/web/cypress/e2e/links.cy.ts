@@ -1,5 +1,4 @@
 import { contact } from "../../src/data/contact";
-import { experience } from "../../src/data/experience";
 import { projects } from "../../src/data/projects";
 
 const links: string[] = [];
@@ -11,10 +10,6 @@ describe("links", () => {
     });
 
     projects.forEach((v) => {
-      links.push(v.href);
-    });
-
-    experience.forEach((v) => {
       links.push(v.href);
     });
 

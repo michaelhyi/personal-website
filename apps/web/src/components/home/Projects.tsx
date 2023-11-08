@@ -15,7 +15,7 @@ const Projects: FC<Props> = ({ extended = false }) => {
     <Section href={extended ? undefined : "/projects"} title="Projects">
       {projects.map((v: Project, i) => {
         if (!extended) {
-          if (i <= 4)
+          if (i < 3)
             return (
               <Card
                 date={v.date}
