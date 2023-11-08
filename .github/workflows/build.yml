@@ -20,7 +20,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       
-      - name: Create .env File
+      - name: Setup .env File
         uses: SpicyPizza/create-envfile@v2.0
         with:
           envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
