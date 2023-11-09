@@ -9,9 +9,7 @@ const nextConfig = {
           {
             key: "Access-Control-Allow-Origin",
             value:
-              process.env.NODE_ENV !== "production"
-                ? "http://localhost:3000"
-                : process.env.ORIGIN,
+              process.env.NODE_ENV !== "production" ? "*" : process.env.ORIGIN,
           },
           {
             key: "Access-Control-Allow-Methods",

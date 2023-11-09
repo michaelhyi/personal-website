@@ -1,12 +1,13 @@
 "use client";
 
 import { Spinner } from "@chakra-ui/react";
+import Container from "./Container";
 
 const Loading = () => {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <Spinner size="xs" />
-    </div>
+    <Container absoluteFooter>
+      <Spinner size="xs" color="white" />
+    </Container>
   );
 };
 
