@@ -3,6 +3,7 @@ interface Post {
   date: Date;
   title: string;
   description: string;
+  rating: number;
   body: string;
 }
 

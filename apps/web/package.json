@@ -5,19 +5,22 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "npx prisma generate && next build",
     "clean": "rm -rf node_modules && rm -rf .next && rm -rf .turbo",
-    "dev": "next dev --turbo",
-    "lint": "next lint",
-    "setup": "bun install",
-    "start": "next start"
+    "dev": "npx prisma generate && next dev --turbo",
+    "format": "npx prisma format",
+    "lint": "npx prisma generate && next lint",
+    "setup": "npx prisma generate && bun install",
+    "start": "npx prisma generate && next start"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.1.5",
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@prisma/client": "^5.5.2",
     "@vercel/analytics": "^1.1.1",
+    "axios": "^1.6.1",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.4",
     "next": "14.0.1",
@@ -35,6 +38,7 @@
     "eslint": "^8",
     "eslint-config-next": "^13.5.5",
     "postcss": "^8",
+    "prisma": "^5.5.2",
     "tailwindcss": "^3",
     "typescript": "^5"
   }

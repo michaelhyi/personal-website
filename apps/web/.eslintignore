@@ -4,6 +4,9 @@ archive/
 node_modules/
 public/
 
+src/lib/prisma.ts
+src/app/api/*
+
 .env.example
 .gitignore
 bun.lockb
