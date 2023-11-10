@@ -4,6 +4,10 @@ archive/
 node_modules/
 public/
 
+src/lib/prisma.ts
+src/services/post.ts
+src/app/blog/*
+
 .env.example
 .gitignore
 bun.lockb

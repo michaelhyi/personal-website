@@ -20,6 +20,15 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
+      - name: Setup .env File in web
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_DB_URL: ${{ secrets.DB_URL }}
+          directory: ./apps/web
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
+
       - name: Install Dependencies & Build using Bun
         run: |
           bun setup

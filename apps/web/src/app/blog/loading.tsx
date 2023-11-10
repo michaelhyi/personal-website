@@ -1,4 +1,4 @@
-import LoadingClient from "../components/loading";
+import LoadingClient from "@/components/Loading";
 
 const Loading = () => {
   return <LoadingClient />;
