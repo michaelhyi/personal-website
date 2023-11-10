@@ -4,11 +4,6 @@
   "author": "michaelhyi",
   "license": "MIT",
   "private": true,
-  "pkg": {
-    "assets": [
-      "node_modules/.prisma/client/*.node"
-    ]
-  },
   "scripts": {
     "build": "npx prisma generate && next build",
     "clean": "rm -rf node_modules && rm -rf .next && rm -rf .turbo",
@@ -36,6 +31,7 @@
     "react-icons": "^4.11.0"
   },
   "devDependencies": {
+    "@prisma/nextjs-monorepo-workaround-plugin": "^5.5.2",
     "@types/node": "^20",
     "@types/react": "^18.2.34",
     "@types/react-dom": "^18.2.14",
