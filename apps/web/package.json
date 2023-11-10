@@ -4,6 +4,11 @@
   "author": "michaelhyi",
   "license": "MIT",
   "private": true,
+  "pkg": {
+    "assets": [
+      "node_modules/.prisma/client/*.node"
+    ]
+  },
   "scripts": {
     "build": "npx prisma generate && next build",
     "clean": "rm -rf node_modules && rm -rf .next && rm -rf .turbo",
