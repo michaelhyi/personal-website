@@ -19,7 +19,6 @@
 - [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
-- [Prisma](https://www.prisma.io/)
 - [Docker](https://www.docker.com/)
 - [Kubernetes](https://kubernetes.io/)
 - [AWS EC2, EBS, RDS](https://aws.amazon.com/)
