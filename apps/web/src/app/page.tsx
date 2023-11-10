@@ -38,7 +38,16 @@ const Home = () => {
           >
             Portfolio
           </Link>
-          &nbsp;&nbsp;&#183;&nbsp;&nbsp;Blog&nbsp;&nbsp;&#183;&nbsp;&nbsp;
+          &nbsp;&nbsp;&#183;&nbsp;&nbsp;
+          <Link
+            href="/blog"
+            className="cursor-pointer
+                          duration-500
+                          hover:opacity-50"
+          >
+            Blog
+          </Link>
+          &nbsp;&nbsp;&#183;&nbsp;&nbsp;
           <Link
             href="https://michael-yi.com/Resume.pdf"
             className="cursor-pointer
