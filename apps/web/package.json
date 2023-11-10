@@ -7,11 +7,11 @@
   "scripts": {
     "build": "npx prisma generate && next build",
     "clean": "rm -rf node_modules && rm -rf .next && rm -rf .turbo",
-    "dev": "npx prisma generate && next dev --turbo",
+    "dev": "next dev --turbo",
     "format": "npx prisma format",
-    "lint": "npx prisma generate && next lint",
-    "setup": "npx prisma generate && bun install",
-    "start": "npx prisma generate && next start"
+    "lint": "next lint",
+    "setup": "bun install",
+    "start": "next start"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.1.5",

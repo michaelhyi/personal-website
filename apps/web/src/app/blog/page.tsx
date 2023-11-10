@@ -3,13 +3,13 @@ import Container from "@/components/Container";
 import Section from "@/components/Section";
 import Card from "@/components/Card";
 import type Post from "@/types/dto/post";
+import { readAllPosts } from "@/services/post";
 
 const Blog = async () => {
-  const res = await fetch("http://localhost:3000/api/v1/post");
-  const data: Post[] = (await res.json()) as Post[];
+  const data: Post[] = await readAllPosts();
 
   return (
-    <Container>
+    <Container absoluteFooter>
       <Section title="Blog">
         {data.map((v) => (
           <Card
@@ -17,6 +17,7 @@ const Blog = async () => {
             desc={v.description}
             key={v.id}
             name={v.title}
+            href={`/blog/${v.id}`}
           />
         ))}
       </Section>

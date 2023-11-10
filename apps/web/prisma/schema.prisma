@@ -11,7 +11,8 @@ model Post {
   id          Int      @id @default(autoincrement())
   date        DateTime @default(now())
   title       String
-  description String
   rating      Int
+  image       String
+  description String
   body        String
 }
