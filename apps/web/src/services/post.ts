@@ -1,6 +1,6 @@
 import type Post from "@/types/dto/post";
 
-export const readPost = async (_id: string) => {
+export const readPost = (_id: string) => {
   const post: Post = {
     id: 1,
     date: new Date("2023-11-09 00:00:00"),
@@ -16,7 +16,7 @@ export const readPost = async (_id: string) => {
   return post;
 };
 
-export const readAllPosts = async () => {
+export const readAllPosts = () => {
   const posts: Post[] = [
     {
       id: 1,
