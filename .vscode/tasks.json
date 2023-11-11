@@ -19,14 +19,14 @@
     {
       "label": "api (8080)",
       "type": "shell",
-      "command": "cd apps/api && bun dev",
+      "command": "cd apps/api && yarn dev",
       "isBackground": false,
       "problemMatcher": []
     },
     {
       "label": "web (3000)",
       "type": "shell",
-      "command": "cd apps/web && bun dev",
+      "command": "cd apps/web && yarn dev",
       "isBackground": false,
       "problemMatcher": []
     }

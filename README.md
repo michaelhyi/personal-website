@@ -34,7 +34,7 @@
 - Node
 - Maven
 - Docker
-- Bun
+- Yarn
 
 #### Setup:
 
@@ -53,7 +53,7 @@ cd personal-website
 3. Run docker-compose and installation of Maven & Node dependencies/packages.
 
 ```shell
-bun ci
+yarn ci
 ```
 
 4. Navigate to the website application directory.
@@ -77,29 +77,29 @@ cd ../../
 1. Run the project, starting both Spring Boot and Next.js applications.
 
 ```shell
-bun dev
+yarn dev
 ```
 
 8. Format the project using Prettier and ESLint.
 
 ```shell
-bun format
+yarn format
 ```
 
 9. Build the project using Maven packaging and Next.js.
 
 ```shell
-bun run build
+yarn build
 ```
 
 10. Lint the project using Checkstyle, Prettier, and ESLint.
 
 ```shell
-bun lint
+yarn lint
 ```
 
 11. Run unit and integration testing using JUnit and E2E testing using Cypress.
 
 ```shell
-bun run test
+yarn run test
 ```
