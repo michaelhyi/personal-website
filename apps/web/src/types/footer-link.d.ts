@@ -1,8 +1,8 @@
 import type { IconType } from "react-icons";
 
-interface Contact {
+interface FooterLink {
   icon: IconType;
   href: string;
 }
 
-export default Contact;
+export default FooterLink;

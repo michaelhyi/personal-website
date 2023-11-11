@@ -1,17 +1,12 @@
 {
-  "name": "personal-website",
-  "version": "4.1.0",
+  "name": "@personal-website/web",
+  "version": "5.0.0",
   "author": "michaelhyi",
   "license": "MIT",
   "private": true,
-  "pkg": {
-    "assets": [
-      "node_modules/.prisma/client/*.node"
-    ]
-  },
   "scripts": {
     "build": "next build",
-    "clean": "rm -rf node_modules && rm -rf .next && rm -rf .turbo",
+    "clean": "rm -rf node_modules .next .turbo",
     "dev": "next dev --turbo",
     "lint": "next lint",
     "setup": "bun install",

@@ -2,9 +2,9 @@ interface Post {
   id: number;
   date: Date;
   title: string;
+  rating: number;
   image: string;
   description: string;
-  rating: number;
   body: string;
 }
 

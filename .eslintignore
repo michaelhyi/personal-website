@@ -1,13 +1,10 @@
 .github/
 .husky/
-api/
 node_modules/
-scripts/
-web/
 
 .gitignore
+.npmrc
 .prettierignore
 bun.lockb
 docker-compose.yml
 LICENSE
-README.md

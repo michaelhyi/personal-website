@@ -1,7 +1,7 @@
 interface Experience {
   name: string;
   date: string;
-  desc: string;
+  description: string;
 }
 
 export default Experience;

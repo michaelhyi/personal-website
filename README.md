@@ -9,7 +9,7 @@
 
 <hr/>
 
-### Built With 
+### Built With
 
 - [Turborepo](https://turbo.build/)
 - [Java](https://www.java.com/en/)
@@ -65,7 +65,7 @@ cd apps/web
 5. Create a file for environment variables.
 
 > Copy `.env.example` into a `.env.local` file in the root of the Next.js project.
-> 
+>
 > Set `NEXT_PUBLIC_API_URL` equal to your Spring Boot / API url.
 
 6. Navigate back to the root of the project.
