@@ -2,12 +2,14 @@ package com.personalwebsite.api.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 
 @Configuration
@@ -19,11 +21,22 @@ public class SecurityConfig {
             HttpSecurity http
     ) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .requiresChannel(channel -> channel
+                        .requestMatchers(r -> r
+                                .getHeader("X-Forwarded-Proto")
+                                != null))
+                .requiresChannel(channel -> channel
+                        .anyRequest()
+                        .requiresSecure())
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository
+                                .withHttpOnlyFalse()))
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/post/**")
                         .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .sessionManagement(sess ->
                         sess.sessionCreationPolicy(

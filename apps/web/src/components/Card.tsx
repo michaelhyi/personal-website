@@ -11,9 +11,18 @@ interface Props {
   tech?: string;
   img?: string;
   href?: string;
+  blog?: boolean;
 }
 
-const Card: FC<Props> = ({ name, date, desc, tech, img, href }) => {
+const Card: FC<Props> = ({
+  name,
+  date,
+  desc,
+  tech,
+  img,
+  href,
+  blog = false,
+}) => {
   return (
     <div className="flex sm:flex-col md:flex-row">
       <div className="w-48 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
@@ -21,8 +30,8 @@ const Card: FC<Props> = ({ name, date, desc, tech, img, href }) => {
       </div>
       <div className="sm:w-72 md:w-96">
         <a
-          rel="noopener noreferrer"
-          target="_blank"
+          rel={blog ? "" : "noopener noreferrer"}
+          target={blog ? "" : "_blank"}
           href={href}
           className={`flex 
                            gap-1
