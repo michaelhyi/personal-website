@@ -10,9 +10,9 @@ interface IParams {
   params: { id: string };
 }
 
-const View: FC<IParams> = ({ params }) => {
+const View: FC<IParams> = async ({ params }) => {
   const { id } = params;
-  const data: Post | null = readPost(id);
+  const data: Post | null = await readPost(id);
 
   // if (!data) notFound();
 

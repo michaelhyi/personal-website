@@ -1,6 +1,10 @@
 import type Post from "@/types/dto/post";
 
-export const readPost = (_id: string) => {
+export const readPost = async (_id: string) => {
+  await new Promise((res) => {
+    setTimeout(res, 1000);
+  });
+
   const post: Post = {
     id: 1,
     date: new Date("2023-11-09 00:00:00"),
@@ -16,7 +20,11 @@ export const readPost = (_id: string) => {
   return post;
 };
 
-export const readAllPosts = () => {
+export const readAllPosts = async () => {
+  await new Promise((res) => {
+    setTimeout(res, 1000);
+  });
+
   const posts: Post[] = [
     {
       id: 1,
