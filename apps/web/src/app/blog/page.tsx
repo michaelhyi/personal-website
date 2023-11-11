@@ -18,6 +18,7 @@ const Blog = async () => {
             key={v.id}
             name={v.title}
             href={`/blog/${v.id}`}
+            blog
           />
         ))}
       </Section>
