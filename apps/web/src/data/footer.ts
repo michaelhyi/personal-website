@@ -1,7 +1,7 @@
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
-import type Contact from "@/types/contact";
+import type FooterLink from "@/types/footer-link";
 
-export const contact: Contact[] = [
+export const footer: FooterLink[] = [
   {
     icon: AiFillGithub,
     href: "https://github.com/michaelhyi",

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { FC } from "react";
-import { contact } from "@/data/contact";
+import { footer } from "@/data/footer";
 
 interface Props {
   absolute?: boolean;
@@ -24,7 +24,7 @@ const Footer: FC<Props> = ({ absolute = false }) => {
                      }`}
     >
       <div className="flex gap-2">
-        {contact.map(({ icon: Icon, href }) => (
+        {footer.map(({ icon: Icon, href }) => (
           <Link
             key={href}
             href={href}

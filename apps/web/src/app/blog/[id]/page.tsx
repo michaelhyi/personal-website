@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { notFound } from "next/navigation";
+// import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import Image from "next/image";
 import type Post from "@/types/dto/post";
@@ -14,7 +14,7 @@ const View: FC<IParams> = async ({ params }) => {
   const { id } = params;
   const data: Post | null = await readPost(id);
 
-  if (!data) notFound();
+  // if (!data) notFound();
 
   return (
     <Container>

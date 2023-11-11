@@ -1,8 +1,6 @@
 .github/
 .husky/
-api/
 node_modules/
-scripts/
 
 **/.idea
 **/.next
@@ -17,7 +15,7 @@ scripts/
 
 .eslintignore
 .gitignore
+.npmrc
 .prettierignore
 bun.lockb
 LICENSE
-README.md

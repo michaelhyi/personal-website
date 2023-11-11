@@ -8,7 +8,7 @@ const Experience = () => {
   return (
     <Section title="Experience">
       {experience.map((v) => (
-        <Card date={v.date} desc={v.desc} key={v.name} name={v.name} />
+        <Card date={v.date} desc={v.description} key={v.name} name={v.name} />
       ))}
     </Section>
   );

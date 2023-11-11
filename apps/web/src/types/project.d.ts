@@ -1,9 +1,9 @@
 interface Project {
   name: string;
   date: string;
-  desc: string;
+  description: string;
   tech: string;
-  img?: string;
+  image?: string;
   href: string;
 }
 
