@@ -11,11 +11,11 @@ node_modules/
 **/.eslintignore
 **/.gitignore
 **/.prettierignore
-**/bun.lockb
+**/yarn.lock
 
 .eslintignore
 .gitignore
 .npmrc
 .prettierignore
-bun.lockb
 LICENSE
+yarn.lock

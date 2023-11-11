@@ -5,6 +5,6 @@ node_modules/
 .gitignore
 .npmrc
 .prettierignore
-bun.lockb
 docker-compose.yml
 LICENSE
+yarn.lock
