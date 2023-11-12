@@ -30,6 +30,14 @@ services:
       - postgres
     restart: unless-stopped
 
+  api:
+    image: michaelyi/personal-website-api:latest
+    container_name: personal-website-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
 networks:
   postgres:
     driver: bridge
