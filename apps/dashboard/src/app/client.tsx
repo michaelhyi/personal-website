@@ -4,15 +4,27 @@ import type { AxiosError } from "axios";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
-import { useCallback, useState } from "react";
+import type { FC } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Container from "@/components/Container";
 import { auth } from "@/services/auth";
+import type User from "@/types/user";
 
-const HomeClient = () => {
+interface Props {
+  user: User | null;
+}
+
+const LoginClient: FC<Props> = ({ user }) => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [router, user]);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -85,9 +97,7 @@ const HomeClient = () => {
             <div className="text-xs text-red-300">{error}</div>
           )}
           <button
-            onClick={(e) => {
-              () => handleSubmit(handleLogin)(e);
-            }}
+            onClick={(e) => handleSubmit(handleLogin)(e)}
             className="mt-2 bg-neutral-400 text-white h-10 font-semibold rounded-md duration-500 hover:opacity-75"
             type="submit"
           >
@@ -99,4 +109,4 @@ const HomeClient = () => {
   );
 };
 
-export default HomeClient;
+export default LoginClient;

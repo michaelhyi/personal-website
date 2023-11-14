@@ -43,6 +43,7 @@ module.exports = {
     "react/jsx-sort-props": "off",
     "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/no-misused-promises": "off",
     "unicorn/filename-case": [
       "error",
       {
