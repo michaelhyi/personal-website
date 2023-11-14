@@ -20,6 +20,7 @@ public class PostService {
                 req.title(),
                 req.rating(),
                 req.image(),
+                req.description(),
                 req.body());
         repository.saveAndFlush(post);
         return post.getId();
