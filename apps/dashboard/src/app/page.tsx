@@ -1,3 +1,7 @@
-export default function Home() {
-  return <div>Home</div>;
-}
+import HomeClient from "./client";
+
+const Home = () => {
+  return <HomeClient />;
+};
+
+export default Home;

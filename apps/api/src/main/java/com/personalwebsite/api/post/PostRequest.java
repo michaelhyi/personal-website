@@ -1,6 +1,6 @@
 package com.personalwebsite.api.post;
 
-public record PostDto(
+public record PostRequest(
         String title,
         int rating,
         String image,

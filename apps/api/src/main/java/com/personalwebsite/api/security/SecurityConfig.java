@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 
 @Configuration
@@ -32,16 +31,7 @@ public class SecurityConfig {
             HttpSecurity http
     ) throws Exception {
         return http
-                .requiresChannel(channel -> channel
-                        .requestMatchers(r -> r
-                                .getHeader("X-Forwarded-Proto")
-                                != null))
-                .requiresChannel(channel -> channel
-                        .anyRequest()
-                        .requiresSecure())
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository
-                                .withHttpOnlyFalse()))
+                .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**")

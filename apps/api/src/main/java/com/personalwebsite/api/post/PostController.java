@@ -1,6 +1,5 @@
 package com.personalwebsite.api.post;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/post")
@@ -23,19 +21,13 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createPost(@RequestBody PostDto req) {
+    public ResponseEntity<Long> createPost(@RequestBody PostRequest req) {
         return ResponseEntity.ok(service.createPost(req));
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Post> readPost(@PathVariable("id") Long id) {
-        Optional<Post> post = service.readPost(id);
-
-        if (post.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        return ResponseEntity.ok(post.get());
+        return ResponseEntity.ok(service.readPost(id));
     }
 
     @GetMapping
@@ -46,7 +38,7 @@ public class PostController {
     @PostMapping("{id}")
     public ResponseEntity<Void> updatePost(
             @PathVariable("id") Long id,
-            @RequestBody PostDto req
+            @RequestBody PostRequest req
     ) {
         service.updatePost(id, req);
         return ResponseEntity.ok().build();

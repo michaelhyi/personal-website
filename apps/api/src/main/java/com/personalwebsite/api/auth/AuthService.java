@@ -1,5 +1,9 @@
 package com.personalwebsite.api.auth;
 
+import com.personalwebsite.api.auth.exceptions.InvalidCredentialsException;
+import com.personalwebsite.api.auth.exceptions.UnauthorizedUserException;
+import com.personalwebsite.api.auth.exceptions.UserAlreadyExistsException;
+import com.personalwebsite.api.auth.exceptions.UserNotFoundException;
 import com.personalwebsite.api.security.JwtService;
 import com.personalwebsite.api.user.User;
 import com.personalwebsite.api.user.UserRepository;
@@ -9,28 +13,34 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
 @Service
 public class AuthService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final AuthWhitelistedEmails authWhitelistedEmails;
 
     public AuthService(UserRepository repository,
                        PasswordEncoder passwordEncoder,
                        JwtService jwtService,
-                       AuthenticationManager authenticationManager) {
+                       AuthenticationManager authenticationManager,
+                       AuthWhitelistedEmails authWhitelistedEmails) {
         this.repository = repository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.authWhitelistedEmails = authWhitelistedEmails;
     }
 
-    public String login(AuthDto req) {
+    public String login(AuthRequest req) {
+        validateRequest(req);
+
         User user = repository.findByEmail(req.email())
-                .orElseThrow(() ->
-                        new IllegalStateException("User does not exist.")
-                );
+                .orElseThrow(UserNotFoundException::new);
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -42,22 +52,27 @@ public class AuthService {
         return jwtService.generateToken(user);
     }
 
-    public String register(AuthDto req) {
+    public String register(AuthRequest req) {
+        validateRequest(req);
+
         if (repository.findByEmail(req.email()).isPresent()) {
-            throw new IllegalArgumentException("User already exists.");
+            throw new UserAlreadyExistsException();
         }
 
         boolean authorized = false;
 
-        for (AuthWhitelistedUsers user : AuthWhitelistedUsers.values()) {
-            if (user.getEmail().equals(req.email())) {
+        List<String> whitelistedEmails = authWhitelistedEmails
+                .getWhitelistedEmails();
+
+        for (String email : whitelistedEmails) {
+            if (email.equals(req.email())) {
                 authorized = true;
                 break;
             }
         }
 
         if (!authorized) {
-            throw new IllegalArgumentException("Unauthorized.");
+            throw new UnauthorizedUserException();
         }
 
         User user = new User(req.email(),
@@ -65,5 +80,37 @@ public class AuthService {
                 UserRole.ADMIN);
         repository.save(user);
         return jwtService.generateToken(user);
+    }
+
+    private void validateRequest(AuthRequest req) {
+        if (!validateEmail(req.email())) {
+            throw new InvalidCredentialsException("Invalid email.");
+        }
+
+        if (!validatePassword(req.password())) {
+            throw new InvalidCredentialsException("Invalid password.");
+        }
+
+        if (validatePassword(req.confirmPassword())
+                && !req.password().equals(req.confirmPassword())) {
+            throw new InvalidCredentialsException("Passwords do not match.");
+        }
+    }
+
+    private boolean validateEmail(String email) {
+        return email != null
+                && !email.isBlank()
+                && !email.isEmpty()
+                && Pattern
+                .compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)"
+                        + "*(\\.[A-Za-z]{2,})$")
+                .matcher(email).matches();
+    }
+
+    private boolean validatePassword(String password) {
+        return password != null
+                && !password.isEmpty()
+                && !password.isBlank();
     }
 }

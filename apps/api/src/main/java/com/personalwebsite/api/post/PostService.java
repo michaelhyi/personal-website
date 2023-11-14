@@ -1,6 +1,7 @@
 package com.personalwebsite.api.post;
 
 
+import com.personalwebsite.api.post.exceptions.PostNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class PostService {
         this.repository = repository;
     }
 
-    public Long createPost(PostDto req) {
+    public Long createPost(PostRequest req) {
         Post post = new Post(
                 req.title(),
                 req.rating(),
@@ -26,8 +27,14 @@ public class PostService {
         return post.getId();
     }
 
-    public Optional<Post> readPost(Long id) {
-        return repository.findById(id);
+    public Post readPost(Long id) {
+        Optional<Post> post = repository.findById(id);
+
+        if (post.isEmpty()) {
+            throw new PostNotFoundException();
+        }
+
+        return post.get();
     }
 
     public List<Post> readAllPosts() {
@@ -35,7 +42,7 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(Long id, PostDto req) {
+    public void updatePost(Long id, PostRequest req) {
         Post post = repository.findById(id)
                 .orElseThrow(() ->
                         new IllegalStateException("Post does not exist.")

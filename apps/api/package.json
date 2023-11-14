@@ -6,9 +6,10 @@
   "private": true,
   "scripts": {
     "build": "mvn package",
-    "clean": "rm -rf .turbo",
+    "clean": "rm -rf .turbo && mvn clean",
     "dev": "mvn spring-boot:run",
     "lint": "mvn validate",
+    "setup": "mvn install",
     "test": "mvn test"
   }
 }
