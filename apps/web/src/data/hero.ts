@@ -1,4 +1,4 @@
-export const head = [
+export const hero = [
   {
     name: "Portfolio",
     href: "/portfolio",

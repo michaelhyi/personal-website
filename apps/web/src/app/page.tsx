@@ -1,10 +1,10 @@
 import Container from "@/components/Container";
-import Head from "@/components/Head";
+import Hero from "@/components/Hero";
 
 const Home = () => {
   return (
     <Container absoluteFooter>
-      <Head />
+      <Hero />
     </Container>
   );
 };

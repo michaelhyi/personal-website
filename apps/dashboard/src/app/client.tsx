@@ -39,12 +39,14 @@ const LoginClient: FC<Props> = ({ user }) => {
       try {
         await auth("login", data);
         setError(null);
-        router.push("/");
+        router.push("/dashboard");
       } catch (e) {
         const { response } = e as AxiosError;
+
         if (response) {
           setError(response.data as string);
         }
+
         setSubmitting(false);
       }
     },

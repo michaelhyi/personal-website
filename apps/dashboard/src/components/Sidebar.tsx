@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaHome, FaProjectDiagram } from "react-icons/fa";
+import { MdOutlineWork } from "react-icons/md";
+import { IoLogOutOutline } from "react-icons/io5";
+import { TfiWrite } from "react-icons/tfi";
 
 const Sidebar = () => {
   return (
@@ -16,15 +19,49 @@ const Sidebar = () => {
           width={75}
         />
         <div className="mt-4 text-xl font-normal">Michael Yi</div>
+        <div className="mt-1 text-xs font-light text-neutral-400">
+          Personal Website Dashboard
+        </div>
       </div>
-      <div className="mt-10" />
-      <Link
-        href="/dashboard/blog"
-        className="flex items-center ml-8 gap-6 text-neutral-200 duration-500 hover:opacity-50"
-      >
-        <FaPencilAlt />
-        <div className="text-sm font-normal">Blog</div>
-      </Link>
+      <div className="px-6 py-8">
+        <div className="text-neutral-400 text-xs font-semibold">MENU</div>
+        <Link
+          href="/dashboard"
+          className="mt-4 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
+        >
+          <FaHome size={12.5} />
+          <div className="text-sm font-medium">Home</div>
+        </Link>
+        <Link
+          href="/dashboard/experience"
+          className="mt-3 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
+        >
+          <MdOutlineWork size={12.5} />
+          <div className="text-sm font-medium">Experience</div>
+        </Link>
+        <Link
+          href="/dashboard/projects"
+          className="mt-3 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
+        >
+          <FaProjectDiagram size={12.5} />
+          <div className="text-sm font-medium">Projects</div>
+        </Link>
+        <Link
+          href="/dashboard/blog"
+          className="mt-3 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
+        >
+          <TfiWrite size={12.5} />
+          <div className="text-sm font-medium">Blog</div>
+        </Link>
+        <div className="mt-12 text-neutral-400 text-xs font-semibold">USER</div>
+        <button
+          className="mt-4 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
+          type="button"
+        >
+          <IoLogOutOutline size={17.5} />
+          <div className="text-sm font-medium">Logout</div>
+        </button>
+      </div>
     </div>
   );
 };

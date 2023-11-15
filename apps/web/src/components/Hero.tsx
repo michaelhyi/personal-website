@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { head } from "@/data/head";
+import { hero } from "@/data/hero";
 
-const Head = () => {
+const Hero = () => {
   return (
     <div
       className="absolute
@@ -30,7 +30,7 @@ const Head = () => {
         Software Engineer
       </div>
       <div className="flex mt-2 text-[10px] text-neutral-300">
-        {head.map((v, i) => {
+        {hero.map((v, i) => {
           return (
             <>
               {i !== 0 && <>&nbsp;&nbsp;&#183;&nbsp;&nbsp;</>}
@@ -50,4 +50,4 @@ const Head = () => {
   );
 };
 
-export default Head;
+export default Hero;
