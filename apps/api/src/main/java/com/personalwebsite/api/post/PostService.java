@@ -19,7 +19,6 @@ public class PostService {
     public Long createPost(PostRequest req) {
         Post post = new Post(
                 req.title(),
-                req.rating(),
                 req.image(),
                 req.description(),
                 req.body());
@@ -49,7 +48,6 @@ public class PostService {
                 );
 
         post.setTitle(req.title());
-        post.setRating(req.rating());
         post.setImage(req.image());
         post.setBody((req.body()));
 

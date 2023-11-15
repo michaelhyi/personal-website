@@ -14,10 +14,6 @@ spring:
         format_sql: true
       show-sql: true
 
-server:
-  error:
-    include-message: always
-
 auth:
   whitelisted-emails: "dev@mail.com"
 

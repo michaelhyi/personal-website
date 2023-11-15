@@ -18,7 +18,6 @@ public class Post {
     private Date date;
 
     private String title;
-    private int rating;
     private String image;
     private String description;
 
@@ -26,12 +25,10 @@ public class Post {
     private String body;
 
     public Post(String title,
-                int rating,
                 String image,
                 String description,
                 String body) {
         this.title = title;
-        this.rating = rating;
         this.image = image;
         this.description = description;
         this.body = body;
@@ -62,14 +59,6 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
     }
 
     public String getImage() {
