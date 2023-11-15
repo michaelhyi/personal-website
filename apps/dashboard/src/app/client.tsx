@@ -2,12 +2,11 @@
 
 import type { AxiosError } from "axios";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
-import type { FieldValues, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Container from "@/components/Container";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { auth } from "@/services/auth";
 import type User from "@/types/user";
 
@@ -53,7 +52,7 @@ const LoginClient: FC<Props> = ({ user }) => {
   );
 
   return (
-    <Container>
+    <div className="bg-neutral-800 text-white min-h-screen">
       <div
         className="absolute
    left-1/2
@@ -105,7 +104,7 @@ const LoginClient: FC<Props> = ({ user }) => {
           </button>
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
