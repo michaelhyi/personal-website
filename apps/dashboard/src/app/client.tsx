@@ -7,6 +7,7 @@ import type { FC } from "react";
 import { useCallback, useEffect, useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 import { auth } from "@/services/auth";
 import type User from "@/types/user";
 
@@ -104,6 +105,15 @@ const LoginClient: FC<Props> = ({ user }) => {
           >
             Login
           </button>
+          <div className="text-center">
+            Don&apos;t have an account?&nbsp;
+            <Link
+              href="/register"
+              className="duration-500 hover:opacity-50 text-neutral-400 underline"
+            >
+              Register
+            </Link>
+          </div>
         </div>
       </div>
     </div>
