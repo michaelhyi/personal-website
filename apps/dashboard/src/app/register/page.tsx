@@ -1,10 +1,10 @@
-import { readUserByToken } from "@/services/user";
+// import { readUserByToken } from "@/services/user";
 import RegisterClient from "./client";
 
-const Register = async () => {
-  const user = await readUserByToken();
+const Register = () => {
+  // const _user = await readUserByToken();
 
-  return <RegisterClient user={user} />;
+  return <RegisterClient user={null} />;
 };
 
 export default Register;

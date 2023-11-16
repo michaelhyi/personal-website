@@ -1,10 +1,10 @@
-import { readUserByToken } from "@/services/user";
+// import { readUserByToken } from "@/services/user";
 import LoginClient from "./client";
 
-const Home = async () => {
-  const user = await readUserByToken();
+const Home = () => {
+  // const _user = await readUserByToken();
 
-  return <LoginClient user={user} />;
+  return <LoginClient user={null} />;
 };
 
 export default Home;

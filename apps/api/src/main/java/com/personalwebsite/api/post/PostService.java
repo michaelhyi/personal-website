@@ -17,6 +17,8 @@ public class PostService {
     }
 
     public Long createPost(PostRequest req) {
+        validateRequest(req);
+
         Post post = new Post(
                 req.title(),
                 req.image(),
@@ -42,18 +44,35 @@ public class PostService {
 
     @Transactional
     public void updatePost(Long id, PostRequest req) {
+        validateRequest(req);
+
         Post post = repository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalStateException("Post does not exist.")
-                );
+                .orElseThrow(PostNotFoundException::new);
 
         post.setTitle(req.title());
         post.setImage(req.image());
+        post.setDescription(req.description());
         post.setBody((req.body()));
-
     }
 
     public void deletePost(Long id) {
         repository.deleteById(id);
+    }
+
+    private void validateRequest(PostRequest req) {
+        if (req.title() == null
+                || req.title().isBlank()
+                || req.title().isEmpty()
+                || req.image() == null
+                || req.image().isBlank()
+                || req.image().isEmpty()
+                || req.description() == null
+                || req.description().isBlank()
+                || req.description().isEmpty()
+                || req.body() == null
+                || req.body().isBlank()
+                || req.body().isEmpty()) {
+            throw new IllegalArgumentException("Fields cannot be blank.");
+        }
     }
 }

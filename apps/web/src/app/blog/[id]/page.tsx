@@ -1,7 +1,9 @@
 import type { FC } from "react";
 // import { notFound } from "next/navigation";
 import { format } from "date-fns";
+import Link from "next/link";
 import Image from "next/image";
+import { IoIosArrowBack } from "react-icons/io";
 import type Post from "@/types/dto/post";
 import Container from "@/components/Container";
 import { readPost } from "@/services/post";
@@ -18,6 +20,9 @@ const View: FC<IParams> = async ({ params }) => {
 
   return (
     <Container>
+      <Link href="/blog" className="duration-500 hover:opacity-50">
+        <IoIosArrowBack />
+      </Link>
       <div className="mt-10 text-2xl">{data.title}</div>
       <div className="mt-6 text-xs text-neutral-400">
         {format(new Date(data.date), "PPP")}

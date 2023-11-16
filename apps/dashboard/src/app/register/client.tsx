@@ -43,9 +43,11 @@ const RegisterClient: FC<Props> = ({ user }) => {
         router.push("/");
       } catch (e) {
         const { response } = e as AxiosError;
+
         if (response) {
           setError(response.data as string);
         }
+
         setSubmitting(false);
       }
     },

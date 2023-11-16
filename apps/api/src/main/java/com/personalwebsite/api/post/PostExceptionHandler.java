@@ -14,7 +14,7 @@ public class PostExceptionHandler
         extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
-            = {PostNotFoundException.class}
+            = {PostNotFoundException.class, IllegalArgumentException.class}
     )
     protected ResponseEntity<Object> handleException(
             RuntimeException e, WebRequest req) {
