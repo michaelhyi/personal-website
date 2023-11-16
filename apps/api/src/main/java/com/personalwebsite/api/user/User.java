@@ -6,7 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +20,14 @@ import java.util.Collection;
 @Table(name = "\"user\"")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "user_id_sequence",
+            sequenceName = "user_id_sequence"
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "user_id_sequence"
+    )
     private Long id;
 
     @Column(unique = true)

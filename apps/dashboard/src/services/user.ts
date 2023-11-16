@@ -10,9 +10,12 @@ export const readUserByEmail = async (): Promise<User | null> => {
     return null;
   }
 
-  const res = await axios(
-    `${process.env.NEXT_PUBLIC_API_URL}/user/${session.user.email}`,
-  );
-
-  return res.data as User;
+  try {
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_API_URL}/user/${session.user.email}`
+    );
+    return res.data as User;
+  } catch {
+    return null;
+  }
 };
