@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import Link from "next/link";
 import Image from "next/image";
 import { IoIosArrowBack } from "react-icons/io";
-import type Post from "@/types/dto/post";
+import type Post from "types/post";
 import Container from "@/components/Container";
 import { readPost } from "@/services/post";
 
@@ -34,7 +34,6 @@ const View: FC<IParams> = async ({ params }) => {
         height={400}
         className="mt-6"
       />
-      <div className="bg-pink-300 p-4 mt-8">Rating: {data.rating} / 10</div>
       <div
         className="text-sm mt-8"
         dangerouslySetInnerHTML={{

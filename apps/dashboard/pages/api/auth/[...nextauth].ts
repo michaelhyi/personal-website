@@ -1,10 +1,10 @@
 import axios from "axios";
 import NextAuth, { type AuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import Provider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
   providers: [
-    CredentialsProvider({
+    Provider({
       name: "credentials",
       credentials: {
         email: { label: "email", type: "text" },

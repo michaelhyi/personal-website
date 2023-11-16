@@ -3,8 +3,8 @@
 import { format } from "date-fns";
 import { FaPlus, FaPencilAlt } from "react-icons/fa";
 import Link from "next/link";
+import type Post from "types/post";
 import Container from "@/components/Container";
-import type Post from "@/types/post";
 
 interface Props {
   data: Post[];

@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { FieldValues } from "react-hook-form";
-import type Post from "@/types/post";
+import type Post from "types/post";
 
 export const createPost = async (data: FieldValues) => {
   await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/post`, data, {

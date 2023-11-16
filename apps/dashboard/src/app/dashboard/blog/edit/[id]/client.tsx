@@ -6,10 +6,10 @@ import { useForm } from "react-hook-form";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
+import type Post from "types/post";
 import Container from "@/components/Container";
 import Modal from "@/components/Modal";
 import { updatePost } from "@/services/post";
-import type Post from "@/types/post";
 
 interface Props {
   data: Post;

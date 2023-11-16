@@ -1,4 +1,4 @@
-import type Post from "@/types/dto/post";
+import type Post from "types/post";
 
 export const readPost = async (_id: string) => {
   await new Promise((res) => {
@@ -10,7 +10,6 @@ export const readPost = async (_id: string) => {
     date: new Date("2023-11-09 00:00:00"),
     title:
       "It’s Such a Beautiful Day: A Story of Existence, Death, and Insanity",
-    rating: 9,
     image:
       "https://www.bfi.org.uk/sites/bfi.org.uk/files/styles/full/public/image/its-such-a-beautiful-day-2012-004-bill-blurry-in-bed.jpg?itok=ISLU6AMZ",
     description:
@@ -31,7 +30,6 @@ export const readAllPosts = async () => {
       date: new Date("2023-11-09 00:00:00"),
       title:
         "It’s Such a Beautiful Day: A Story of Existence, Death, and Insanity",
-      rating: 9,
       image:
         "https://www.bfi.org.uk/sites/bfi.org.uk/files/styles/full/public/image/its-such-a-beautiful-day-2012-004-bill-blurry-in-bed.jpg?itok=ISLU6AMZ",
       description:

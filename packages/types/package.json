@@ -1,0 +1,14 @@
+{
+  "name": "types",
+  "version": "0.0.0",
+  "author": "michaelhyi",
+  "license": "MIT",
+  "private": true,
+  "main": "index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "typescript": "latest"
+  }
+}

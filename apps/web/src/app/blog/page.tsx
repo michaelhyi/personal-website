@@ -1,10 +1,10 @@
 import { format } from "date-fns";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
+import type Post from "types/post";
 import Container from "@/components/Container";
 import Section from "@/components/Section";
 import Card from "@/components/Card";
-import type Post from "@/types/dto/post";
 import { readAllPosts } from "@/services/post";
 
 const Blog = async () => {

@@ -1,7 +1,7 @@
 "use client";
 
+import type Project from "types/project";
 import { projects } from "@/data/projects";
-import type Project from "@/types/project";
 import Card from "../Card";
 import Section from "../Section";
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { FC } from "react";
+import type FooterLink from "types/footer-link";
 import { footer } from "@/data/footer";
 
 interface Props {
@@ -24,15 +25,15 @@ const Footer: FC<Props> = ({ absolute = false }) => {
                      }`}
     >
       <div className="flex gap-2">
-        {footer.map(({ icon: Icon, href }) => (
+        {footer.map((v: FooterLink) => (
           <Link
-            key={href}
-            href={href}
+            key={v.href}
+            href={v.href}
             rel="noopener noreferrer"
             target="_blank"
             className="duration-500 hover:opacity-50"
           >
-            <Icon size={15} />
+            <v.icon size={15} />
           </Link>
         ))}
       </div>
