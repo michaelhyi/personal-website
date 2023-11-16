@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useCallback, useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { auth } from "@/services/auth";
+import { auth } from "services";
 
 const RegisterClient = () => {
   const [error, setError] = useState<string | null>(null);

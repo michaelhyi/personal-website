@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { FC } from "react";
-import type FooterLink from "types/footer-link";
+import type { FooterLink } from "types";
 import { footer } from "@/data/footer";
 
 interface Props {

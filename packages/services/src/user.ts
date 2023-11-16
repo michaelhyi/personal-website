@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getServerSession } from "next-auth";
-import type User from "types/user";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import { authOptions } from "../../../apps/dashboard/pages/api/auth/[...nextauth]";
+import type { User } from "types";
 
 export const readUserByEmail = async (): Promise<User | null> => {
   const session = await getServerSession(authOptions);
@@ -14,7 +14,7 @@ export const readUserByEmail = async (): Promise<User | null> => {
     const res = await axios(
       `${process.env.NEXT_PUBLIC_API_URL}/user/${session.user.email}`,
     );
-    return res.data as User;
+    return res.data;
   } catch {
     return null;
   }

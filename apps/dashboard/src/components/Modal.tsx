@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
-import { deletePost } from "@/services/post";
+import { deletePost } from "services";
 
 interface Props {
   showModal: boolean;

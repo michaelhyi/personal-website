@@ -1,14 +1,14 @@
 "use client";
 
 import type { AxiosError } from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
-import Link from "next/link";
+import { createPost } from "services";
 import Container from "@/components/Container";
-import { createPost } from "@/services/post";
 
 const CreatePostClient = () => {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { FieldValues } from "react-hook-form";
 
-export const auth = async (type: string, data: FieldValues) => {
+export const auth = async (type: string, data: FieldValues): Promise<void> => {
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/${type}`,
     data,

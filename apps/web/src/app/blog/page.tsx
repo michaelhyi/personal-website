@@ -1,11 +1,11 @@
 import { format } from "date-fns";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
-import type Post from "types/post";
+import { readAllPosts } from "services";
+import type { Post } from "types";
 import Container from "@/components/Container";
 import Section from "@/components/Section";
 import Card from "@/components/Card";
-import { readAllPosts } from "@/services/post";
 
 const Blog = async () => {
   const data: Post[] = await readAllPosts();

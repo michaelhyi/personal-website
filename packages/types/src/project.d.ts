@@ -1,4 +1,4 @@
-interface Project {
+export interface Project {
   name: string;
   date: string;
   description: string;
@@ -6,5 +6,3 @@ interface Project {
   image?: string;
   href: string;
 }
-
-export default Project;

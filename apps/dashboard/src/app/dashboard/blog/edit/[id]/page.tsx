@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import type Post from "types/post";
-import { readPost } from "@/services/post";
+import type { Post } from "types";
+import { readPost } from "services";
 import EditPostClient from "./client";
 
 const EditPost = async ({ params }: { params: { id: string } }) => {

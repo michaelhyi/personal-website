@@ -1,4 +1,4 @@
-import { readAllPosts } from "@/services/post";
+import { readAllPosts } from "services";
 import BlogClient from "./client";
 
 const Blog = async () => {

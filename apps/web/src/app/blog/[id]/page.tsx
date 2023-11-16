@@ -1,12 +1,12 @@
 import type { FC } from "react";
-// import { notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import Link from "next/link";
 import Image from "next/image";
 import { IoIosArrowBack } from "react-icons/io";
-import type Post from "types/post";
+import { readPost } from "services";
+import type { Post } from "types";
 import Container from "@/components/Container";
-import { readPost } from "@/services/post";
 
 interface IParams {
   params: { id: string };
@@ -16,7 +16,7 @@ const View: FC<IParams> = async ({ params }) => {
   const { id } = params;
   const data: Post | null = await readPost(id);
 
-  // if (!data) notFound();
+  if (!data) notFound();
 
   return (
     <Container>

@@ -1,4 +1,4 @@
-interface Post {
+export interface Post {
   id: number;
   date: Date;
   title: string;
@@ -6,5 +6,3 @@ interface Post {
   description: string;
   body: string;
 }
-
-export default Post;

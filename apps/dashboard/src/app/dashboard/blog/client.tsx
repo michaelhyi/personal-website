@@ -3,7 +3,7 @@
 import { format } from "date-fns";
 import { FaPlus, FaPencilAlt } from "react-icons/fa";
 import Link from "next/link";
-import type Post from "types/post";
+import type { Post } from "types";
 import Container from "@/components/Container";
 
 interface Props {

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import type User from "types/user";
-import { readUserByEmail } from "@/services/user";
+import type { User } from "types";
+import { readUserByEmail } from "services";
 import RegisterClient from "./client";
 
 const Register = async () => {
