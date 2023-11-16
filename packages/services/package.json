@@ -8,8 +8,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "clean": "rm -rf node_modules .turbo",
+    "setup": "yarn install"
+  },
   "dependencies": {
-    "axios": "^1.6.2",
     "types": "*",
     "typescript": "^5.2.2"
   }
