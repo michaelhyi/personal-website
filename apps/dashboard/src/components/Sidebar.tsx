@@ -6,8 +6,15 @@ import { FaHome, FaProjectDiagram } from "react-icons/fa";
 import { MdOutlineWork } from "react-icons/md";
 import { IoLogOutOutline } from "react-icons/io5";
 import { TfiWrite } from "react-icons/tfi";
+import { signOut } from "next-auth/react";
+import { useCallback } from "react";
 
 const Sidebar = () => {
+  const handleLogout = useCallback(async () => {
+    localStorage.removeItem("token");
+    await signOut({ redirect: true, callbackUrl: "/" });
+  }, []);
+
   return (
     <div className="fixed top-0 left-0 h-screen w-60 flex flex-col bg-neutral-700 text-white shadow-2xl">
       <div className="flex flex-col items-center mx-auto mt-12">
@@ -55,6 +62,7 @@ const Sidebar = () => {
         </Link>
         <div className="mt-12 text-neutral-400 text-xs font-semibold">USER</div>
         <button
+          onClick={handleLogout}
           className="mt-4 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
           type="button"
         >

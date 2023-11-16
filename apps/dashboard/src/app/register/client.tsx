@@ -1,30 +1,16 @@
 "use client";
 
 import type { AxiosError } from "axios";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import type { FC } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { auth } from "@/services/auth";
-import type User from "@/types/user";
-import { signIn } from "next-auth/react";
 
-interface Props {
-  user: User | null;
-}
-
-const RegisterClient: FC<Props> = ({ user }) => {
-  const router = useRouter();
+const RegisterClient = () => {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
-    }
-  }, [router, user]);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {

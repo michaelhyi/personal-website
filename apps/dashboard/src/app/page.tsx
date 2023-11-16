@@ -1,10 +1,15 @@
-// import { readUserByToken } from "@/services/user";
+import { redirect } from "next/navigation";
+import { readUserByEmail } from "@/services/user";
 import LoginClient from "./client";
 
-const Home = () => {
-  // const _user = await readUserByToken();
+const Home = async () => {
+  const user = await readUserByEmail();
 
-  return <LoginClient user={null} />;
+  if (user) {
+    redirect("/dashboard");
+  }
+
+  return <LoginClient />;
 };
 
 export default Home;
