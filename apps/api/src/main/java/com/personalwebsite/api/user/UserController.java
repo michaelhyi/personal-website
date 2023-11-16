@@ -15,9 +15,9 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping("{token}")
-    public ResponseEntity<User> readUserByToken(
-            @PathVariable("token") String token) {
-        return ResponseEntity.ok(service.readUserByToken(token));
+    @GetMapping("{email}")
+    public ResponseEntity<User> readUserByEmail(
+            @PathVariable("email") String email) {
+        return ResponseEntity.ok(service.readUserByEmail(email));
     }
 }

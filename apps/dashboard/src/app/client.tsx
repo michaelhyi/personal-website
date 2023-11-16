@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { auth } from "@/services/auth";
 import type User from "@/types/user";
 
@@ -33,26 +34,28 @@ const LoginClient: FC<Props> = ({ user }) => {
     },
   });
 
-  const handleLogin: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
-      setSubmitting(true);
+  const handleLogin: SubmitHandler<FieldValues> = useCallback(async (data) => {
+    setSubmitting(true);
 
-      try {
-        await auth("login", data);
-        setError(null);
-        router.push("/dashboard");
-      } catch (e) {
-        const { response } = e as AxiosError;
+    try {
+      await auth("login", data);
+      setError(null);
 
-        if (response) {
-          setError(response.data as string);
-        }
+      await signIn("credentials", {
+        ...data,
+        redirect: true,
+        callbackUrl: "/dashboard",
+      });
+    } catch (e) {
+      const { response } = e as AxiosError;
 
-        setSubmitting(false);
+      if (response) {
+        setError(response.data as string);
       }
-    },
-    [router],
-  );
+
+      setSubmitting(false);
+    }
+  }, []);
 
   return (
     <div className="bg-neutral-800 text-white min-h-screen">

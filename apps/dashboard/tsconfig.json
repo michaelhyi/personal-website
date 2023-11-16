@@ -1,7 +1,12 @@
 {
   "extends": "tsconfig/dashboard.json",
   "compilerOptions": {
-    "plugins": [{ "name": "next" }]
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "src",
@@ -9,7 +14,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "archive"
+    "archive",
+    "pages/api/auth"
   ],
   "exclude": ["node_modules"]
 }

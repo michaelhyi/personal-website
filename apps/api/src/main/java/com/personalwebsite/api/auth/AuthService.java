@@ -8,8 +8,6 @@ import com.personalwebsite.api.security.JwtService;
 import com.personalwebsite.api.user.User;
 import com.personalwebsite.api.user.UserRepository;
 import com.personalwebsite.api.user.UserRole;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +19,15 @@ public class AuthService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
     private final AuthWhitelistedEmails authWhitelistedEmails;
 
     public AuthService(UserRepository repository,
                        PasswordEncoder passwordEncoder,
                        JwtService jwtService,
-                       AuthenticationManager authenticationManager,
                        AuthWhitelistedEmails authWhitelistedEmails) {
         this.repository = repository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
         this.authWhitelistedEmails = authWhitelistedEmails;
     }
 
@@ -42,12 +37,9 @@ public class AuthService {
         User user = repository.findByEmail(req.email())
                 .orElseThrow(UserNotFoundException::new);
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        req.email(),
-                        req.password()
-                )
-        );
+        if (!passwordEncoder.matches(req.password(), user.getPassword())) {
+            throw new InvalidCredentialsException("Incorrect password.");
+        }
 
         return jwtService.generateToken(user);
     }
