@@ -7,6 +7,7 @@ import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
 import Container from "@/components/Container";
+import Modal from "@/components/Modal";
 import { updatePost } from "@/services/post";
 import type Post from "@/types/post";
 
@@ -17,6 +18,8 @@ interface Props {
 const EditPostClient: React.FC<Props> = ({ data }) => {
   // const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       title: data.title,
@@ -25,6 +28,10 @@ const EditPostClient: React.FC<Props> = ({ data }) => {
       body: data.body,
     },
   });
+
+  const handleToggle = useCallback(() => {
+    setShowModal(!showModal);
+  }, [setShowModal, showModal]);
 
   const handleUpdatePost: SubmitHandler<FieldValues> = useCallback(
     async (formData) => {
@@ -105,7 +112,15 @@ const EditPostClient: React.FC<Props> = ({ data }) => {
         >
           Edit Post
         </button>
+        <button
+          onClick={handleToggle}
+          type="button"
+          className="mt-3 bg-red-400 text-white h-10 font-semibold rounded-md duration-500 hover:opacity-75"
+        >
+          Delete Post
+        </button>
       </form>
+      <Modal showModal={showModal} handleToggle={handleToggle} id={data.id} />
     </Container>
   );
 };

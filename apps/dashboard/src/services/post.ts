@@ -24,3 +24,9 @@ export const updatePost = async (id: string, data: FieldValues) => {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };
+
+export const deletePost = async (id: number) => {
+  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+};

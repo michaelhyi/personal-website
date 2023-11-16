@@ -1,6 +1,7 @@
 "use client";
 
 import type { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
@@ -10,9 +11,10 @@ import Container from "@/components/Container";
 import { createPost } from "@/services/post";
 
 const CreatePostClient = () => {
+  const router = useRouter();
   // const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       title: "",
       image: "",
@@ -27,7 +29,7 @@ const CreatePostClient = () => {
 
       try {
         await createPost(data);
-        reset();
+        router.push("/dashboard/blog");
       } catch (e) {
         const { response } = e as AxiosError;
 
@@ -38,7 +40,7 @@ const CreatePostClient = () => {
         setSubmitting(false);
       }
     },
-    [reset],
+    [router],
   );
 
   return (
