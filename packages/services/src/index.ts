@@ -1,9 +1,3 @@
-export { auth } from "./auth";
-export {
-  createPost,
-  readPost,
-  readAllPosts,
-  updatePost,
-  deletePost,
-} from "./post";
-export { readUserByEmail } from "./user";
+export * from "./auth";
+export * from "./post";
+export * from "./user";

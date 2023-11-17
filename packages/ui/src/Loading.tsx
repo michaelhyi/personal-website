@@ -1,8 +1,10 @@
 "use client";
 
-import Container from "./Container";
+import { Spinner } from "@chakra-ui/react";
+import React from "react";
+import { Container } from "./Container";
 
-const NotFound = () => {
+export const Loading = () => {
   return (
     <Container absoluteFooter>
       <div
@@ -12,13 +14,10 @@ const NotFound = () => {
                    -translate-x-1/2
                    -translate-y-1/2
                    transform
-                   text-[10px]
                    text-neutral-300"
       >
-        404, not found.
+        <Spinner size="xs" />
       </div>
     </Container>
   );
 };
-
-export default NotFound;

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
 import { readAllPosts } from "services";
 import type { Post } from "types";
-import Container from "@/components/Container";
+import { Container } from "ui";
 import Section from "@/components/Section";
 import Card from "@/components/Card";
 

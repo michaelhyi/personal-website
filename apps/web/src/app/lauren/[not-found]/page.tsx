@@ -1,4 +1,4 @@
-import NotFoundClient from "@/components/NotFound";
+import { NotFound as NotFoundClient } from "ui";
 
 const NotFound = () => {
   return <NotFoundClient />;

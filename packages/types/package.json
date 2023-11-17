@@ -8,12 +8,5 @@
   "types": "src/index.ts",
   "publishConfig": {
     "access": "public"
-  },
-  "scripts": {
-    "clean": "rm -rf node_modules .turbo",
-    "setup": "yarn install"
-  },
-  "dependencies": {
-    "typescript": "^5.2.2"
   }
 }

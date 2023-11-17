@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import type { FC } from "react";
+import React, { type FC } from "react";
 import type { FooterLink } from "types";
-import { footer } from "@/data/footer";
+import { footer } from "./data/footer";
 
 interface Props {
   absolute?: boolean;
 }
 
-const Footer: FC<Props> = ({ absolute = false }) => {
+export const Footer: FC<Props> = ({ absolute = false }) => {
   return (
     <div
       className={`flex 
@@ -41,5 +41,3 @@ const Footer: FC<Props> = ({ absolute = false }) => {
     </div>
   );
 };
-
-export default Footer;

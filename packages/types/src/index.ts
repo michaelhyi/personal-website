@@ -1,5 +1,5 @@
-export type { Experience } from "./experience";
-export type { FooterLink } from "./footer-link";
-export type { Post } from "./post";
-export type { Project } from "./project";
-export type { User } from "./user";
+export * from "./experience";
+export * from "./footer-link";
+export * from "./post";
+export * from "./project";
+export * from "./user";

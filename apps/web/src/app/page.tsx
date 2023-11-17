@@ -1,4 +1,4 @@
-import Container from "@/components/Container";
+import { Container } from "ui";
 import Hero from "@/components/Hero";
 
 const Home = () => {

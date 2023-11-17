@@ -1,5 +1,7 @@
 "use client";
 
+import { CacheProvider } from "@chakra-ui/next-js";
+import { ChakraProvider } from "@chakra-ui/react";
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 
@@ -16,7 +18,11 @@ const Providers: FC<Props> = ({ children }) => {
 
   if (!mounted) return;
 
-  return <>{children}</>;
+  return (
+    <CacheProvider>
+      <ChakraProvider>{children} </ChakraProvider>
+    </CacheProvider>
+  );
 };
 
 export default Providers;

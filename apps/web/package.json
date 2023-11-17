@@ -27,7 +27,8 @@
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0",
-    "types": "*"
+    "types": "*",
+    "ui": "*"
   },
   "devDependencies": {
     "@types/node": "^20",

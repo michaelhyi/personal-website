@@ -6,7 +6,7 @@ import Image from "next/image";
 import { IoIosArrowBack } from "react-icons/io";
 import { readPost } from "services";
 import type { Post } from "types";
-import Container from "@/components/Container";
+import { Container } from "ui";
 
 interface IParams {
   params: { id: string };

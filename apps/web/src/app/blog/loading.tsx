@@ -1,4 +1,4 @@
-import LoadingClient from "@/components/Loading";
+import { Loading as LoadingClient } from "ui";
 
 const Loading = () => {
   return <LoadingClient />;
