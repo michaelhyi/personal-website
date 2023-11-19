@@ -2,8 +2,13 @@
 
 import { format } from "date-fns";
 import Link from "next/link";
-import type { FC, ReactNode } from "react";
-import { FaPlus, FaPencilAlt } from "react-icons/fa";
+import { useState, type FC, type ReactNode, useCallback } from "react";
+import { FaPlus } from "react-icons/fa";
+import {
+  IoEllipsisHorizontal,
+  IoPencil,
+  IoTrashOutline,
+} from "react-icons/io5";
 import type { Experience, Post, Project } from "types";
 import Container from "@/components/Container";
 
@@ -13,6 +18,22 @@ interface Props {
 }
 
 const Page: FC<Props> = ({ title, data }) => {
+  const [menuOpen, setMenuOpen] = useState<boolean[]>(
+    new Array(data.length).fill(false),
+  );
+
+  const toggleMenu = useCallback(
+    (index: number) => {
+      setMenuOpen(
+        menuOpen.map((v, i) => {
+          if (i === index) return !v;
+          return v;
+        }),
+      );
+    },
+    [menuOpen],
+  );
+
   return (
     <Container>
       <div className="flex flex-col">
@@ -37,7 +58,7 @@ const Page: FC<Props> = ({ title, data }) => {
               </tr>
             </thead>
             <tbody>
-              {data.map((v: Experience | Project | Post) => (
+              {data.map((v: Experience | Project | Post, i: number) => (
                 <tr key={v.id}>
                   <td className="px-6 py-4">{v.id}</td>
                   <td className="px-6 py-4">
@@ -48,13 +69,27 @@ const Page: FC<Props> = ({ title, data }) => {
                   <td className="px-6 pr-96 py-4">
                     {"title" in v ? v.title : v.name}
                   </td>
-                  <td className="px-3 py-4">
-                    <Link
-                      href={`/dashboard/${title.toLowerCase()}/edit/${v.id}`}
+                  <td className="relative px-3 py-4">
+                    <button
+                      onClick={() => {
+                        toggleMenu(i);
+                      }}
+                      type="button"
                       className="duration-500 hover:opacity-50"
                     >
-                      <FaPencilAlt />
-                    </Link>
+                      <IoEllipsisHorizontal />
+                    </button>
+                    {menuOpen[i] && (
+                      <div className="flex flex-col gap-2 absolute rounded-md shadow-lg w-36 bg-white text-neutral-700 font-semibold overflow-hidden right-0 top-10 p-3">
+                        <div className="flex items-center gap-2">
+                          <IoPencil /> Edit Post
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <IoTrashOutline />
+                          Delete Post
+                        </div>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
