@@ -1,10 +1,10 @@
 import { readAllPosts } from "services";
-import BlogClient from "./client";
+import Page from "@/components/Page";
 
 const Blog = async () => {
   const data = await readAllPosts();
 
-  return <BlogClient data={data} />;
+  return <Page title="Blog" data={data} />;
 };
 
 export default Blog;

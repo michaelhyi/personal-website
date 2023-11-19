@@ -27,6 +27,10 @@ public class ProjectService {
         return project.getId();
     }
 
+    public Project readProject(Long id) {
+        return repository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
     public List<Project> readAllProjects() {
         List<Project> projects = repository.findAll();
         Collections.reverse(projects);

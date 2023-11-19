@@ -1,31 +1,33 @@
 "use client";
 
 import type { AxiosError } from "axios";
-import { useState, useCallback } from "react";
-import { useForm } from "react-hook-form";
-import type { FieldValues, SubmitHandler } from "react-hook-form";
-import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
-import { deletePost, updatePost } from "services";
-import type { Post } from "types";
+import { useCallback, useState } from "react";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { FaArrowLeft } from "react-icons/fa";
+import { deleteProject, updateProject } from "services";
+import type { Project } from "types";
 import Container from "@/components/Container";
 import Modal from "@/components/Modal";
 
 interface Props {
-  data: Post;
+  data: Project;
 }
 
-const EditPostClient: React.FC<Props> = ({ data }) => {
+const EditProjectClient: React.FC<Props> = ({ data }) => {
   // const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
-      title: data.title,
-      image: data.image,
-      description: data.description,
-      body: data.body,
+      name: "",
+      date: "",
+      description: "",
+      tech: "",
+      image: "",
+      href: "",
     },
   });
 
@@ -33,17 +35,19 @@ const EditPostClient: React.FC<Props> = ({ data }) => {
     setShowModal(!showModal);
   }, [setShowModal, showModal]);
 
-  const handleUpdatePost: SubmitHandler<FieldValues> = useCallback(
+  const handleUpdateProject: SubmitHandler<FieldValues> = useCallback(
     async (formData) => {
       setSubmitting(true);
 
       try {
-        await updatePost(data.id.toString(), formData);
+        await updateProject(data.id.toString(), formData);
 
-        setValue("title", "");
-        setValue("image", "");
+        setValue("name", "");
+        setValue("date", "");
         setValue("description", "");
-        setValue("body", "");
+        setValue("tech", "");
+        setValue("image", "");
+        setValue("href", "");
       } catch (e) {
         const { response } = e as AxiosError;
 
@@ -60,33 +64,33 @@ const EditPostClient: React.FC<Props> = ({ data }) => {
   return (
     <Container>
       <Link
-        href="/dashboard/blog"
+        href="/dashboard/projects"
         className="text-neutral-300 duration-500 hover:opacity-50"
       >
         <FaArrowLeft />
       </Link>
-      <div className="font-bold text-3xl mt-8">Edit Post</div>
+      <div className="font-bold text-3xl mt-8">Edit Project</div>
       <form
         className="mt-8 flex flex-col gap-2"
-        onSubmit={handleSubmit(handleUpdatePost)}
+        onSubmit={handleSubmit(handleUpdateProject)}
       >
-        <label htmlFor="title" className="text-sm">
-          Title
+        <label htmlFor="name" className="text-sm">
+          Name
         </label>
         <input
           className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-10 px-2"
-          id="title"
+          id="name"
           disabled={submitting}
-          {...register("title")}
+          {...register("name")}
         />
-        <label htmlFor="image" className="text-sm mt-4">
-          Image
+        <label htmlFor="date" className="text-sm mt-4">
+          Date
         </label>
         <input
           className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-10 px-2"
-          id="image"
+          id="date"
           disabled={submitting}
-          {...register("image")}
+          {...register("date")}
         />
         <label htmlFor="description" className="text-sm mt-4">
           Description
@@ -97,39 +101,57 @@ const EditPostClient: React.FC<Props> = ({ data }) => {
           disabled={submitting}
           {...register("description")}
         />
-        <label htmlFor="body" className="text-sm mt-4">
-          Body
+        <label htmlFor="tech" className="text-sm">
+          Tech
         </label>
-        <textarea
-          className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-24 px-2 pt-2"
-          id="body"
+        <input
+          className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-10 px-2"
+          id="tech"
           disabled={submitting}
-          {...register("body")}
+          {...register("tech")}
+        />
+        <label htmlFor="image" className="text-sm mt-4">
+          Image
+        </label>
+        <input
+          className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-10 px-2"
+          id="image"
+          disabled={submitting}
+          {...register("image")}
+        />
+        <label htmlFor="href" className="text-sm mt-4">
+          href
+        </label>
+        <input
+          className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-10 px-2"
+          id="href"
+          disabled={submitting}
+          {...register("href")}
         />
         <button
           type="submit"
           className="mt-6 bg-pink-300 text-white h-10 font-semibold rounded-md duration-500 hover:opacity-75"
         >
-          Edit Post
+          Edit Project
         </button>
         <button
           onClick={handleToggle}
           type="button"
           className="mt-3 bg-red-400 text-white h-10 font-semibold rounded-md duration-500 hover:opacity-75"
         >
-          Delete Post
+          Delete Project
         </button>
       </form>
       <Modal
-        name="Delete Post"
+        name="Delete Project"
         showModal={showModal}
         handleToggle={handleToggle}
         id={data.id}
-        action={deletePost}
-        callbackUrl="/blog"
+        action={deleteProject}
+        callbackUrl="/project"
       />
     </Container>
   );
 };
 
-export default EditPostClient;
+export default EditProjectClient;

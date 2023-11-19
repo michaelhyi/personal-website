@@ -20,7 +20,7 @@ const Providers: FC<Props> = ({ children }) => {
 
   return (
     <CacheProvider>
-      <ChakraProvider>{children} </ChakraProvider>
+      <ChakraProvider resetCSS={false}>{children} </ChakraProvider>
     </CacheProvider>
   );
 };

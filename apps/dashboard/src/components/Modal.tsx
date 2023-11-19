@@ -4,21 +4,30 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
-import { deletePost } from "services";
 
 interface Props {
+  name: string;
+  action: (id: number) => Promise<void>;
   showModal: boolean;
   handleToggle: () => void;
   id: number;
+  callbackUrl: string;
 }
 
-const Modal: React.FC<Props> = ({ showModal, handleToggle, id }) => {
+const Modal: React.FC<Props> = ({
+  name,
+  action,
+  showModal,
+  handleToggle,
+  id,
+  callbackUrl,
+}) => {
   const router = useRouter();
 
   const handleDelete = useCallback(async () => {
-    await deletePost(id);
-    router.push("/dashboard/blog");
-  }, [id, router]);
+    await action(id);
+    router.push(`/dashboard${callbackUrl}`);
+  }, [id, router, action, callbackUrl]);
 
   return (
     <div
@@ -106,7 +115,7 @@ const Modal: React.FC<Props> = ({ showModal, handleToggle, id }) => {
               >
                 <IoMdClose size={18} />
               </button>
-              <div className="text-lg font-semibold">Delete Post</div>
+              <div className="text-lg font-semibold">{name}</div>
             </div>
             {/*body*/}
             <div className="mx-auto mt-6">

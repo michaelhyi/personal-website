@@ -28,6 +28,11 @@ public class ExperienceController {
         return ResponseEntity.ok(service.createExperience(req));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Experience> readExperience(@PathVariable Long id) {
+        return ResponseEntity.ok(service.readExperience(id));
+    }
+
     @GetMapping
     public ResponseEntity<List<Experience>> readAllExperience() {
         return ResponseEntity.ok(service.readAllExperiences());

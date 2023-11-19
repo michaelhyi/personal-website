@@ -27,6 +27,11 @@ public class ProjectController {
         return ResponseEntity.ok(service.createProject(req));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Project> readProject(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.readProject(id));
+    }
+
     @GetMapping
     public ResponseEntity<List<Project>> readAllProjects() {
         return ResponseEntity.ok(service.readAllProjects());

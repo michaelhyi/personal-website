@@ -26,6 +26,10 @@ public class ExperienceService {
         return experience.getId();
     }
 
+    public Experience readExperience(Long id) {
+        return repository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
     public List<Experience> readAllExperiences() {
         List<Experience> experiences = repository.findAll();
         Collections.reverse(experiences);

@@ -2,6 +2,7 @@ import type { Project } from "types";
 
 export const projects: Project[] = [
   {
+    id: 9,
     name: "ScribeAI",
     date: "2023",
     description:
@@ -11,6 +12,7 @@ export const projects: Project[] = [
     href: "https://devpost.com/software/scribeai",
   },
   {
+    id: 8,
     name: "health{hacks} Website",
     date: "2023",
     description: "Assembling the future innovators of medicine.",
@@ -19,6 +21,7 @@ export const projects: Project[] = [
     href: "https://www.joinhealthhacks.com/",
   },
   {
+    id: 7,
     name: "HealthRelay",
     date: "2021 - 2022",
     description:
@@ -28,6 +31,7 @@ export const projects: Project[] = [
     href: "https://healthrelay.vercel.app/",
   },
   {
+    id: 6,
     name: "RetinaOCT",
     date: "2021 - 2022",
     description:
@@ -37,6 +41,7 @@ export const projects: Project[] = [
     href: "https://github.com/michaelhyi/retinaoct",
   },
   {
+    id: 5,
     name: "Enhancing Generative Commonsense Reasoning Using Image Cues",
     date: "2022",
     description:
@@ -46,6 +51,7 @@ export const projects: Project[] = [
     href: "https://github.com/michaelhyi/usc-shine",
   },
   {
+    id: 4,
     name: "CarCam",
     date: "2021",
     description:
@@ -54,6 +60,7 @@ export const projects: Project[] = [
     href: "https://github.com/michaelhyi/carcam",
   },
   {
+    id: 3,
     name: "MelaModel",
     date: "2022",
     description:
@@ -62,6 +69,7 @@ export const projects: Project[] = [
     href: "https://github.com/michaelhyi/melamodel",
   },
   {
+    id: 2,
     name: "ChestRay",
     date: "2022",
     description:
@@ -70,6 +78,7 @@ export const projects: Project[] = [
     href: "https://github.com/michaelhyi/chestray",
   },
   {
+    id: 1,
     name: "LeafX",
     date: "2022",
     description:
