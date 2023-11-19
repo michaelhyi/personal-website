@@ -1,19 +1,33 @@
 "use client";
 
 import type { AxiosError } from "axios";
-import { useState, useCallback } from "react";
-import { useForm } from "react-hook-form";
-import type { FieldValues, SubmitHandler } from "react-hook-form";
-import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
+import { type ReactElement, useCallback, useState, type FC } from "react";
+import type {
+  FieldValues,
+  SubmitHandler,
+  UseFormRegister,
+} from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { FaArrowLeft } from "react-icons/fa";
 import { deletePost, updatePost } from "services";
 import type { Post } from "types";
 import Container from "@/components/Container";
+import Input from "@/components/Input";
 import Modal from "@/components/Modal";
 
 interface Props {
   data: Post;
 }
+
+const Body: FC = (): ReactElement => {
+  return (
+    <>
+      <div>body</div>
+      <div>body</div>
+    </>
+  );
+};
 
 const EditPostClient: React.FC<Props> = ({ data }) => {
   // const [error, setError] = useState<string | null>(null);
@@ -67,44 +81,28 @@ const EditPostClient: React.FC<Props> = ({ data }) => {
       </Link>
       <div className="font-bold text-3xl mt-8">Edit Post</div>
       <form
-        className="mt-8 flex flex-col gap-2"
+        className="mt-8 flex flex-col gap-4"
         onSubmit={handleSubmit(handleUpdatePost)}
       >
-        <label htmlFor="title" className="text-sm">
-          Title
-        </label>
-        <input
-          className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-10 px-2"
+        <Input
           id="title"
-          disabled={submitting}
-          {...register("title")}
+          register={register as unknown as UseFormRegister<FieldValues>}
+          submitting={submitting}
         />
-        <label htmlFor="image" className="text-sm mt-4">
-          Image
-        </label>
-        <input
-          className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-10 px-2"
+        <Input
           id="image"
-          disabled={submitting}
-          {...register("image")}
+          register={register as unknown as UseFormRegister<FieldValues>}
+          submitting={submitting}
         />
-        <label htmlFor="description" className="text-sm mt-4">
-          Description
-        </label>
-        <input
-          className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-10 px-2"
+        <Input
           id="description"
-          disabled={submitting}
-          {...register("description")}
+          register={register as unknown as UseFormRegister<FieldValues>}
+          submitting={submitting}
         />
-        <label htmlFor="body" className="text-sm mt-4">
-          Body
-        </label>
-        <textarea
-          className="bg-neutral-800 border-[1px] border-neutral-300 rounded-md w-96 h-24 px-2 pt-2"
+        <Input
           id="body"
-          disabled={submitting}
-          {...register("body")}
+          register={register as unknown as UseFormRegister<FieldValues>}
+          submitting={submitting}
         />
         <button
           type="submit"
@@ -121,12 +119,14 @@ const EditPostClient: React.FC<Props> = ({ data }) => {
         </button>
       </form>
       <Modal
-        name="Delete Post"
+        title="Delete Post"
+        description="Are you sure? This action cannot be undone."
         showModal={showModal}
         handleToggle={handleToggle}
         id={data.id}
         action={deletePost}
         callbackUrl="/blog"
+        body={<Body />}
       />
     </Container>
   );

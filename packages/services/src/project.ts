@@ -1,29 +1,29 @@
-import axios from "axios";
 import type { FieldValues } from "react-hook-form";
 import type { Project } from "types";
 import qs from "query-string";
 
 export const createProject = async (data: FieldValues): Promise<number> => {
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/project`,
-    data,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project`, {
+    body: JSON.stringify(data),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-  );
+  });
 
-  return res.data;
+  return await res.json();
 };
 
 export const readProject = async (id: string): Promise<Project | null> => {
-  const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`);
 
-  return res.status === 200 ? res.data : null;
+  return res.ok ? await res.json() : null;
 };
 
 export const readAllProjects = async (): Promise<Project[]> => {
-  const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/project`);
-  return res.data;
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project`);
+  return await res.json();
 };
 
 export const updateProject = async (
@@ -40,7 +40,8 @@ export const updateProject = async (
 };
 
 export const deleteProject = async (id: number): Promise<void> => {
-  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`, {
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`, {
+    method: "DELETE",
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };

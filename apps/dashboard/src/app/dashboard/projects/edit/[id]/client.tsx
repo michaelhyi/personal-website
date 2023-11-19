@@ -6,10 +6,9 @@ import { useCallback, useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
-import { deleteProject, updateProject } from "services";
+import { updateProject } from "services";
 import type { Project } from "types";
 import Container from "@/components/Container";
-import Modal from "@/components/Modal";
 
 interface Props {
   data: Project;
@@ -142,14 +141,14 @@ const EditProjectClient: React.FC<Props> = ({ data }) => {
           Delete Project
         </button>
       </form>
-      <Modal
+      {/* <Modal
         name="Delete Project"
         showModal={showModal}
         handleToggle={handleToggle}
         id={data.id}
         action={deleteProject}
         callbackUrl="/project"
-      />
+      /> */}
     </Container>
   );
 };

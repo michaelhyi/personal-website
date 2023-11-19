@@ -1,4 +1,3 @@
-import axios from "axios";
 import NextAuth, { type AuthOptions } from "next-auth";
 import Provider from "next-auth/providers/credentials";
 
@@ -13,15 +12,19 @@ export const authOptions: AuthOptions = {
 
       //@ts-expect-error next-auth bug. CredentialsProvider type is wrong
       authorize: async (credentials, _req) => {
-        await axios(
+        const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/user/${credentials?.email}`,
         );
 
-        return {
-          name: null,
-          email: credentials?.email,
-          image: null,
-        };
+        if (res.ok) {
+          return {
+            name: null,
+            email: credentials?.email,
+            image: null,
+          };
+        }
+
+        throw new Error();
       },
     }),
   ],

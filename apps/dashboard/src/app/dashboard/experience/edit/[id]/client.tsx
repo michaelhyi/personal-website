@@ -6,10 +6,9 @@ import { useCallback, useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
-import { deleteExperience, updateExperience } from "services";
+import { updateExperience } from "services";
 import type { Experience } from "types";
 import Container from "@/components/Container";
-import Modal from "@/components/Modal";
 
 interface Props {
   data: Experience;
@@ -109,14 +108,14 @@ const EditExperienceClient: React.FC<Props> = ({ data }) => {
           Delete Experience
         </button>
       </form>
-      <Modal
+      {/* <Modal
         name="Delete Experience"
         showModal={showModal}
         handleToggle={handleToggle}
         id={data.id}
         action={deleteExperience}
         callbackUrl="/experience"
-      />
+      /> */}
     </Container>
   );
 };

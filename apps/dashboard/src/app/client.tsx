@@ -1,13 +1,10 @@
 "use client";
 
-import type { AxiosError } from "axios";
-import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import type { FieldValues, SubmitHandler } from "react-hook-form";
-import { useForm } from "react-hook-form";
-import { auth } from "services";
+import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { login } from "services";
 
 const LoginClient = () => {
   const [error, setError] = useState<string | null>(null);
@@ -21,26 +18,7 @@ const LoginClient = () => {
   });
 
   const handleLogin: SubmitHandler<FieldValues> = useCallback(async (data) => {
-    setSubmitting(true);
-
-    try {
-      await auth("login", data);
-      setError(null);
-
-      await signIn("credentials", {
-        ...data,
-        redirect: true,
-        callbackUrl: "/dashboard",
-      });
-    } catch (e) {
-      const { response } = e as AxiosError;
-
-      if (response) {
-        setError(response.data as string);
-      }
-
-      setSubmitting(false);
-    }
+    await login(data, setSubmitting, setError);
   }, []);
 
   return (
