@@ -1,14 +1,18 @@
 "use client";
 
+import type { FC } from "react";
 import type { Project } from "types";
-import { projects } from "@/data/projects";
 import Card from "../Card";
 import Section from "../Section";
 
-const Projects = () => {
+interface Props {
+  data: Project[];
+}
+
+const Projects: FC<Props> = ({ data }) => {
   return (
     <Section title="Projects">
-      {projects.map((v: Project) => (
+      {data.map((v: Project) => (
         <Card
           date={v.date}
           desc={v.description}

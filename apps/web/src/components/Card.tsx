@@ -51,7 +51,7 @@ const Card: FC<Props> = ({
         {tech !== undefined && (
           <div className="mt-2 text-[10px] text-neutral-300">{tech}</div>
         )}
-        {img !== undefined && (
+        {img !== undefined && img.length !== 0 && (
           <Image
             className="mt-4 
                                  rounded-lg 

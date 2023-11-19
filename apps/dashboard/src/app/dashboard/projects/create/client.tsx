@@ -31,7 +31,7 @@ const CreateProjectClient = () => {
 
       try {
         await createProject(data);
-        router.push("/dashboard/project");
+        router.push("/dashboard/projects");
       } catch (e) {
         const { response } = e as AxiosError;
 
@@ -48,7 +48,7 @@ const CreateProjectClient = () => {
   return (
     <Container>
       <Link
-        href="/dashboard/project"
+        href="/dashboard/projects"
         className="text-neutral-300 duration-500 hover:opacity-50"
       >
         <FaArrowLeft />

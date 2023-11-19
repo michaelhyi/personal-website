@@ -2,7 +2,7 @@
 
 import { format } from "date-fns";
 import Link from "next/link";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { FaPlus, FaPencilAlt } from "react-icons/fa";
 import type { Experience, Post, Project } from "types";
 import Container from "@/components/Container";
@@ -40,7 +40,11 @@ const Page: FC<Props> = ({ title, data }) => {
               {data.map((v: Experience | Project | Post) => (
                 <tr key={v.id}>
                   <td className="px-6 py-4">{v.id}</td>
-                  <td className="px-6 py-4">{format(new Date(v.date), "P")}</td>
+                  <td className="px-6 py-4">
+                    {title === "Blog"
+                      ? format(new Date(v.date), "P")
+                      : (v.date as ReactNode)}
+                  </td>
                   <td className="px-6 pr-96 py-4">
                     {"title" in v ? v.title : v.name}
                   </td>
