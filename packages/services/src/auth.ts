@@ -1,3 +1,4 @@
+import axios from "axios";
 import type { Dispatch, SetStateAction } from "react";
 import { signIn } from "next-auth/react";
 import type { FieldValues } from "react-hook-form";
@@ -5,21 +6,18 @@ import type { FieldValues } from "react-hook-form";
 export const login = async (
   data: FieldValues,
   setSubmitting: Dispatch<SetStateAction<boolean>>,
-  setError: Dispatch<SetStateAction<string | null>>,
+  setError: Dispatch<SetStateAction<string | null>>
 ): Promise<void> => {
   setSubmitting(true);
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-    body: JSON.stringify(data),
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+    data
+  );
 
-  if (res.ok) {
+  if (res.status === 200) {
     setError(null);
-    localStorage.setItem("token", await res.text());
+    localStorage.setItem("token", res.data);
 
     await signIn("credentials", {
       ...data,
@@ -27,7 +25,7 @@ export const login = async (
       callbackUrl: "/dashboard",
     });
   } else {
-    setError(await res.text());
+    setError(res.data);
     setSubmitting(false);
   }
 };
@@ -35,21 +33,23 @@ export const login = async (
 export const register = async (
   data: FieldValues,
   setSubmitting: Dispatch<SetStateAction<boolean>>,
-  setError: Dispatch<SetStateAction<string | null>>,
+  setError: Dispatch<SetStateAction<string | null>>
 ): Promise<void> => {
   setSubmitting(true);
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
-    body: JSON.stringify(data),
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
-  if (res.ok) {
+  if (res.status === 200) {
     setError(null);
-    localStorage.setItem("token", await res.text());
+    localStorage.setItem("token", res.data);
 
     await signIn("credentials", {
       ...data,
@@ -57,7 +57,7 @@ export const register = async (
       callbackUrl: "/dashboard",
     });
   } else {
-    setError(await res.text());
+    setError(res.data);
     setSubmitting(false);
   }
 };

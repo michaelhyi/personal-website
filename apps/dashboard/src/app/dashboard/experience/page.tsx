@@ -1,11 +1,11 @@
-import { Experience } from "types";
 import { readAllExperiences } from "services";
-import Page from "@/components/Page";
+import type { Experience as ExperienceType } from "types";
+import ExperienceTable from "@/components/ExperienceTable";
 
 const Experience = async () => {
-  const data: Experience[] = await readAllExperiences();
+  const data: ExperienceType[] = await readAllExperiences();
 
-  return <Page title="Experience" data={data} />;
+  return <ExperienceTable title="Experience" data={data} />;
 };
 
 export default Experience;

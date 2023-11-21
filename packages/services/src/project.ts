@@ -1,47 +1,48 @@
+import axios from "axios";
 import type { FieldValues } from "react-hook-form";
 import type { Project } from "types";
 import qs from "query-string";
 
 export const createProject = async (data: FieldValues): Promise<number> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project`, {
-    body: JSON.stringify(data),
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/project`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
 
-  return await res.json();
+  return res.data;
 };
 
 export const readProject = async (id: string): Promise<Project | null> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`);
+  const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`);
 
-  return res.ok ? await res.json() : null;
+  return res.status === 200 ? res.data : null;
 };
 
 export const readAllProjects = async (): Promise<Project[]> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project`);
-  return await res.json();
+  const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/project`);
+  return res.data;
 };
 
 export const updateProject = async (
   id: string,
-  data: FieldValues,
+  data: FieldValues
 ): Promise<void> => {
-  await fetch(
+  await axios.put(
     `${process.env.NEXT_PUBLIC_API_URL}/project/${id}?${qs.stringify(data)}`,
+    null,
     {
-      method: "PUT",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    },
+    }
   );
 };
 
 export const deleteProject = async (id: number): Promise<void> => {
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`, {
-    method: "DELETE",
+  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };

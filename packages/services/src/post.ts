@@ -1,47 +1,45 @@
+import axios from "axios";
 import type { Post } from "types";
 import type { FieldValues } from "react-hook-form";
 
 export const createPost = async (data: FieldValues): Promise<number> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post`, {
-    body: JSON.stringify(data),
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/post`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
 
-  return await res.json();
+  return res.data;
 };
 
 export const readPost = async (id: string): Promise<Post | null> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`);
+  const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`);
 
-  return res.ok ? await res.json() : null;
+  return res.status === 200 ? res.data : null;
 };
 
 export const readAllPosts = async (): Promise<Post[]> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post`);
-  return await res.json();
+  const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post`);
+  return res.data;
 };
 
 export const updatePost = async (
   id: string,
-  data: FieldValues,
+  data: FieldValues
 ): Promise<void> => {
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, {
-    body: JSON.stringify(data),
-    method: "POST",
+  await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, data, {
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 };
 
 export const deletePost = async (id: number): Promise<void> => {
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, {
-    method: "DELETE",
+  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };

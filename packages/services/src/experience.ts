@@ -1,51 +1,52 @@
+import axios from "axios";
 import type { FieldValues } from "react-hook-form";
 import type { Experience } from "types";
 import qs from "query-string";
 
 export const createExperience = async (data: FieldValues): Promise<number> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/experience`, {
-    body: JSON.stringify(data),
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/experience`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
 
-  return await res.json();
+  return res.data;
 };
 
 export const readExperience = async (
-  id: string,
+  id: string
 ): Promise<Experience | null> => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/experience/${id}`,
+  const res = await axios(
+    `${process.env.NEXT_PUBLIC_API_URL}/experience/${id}`
   );
 
-  return res.ok ? await res.json() : null;
+  return res.status === 200 ? res.data : null;
 };
 
 export const readAllExperiences = async (): Promise<Experience[]> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/experience`);
-  return await res.json();
+  const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/experience`);
+  return res.data;
 };
 
 export const updateExperience = async (
   id: string,
-  data: FieldValues,
+  data: FieldValues
 ): Promise<void> => {
-  await fetch(
+  await axios.put(
     `${process.env.NEXT_PUBLIC_API_URL}/experience/${id}?${qs.stringify(data)}`,
+    null,
     {
-      method: "PUT",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    },
+    }
   );
 };
 
 export const deleteExperience = async (id: number): Promise<void> => {
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/experience/${id}`, {
-    method: "DELETE",
+  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/experience/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };
