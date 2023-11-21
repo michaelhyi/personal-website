@@ -29,7 +29,7 @@ const Table: FC<Props> = ({ title, data }) => {
   const [modalTitle, setModalTitle] = useState<string | null>(null);
 
   const [menuOpen, setMenuOpen] = useState<boolean[]>(
-    new Array(data.length).fill(false)
+    new Array(data.length).fill(false),
   );
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -74,10 +74,10 @@ const Table: FC<Props> = ({ title, data }) => {
         menuOpen.map((v, i) => {
           if (i === index) return !v;
           return false;
-        })
+        }),
       );
     },
-    [setMenuOpen, menuOpen]
+    [setMenuOpen, menuOpen],
   );
 
   const handleToggleModal = useCallback(
@@ -117,7 +117,7 @@ const Table: FC<Props> = ({ title, data }) => {
       setModalTitle,
       reset,
       setValue,
-    ]
+    ],
   );
 
   const handleCreate: SubmitHandler<FieldValues> = useCallback(
@@ -131,7 +131,7 @@ const Table: FC<Props> = ({ title, data }) => {
       router.refresh();
       setSubmitting(false);
     },
-    [setSubmitting, setMenuOpen, data.length, handleToggleModal, router]
+    [setSubmitting, setMenuOpen, data.length, handleToggleModal, router],
   );
 
   const handleUpdate: SubmitHandler<FieldValues> = useCallback(
@@ -148,7 +148,7 @@ const Table: FC<Props> = ({ title, data }) => {
       setSubmitting(false);
     },
 
-    [id, setSubmitting, setMenuOpen, data.length, handleToggleModal, router]
+    [id, setSubmitting, setMenuOpen, data.length, handleToggleModal, router],
   );
 
   const handleDelete = useCallback(async () => {

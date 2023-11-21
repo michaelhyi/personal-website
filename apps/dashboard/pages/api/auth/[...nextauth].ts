@@ -14,7 +14,7 @@ export const authOptions: AuthOptions = {
       //@ts-expect-error next-auth bug. CredentialsProvider type is wrong
       authorize: async (credentials, _req) => {
         await axios(
-          `${process.env.NEXT_PUBLIC_API_URL}/user/${credentials?.email}`
+          `${process.env.NEXT_PUBLIC_API_URL}/user/${credentials?.email}`,
         );
 
         return {

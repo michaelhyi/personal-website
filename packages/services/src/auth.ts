@@ -6,13 +6,13 @@ import type { FieldValues } from "react-hook-form";
 export const login = async (
   data: FieldValues,
   setSubmitting: Dispatch<SetStateAction<boolean>>,
-  setError: Dispatch<SetStateAction<string | null>>
+  setError: Dispatch<SetStateAction<string | null>>,
 ): Promise<void> => {
   setSubmitting(true);
 
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-    data
+    data,
   );
 
   if (res.status === 200) {
@@ -33,7 +33,7 @@ export const login = async (
 export const register = async (
   data: FieldValues,
   setSubmitting: Dispatch<SetStateAction<boolean>>,
-  setError: Dispatch<SetStateAction<string | null>>
+  setError: Dispatch<SetStateAction<string | null>>,
 ): Promise<void> => {
   setSubmitting(true);
 
@@ -44,7 +44,7 @@ export const register = async (
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    },
   );
 
   if (res.status === 200) {

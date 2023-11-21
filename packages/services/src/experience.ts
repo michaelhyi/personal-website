@@ -11,17 +11,17 @@ export const createExperience = async (data: FieldValues): Promise<number> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    }
+    },
   );
 
   return res.data;
 };
 
 export const readExperience = async (
-  id: string
+  id: string,
 ): Promise<Experience | null> => {
   const res = await axios(
-    `${process.env.NEXT_PUBLIC_API_URL}/experience/${id}`
+    `${process.env.NEXT_PUBLIC_API_URL}/experience/${id}`,
   );
 
   return res.status === 200 ? res.data : null;
@@ -34,14 +34,14 @@ export const readAllExperiences = async (): Promise<Experience[]> => {
 
 export const updateExperience = async (
   id: string,
-  data: FieldValues
+  data: FieldValues,
 ): Promise<void> => {
   await axios.put(
     `${process.env.NEXT_PUBLIC_API_URL}/experience/${id}?${qs.stringify(data)}`,
     null,
     {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    }
+    },
   );
 };
 

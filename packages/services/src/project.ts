@@ -11,7 +11,7 @@ export const createProject = async (data: FieldValues): Promise<number> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    }
+    },
   );
 
   return res.data;
@@ -30,14 +30,14 @@ export const readAllProjects = async (): Promise<Project[]> => {
 
 export const updateProject = async (
   id: string,
-  data: FieldValues
+  data: FieldValues,
 ): Promise<void> => {
   await axios.put(
     `${process.env.NEXT_PUBLIC_API_URL}/project/${id}?${qs.stringify(data)}`,
     null,
     {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    }
+    },
   );
 };
 

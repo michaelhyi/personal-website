@@ -10,7 +10,7 @@ export const createPost = async (data: FieldValues): Promise<number> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    }
+    },
   );
 
   return res.data;
@@ -29,7 +29,7 @@ export const readAllPosts = async (): Promise<Post[]> => {
 
 export const updatePost = async (
   id: string,
-  data: FieldValues
+  data: FieldValues,
 ): Promise<void> => {
   await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, data, {
     headers: {
