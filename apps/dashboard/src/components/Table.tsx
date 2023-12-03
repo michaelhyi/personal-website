@@ -194,12 +194,14 @@ const Table: FC<Props> = ({ data }) => {
       setSubmitting(true);
 
       const postId = await createPost({
-        title: formData.title,
-        description: formData.description,
-        body: formData.body,
+        title: formData.title as string,
+        description: formData.description as string,
+        body: formData.body as string,
       });
 
-      await createPostImage(postId, file);
+      if (file) {
+        await createPostImage(postId, file);
+      }
 
       setMenuOpen(new Array(data.length).fill(false));
       await handleToggleModal();
