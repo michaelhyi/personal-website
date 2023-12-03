@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import Link from "next/link";
 import Image from "next/image";
 import { IoIosArrowBack } from "react-icons/io";
-import { readPost } from "services";
+import { readPost, readPostImageUrl } from "services";
 import type { Post } from "types";
 import { Container } from "ui";
 
@@ -28,7 +28,7 @@ const View: FC<IParams> = async ({ params }) => {
         {format(new Date(data.date), "PPP")}
       </div>
       <Image
-        src="TODO"
+        src={readPostImageUrl(id)}
         alt={data.title}
         width={400}
         height={400}

@@ -14,7 +14,13 @@ import {
   AiFillFileText,
   AiOutlineCloudDownload,
 } from "react-icons/ai";
-import { createPost, deletePost, readPost, updatePost } from "services";
+import {
+  createPost,
+  createPostImage,
+  deletePost,
+  readPost,
+  updatePost,
+} from "services";
 import type { Post } from "types";
 import Container from "@/components/Container";
 import { capitalize } from "@/utils/capitialize";
@@ -31,7 +37,7 @@ const Table: FC<Props> = ({ data }) => {
   const router = useRouter();
 
   const [id, setId] = useState<number | null>(null);
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<FormData | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string | null>(null);
 
@@ -56,7 +62,7 @@ const Table: FC<Props> = ({ data }) => {
       formData.append("file", acceptedFiles[0]);
 
       setValue("image", formData);
-      setFile(acceptedFiles[0]);
+      setFile(formData);
       setSubmitting(false);
     },
     [setValue, setSubmitting],
@@ -107,7 +113,7 @@ const Table: FC<Props> = ({ data }) => {
             />
             <div className="flex flex-col text-center gap-2 items-center justify-center bg-white shadow-lg w-32 h-32 border-dashed border">
               <AiFillFileText size={48} />
-              <div className="text-xs">{file.name}</div>
+              <div className="text-xs">{(file.get("file") as File).name}</div>
             </div>
           </div>
         )}
@@ -187,14 +193,20 @@ const Table: FC<Props> = ({ data }) => {
     async (formData) => {
       setSubmitting(true);
 
-      await createPost(formData);
+      const postId = await createPost({
+        title: formData.title,
+        description: formData.description,
+        body: formData.body,
+      });
+
+      await createPostImage(postId, file);
 
       setMenuOpen(new Array(data.length).fill(false));
       await handleToggleModal();
       router.refresh();
       setSubmitting(false);
     },
-    [setSubmitting, setMenuOpen, data.length, handleToggleModal, router],
+    [setSubmitting, file, setMenuOpen, data.length, handleToggleModal, router],
   );
 
   const handleUpdate: SubmitHandler<FieldValues> = useCallback(

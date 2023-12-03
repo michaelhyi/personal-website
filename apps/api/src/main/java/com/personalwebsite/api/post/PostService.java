@@ -10,23 +10,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PostService {
     private final PostRepository repository;
-    private final PostDTOMapper postDTOMapper;
     private final S3Service service;
     private final S3Buckets buckets;
 
     public PostService(PostRepository repository,
-                       PostDTOMapper postDTOMapper,
                        S3Service service,
                        S3Buckets buckets) {
         this.repository = repository;
-        this.postDTOMapper = postDTOMapper;
         this.service = service;
         this.buckets = buckets;
     }
@@ -36,44 +31,50 @@ public class PostService {
 
         Post post = new Post(
                 req.title(),
-                req.image(),
+                null,
                 req.description(),
                 req.body());
         repository.saveAndFlush(post);
         return post.getId();
     }
 
-    public void uploadPostImage(Long id, MultipartFile file) {
-        Optional<Post> post = repository.findById(id);
+    @Transactional
+    public void createPostImage(Long id, MultipartFile file) {
+        Post post = repository.findById(id)
+                .orElseThrow(PostNotFoundException::new);
 
-        if (post.isEmpty()) {
-            throw new PostNotFoundException();
-        }
+        String imageId = UUID.randomUUID().toString();
 
         try {
             service.putObject(
                     buckets.getBlog(),
-                    "blog/%s/%s".formatted(id, UUID.randomUUID().toString()),
+                    String.format("%s/%s", id, imageId),
                     file.getBytes()
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        post.setImage(imageId);
     }
 
-    public PostDTO readPost(Long id) {
+    public Post readPost(Long id) {
         return repository
                 .findById(id)
-                .map(postDTOMapper)
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    public List<PostDTO> readAllPosts() {
+    public List<Post> readAllPosts() {
         return repository
-                .findAllByOrderByDateDesc()
-                .stream()
-                .map(postDTOMapper)
-                .collect(Collectors.toList());
+                .findAllByOrderByDateDesc();
+    }
+
+    public byte[] readPostImage(Long id) {
+        Post post = readPost(id);
+
+        return service.getObject(
+                buckets.getBlog(),
+                String.format("%s/%s", id, post.getImage()));
     }
 
     @Transactional
@@ -84,7 +85,6 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
 
         post.setTitle(req.title());
-        post.setImage(req.image());
         post.setDescription(req.description());
         post.setBody((req.body()));
     }

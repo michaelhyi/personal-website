@@ -16,6 +16,19 @@ export const createPost = async (data: FieldValues): Promise<number> => {
   return res.data;
 };
 
+export const createPostImage = async (id: number, formData: FormData) => {
+  await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/post/${id}/image`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+};
+
 export const readPost = async (id: string): Promise<Post | null> => {
   const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`);
 
@@ -25,6 +38,10 @@ export const readPost = async (id: string): Promise<Post | null> => {
 export const readAllPosts = async (): Promise<Post[]> => {
   const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post`);
   return res.data;
+};
+
+export const readPostImageUrl = (id: string): string => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/post/${id}/image`;
 };
 
 export const updatePost = async (

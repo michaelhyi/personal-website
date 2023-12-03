@@ -28,22 +28,31 @@ public class PostController {
         return ResponseEntity.ok(service.createPost(req));
     }
 
-    @PostMapping(value = "{id}/image",
+    @PostMapping(
+            value = "{id}/image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadPostImage(
+    public void createPostImage(
             @PathVariable("id") Long id,
             @RequestParam("file") MultipartFile file) {
-        service.uploadPostImage(id, file);
+        service.createPostImage(id, file);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<PostDTO> readPost(@PathVariable("id") Long id) {
+    public ResponseEntity<Post> readPost(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.readPost(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<PostDTO>> readAllPosts() {
+    public ResponseEntity<List<Post>> readAllPosts() {
         return ResponseEntity.ok(service.readAllPosts());
+    }
+
+    @GetMapping(
+            value = "{id}/image",
+            produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public ResponseEntity<byte[]> readPostImage(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.readPostImage(id));
     }
 
     @PostMapping("{id}")
