@@ -34,7 +34,8 @@ public class AuthService {
     public String login(AuthRequest req) {
         validateRequest(req);
 
-        User user = repository.findByEmail(req.email())
+        User user = repository
+                .findByEmail(req.email())
                 .orElseThrow(UserNotFoundException::new);
 
         if (!passwordEncoder.matches(req.password(), user.getPassword())) {
@@ -67,10 +68,12 @@ public class AuthService {
             throw new UnauthorizedUserException();
         }
 
-        User user = new User(req.email(),
+        User user = new User(
+                req.email(),
                 passwordEncoder.encode(req.password()),
                 UserRole.ADMIN);
         repository.save(user);
+
         return jwtService.generateToken(user);
     }
 

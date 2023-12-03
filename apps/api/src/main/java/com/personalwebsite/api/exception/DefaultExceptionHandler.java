@@ -12,4 +12,13 @@ public class DefaultExceptionHandler {
             IllegalArgumentException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleException(
+            RuntimeException e) {
+        return new ResponseEntity<>(
+                e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
 }

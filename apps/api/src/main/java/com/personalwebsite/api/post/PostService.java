@@ -40,9 +40,7 @@ public class PostService {
 
     @Transactional
     public void createPostImage(Long id, MultipartFile file) {
-        Post post = repository.findById(id)
-                .orElseThrow(PostNotFoundException::new);
-
+        Post post = readPost(id);
         String imageId = UUID.randomUUID().toString();
 
         try {

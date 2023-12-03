@@ -1,0 +1,35 @@
+spring:
+  application:
+    name:
+  datasource:
+    url:
+    password:
+    username:
+  jpa:
+    hibernate:
+      ddl-auto:
+    properties:
+      hibernate:
+        dialect:
+        format_sql:
+      show-sql:
+
+auth:
+  whitelisted-emails:
+
+application:
+  security:
+    jwt:
+      secret-key:
+      expiration:
+    cors:
+      allowed-origins:
+      allowed-methods:
+      allowed-headers:
+      exposed-headers:
+
+aws:
+  region:
+  s3:
+    buckets:
+      blog:

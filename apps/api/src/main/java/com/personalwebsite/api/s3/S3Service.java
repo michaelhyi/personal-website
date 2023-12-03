@@ -19,13 +19,13 @@ public class S3Service {
     }
 
     public void putObject(String bucketName, String key, byte[] file) {
-        PutObjectRequest objectRequest = PutObjectRequest
+        PutObjectRequest putObjectRequest = PutObjectRequest
                 .builder()
                 .bucket(bucketName)
                 .key(key)
                 .build();
 
-        client.putObject(objectRequest, RequestBody.fromBytes(file));
+        client.putObject(putObjectRequest, RequestBody.fromBytes(file));
     }
 
     public byte[] getObject(String bucketName, String key) {

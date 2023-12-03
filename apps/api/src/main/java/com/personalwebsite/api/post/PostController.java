@@ -30,7 +30,8 @@ public class PostController {
 
     @PostMapping(
             value = "{id}/image",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public void createPostImage(
             @PathVariable("id") Long id,
             @RequestParam("file") MultipartFile file) {

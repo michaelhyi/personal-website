@@ -42,8 +42,6 @@ public class SecurityConfig {
                         .hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.GET)
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/post/**")
-                        .permitAll()
                         .requestMatchers(HttpMethod.PUT)
                         .hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE)
