@@ -1,9 +1,9 @@
 package com.personalwebsite.api.auth;
 
-import com.personalwebsite.api.auth.exceptions.InvalidCredentialsException;
-import com.personalwebsite.api.auth.exceptions.UnauthorizedUserException;
-import com.personalwebsite.api.auth.exceptions.UserAlreadyExistsException;
-import com.personalwebsite.api.auth.exceptions.UserNotFoundException;
+import com.personalwebsite.api.exception.InvalidCredentialsException;
+import com.personalwebsite.api.exception.UnauthorizedUserException;
+import com.personalwebsite.api.exception.UserAlreadyExistsException;
+import com.personalwebsite.api.exception.UserNotFoundException;
 import com.personalwebsite.api.security.JwtService;
 import com.personalwebsite.api.user.User;
 import com.personalwebsite.api.user.UserRepository;

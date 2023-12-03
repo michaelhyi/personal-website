@@ -1,7 +1,10 @@
-import Container from "@/components/Container";
+import { readAllPosts } from "services";
+import Table from "@/components/Table";
 
-const Dashboard = () => {
-  return <Container>dashboard</Container>;
+const Blog = async () => {
+  const data = await readAllPosts();
+
+  return <Table data={data} />;
 };
 
-export default Dashboard;
+export default Blog;

@@ -27,3 +27,9 @@ application:
       allowed-methods: "*"
       allowed-headers: "*"
       exposed-headers: "*"
+
+aws:
+  region: us-east-2
+  s3:
+    buckets:
+      blog: personal-website-api-bucket

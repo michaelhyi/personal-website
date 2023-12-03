@@ -1,25 +1,21 @@
 import { IoIosArrowBack } from "react-icons/io";
 import Link from "next/link";
-import { readAllExperiences, readAllProjects } from "services";
 import { Container } from "ui";
 import Education from "@/components/portfolio/Education";
 import Experience from "@/components/portfolio/Experience";
 import Projects from "@/components/portfolio/Projects";
+import { experience } from "@/data/experience";
+import { projects } from "@/data/projects";
 
-const Home = async () => {
-  const experienceData = await readAllExperiences();
-  const projectsData = await readAllProjects();
-
+export default function Home() {
   return (
     <Container>
       <Link href="/" className="duration-500 hover:opacity-50">
         <IoIosArrowBack />
       </Link>
-      <Experience data={experienceData} />
+      <Experience data={experience} />
       <Education />
-      <Projects data={projectsData} />
+      <Projects data={projects} />
     </Container>
   );
-};
-
-export default Home;
+}

@@ -28,7 +28,7 @@ const View: FC<IParams> = async ({ params }) => {
         {format(new Date(data.date), "PPP")}
       </div>
       <Image
-        src={data.image}
+        src="TODO"
         alt={data.title}
         width={400}
         height={400}

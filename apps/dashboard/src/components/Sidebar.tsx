@@ -1,13 +1,11 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaHome, FaProjectDiagram } from "react-icons/fa";
-import { MdOutlineWork } from "react-icons/md";
-import { IoLogOutOutline } from "react-icons/io5";
-import { TfiWrite } from "react-icons/tfi";
-import { signOut } from "next-auth/react";
 import { useCallback } from "react";
+import { FaHome } from "react-icons/fa";
+import { IoLogOutOutline } from "react-icons/io5";
 
 const Sidebar = () => {
   const handleLogout = useCallback(async () => {
@@ -38,27 +36,6 @@ const Sidebar = () => {
         >
           <FaHome size={12.5} />
           <div className="text-sm font-medium">Home</div>
-        </Link>
-        <Link
-          href="/dashboard/experience"
-          className="mt-3 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
-        >
-          <MdOutlineWork size={12.5} />
-          <div className="text-sm font-medium">Experience</div>
-        </Link>
-        <Link
-          href="/dashboard/projects"
-          className="mt-3 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
-        >
-          <FaProjectDiagram size={12.5} />
-          <div className="text-sm font-medium">Projects</div>
-        </Link>
-        <Link
-          href="/dashboard/blog"
-          className="mt-3 flex items-center gap-5 text-neutral-200 duration-500 hover:opacity-50"
-        >
-          <TfiWrite size={12.5} />
-          <div className="text-sm font-medium">Blog</div>
         </Link>
         <div className="mt-12 text-neutral-400 text-xs font-semibold">USER</div>
         <button

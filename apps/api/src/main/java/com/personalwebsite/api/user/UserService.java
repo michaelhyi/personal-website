@@ -18,7 +18,7 @@ public class UserService {
                 || email.isEmpty()
                 || email.equals("null")
                 || email.equals("undefined")) {
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         }
 
         Optional<User> user = repository.findByEmail(email);
