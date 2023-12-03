@@ -40,6 +40,15 @@ export const readAllPosts = async (): Promise<Post[]> => {
   return res.data;
 };
 
+export const readPostImageBytes = async (
+  id: string,
+): Promise<ArrayBuffer | null> => {
+  const res = await axios(
+    `${process.env.NEXT_PUBLIC_API_URL}/post/${id}/image/bytes`,
+  );
+  return res.data;
+};
+
 export const readPostImageUrl = (id: string): string => {
   return `${process.env.NEXT_PUBLIC_API_URL}/post/${id}/image`;
 };

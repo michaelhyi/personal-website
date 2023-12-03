@@ -9,16 +9,13 @@ import {
   type SubmitHandler,
   type UseFormRegister,
 } from "react-hook-form";
-import {
-  AiFillDelete,
-  AiFillFileText,
-  AiOutlineCloudDownload,
-} from "react-icons/ai";
+import { AiOutlineClose, AiOutlineCloudDownload } from "react-icons/ai";
 import {
   createPost,
   createPostImage,
   deletePost,
   readPost,
+  readPostImageBytes,
   updatePost,
 } from "services";
 import type { Post } from "types";
@@ -74,6 +71,7 @@ const Table: FC<Props> = ({ data }) => {
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
+      "image/webp": [".webp"],
       "image/jpeg": [".jpeg", ".jpg"],
       "image/png": [".png"],
     },
@@ -94,27 +92,19 @@ const Table: FC<Props> = ({ data }) => {
       <div id="image" className="flex flex-col w-96">
         <div
           {...getRootProps({ className: "dropzone" })}
-          className="flex flex-col items-center justify-center border-2 border-neutral-200 border-dashed cursor-pointer duration-500 hover:opacity-50 rounded-lg shadow-lg h-64"
+          className="flex flex-col items-center justify-center border-2 border-neutral-300 border-dashed cursor-pointer duration-500 hover:opacity-50 rounded-lg shadow-lg h-64"
         >
           <input {...getInputProps({ name: "file" })} disabled={submitting} />
           <AiOutlineCloudDownload size={48} />
           <div>Drag & drop files here, or click to select files</div>
         </div>
-        <br />
-        <br />
         {file !== null && (
-          <div className="relative flex flex-col">
-            <div className="font-bold text-2xl">Uploaded File</div>
-            <br />
-            <AiFillDelete
+          <div className="flex items-center gap-2 text-xs mt-6">
+            <div>{(file.get("file") as File).name}</div>
+            <AiOutlineClose
               onClick={handleImageDelete}
-              className="absolute top-[46px] left-[117px] text-red-400 cursor-pointer duration-500 hover:opacity-50"
-              size={20}
+              className="cursor-pointer duration-500 hover:opacity-50"
             />
-            <div className="flex flex-col text-center gap-2 items-center justify-center bg-white shadow-lg w-32 h-32 border-dashed border">
-              <AiFillFileText size={48} />
-              <div className="text-xs">{(file.get("file") as File).name}</div>
-            </div>
           </div>
         )}
       </div>
@@ -149,24 +139,26 @@ const Table: FC<Props> = ({ data }) => {
 
       if (modalOpen) {
         setId(null);
+        setFile(null);
         setModalOpen(false);
         setModalTitle(null);
         reset();
       } else if (t) {
         if (t.includes("Edit") && i) {
-          const item: Post | null = await readPost(i.toString());
+          const post: Post | null = await readPost(i.toString());
+          const image: ArrayBuffer | null = await readPostImageBytes(
+            i.toString(),
+          );
 
-          if (item) {
+          if (post && image) {
             const formData = new FormData();
-            formData.append(
-              "file",
-              new File([new Uint8Array(item.image)], `${item.title}.png`),
-            );
+            formData.append("file", new File([image], `${post.title}.jpg`));
 
-            setValue("title", item.title);
+            setFile(formData);
+            setValue("title", post.title);
             setValue("image", formData);
-            setValue("description", item.description);
-            setValue("body", item.body);
+            setValue("description", post.description);
+            setValue("body", post.body);
           }
         }
 
@@ -217,6 +209,8 @@ const Table: FC<Props> = ({ data }) => {
 
       if (id) {
         await updatePost(id.toString(), formData);
+
+        if (file) await createPostImage(id, file);
       }
 
       setMenuOpen(new Array(data.length).fill(false));
@@ -225,7 +219,15 @@ const Table: FC<Props> = ({ data }) => {
       setSubmitting(false);
     },
 
-    [id, setSubmitting, setMenuOpen, data.length, handleToggleModal, router],
+    [
+      id,
+      file,
+      setSubmitting,
+      setMenuOpen,
+      data.length,
+      handleToggleModal,
+      router,
+    ],
   );
 
   const handleDelete = useCallback(async () => {

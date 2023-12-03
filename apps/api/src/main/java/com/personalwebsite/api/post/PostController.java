@@ -56,6 +56,13 @@ public class PostController {
         return ResponseEntity.ok(service.readPostImage(id));
     }
 
+    @GetMapping("{id}/image/bytes")
+    public ResponseEntity<byte[]> readPostImageBytes(
+            @PathVariable("id") Long id
+    ) {
+        return ResponseEntity.ok(service.readPostImage(id));
+    }
+
     @PostMapping("{id}")
     public ResponseEntity<Void> updatePost(
             @PathVariable("id") Long id,
