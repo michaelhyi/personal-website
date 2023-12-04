@@ -32,7 +32,6 @@ public class PostService {
         Post post = new Post(
                 req.title(),
                 null,
-                req.description(),
                 req.body());
         repository.saveAndFlush(post);
         return post.getId();
@@ -83,7 +82,6 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
 
         post.setTitle(req.title());
-        post.setDescription(req.description());
         post.setBody((req.body()));
     }
 
@@ -95,9 +93,6 @@ public class PostService {
         if (req.title() == null
                 || req.title().isBlank()
                 || req.title().isEmpty()
-                || req.description() == null
-                || req.description().isBlank()
-                || req.description().isEmpty()
                 || req.body() == null
                 || req.body().isBlank()
                 || req.body().isEmpty()) {

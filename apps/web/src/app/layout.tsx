@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
+import { font } from "utils";
 import Providers from "@/components/Providers";
-import { font } from "@/utils/font";
 import "./globals.css";
 
 interface Props {

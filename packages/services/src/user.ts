@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../apps/dashboard/pages/api/auth/[...nextauth]";
+import { authOptions } from "../../../apps/admin/pages/api/auth/[...nextauth]";
 import type { User } from "types";
 
 export const readUserByEmail = async (): Promise<User | null> => {

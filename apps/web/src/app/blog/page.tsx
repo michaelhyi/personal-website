@@ -19,7 +19,6 @@ const Blog = async () => {
         {data.map((v) => (
           <Card
             date={format(new Date(v.date), "P")}
-            desc={v.description}
             key={v.id}
             name={v.title}
             href={`/blog/${v.id}`}

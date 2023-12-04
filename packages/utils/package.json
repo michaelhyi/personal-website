@@ -1,0 +1,11 @@
+{
+  "name": "utils",
+  "version": "0.0.0",
+  "author": "michaelhyi",
+  "license": "MIT",
+  "private": true,
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  }
+}

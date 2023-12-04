@@ -1,16 +1,20 @@
 import { redirect } from "next/navigation";
+import { Container } from "ui";
 import type { User } from "types";
 import { readUserByEmail } from "services";
-import LoginClient from "./client";
 
 const Home = async () => {
   const user: User | null = await readUserByEmail();
 
-  if (user) {
-    redirect("/dashboard");
+  if (!user) {
+    redirect("/login");
   }
 
-  return <LoginClient />;
+  return (
+    <Container>
+      <div>hi</div>
+    </Container>
+  );
 };
 
 export default Home;

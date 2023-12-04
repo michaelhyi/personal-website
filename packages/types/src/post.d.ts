@@ -3,6 +3,5 @@ export interface Post {
   date: Date;
   title: string;
   image: byte[];
-  description: string;
   body: string;
 }
