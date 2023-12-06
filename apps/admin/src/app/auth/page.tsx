@@ -1,16 +1,14 @@
 import { redirect } from "next/navigation";
 import type { User } from "types";
 import { readUserByEmail } from "services";
-import LoginClient from "./client";
+import AuthClient from "./client";
 
-const Login = async () => {
+export default async function Auth() {
   const user: User | null = await readUserByEmail();
 
   if (user) {
-    redirect("/dashboard");
+    redirect("/");
   }
 
-  return <LoginClient />;
-};
-
-export default Login;
+  return <AuthClient />;
+}

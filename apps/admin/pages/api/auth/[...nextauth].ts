@@ -1,32 +1,35 @@
 import axios from "axios";
 import NextAuth, { type AuthOptions } from "next-auth";
-import Provider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: AuthOptions = {
   providers: [
-    Provider({
-      name: "credentials",
-      credentials: {
-        email: { label: "email", type: "text" },
-        password: { label: "password", type: "password" },
-      },
-
-      //@ts-expect-error next-auth bug. CredentialsProvider type is wrong
-      authorize: async (credentials, _req) => {
-        await axios(
-          `${process.env.NEXT_PUBLIC_API_URL}/user/${credentials?.email}`,
-        );
-
-        return {
-          name: null,
-          email: credentials?.email,
-          image: null,
-        };
-      },
+    GoogleProvider({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- environment variable will always exist
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- environment variable will always exist
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  callbacks: {
+    async signIn({ user }) {
+      if (user.email) {
+        try {
+          await axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`,
+          );
+          return true;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- e defaults to unknown.
+        } catch (e: any) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access -- AxiosError will always destructure from e --> response --> data.
+          throw new Error(e.response.data);
+        }
+      }
+      return false;
+    },
+  },
   pages: {
-    signIn: "/",
+    signIn: "/auth",
   },
   debug: process.env.NODE_ENV === "development",
   session: {

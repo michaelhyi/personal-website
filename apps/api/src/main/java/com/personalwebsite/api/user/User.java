@@ -24,15 +24,12 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
 
-    private String password;
-
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public User(String email, String password, UserRole role) {
+    public User(String email) {
         this.email = email;
-        this.password = password;
-        this.role = role;
+        this.role = UserRole.ADMIN;
     }
 
     public User() {
@@ -50,7 +47,7 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public String getPassword() {
-        return password;
+        return null;
     }
 
     @Override

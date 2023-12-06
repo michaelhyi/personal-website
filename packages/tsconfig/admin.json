@@ -22,7 +22,7 @@
       }
     ],
     "paths": {
-      "@/*": ["../../apps/dashboard/src/*"]
+      "@/*": ["../../apps/admin/src/*"]
     },
     "declaration": false,
     "declarationMap": false

@@ -12,7 +12,13 @@
     "ci": {},
     "clean": {},
     "@personal-website/admin#dev": {
-      "env": ["NEXTAUTH_SECRET", "NEXTAUTH_URL", "NEXT_PUBLIC_API_URL"],
+      "env": [
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET",
+        "NEXTAUTH_SECRET",
+        "NEXTAUTH_URL",
+        "NEXT_PUBLIC_API_URL"
+      ],
       "cache": false,
       "persistent": true
     },

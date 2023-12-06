@@ -1,12 +1,8 @@
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { font } from "utils";
 import Providers from "../components/Providers";
 import "./globals.css";
-
-interface Props {
-  children: ReactNode;
-}
 
 export const metadata: Metadata = {
   title: "Dashboard - Michael Yi",
@@ -16,7 +12,7 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout: FC<Props> = ({ children }) => {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={font.className}>
@@ -24,6 +20,4 @@ const RootLayout: FC<Props> = ({ children }) => {
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}
