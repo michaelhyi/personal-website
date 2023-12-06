@@ -9,7 +9,7 @@ export const hero = [
   },
   {
     name: "Resume",
-    href: "https://michael-yi.com/Resume.pdf",
+    href: `${process.env.NEXT_PUBLIC_WEB_URL}/Resume.pdf`,
   },
   {
     name: "Contact",
