@@ -8,33 +8,28 @@ export default async function Post({
 }: {
   searchParams: Record<string, string | undefined>;
 }) {
-  let data = null;
+  let content: string | null = "";
+  let image = null;
+  let redirect = false;
 
-  if (searchParams.dialog === "create") {
-    data = {
-      title: "",
-      image: new FormData(),
-      body: "",
-    };
-  } else if (searchParams.dialog === "edit" && searchParams.id) {
-    const post: Post | null = await readPost(searchParams.id);
-    const image: ArrayBuffer | null = await readPostImageBytes(searchParams.id);
+  if (searchParams.dialog === "edit" && searchParams.id) {
+    let post: Post;
+    let imageBuffer: ArrayBuffer;
 
-    if (post && image) {
-      const formData = new FormData();
-      formData.append("file", new File([image], `${post.title}.jpg`));
+    try {
+      post = await readPost(searchParams.id);
+      imageBuffer = await readPostImageBytes(searchParams.id);
 
-      data = {
-        title: post.title,
-        image: formData,
-        body: post.body,
-      };
+      content = `<h1>${post.title}</h1>${post.body}`;
+      image = new File([imageBuffer], `${post.title}.jpg`);
+    } catch {
+      redirect = true;
     }
   }
 
-  if (!data) {
+  if (redirect) {
     notFound();
   }
 
-  return <Client data={data} />;
+  return <Client content={content} image={image} />;
 }

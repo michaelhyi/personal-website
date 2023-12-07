@@ -5,7 +5,7 @@ import Providers from "../components/Providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Dashboard - Michael Yi",
+  title: "Admin - Michael Yi",
   description: "© 2023 Michael Yi, All Rights Reserved.",
   icons: {
     icon: "/michael.png",

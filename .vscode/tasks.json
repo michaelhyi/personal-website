@@ -10,7 +10,7 @@
   "tasks": [
     {
       "label": "Launch Dev Terminals",
-      "dependsOn": ["api (8080)", "dashboard (3001)", "web (3000)"],
+      "dependsOn": ["api (8080)", "admin (3001)", "web (3000)"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -24,9 +24,9 @@
       "problemMatcher": []
     },
     {
-      "label": "dashboard (3001)",
+      "label": "admin (3001)",
       "type": "shell",
-      "command": "cd apps/dashboard && yarn dev",
+      "command": "cd apps/admin && yarn dev",
       "isBackground": false,
       "problemMatcher": []
     },

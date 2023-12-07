@@ -21,14 +21,14 @@ public class Post {
     private String image;
 
     @Column(columnDefinition = "TEXT")
-    private String body;
+    private String content;
 
     public Post(String title,
                 String image,
-                String body) {
+                String content) {
         this.title = title;
         this.image = image;
-        this.body = body;
+        this.content = content;
     }
 
     public Post() {
@@ -58,12 +58,12 @@ public class Post {
         this.image = image;
     }
 
-    public String getBody() {
-        return body;
+    public String getContent() {
+        return content;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setContent(String content) {
+        this.content = content;
     }
 }
 

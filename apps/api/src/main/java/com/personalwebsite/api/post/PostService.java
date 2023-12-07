@@ -32,7 +32,7 @@ public class PostService {
         Post post = new Post(
                 req.title(),
                 null,
-                req.body());
+                req.content());
         repository.saveAndFlush(post);
         return post.getId();
     }
@@ -82,7 +82,7 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
 
         post.setTitle(req.title());
-        post.setBody((req.body()));
+        post.setContent((req.content()));
     }
 
     public void deletePost(Long id) {
@@ -93,9 +93,9 @@ public class PostService {
         if (req.title() == null
                 || req.title().isBlank()
                 || req.title().isEmpty()
-                || req.body() == null
-                || req.body().isBlank()
-                || req.body().isEmpty()) {
+                || req.content() == null
+                || req.content().isBlank()
+                || req.content().isEmpty()) {
             throw new IllegalArgumentException("Fields cannot be blank.");
         }
     }
