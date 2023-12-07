@@ -1,11 +1,9 @@
 {
-  "name": "@personal-website/types",
+  "name": "@personal-website/config",
   "version": "0.0.0",
   "author": "michaelhyi",
   "license": "MIT",
   "private": true,
-  "main": "src/index.ts",
-  "types": "src/index.ts",
   "publishConfig": {
     "access": "public"
   }

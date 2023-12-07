@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { font } from "utils";
+import { font } from "@personal-website/utils";
 import Providers from "../components/Providers";
 import "./globals.css";
 

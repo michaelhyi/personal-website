@@ -1,20 +1,17 @@
+"use client";
+
 import { format } from "date-fns";
 import Image from "next/image";
-import type { FC } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
-import { readPostImageUrl } from "services";
-import type { Post } from "types";
+import { readPostImageUrl } from "@personal-website/services";
+import type { Post } from "@personal-website/types";
 
-interface Props {
-  data: Post;
-}
-
-const PostCard: FC<Props> = ({ data }) => {
+export default function PostCard({ data }: { data: Post }) {
   return (
     <div className="flex sm:flex-col md:flex-row gap-12">
       <Image
         className="rounded-lg border-[1px] border-neutral-300 shadow-md"
-        src={readPostImageUrl(data.id.toString())}
+        src={readPostImageUrl(data.id)}
         alt={data.title}
         width={200}
         height={120}
@@ -28,11 +25,9 @@ const PostCard: FC<Props> = ({ data }) => {
           <FiArrowUpRight size={12} />
         </div>
         <div className="mt-2 text-xs text-neutral-400 line-clamp-3">
-          {data.body}
+          {data.content}
         </div>
       </div>
     </div>
   );
-};
-
-export default PostCard;
+}

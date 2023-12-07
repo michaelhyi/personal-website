@@ -1,9 +1,9 @@
 "use client";
 
-import type { Post, User } from "types";
-import { Container } from "ui";
+import type { Post, User } from "@personal-website/types";
+import { Container } from "@personal-website/ui";
 import { useEffect } from "react";
-import { authenticate } from "services";
+import { authenticate } from "@personal-website/services";
 import PostCard from "@/components/PostCard";
 
 export default function HomeClient({

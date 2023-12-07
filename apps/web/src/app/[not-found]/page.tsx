@@ -1,7 +1,5 @@
-import { NotFound as NotFoundClient } from "ui";
+import { NotFound as NotFoundClient } from "@personal-website/ui";
 
-const NotFound = () => {
+export default function NotFound() {
   return <NotFoundClient />;
-};
-
-export default NotFound;
+}

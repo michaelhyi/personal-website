@@ -1,17 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 
-interface Props {
+export default function Section({
+  title,
+  children,
+  href,
+  nonDesc = false,
+}: {
   title: string;
   children: ReactNode;
   href?: string;
   nonDesc?: boolean;
-}
-
-const Section: FC<Props> = ({ title, children, href, nonDesc = false }) => {
+}) {
   return (
     <div className="mt-10">
       {href ? (
@@ -35,6 +38,4 @@ const Section: FC<Props> = ({ title, children, href, nonDesc = false }) => {
       </div>
     </div>
   );
-};
-
-export default Section;
+}

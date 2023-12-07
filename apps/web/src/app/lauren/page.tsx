@@ -1,7 +1,7 @@
+import { Container } from "@personal-website/ui";
 import Image from "next/image";
-import { Container } from "ui";
 
-const Lauren = () => {
+export default function Lauren() {
   return (
     <Container absoluteFooter>
       <div
@@ -23,6 +23,4 @@ const Lauren = () => {
       </div>
     </Container>
   );
-};
-
-export default Lauren;
+}

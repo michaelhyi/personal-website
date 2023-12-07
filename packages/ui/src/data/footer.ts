@@ -1,5 +1,5 @@
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
-import type { FooterLink } from "types";
+import type { FooterLink } from "@personal-website/types";
 
 export const footer: FooterLink[] = [
   {

@@ -1,14 +1,13 @@
-"use client";
-
 import { useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
 
-interface Props {
+export default function DeleteModal({
+  modalOpen,
+  handleToggleModal,
+}: {
   modalOpen: boolean;
   handleToggleModal: () => void;
-}
-
-const DeleteModal: React.FC<Props> = ({ modalOpen, handleToggleModal }) => {
+}) {
   const handleDelete = useCallback(async () => {
     await Promise.all([]);
   }, []);
@@ -51,6 +50,4 @@ const DeleteModal: React.FC<Props> = ({ modalOpen, handleToggleModal }) => {
       </div>
     </div>
   );
-};
-
-export default DeleteModal;
+}

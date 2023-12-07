@@ -1,13 +1,13 @@
+import { readAllPosts } from "@personal-website/services";
+import type { Post } from "@personal-website/types";
+import { Container } from "@personal-website/ui";
 import { format } from "date-fns";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
-import { readAllPosts } from "services";
-import type { Post } from "types";
-import { Container } from "ui";
 import Section from "@/components/Section";
 import Card from "@/components/Card";
 
-const Blog = async () => {
+export default async function Blog() {
   const data: Post[] = await readAllPosts();
 
   return (
@@ -28,6 +28,4 @@ const Blog = async () => {
       </Section>
     </Container>
   );
-};
-
-export default Blog;
+}

@@ -1,7 +1,5 @@
-import { Loading as LoadingClient } from "ui";
+import { Loading as LoadingClient } from "@personal-website/ui";
 
-const Loading = () => {
+export default function Loading() {
   return <LoadingClient />;
-};
-
-export default Loading;
+}

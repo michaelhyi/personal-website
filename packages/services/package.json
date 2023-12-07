@@ -1,5 +1,5 @@
 {
-  "name": "services",
+  "name": "@personal-website/services",
   "version": "0.0.0",
   "author": "michaelhyi",
   "license": "MIT",
@@ -9,6 +9,6 @@
     "access": "public"
   },
   "dependencies": {
-    "types": "*"
+    "@personal-website/types": "*"
   }
 }

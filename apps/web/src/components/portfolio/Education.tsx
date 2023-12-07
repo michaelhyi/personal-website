@@ -3,7 +3,7 @@
 import Card from "../Card";
 import Section from "../Section";
 
-const Education = () => {
+export default function Education() {
   return (
     <Section title="Education">
       <Card
@@ -13,6 +13,4 @@ const Education = () => {
       />
     </Section>
   );
-};
-
-export default Education;
+}

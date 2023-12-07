@@ -1,12 +1,10 @@
-import { Container } from "ui";
+import { Container } from "@personal-website/ui";
 import Hero from "@/components/Hero";
 
-const Home = () => {
+export default function Home() {
   return (
     <Container absoluteFooter>
       <Hero />
     </Container>
   );
-};
-
-export default Home;
+}

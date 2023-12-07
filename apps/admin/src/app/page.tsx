@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import type { Post, User } from "types";
-import { readAllPosts, readUserByEmail } from "services";
+import type { Post, User } from "@personal-website/types";
+import { readAllPosts, readUserByEmail } from "@personal-website/services";
 import HomeClient from "./client";
 
 export default async function Home() {

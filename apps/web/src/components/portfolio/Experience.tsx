@@ -1,15 +1,10 @@
 "use client";
 
-import type { FC } from "react";
-import type { Experience as ExperienceType } from "types";
+import type { Experience as ExperienceType } from "@personal-website/types";
 import Card from "../Card";
 import Section from "../Section";
 
-interface Props {
-  data: ExperienceType[];
-}
-
-const Experience: FC<Props> = ({ data }) => {
+export default function Experience({ data }: { data: ExperienceType[] }) {
   return (
     <Section title="Experience">
       {data.map((v: ExperienceType) => (
@@ -17,6 +12,4 @@ const Experience: FC<Props> = ({ data }) => {
       ))}
     </Section>
   );
-};
-
-export default Experience;
+}

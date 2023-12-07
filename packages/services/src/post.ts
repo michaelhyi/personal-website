@@ -1,12 +1,11 @@
 import axios from "axios";
-import type { Post } from "types";
-import type { FieldValues } from "react-hook-form";
+import type { Post } from "@personal-website/types";
 
 export const createPost = async (
   title: string,
   content: string,
 ): Promise<number> => {
-  const res = await axios.post(
+  const { data } = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/post`,
     { title, content },
     {
@@ -16,7 +15,7 @@ export const createPost = async (
     },
   );
 
-  return res.data;
+  return data;
 };
 
 export const createPostImage = async (id: number, formData: FormData) => {
@@ -32,37 +31,42 @@ export const createPostImage = async (id: number, formData: FormData) => {
   );
 };
 
-export const readPost = async (id: string): Promise<Post> => {
+export const readPost = async (id: number): Promise<Post> => {
   const { data } = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`);
 
   return data;
 };
 
 export const readAllPosts = async (): Promise<Post[]> => {
-  const res = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post`);
-  return res.data;
+  const { data } = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post`);
+  return data;
 };
 
-export const readPostImageBytes = async (id: string): Promise<ArrayBuffer> => {
+export const readPostImageBytes = async (id: number): Promise<ArrayBuffer> => {
   const { data } = await axios(
     `${process.env.NEXT_PUBLIC_API_URL}/post/${id}/image/bytes`,
   );
   return data;
 };
 
-export const readPostImageUrl = (id: string): string => {
+export const readPostImageUrl = (id: number): string => {
   return `${process.env.NEXT_PUBLIC_API_URL}/post/${id}/image`;
 };
 
 export const updatePost = async (
-  id: string,
-  data: FieldValues,
+  id: number,
+  title: string,
+  content: string,
 ): Promise<void> => {
-  await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, data, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+  await axios.put(
+    `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`,
+    { title, content },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     },
-  });
+  );
 };
 
 export const deletePost = async (id: number): Promise<void> => {

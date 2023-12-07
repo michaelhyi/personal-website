@@ -1,20 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import type { FC } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 
-interface Props {
-  name: string;
-  date: string;
-  desc?: string;
-  tech?: string;
-  img?: string;
-  href?: string;
-  blog?: boolean;
-}
-
-const Card: FC<Props> = ({
+export default function Card({
   name,
   date,
   desc,
@@ -22,7 +11,15 @@ const Card: FC<Props> = ({
   img,
   href,
   blog = false,
-}) => {
+}: {
+  name: string;
+  date: string;
+  desc?: string;
+  tech?: string;
+  img?: string;
+  href?: string;
+  blog?: boolean;
+}) {
   return (
     <div className="flex sm:flex-col md:flex-row">
       <div className="w-48 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
@@ -67,6 +64,4 @@ const Card: FC<Props> = ({
       </div>
     </div>
   );
-};
-
-export default Card;
+}

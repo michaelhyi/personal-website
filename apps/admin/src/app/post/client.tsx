@@ -1,12 +1,12 @@
 "use client";
 
+import { createPost, createPostImage } from "@personal-website/services";
+import { Container } from "@personal-website/ui";
 import type { Editor as EditorType } from "@tiptap/react";
-import { Container } from "ui";
 import { useCallback, useState } from "react";
 import Dropzone from "@/components/Dropzone";
 import Editor from "@/components/Editor";
 import { useEditor } from "@/hooks/useEditor";
-import { createPost, createPostImage } from "services";
 
 export default function PostClient({
   content,

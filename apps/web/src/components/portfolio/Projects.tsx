@@ -1,15 +1,10 @@
 "use client";
 
-import type { FC } from "react";
-import type { Project } from "types";
+import type { Project } from "@personal-website/types";
 import Card from "../Card";
 import Section from "../Section";
 
-interface Props {
-  data: Project[];
-}
-
-const Projects: FC<Props> = ({ data }) => {
+export default function Projects({ data }: { data: Project[] }) {
   return (
     <Section title="Projects">
       {data.map((v: Project) => (
@@ -25,6 +20,4 @@ const Projects: FC<Props> = ({ data }) => {
       ))}
     </Section>
   );
-};
-
-export default Projects;
+}

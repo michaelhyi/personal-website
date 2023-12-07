@@ -1,11 +1,11 @@
 "use client";
 
 import { Spinner } from "@chakra-ui/react";
+import { Container } from "@personal-website/ui";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Container } from "ui";
 
 export default function AuthClient() {
   //eslint-disable-next-line -- TODO: implement setError

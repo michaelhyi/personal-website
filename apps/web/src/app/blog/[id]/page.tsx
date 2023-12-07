@@ -1,23 +1,18 @@
-import type { FC } from "react";
-import { notFound } from "next/navigation";
+import { readPost, readPostImageUrl } from "@personal-website/services";
+import type { Post } from "@personal-website/types";
+import { Container } from "@personal-website/ui";
 import { format } from "date-fns";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
-import { readPost, readPostImageUrl } from "services";
-import type { Post } from "types";
-import { Container } from "ui";
 
-interface IParams {
-  params: { id: string };
-}
-
-const View: FC<IParams> = async ({ params }) => {
+export default async function View({ params }: { params: { id: string } }) {
   const { id } = params;
   let data: Post;
 
   try {
-    data = await readPost(id);
+    data = await readPost(parseInt(id));
   } catch {
     notFound();
   }
@@ -32,7 +27,7 @@ const View: FC<IParams> = async ({ params }) => {
         {format(new Date(data.date), "PPP")}
       </div>
       <Image
-        src={readPostImageUrl(id)}
+        src={readPostImageUrl(parseInt(id))}
         alt={data.title}
         width={400}
         height={400}
@@ -41,11 +36,9 @@ const View: FC<IParams> = async ({ params }) => {
       <div
         className="text-sm mt-8"
         dangerouslySetInnerHTML={{
-          __html: data.body,
+          __html: data.content,
         }}
       />
     </Container>
   );
-};
-
-export default View;
+}

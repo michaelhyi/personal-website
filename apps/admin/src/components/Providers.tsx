@@ -2,14 +2,9 @@
 
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
-import type { FC, ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
-interface Props {
-  children: ReactNode;
-}
-
-const Providers: FC<Props> = ({ children }) => {
+export default function Providers({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,6 +18,4 @@ const Providers: FC<Props> = ({ children }) => {
       <ChakraProvider resetCSS={false}>{children}</ChakraProvider>
     </CacheProvider>
   );
-};
-
-export default Providers;
+}

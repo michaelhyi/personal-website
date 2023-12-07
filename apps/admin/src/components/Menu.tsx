@@ -1,14 +1,12 @@
-"use client";
-
-import type { FC } from "react";
 import { IoPencil, IoTrashOutline } from "react-icons/io5";
 
-interface Props {
+export default function Menu({
+  id,
+  handleToggleModal,
+}: {
   id: number;
   handleToggleModal: (title?: string, index?: number) => void;
-}
-
-const Menu: FC<Props> = ({ id, handleToggleModal }) => {
+}) {
   return (
     <div className="z-10 flex flex-col gap-2 absolute rounded-md shadow-lg w-36 bg-neutral-700 text-neutral-200 font-semibold overflow-hidden right-1 top-10 p-3">
       <button
@@ -32,6 +30,4 @@ const Menu: FC<Props> = ({ id, handleToggleModal }) => {
       </button>
     </div>
   );
-};
-
-export default Menu;
+}

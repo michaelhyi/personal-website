@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/admin.json",
+  "extends": "@personal-website/tsconfig/admin.json",
   "compilerOptions": {
     "plugins": [
       {

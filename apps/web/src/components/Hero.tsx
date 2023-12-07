@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { hero } from "@/data/hero";
 
-const Hero = () => {
+export default function Hero() {
   return (
     <div
       className="absolute
@@ -48,6 +48,4 @@ const Hero = () => {
       </div>
     </div>
   );
-};
-
-export default Hero;
+}

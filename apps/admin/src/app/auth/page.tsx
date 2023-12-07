@@ -1,6 +1,6 @@
+import type { User } from "@personal-website/types";
+import { readUserByEmail } from "@personal-website/services";
 import { redirect } from "next/navigation";
-import type { User } from "types";
-import { readUserByEmail } from "services";
 import AuthClient from "./client";
 
 export default async function Auth() {

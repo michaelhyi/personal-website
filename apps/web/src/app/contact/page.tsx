@@ -1,7 +1,7 @@
+import { Container } from "@personal-website/ui";
 import Link from "next/link";
-import { Container } from "ui";
 
-const Contact = () => {
+export default function Contact() {
   return (
     <Container absoluteFooter>
       <div
@@ -28,6 +28,4 @@ const Contact = () => {
       </div>
     </Container>
   );
-};
-
-export default Contact;
+}

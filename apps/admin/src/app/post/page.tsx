@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { readPost, readPostImageBytes } from "services";
-import type { Post } from "types";
+import { readPost, readPostImageBytes } from "@personal-website/services";
+import type { Post } from "@personal-website/types";
 import Client from "./client";
 
 export default async function Post({
@@ -17,10 +17,10 @@ export default async function Post({
     let imageBuffer: ArrayBuffer;
 
     try {
-      post = await readPost(searchParams.id);
-      imageBuffer = await readPostImageBytes(searchParams.id);
+      post = await readPost(parseInt(searchParams.id));
+      imageBuffer = await readPostImageBytes(parseInt(searchParams.id));
 
-      content = `<h1>${post.title}</h1>${post.body}`;
+      content = `<h1>${post.title}</h1>${post.content}`;
       image = new File([imageBuffer], `${post.title}.jpg`);
     } catch {
       redirect = true;

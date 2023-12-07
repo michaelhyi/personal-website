@@ -4,14 +4,10 @@ import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
 import { AnimatePresence } from "framer-motion";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-interface Props {
-  children: ReactNode;
-}
-
-const Providers: FC<Props> = ({ children }) => {
+export default function Providers({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -28,6 +24,4 @@ const Providers: FC<Props> = ({ children }) => {
       </ChakraProvider>
     </CacheProvider>
   );
-};
-
-export default Providers;
+}

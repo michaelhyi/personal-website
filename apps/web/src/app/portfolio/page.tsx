@@ -1,6 +1,6 @@
-import { IoIosArrowBack } from "react-icons/io";
+import { Container } from "@personal-website/ui";
 import Link from "next/link";
-import { Container } from "ui";
+import { IoIosArrowBack } from "react-icons/io";
 import Education from "@/components/portfolio/Education";
 import Experience from "@/components/portfolio/Experience";
 import Projects from "@/components/portfolio/Projects";

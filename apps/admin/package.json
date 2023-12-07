@@ -15,6 +15,10 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@personal-website/services": "*",
+    "@personal-website/types": "*",
+    "@personal-website/ui": "*",
+    "@personal-website/utils": "*",
     "@tiptap/extension-placeholder": "^2.1.13",
     "@tiptap/pm": "^2.1.13",
     "@tiptap/react": "^2.1.13",
@@ -24,15 +28,10 @@
     "framer-motion": "^10.16.5",
     "next": "14.0.1",
     "next-auth": "^4.24.5",
-    "query-string": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
-    "react-icons": "^4.12.0",
-    "services": "*",
-    "types": "*",
-    "ui": "*",
-    "utils": "*"
+    "react-icons": "^4.12.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
