@@ -10,7 +10,7 @@ const CustomDocument = Document.extend({
   content: "heading block*",
 });
 
-export const useEditor = (content: string): Editor | null => {
+export const useEditor = (content: string | null): Editor | null => {
   return editor({
     extensions: [
       CustomDocument,

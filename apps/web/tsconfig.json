@@ -9,7 +9,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "archive"
+    "tailwind.config.js"
   ],
   "exclude": ["node_modules"]
 }

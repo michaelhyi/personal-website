@@ -1,6 +1,10 @@
 "use client";
 
-import { createPost, createPostImage } from "@personal-website/services";
+import {
+  createPost,
+  createPostImage,
+  updatePost,
+} from "@personal-website/services";
 import { Container } from "@personal-website/ui";
 import type { Editor as EditorType } from "@tiptap/react";
 import { useCallback, useState } from "react";
@@ -9,13 +13,15 @@ import Editor from "@/components/Editor";
 import { useEditor } from "@/hooks/useEditor";
 
 export default function PostClient({
+  id,
+  title: postTitle,
   content,
-  image: imageProp,
 }: {
-  content: string;
-  image: File | null;
+  id: number | null;
+  title: string | null;
+  content: string | null;
 }) {
-  const [image, setImage] = useState<File | null>(imageProp);
+  const [image, setImage] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const editor: EditorType | null = useEditor(content);
 
@@ -23,29 +29,48 @@ export default function PostClient({
     const html = editor?.getHTML();
     const titleIdx = html?.search("</h1>");
 
-    if (image && titleIdx) {
+    if (titleIdx) {
       const title = html?.slice(4, titleIdx);
       const postContent = html?.slice(titleIdx + 5);
 
-      const formData = new FormData();
-      formData.append("file", image);
+      if (id) {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- titleIdx is defined
+          await updatePost(id, title!, postContent!);
 
-      let postId: number;
+          if (image) {
+            const formData = new FormData();
+            formData.append("file", image);
+            await createPostImage(id, formData);
+          }
+        } catch {
+          throw new Error("Failed to update post");
+        }
+      } else {
+        let postId: number;
 
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- titleIdx is defined
-        postId = await createPost(title!, postContent!);
-        await createPostImage(postId, formData);
-      } catch {
-        throw new Error("Failed to create post");
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- titleIdx is defined
+          postId = await createPost(title!, postContent!);
+
+          if (image) {
+            const formData = new FormData();
+            formData.append("file", image);
+            await createPostImage(postId, formData);
+          }
+        } catch {
+          throw new Error("Failed to create post");
+        }
       }
     }
-  }, [editor, image]);
+  }, [id, editor, image]);
 
   return (
     <Container>
       <Editor editor={editor} />
       <Dropzone
+        id={id}
+        title={postTitle}
         submitting={submitting}
         setSubmitting={setSubmitting}
         image={image}

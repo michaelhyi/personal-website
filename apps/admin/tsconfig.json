@@ -14,8 +14,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "archive",
-    "pages/api/auth"
+    "pages/api/auth",
+    "tailwind.config.js"
   ],
   "exclude": ["node_modules"]
 }
