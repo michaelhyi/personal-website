@@ -25,7 +25,7 @@ export default function Dropzone({
       setImage(acceptedFiles[0]);
       setSubmitting(false);
     },
-    [setSubmitting, setImage]
+    [setSubmitting, setImage],
   );
 
   const handleImageDelete = useCallback(() => {
