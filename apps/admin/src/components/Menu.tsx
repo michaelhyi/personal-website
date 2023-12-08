@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { IoPencil, IoTrashOutline } from "react-icons/io5";
 
 export default function Menu({
@@ -5,25 +6,22 @@ export default function Menu({
   handleToggleModal,
 }: {
   id: number;
-  handleToggleModal: (title?: string, index?: number) => void;
+  handleToggleModal: (id?: number | undefined) => void;
 }) {
   return (
-    <div className="z-10 flex flex-col gap-2 absolute rounded-md shadow-lg w-36 bg-neutral-700 text-neutral-200 font-semibold overflow-hidden right-1 top-10 p-3">
-      <button
-        onClick={() => {
-          handleToggleModal("Edit Post", id);
-        }}
-        type="button"
-        className="flex items-center gap-2 duration:500 hover:opacity-50"
+    <div className="z-10 flex flex-col gap-2 absolute rounded-md shadow-lg w-36 bg-neutral-800 text-white font-medium overflow-hidden right-0 top-5 p-3 border-[1px]">
+      <Link
+        href={`/post?dialog=edit&id=${id}`}
+        className="flex items-center gap-2 duration:500 hover:opacity-50 text-sm"
       >
         <IoPencil /> Edit Post
-      </button>
+      </Link>
       <button
         onClick={() => {
-          handleToggleModal("Delete Post", id);
+          handleToggleModal(id);
         }}
         type="button"
-        className="flex items-center gap-2 duration:500 hover:opacity-50"
+        className="flex items-center gap-2 duration:500 hover:opacity-50 text-sm"
       >
         <IoTrashOutline />
         Delete Post
