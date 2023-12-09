@@ -1,4 +1,6 @@
-export { Container } from "./Container";
-export { Footer } from "./Footer";
-export { Loading } from "./Loading";
-export { NotFound } from "./NotFound";
+export * from "./Container";
+export * from "./Footer";
+export * from "./Loading";
+export * from "./Menu";
+export * from "./NotFound";
+export * from "./PostCard";

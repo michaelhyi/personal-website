@@ -2,11 +2,10 @@
 
 import { authenticate } from "@personal-website/services";
 import type { Post, User } from "@personal-website/types";
-import { Container } from "@personal-website/ui";
+import { Container, PostCard } from "@personal-website/ui";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import PostCard from "@/components/PostCard";
 import DeleteModal from "@/components/DeleteModal";
 
 export default function BlogClient({
@@ -89,6 +88,7 @@ export default function BlogClient({
         {data.map((post, index) => (
           <PostCard
             key={post.id}
+            admin={user.authorities[0].authority === "ROLE_ADMIN"}
             data={post}
             index={index}
             menuOpen={menuOpen[index]}
