@@ -2,9 +2,9 @@
 
 import { Spinner } from "@chakra-ui/react";
 import React from "react";
-import { Container } from "./Container";
+import Container from "./Container";
 
-export const Loading = () => {
+export default function Loading() {
   return (
     <Container absoluteFooter>
       <div
@@ -20,4 +20,4 @@ export const Loading = () => {
       </div>
     </Container>
   );
-};
+}

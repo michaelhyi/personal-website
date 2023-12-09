@@ -1,14 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
 import { IoPencil, IoTrashOutline } from "react-icons/io5";
 
-export const Menu = ({
+export default function Menu({
   id,
   handleToggleModal,
 }: {
   id: number;
   handleToggleModal: (id?: number | undefined) => void;
-}) => {
+}) {
   return (
     <div className="z-10 flex flex-col gap-2 absolute rounded-md shadow-lg w-36 bg-neutral-800 text-white font-medium overflow-hidden right-0 top-5 p-3 border-[1px]">
       <Link
@@ -29,4 +31,4 @@ export const Menu = ({
       </button>
     </div>
   );
-};
+}

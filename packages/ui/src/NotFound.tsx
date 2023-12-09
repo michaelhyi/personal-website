@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { Container } from "./Container";
+import Container from "./Container";
 
-export const NotFound = () => {
+export default function NotFound() {
   return (
     <Container absoluteFooter>
       <div
@@ -20,4 +20,4 @@ export const NotFound = () => {
       </div>
     </Container>
   );
-};
+}

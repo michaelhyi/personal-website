@@ -1,15 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import React, { type FC } from "react";
+import React from "react";
 import type { FooterLink } from "@personal-website/types";
 import { footer } from "./data/footer";
 
-interface Props {
-  absolute?: boolean;
-}
-
-export const Footer: FC<Props> = ({ absolute = false }) => {
+export default function Footer({ absolute = false }: { absolute?: boolean }) {
   return (
     <div
       className={`flex 
@@ -40,4 +36,4 @@ export const Footer: FC<Props> = ({ absolute = false }) => {
       <div>&copy; 2023 Michael Yi, All Rights Reserved.</div>
     </div>
   );
-};
+}

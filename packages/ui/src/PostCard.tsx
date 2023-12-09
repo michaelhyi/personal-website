@@ -1,3 +1,5 @@
+"use client";
+
 import { format } from "date-fns";
 import Image from "next/image";
 import React from "react";
@@ -5,9 +7,9 @@ import { FiArrowUpRight } from "react-icons/fi";
 import { readPostImageUrl } from "@personal-website/services";
 import type { Post } from "@personal-website/types";
 import { IoEllipsisHorizontal } from "react-icons/io5";
-import { Menu } from "./Menu";
+import Menu from "./Menu";
 
-export const PostCard = ({
+export default function PostCard({
   admin = false,
   data,
   index,
@@ -21,7 +23,7 @@ export const PostCard = ({
   menuOpen?: boolean | undefined;
   handleToggleMenu?: (index: number) => void | undefined;
   handleToggleModal?: (id?: number | undefined) => void | undefined;
-}) => {
+}) {
   return (
     <div className="flex sm:flex-col md:flex-row gap-12">
       <Image
@@ -64,8 +66,9 @@ export const PostCard = ({
             // eslint-disable-next-line prefer-named-capture-group -- unneccessary regex errors
             data.content.replace(/(<([^>]+)>)/gi, "")
           }
+          ...
         </div>
       </div>
     </div>
   );
-};
+}

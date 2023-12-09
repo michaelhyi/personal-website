@@ -1,15 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { type FC, type ReactNode } from "react";
-import { Footer } from "./Footer";
+import React, { type ReactNode } from "react";
+import Footer from "./Footer";
 
-interface Props {
+export default function Container({
+  children,
+  absoluteFooter = false,
+}: {
   children: ReactNode;
   absoluteFooter?: boolean;
-}
-
-export const Container: FC<Props> = ({ children, absoluteFooter = false }) => {
+}) {
   return (
     <div className="bg-neutral-800 text-white min-h-screen">
       <motion.div
@@ -23,4 +24,4 @@ export const Container: FC<Props> = ({ children, absoluteFooter = false }) => {
       </motion.div>
     </div>
   );
-};
+}
