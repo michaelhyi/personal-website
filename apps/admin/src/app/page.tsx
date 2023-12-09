@@ -1,15 +1,14 @@
+import { readUserByEmail } from "@personal-website/services";
+import type { User } from "@personal-website/types";
 import { redirect } from "next/navigation";
-import type { Post, User } from "@personal-website/types";
-import { readAllPosts, readUserByEmail } from "@personal-website/services";
-import HomeClient from "./client";
+import AuthClient from "./client";
 
-export default async function Home() {
-  const data: Post[] = await readAllPosts();
+export default async function Auth() {
   const user: User | null = await readUserByEmail();
 
-  if (!user) {
-    redirect("/auth");
+  if (user) {
+    redirect("/blog");
   }
 
-  return <HomeClient data={data} user={user} />;
+  return <AuthClient />;
 }

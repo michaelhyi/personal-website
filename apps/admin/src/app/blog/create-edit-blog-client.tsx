@@ -12,7 +12,7 @@ import Dropzone from "@/components/Dropzone";
 import Editor from "@/components/Editor";
 import { useEditor } from "@/hooks/useEditor";
 
-export default function PostClient({
+export default function CreateEditBlogClient({
   id,
   title: postTitle,
   content,

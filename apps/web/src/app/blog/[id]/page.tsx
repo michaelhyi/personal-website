@@ -9,13 +9,9 @@ import { IoIosArrowBack } from "react-icons/io";
 
 export default async function View({ params }: { params: { id: string } }) {
   const { id } = params;
-  let data: Post;
+  const data: Post | null = await readPost(parseInt(id));
 
-  try {
-    data = await readPost(parseInt(id));
-  } catch {
-    notFound();
-  }
+  if (!data) notFound();
 
   return (
     <Container>

@@ -31,10 +31,16 @@ export const createPostImage = async (id: number, formData: FormData) => {
   );
 };
 
-export const readPost = async (id: number): Promise<Post> => {
-  const { data } = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`);
+export const readPost = async (id: number): Promise<Post | null> => {
+  try {
+    const { data } = await axios(
+      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`,
+    );
 
-  return data;
+    return data;
+  } catch {
+    return null;
+  }
 };
 
 export const readAllPosts = async (): Promise<Post[]> => {
