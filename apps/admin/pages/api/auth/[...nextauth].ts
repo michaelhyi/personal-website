@@ -16,7 +16,7 @@ export const authOptions: AuthOptions = {
       if (user.email) {
         try {
           await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`
           );
           return true;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any -- e defaults to unknown.
@@ -34,6 +34,7 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
+    maxAge: 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
