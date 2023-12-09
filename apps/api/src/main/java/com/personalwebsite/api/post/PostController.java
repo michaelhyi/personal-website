@@ -44,9 +44,11 @@ public class PostController {
         return ResponseEntity.ok(service.readPost(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Post>> readAllPosts() {
-        return ResponseEntity.ok(service.readAllPosts());
+    @GetMapping("title/{title}")
+    public ResponseEntity<Post> readPostByTitle(
+            @PathVariable("title") String title
+    ) {
+        return ResponseEntity.ok(service.readPostByTitle(title));
     }
 
     @GetMapping(
@@ -62,6 +64,11 @@ public class PostController {
             @PathVariable("id") Long id
     ) {
         return ResponseEntity.ok(service.readPostImage(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Post>> readAllPosts() {
+        return ResponseEntity.ok(service.readAllPosts());
     }
 
     @PutMapping("{id}")

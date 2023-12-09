@@ -33,10 +33,15 @@ export default function PostCard({
           {format(new Date(data.date), "PPP")}
         </div>
         <div className="flex items-center justify-between">
-          <div className="flex gap-1 text-sm font-normal cursor-pointer duration-500 hover:opacity-50">
+          <a
+            href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.title}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex gap-1 text-sm font-normal cursor-pointer duration-500 hover:opacity-50"
+          >
             {data.title}
             <FiArrowUpRight size={12} />
-          </div>
+          </a>
           <div className="relative">
             <IoEllipsisHorizontal
               className="cursor-pointer duration-500 hover:opacity-50"

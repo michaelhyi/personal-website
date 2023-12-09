@@ -17,6 +17,7 @@ public class Post {
     @CreationTimestamp
     private Date date;
 
+    @Column(unique = true)
     private String title;
     private String image;
 

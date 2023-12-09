@@ -1,4 +1,4 @@
-import { readPost, readPostImageUrl } from "@personal-website/services";
+import { readPostByTitle, readPostImageUrl } from "@personal-website/services";
 import type { Post } from "@personal-website/types";
 import { Container } from "@personal-website/ui";
 import { format } from "date-fns";
@@ -7,9 +7,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 
-export default async function View({ params }: { params: { id: string } }) {
-  const { id } = params;
-  const data: Post | null = await readPost(parseInt(id));
+export default async function View({ params }: { params: { title: string } }) {
+  const { title } = params;
+  const data: Post | null = await readPostByTitle(title);
 
   if (!data) notFound();
 
@@ -23,7 +23,7 @@ export default async function View({ params }: { params: { id: string } }) {
         {format(new Date(data.date), "PPP")}
       </div>
       <Image
-        src={readPostImageUrl(parseInt(id))}
+        src={readPostImageUrl(data.id)}
         alt={data.title}
         width={400}
         height={400}

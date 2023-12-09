@@ -28,6 +28,7 @@ public class PostService {
 
     public Long createPost(PostRequest req) {
         validateRequest(req);
+        //TODO - check if post with same title exists. if yes, throw exception.
 
         Post post = new Post(
                 req.title(),
@@ -61,9 +62,10 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    public List<Post> readAllPosts() {
+    public Post readPostByTitle(String title) {
         return repository
-                .findAllByOrderByDateDesc();
+                .findByTitle(title)
+                .orElseThrow(PostNotFoundException::new);
     }
 
     public byte[] readPostImage(Long id) {
@@ -72,6 +74,11 @@ public class PostService {
         return service.getObject(
                 buckets.getBlog(),
                 String.format("%s/%s", id, post.getImage()));
+    }
+
+    public List<Post> readAllPosts() {
+        return repository
+                .findAllByOrderByDateDesc();
     }
 
     @Transactional
