@@ -1,8 +1,7 @@
 package com.personalwebsite.api.user;
 
+import com.personalwebsite.api.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -21,12 +20,8 @@ public class UserService {
             throw new IllegalArgumentException();
         }
 
-        Optional<User> user = repository.findByEmail(email);
-
-        if (user.isEmpty()) {
-            throw new RuntimeException();
-        }
-
-        return user.get();
+        return repository
+                .findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
     }
 }
