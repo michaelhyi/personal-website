@@ -22,6 +22,7 @@ export default function CreateEditBlogClient({
   content: string | null;
 }) {
   const [image, setImage] = useState<File | null>(null);
+  const [showImage, setShowImage] = useState<boolean>(id !== null);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const editor: EditorType | null = useEditor(content);
 
@@ -70,6 +71,8 @@ export default function CreateEditBlogClient({
       <Editor editor={editor} />
       <Dropzone
         id={id}
+        showImage={showImage}
+        setShowImage={setShowImage}
         title={postTitle}
         submitting={submitting}
         setSubmitting={setSubmitting}

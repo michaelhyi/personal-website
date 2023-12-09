@@ -6,6 +6,8 @@ import { AiOutlineClose, AiOutlineCloudDownload } from "react-icons/ai";
 
 export default function Dropzone({
   id,
+  showImage,
+  setShowImage,
   title,
   submitting,
   setSubmitting,
@@ -13,6 +15,8 @@ export default function Dropzone({
   setImage,
 }: {
   id: number | null;
+  showImage: boolean;
+  setShowImage: Dispatch<SetStateAction<boolean>>;
   title: string | null;
   submitting: boolean;
   setSubmitting: Dispatch<SetStateAction<boolean>>;
@@ -23,14 +27,16 @@ export default function Dropzone({
     (acceptedFiles: File[]) => {
       setSubmitting(true);
       setImage(acceptedFiles[0]);
+      setShowImage(true);
       setSubmitting(false);
     },
-    [setSubmitting, setImage],
+    [setSubmitting, setImage, setShowImage],
   );
 
   const handleImageDelete = useCallback(() => {
     setImage(null);
-  }, [setImage]);
+    setShowImage(false);
+  }, [setImage, setShowImage]);
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -54,7 +60,7 @@ export default function Dropzone({
           Drag & drop an image here, or click to select an image.
         </div>
       </div>
-      {(image !== null || id !== null) && (
+      {showImage && (image !== null || id !== null) ? (
         <div>
           <div className="flex gap-2 mt-4">
             <Image
@@ -63,7 +69,7 @@ export default function Dropzone({
               src={
                 !image && id
                   ? readPostImageUrl(id)
-                  : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- image is not null by else of condition
+                  : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- image will not be null
                     URL.createObjectURL(image!)
               }
               alt="image"
@@ -78,7 +84,7 @@ export default function Dropzone({
             {!image ? `${title}.jpg` : image.name}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
