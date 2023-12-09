@@ -27,17 +27,12 @@ export default function CreateEditBlogClient({
   const editor: EditorType | null = useEditor(content);
 
   const handleClick = useCallback(async () => {
-    const html = editor?.getHTML();
-    const titleIdx = html?.search("</h1>");
+    const text = editor?.getHTML();
 
-    if (titleIdx) {
-      const title = html?.slice(4, titleIdx);
-      const postContent = html?.slice(titleIdx + 5);
-
+    if (text) {
       if (id) {
         try {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- titleIdx is defined
-          await updatePost(id, title!, postContent!);
+          await updatePost(id, text);
 
           if (image) {
             const formData = new FormData();
@@ -51,8 +46,7 @@ export default function CreateEditBlogClient({
         let postId: number;
 
         try {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- titleIdx is defined
-          postId = await createPost(title!, postContent!);
+          postId = await createPost(text);
 
           if (image) {
             const formData = new FormData();

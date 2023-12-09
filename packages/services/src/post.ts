@@ -1,13 +1,10 @@
 import axios from "axios";
 import type { Post } from "@personal-website/types";
 
-export const createPost = async (
-  title: string,
-  content: string,
-): Promise<number> => {
+export const createPost = async (text: string): Promise<number> => {
   const { data } = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/post`,
-    { title, content },
+    { text },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -69,14 +66,10 @@ export const readAllPosts = async (): Promise<Post[]> => {
   return data;
 };
 
-export const updatePost = async (
-  id: number,
-  title: string,
-  content: string,
-): Promise<void> => {
+export const updatePost = async (id: number, text: string): Promise<void> => {
   await axios.put(
     `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`,
-    { title, content },
+    { text },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

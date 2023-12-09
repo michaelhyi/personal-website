@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,14 +29,22 @@ public class PostService {
 
     public Long createPost(PostRequest req) {
         validateRequest(req);
-        //TODO - check if post with same title exists. if yes, throw exception.
 
-        Post post = new Post(
-                req.title(),
-                null,
-                req.content());
-        repository.saveAndFlush(post);
-        return post.getId();
+        PostTitleContentObject postTitleContentObject = titleContentMapper(req);
+        String title = postTitleContentObject.title();
+        String content = postTitleContentObject.content();
+
+        Optional<Post> post = repository.findByTitle(title);
+
+        if (post.isPresent()) {
+            throw new IllegalArgumentException(
+                    "Post with same title already exists."
+            );
+        }
+
+        Post newPost = new Post(title, null, content);
+        repository.saveAndFlush(newPost);
+        return newPost.getId();
     }
 
     @Transactional
@@ -83,13 +92,17 @@ public class PostService {
 
     @Transactional
     public void updatePost(Long id, PostRequest req) {
-        validateRequest(req);
-
         Post post = repository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
 
-        post.setTitle(req.title());
-        post.setContent((req.content()));
+        validateRequest(req);
+
+        PostTitleContentObject postTitleContentObject = titleContentMapper(req);
+        String title = postTitleContentObject.title();
+        String content = postTitleContentObject.content();
+
+        post.setTitle(title);
+        post.setContent(content);
     }
 
     public void deletePost(Long id) {
@@ -97,13 +110,19 @@ public class PostService {
     }
 
     private void validateRequest(PostRequest req) {
-        if (req.title() == null
-                || req.title().isBlank()
-                || req.title().isEmpty()
-                || req.content() == null
-                || req.content().isBlank()
-                || req.content().isEmpty()) {
+        if (req.text() == null
+                || req.text().isBlank()
+                || req.text().isEmpty()) {
             throw new IllegalArgumentException("Fields cannot be blank.");
         }
+    }
+
+    private PostTitleContentObject titleContentMapper(PostRequest req) {
+        String text = req.text();
+        int titleIndex = text.indexOf("</h1>");
+        String title = text.substring(4, titleIndex);
+        String content = text.substring(titleIndex + 5);
+
+        return new PostTitleContentObject(title, content);
     }
 }

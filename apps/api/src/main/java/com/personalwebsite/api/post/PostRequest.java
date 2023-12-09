@@ -1,7 +1,6 @@
 package com.personalwebsite.api.post;
 
 public record PostRequest(
-        String title,
-        String content
+        String text
 ) {
 }
