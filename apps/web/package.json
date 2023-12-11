@@ -13,10 +13,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@chakra-ui/next-js": "^2.1.5",
-    "@chakra-ui/react": "^2.8.1",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
     "@personal-website/services": "*",
     "@personal-website/types": "*",
     "@personal-website/ui": "*",

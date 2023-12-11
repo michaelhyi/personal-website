@@ -1,7 +1,6 @@
 "use client";
 
-import { Spinner } from "@chakra-ui/react";
-import { Container } from "@personal-website/ui";
+import { Container, Spinner } from "@personal-website/ui";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useCallback, useState } from "react";
@@ -49,7 +48,7 @@ export default function AuthClient() {
           disabled={submitting}
           className="focus:outline-none mt-4 text-sm flex items-center gap-3 bg-neutral-800 text-white border-[1px] border-neutral-500 font-semibold px-6 py-2 rounded-md shadow-md duration-500 hover:opacity-50"
         >
-          {submitting ? <Spinner size="xs" /> : <FcGoogle />}
+          {submitting ? <Spinner /> : <FcGoogle />}
         </button>
         <div className="text-red-500 text-xs mt-4 font-light">{error}</div>
       </div>

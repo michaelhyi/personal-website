@@ -1,7 +1,7 @@
+import { Providers } from "@personal-website/ui";
 import { font } from "@personal-website/utils";
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
-import Providers from "@/components/Providers";
 import "./globals.css";
 
 export const metadata: Metadata = {

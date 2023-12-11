@@ -1,8 +1,8 @@
 "use client";
 
-import { Spinner } from "@chakra-ui/react";
 import React from "react";
 import Container from "./Container";
+import Spinner from "./Spinner";
 
 export default function Loading() {
   return (
@@ -16,7 +16,7 @@ export default function Loading() {
                    transform
                    text-neutral-300"
       >
-        <Spinner size="xs" />
+        <Spinner />
       </div>
     </Container>
   );

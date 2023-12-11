@@ -11,10 +11,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@chakra-ui/next-js": "^2.2.0",
-    "@chakra-ui/react": "^2.8.2",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
     "@personal-website/services": "*",
     "@personal-website/types": "*",
     "@personal-website/ui": "*",
@@ -23,6 +19,7 @@
     "@tiptap/pm": "^2.1.13",
     "@tiptap/react": "^2.1.13",
     "@tiptap/starter-kit": "^2.1.13",
+    "@vercel/analytics": "^1.1.1",
     "axios": "^1.6.1",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.5",
