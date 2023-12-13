@@ -2,13 +2,15 @@
 
 import { Container, Spinner } from "@personal-website/ui";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { toast, Toaster, useToasterStore } from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 
 export default function AuthClient() {
-  //eslint-disable-next-line -- TODO: implement setError
-  const [error] = useState<string | null>(null);
+  const { toasts } = useToasterStore();
+  const searchParams = useSearchParams();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const handleClick = useCallback(async () => {
@@ -16,6 +18,20 @@ export default function AuthClient() {
 
     await signIn("google");
   }, [setSubmitting]);
+
+  useEffect(() => {
+    toasts
+      .filter((t) => t.visible)
+      .filter((_, i) => i >= 1)
+      .forEach((t) => {
+        toast.dismiss(t.id);
+      });
+  }, [toasts]);
+
+  useEffect(() => {
+    if (searchParams && searchParams.has("error"))
+      toast.error(searchParams.get("error"));
+  }, [searchParams]);
 
   return (
     <Container absoluteFooter>
@@ -50,8 +66,8 @@ export default function AuthClient() {
         >
           {submitting ? <Spinner /> : <FcGoogle />}
         </button>
-        <div className="text-red-500 text-xs mt-4 font-light">{error}</div>
       </div>
+      <Toaster position="top-center" />
     </Container>
   );
 }

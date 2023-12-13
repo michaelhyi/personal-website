@@ -28,17 +28,16 @@ public class PostService {
     }
 
     public Long createPost(PostRequest req) {
-        validateRequest(req);
-
-        PostTitleContentObject postTitleContentObject = titleContentMapper(req);
-        String title = postTitleContentObject.title();
-        String content = postTitleContentObject.content();
+        PostDestructuredRequest postDestructuredRequest
+                = destructuredRequest(req);
+        String title = postDestructuredRequest.title();
+        String content = postDestructuredRequest.content();
 
         Optional<Post> post = repository.findByTitle(title);
 
         if (post.isPresent()) {
             throw new IllegalArgumentException(
-                    "Post with same title already exists."
+                    "A post with the same title already exists."
             );
         }
 
@@ -95,11 +94,10 @@ public class PostService {
         Post post = repository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
 
-        validateRequest(req);
-
-        PostTitleContentObject postTitleContentObject = titleContentMapper(req);
-        String title = postTitleContentObject.title();
-        String content = postTitleContentObject.content();
+        PostDestructuredRequest postDestructuredRequest
+                = destructuredRequest(req);
+        String title = postDestructuredRequest.title();
+        String content = postDestructuredRequest.content();
 
         post.setTitle(title);
         post.setContent(content);
@@ -109,20 +107,31 @@ public class PostService {
         repository.deleteById(id);
     }
 
-    private void validateRequest(PostRequest req) {
+    private PostDestructuredRequest destructuredRequest(PostRequest req) {
         if (req.text() == null
                 || req.text().isBlank()
                 || req.text().isEmpty()) {
             throw new IllegalArgumentException("Fields cannot be blank.");
         }
-    }
 
-    private PostTitleContentObject titleContentMapper(PostRequest req) {
         String text = req.text();
         int titleIndex = text.indexOf("</h1>");
+
+        if (titleIndex == -1) {
+            throw new IllegalArgumentException("Title cannot be blank.");
+        }
+
         String title = text.substring(4, titleIndex);
         String content = text.substring(titleIndex + 5);
 
-        return new PostTitleContentObject(title, content);
+        if (title.isBlank() || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be blank.");
+        }
+
+        if (content.isBlank() || content.isEmpty()) {
+            throw new IllegalArgumentException("Content cannot be blank.");
+        }
+
+        return new PostDestructuredRequest(title, content);
     }
 }

@@ -1,16 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access -- e is an instanceof Error or AxiosError */
+/* eslint-disable @typescript-eslint/no-unsafe-argument -- e is an instanceof Error or AxiosError */
+/* eslint-disable @typescript-eslint/no-non-null-assertion -- all non-null assertions are true */
+
 "use client";
 
 import {
   createPost,
   createPostImage,
+  readPost,
   updatePost,
 } from "@personal-website/services";
-import { Container } from "@personal-website/ui";
+import { Container, Spinner } from "@personal-website/ui";
 import type { Editor as EditorType } from "@tiptap/react";
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
+import { toast, Toaster } from "react-hot-toast";
 import Dropzone from "@/components/Dropzone";
 import Editor from "@/components/Editor";
 import { useEditor } from "@/hooks/useEditor";
+import { validateForm } from "@/utils/validateForm";
 
 export default function CreateEditBlogClient({
   id,
@@ -21,44 +29,48 @@ export default function CreateEditBlogClient({
   title: string | null;
   content: string | null;
 }) {
+  const router = useRouter();
   const [image, setImage] = useState<File | null>(null);
   const [showImage, setShowImage] = useState<boolean>(id !== null);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const editor: EditorType | null = useEditor(content);
 
   const handleClick = useCallback(async () => {
+    setSubmitting(true);
     const text = editor?.getHTML();
 
-    if (text) {
-      if (id) {
-        try {
-          await updatePost(id, text);
-
-          if (image) {
-            const formData = new FormData();
-            formData.append("file", image);
-            await createPostImage(id, formData);
-          }
-        } catch {
-          throw new Error("Failed to update post");
-        }
-      } else {
-        let postId: number;
-
-        try {
-          postId = await createPost(text);
-
-          if (image) {
-            const formData = new FormData();
-            formData.append("file", image);
-            await createPostImage(postId, formData);
-          }
-        } catch {
-          throw new Error("Failed to create post");
-        }
-      }
+    try {
+      validateForm(text, image);
+    } catch (e) {
+      // @ts-expect-error -- e is of type AxiosError
+      toast.error(e.message);
+      setSubmitting(false);
+      return;
     }
-  }, [id, editor, image]);
+
+    const formData = new FormData();
+    formData.append("file", image!);
+
+    try {
+      let postId: number;
+      if (id) {
+        await updatePost(id, text!);
+      } else {
+        postId = await createPost(text!);
+      }
+
+      await createPostImage(id || postId!, formData);
+
+      const post = await readPost(id || postId!);
+      if (post) {
+        router.push(`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post.title}`);
+      }
+    } catch (e) {
+      // @ts-expect-error -- e is of type AxiosError
+      toast.error(e.response.data);
+      setSubmitting(false);
+    }
+  }, [setSubmitting, id, editor, image, router]);
 
   return (
     <Container>
@@ -94,8 +106,9 @@ export default function CreateEditBlogClient({
                      duration-500 
                      hover:opacity-50"
       >
-        Submit
+        {submitting ? <Spinner /> : "Submit"}
       </button>
+      <Toaster position="bottom-center" />
     </Container>
   );
 }
