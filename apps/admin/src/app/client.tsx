@@ -30,7 +30,21 @@ export default function AuthClient() {
 
   useEffect(() => {
     if (searchParams && searchParams.has("error"))
-      toast.error(searchParams.get("error"));
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          }  bg-red-400 
+        shadow-lg 
+        rounded-lg 
+        flex 
+        justify-center`}
+        >
+          <div className="px-5 py-3 font-semibold text-sm">
+            {searchParams.get("error")}
+          </div>
+        </div>
+      ));
   }, [searchParams]);
 
   return (

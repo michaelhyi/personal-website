@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access -- e is an instanceof Error or AxiosError */
-/* eslint-disable @typescript-eslint/no-unsafe-argument -- e is an instanceof Error or AxiosError */
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- all non-null assertions are true */
 
 "use client";
@@ -42,8 +41,24 @@ export default function CreateEditBlogClient({
     try {
       validateForm(text, image);
     } catch (e) {
-      // @ts-expect-error -- e is of type AxiosError
-      toast.error(e.message);
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          }  bg-red-400 
+          shadow-lg 
+          rounded-lg 
+          flex 
+          justify-center`}
+        >
+          <div className="px-5 py-3 font-semibold text-sm">
+            {
+              // @ts-expect-error -- e is of type Error
+              e.message
+            }
+          </div>
+        </div>
+      ));
       setSubmitting(false);
       return;
     }
@@ -66,8 +81,24 @@ export default function CreateEditBlogClient({
         router.push(`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post.title}`);
       }
     } catch (e) {
-      // @ts-expect-error -- e is of type AxiosError
-      toast.error(e.response.data);
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          }  bg-red-400 
+          shadow-lg 
+          rounded-lg 
+          flex 
+          justify-center`}
+        >
+          <div className="px-5 py-3 font-semibold text-sm">
+            {
+              // @ts-expect-error -- e is of type AxiosError
+              e.response.data
+            }
+          </div>
+        </div>
+      ));
       setSubmitting(false);
     }
   }, [setSubmitting, id, editor, image, router]);
