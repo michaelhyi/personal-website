@@ -27,30 +27,28 @@ export default function DeleteModal({
       } bg-neutral-800/70`}
     >
       <div
-        className={`w-2/5 bg-neutral-700 shadow-lg rounded-xl duration-500 overflow-y-auto max-h-[768px] ${
-          modalOpen ? "opacity-100" : "opacity-0"
+        className={`w-2/5 bg-neutral-900 shadow-lg rounded-xl overflow-y-auto max-h-[768px] ${
+          modalOpen ? "animate-enter" : "animate-leave"
         }`}
       >
-        <div className="flex items-center mt-4 ml-6 mr-4">
+        <div className="flex mt-4 ml-6 mr-4">
           <div>
-            <div className="text-lg font-semibold">Delete Post</div>
+            <div className="text-xl font-semibold">Delete Post</div>
             <div className="text-xs font-light text-neutral-300">
               Are you sure? This action cannot be undone.
             </div>
           </div>
-          <button
-            type="button"
-            className="ml-auto duration-500 hover:opacity-50"
+          <IoMdClose
+            size={18}
+            className="ml-auto cursor-pointer duration-500 hover:opacity-50"
             onClick={handleToggleModal}
-          >
-            <IoMdClose size={18} />
-          </button>
+          />
         </div>
-        <div className="flex p-6">
+        <div className="flex pr-4 pb-6 mt-12">
           <button
             onClick={handleDelete}
             type="button"
-            className="ml-auto bg-red-400 p-3 rounded-lg duration-500 hover:opacity-50 text-sm"
+            className="ml-auto bg-red-400 px-4 py-3 rounded-lg duration-500 hover:opacity-50 text-sm font-semibold"
           >
             Delete
           </button>
