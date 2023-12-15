@@ -106,6 +106,7 @@ export default function EditBlogClient({
   return (
     <Container>
       <Editor editor={editor} />
+      <div className="mt-4" />
       <Dropzone
         id={id}
         showImage={showImage}
