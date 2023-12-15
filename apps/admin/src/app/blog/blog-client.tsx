@@ -62,7 +62,7 @@ export default function BlogClient({
     <Container>
       <div className="flex flex-col gap-4">
         <Link
-          href="/blog?dialog=create"
+          href="/blog?mode=create"
           className="flex 
                      items-center 
                      gap-2 

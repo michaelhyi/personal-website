@@ -6,7 +6,7 @@ import {
 import type { Post, User } from "@personal-website/types";
 import { notFound, redirect } from "next/navigation";
 import BlogClient from "./blog-client";
-import CreateEditBlogClient from "./create-edit-blog-client";
+import EditBlogClient from "./edit-blog-client";
 
 export default async function Blog({
   searchParams,
@@ -23,19 +23,19 @@ export default async function Blog({
     const data: Post[] = await readAllPosts();
 
     return <BlogClient user={user} data={data} />;
-  } else if (searchParams.dialog === "edit" && searchParams.id) {
+  } else if (searchParams.mode === "edit" && searchParams.id) {
     const post = await readPost(parseInt(searchParams.id));
 
     if (!post) notFound();
 
     title = post.title;
     content = `<h1>${post.title}</h1>${post.content}`;
-  } else if (searchParams.dialog !== "create") {
+  } else if (searchParams.mode !== "create") {
     notFound();
   }
 
   return (
-    <CreateEditBlogClient
+    <EditBlogClient
       id={searchParams.id ? parseInt(searchParams.id) : null}
       title={title}
       content={

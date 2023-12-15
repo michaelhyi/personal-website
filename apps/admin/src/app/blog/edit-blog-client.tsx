@@ -19,7 +19,7 @@ import Editor from "@/components/Editor";
 import { useEditor } from "@/hooks/useEditor";
 import { validateForm } from "@/utils/validateForm";
 
-export default function CreateEditBlogClient({
+export default function EditBlogClient({
   id,
   title: postTitle,
   content,
