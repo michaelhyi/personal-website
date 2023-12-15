@@ -9,7 +9,7 @@ import {
   readPost,
   updatePost,
 } from "@personal-website/services";
-import { Container, Spinner } from "@personal-website/ui";
+import { BackButton, Container, Spinner } from "@personal-website/ui";
 import type { Editor as EditorType } from "@tiptap/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -105,6 +105,11 @@ export default function EditBlogClient({
 
   return (
     <Container>
+      <BackButton href="/blog" text="Blog" />
+      <div className="mt-8 font-bold text-3xl">Create or Edit Post</div>
+      <div className="mt-2 mb-8 text-sm font-medium text-neutral-400">
+        Craft and customize your written works.
+      </div>
       <Editor editor={editor} />
       <div className="mt-4" />
       <Dropzone

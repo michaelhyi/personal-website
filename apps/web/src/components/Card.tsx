@@ -25,7 +25,7 @@ export default function Card({
       <div className="w-48 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
         {date}
       </div>
-      <div className="sm:w-72 md:w-96">
+      <div className="w-full">
         <a
           rel={blog ? "" : "noopener noreferrer"}
           target={blog ? "" : "_blank"}

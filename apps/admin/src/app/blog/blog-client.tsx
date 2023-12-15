@@ -60,7 +60,12 @@ export default function BlogClient({
 
   return (
     <Container>
-      <div className="flex flex-col gap-4">
+      <div className="font-bold text-3xl">Blog</div>
+      <div className="mt-2 text-sm font-medium text-neutral-400">
+        An exploration of my enthusiasm for cinema through reviews, analyses,
+        and essays on various films.
+      </div>
+      <div className="mt-8 flex flex-col gap-4">
         <Link
           href="/blog?mode=create"
           className="flex 
@@ -79,6 +84,7 @@ export default function BlogClient({
                       rounded-md 
                       shadow-md
                       cursor-pointer
+                      mb-8
                       duration-500 
                       hover:opacity-50"
         >
