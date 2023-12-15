@@ -1,8 +1,6 @@
 import { readAllPosts } from "@personal-website/services";
 import type { Post } from "@personal-website/types";
-import { Container, PostCard } from "@personal-website/ui";
-import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
+import { BackButton, Container, PostCard } from "@personal-website/ui";
 import Section from "@/components/Section";
 
 export default async function Blog() {
@@ -10,9 +8,7 @@ export default async function Blog() {
 
   return (
     <Container>
-      <Link href="/" className="duration-500 hover:opacity-50">
-        <IoIosArrowBack />
-      </Link>
+      <BackButton href="/" text="Home" />
       <Section title="Blog">
         {data.map((post, index) => (
           <PostCard key={post.id} data={post} index={index} />

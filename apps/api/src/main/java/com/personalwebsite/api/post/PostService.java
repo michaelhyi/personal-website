@@ -132,6 +132,8 @@ public class PostService {
             throw new IllegalArgumentException("Content cannot be blank.");
         }
 
-        return new PostDestructuredRequest(title, content);
+        return new PostDestructuredRequest(
+                title.replaceAll("<[^>]*>", ""),
+                content);
     }
 }

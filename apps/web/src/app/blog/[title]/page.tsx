@@ -1,11 +1,9 @@
 import { readPostByTitle, readPostImageUrl } from "@personal-website/services";
 import type { Post } from "@personal-website/types";
-import { Container } from "@personal-website/ui";
+import { BackButton, Container } from "@personal-website/ui";
 import { format } from "date-fns";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { IoIosArrowBack } from "react-icons/io";
 
 export default async function View({ params }: { params: { title: string } }) {
   const { title } = params;
@@ -15,22 +13,20 @@ export default async function View({ params }: { params: { title: string } }) {
 
   return (
     <Container>
-      <Link href="/blog" className="duration-500 hover:opacity-50">
-        <IoIosArrowBack />
-      </Link>
-      <div className="mt-10 text-2xl">{data.title}</div>
-      <div className="mt-6 text-xs text-neutral-400">
+      <BackButton href="/blog" text="Blog" />
+      <div className="mt-10 text-3xl font-bold">{data.title}</div>
+      <div className="mt-4 text-xs text-neutral-400">
         {format(new Date(data.date), "PPP")}
       </div>
       <Image
         src={readPostImageUrl(data.id)}
         alt={data.title}
-        width={400}
-        height={400}
+        width={450}
+        height={450}
         className="mt-6"
       />
       <div
-        className="text-sm mt-8"
+        className="text-base mt-8"
         dangerouslySetInnerHTML={{
           __html: data.content,
         }}
