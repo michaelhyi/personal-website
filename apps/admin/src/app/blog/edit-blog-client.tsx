@@ -39,7 +39,7 @@ export default function EditBlogClient({
     const text = editor?.getHTML();
 
     try {
-      validateForm(text, image);
+      validateForm(text, image, showImage);
     } catch (e) {
       toast.custom((t) => (
         <div
@@ -68,6 +68,7 @@ export default function EditBlogClient({
 
     try {
       let postId: number;
+
       if (id) {
         await updatePost(id, text!);
       } else {
@@ -101,7 +102,7 @@ export default function EditBlogClient({
       ));
       setSubmitting(false);
     }
-  }, [setSubmitting, id, editor, image, router]);
+  }, [setSubmitting, id, editor, image, showImage, router]);
 
   return (
     <Container>

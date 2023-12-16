@@ -26,45 +26,44 @@ export default function PostCard({
   handleToggleModal?: (id?: number | undefined) => void | undefined;
 }) {
   return (
-    <Hoverable>
-      <Link
-        className="flex sm:flex-col md:flex-row gap-12"
-        href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.title}`}
-      >
-        <Image
-          className="rounded-lg border-[1px] border-neutral-300 shadow-md"
-          src={readPostImageUrl(data.id)}
-          alt={data.title}
-          width={175}
-          height={175}
-        />
-        <div className="w-full">
-          <div className="flex items-center justify-between">
+    <div className="relative">
+      <Hoverable>
+        <Link
+          className="flex sm:flex-col md:flex-row gap-12"
+          href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.title}`}
+        >
+          <Image
+            className="rounded-lg border-[1px] border-neutral-300 shadow-md"
+            src={readPostImageUrl(data.id)}
+            alt={data.title}
+            width={175}
+            height={175}
+          />
+          <div className="w-full">
             <div className="text-xs font-light text-neutral-500">
               {format(new Date(data.date), "PPP")}
             </div>
-            {admin && handleToggleMenu && handleToggleModal ? (
-              <div className="relative">
-                <IoEllipsisHorizontal
-                  className="cursor-pointer duration-500 hover:opacity-50"
-                  onClick={() => {
-                    handleToggleMenu(index);
-                  }}
-                />
-                {menuOpen ? (
-                  <Menu id={data.id} handleToggleModal={handleToggleModal} />
-                ) : null}
-              </div>
-            ) : null}
+            <div className="mt-2 font-bold">{data.title}</div>
+            <div className="mt-2 text-xs text-neutral-400 line-clamp-3">
+              {data.content.replace(/(<([^>]+)>)/gi, "")}
+            </div>
           </div>
-          <a className="font-bold cursor-pointer duration-500 hover:opacity-50">
-            {data.title}
-          </a>
-          <div className="mt-2 text-xs text-neutral-400 line-clamp-3">
-            {data.content.replace(/(<([^>]+)>)/gi, "")}
-          </div>
+        </Link>
+      </Hoverable>
+      {admin && handleToggleMenu && handleToggleModal ? (
+        <div className="z-50 absolute top-0 right-0">
+          <Hoverable className="relative">
+            <IoEllipsisHorizontal
+              onClick={() => {
+                handleToggleMenu(index);
+              }}
+            />
+          </Hoverable>
+          {menuOpen ? (
+            <Menu id={data.id} handleToggleModal={handleToggleModal} />
+          ) : null}
         </div>
-      </Link>
-    </Hoverable>
+      ) : null}
+    </div>
   );
 }
