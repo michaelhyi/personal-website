@@ -2,10 +2,12 @@
 
 import { authenticate } from "@personal-website/services";
 import type { Post, User } from "@personal-website/types";
-import { Container, PostCard } from "@personal-website/ui";
+import { Container, Hoverable, PostCard } from "@personal-website/ui";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import { FaArrowLeftLong } from "react-icons/fa6";
 import DeleteModal from "@/components/DeleteModal";
 
 export default function BlogClient({
@@ -47,6 +49,11 @@ export default function BlogClient({
     [setMenuOpen, data.length, modalOpen, setModalOpen, setId],
   );
 
+  const handleLogout = useCallback(async () => {
+    localStorage.removeItem("token");
+    await signOut();
+  }, []);
+
   useEffect(() => {
     let token: string | null = localStorage.getItem("token");
 
@@ -60,7 +67,16 @@ export default function BlogClient({
 
   return (
     <Container>
-      <div className="font-bold text-3xl">Blog</div>
+      <Hoverable>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex items-center gap-2 text-xs text-neutral-300"
+        >
+          <FaArrowLeftLong /> Logout
+        </button>
+      </Hoverable>
+      <div className="mt-8 font-bold text-3xl">Blog</div>
       <div className="mt-2 text-sm font-medium text-neutral-400">
         An exploration of my enthusiasm for cinema through reviews, analyses,
         and essays on various films.
