@@ -3,16 +3,15 @@ package com.personalwebsite.api.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-
+import java.util.List;
 
 @Entity
 @Table(name = "\"user\"")
@@ -24,12 +23,8 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-
     public User(String email) {
         this.email = email;
-        this.role = UserRole.ADMIN;
     }
 
     public User() {
@@ -41,7 +36,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Override

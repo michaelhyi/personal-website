@@ -17,19 +17,18 @@ spring:
 auth:
   whitelisted-emails:
 
-application:
-  security:
-    jwt:
-      secret-key:
-      expiration:
-    cors:
-      allowed-origins:
-      allowed-methods:
-      allowed-headers:
-      exposed-headers:
-
 aws:
   region:
   s3:
     buckets:
       blog:
+
+security:
+  jwt:
+    secret-key:
+    expiration:
+  cors:
+    allowed-origins:
+    allowed-methods:
+    allowed-headers:
+    exposed-headers:
