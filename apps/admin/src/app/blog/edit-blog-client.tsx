@@ -63,9 +63,6 @@ export default function EditBlogClient({
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", image!);
-
     try {
       let postId: number;
 
@@ -75,12 +72,15 @@ export default function EditBlogClient({
         postId = await createPost(text!);
       }
 
-      await createPostImage(id || postId!, formData);
+      if (image) {
+        const formData = new FormData();
+        formData.append("file", image);
+        await createPostImage(id || postId!, formData);
+      }
 
       const post = await readPost(id || postId!);
-      if (post) {
-        router.push(`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post.title}`);
-      }
+
+      router.push(`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post!.title}`);
     } catch (e) {
       toast.custom((t) => (
         <div
