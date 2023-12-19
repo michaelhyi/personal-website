@@ -8,12 +8,10 @@ export default function Section({
   title,
   children,
   href,
-  nonDesc = false,
 }: {
   title: string;
   children: ReactNode;
   href?: string;
-  nonDesc?: boolean;
 }) {
   return (
     <div className="mt-10">
@@ -33,9 +31,7 @@ export default function Section({
       ) : (
         <div className="font-normal">{title}</div>
       )}
-      <div className={`mt-6 flex flex-col ${nonDesc ? "gap-4" : "gap-8"}`}>
-        {children}
-      </div>
+      <div className="mt-6 flex flex-col gap-8">{children}</div>
     </div>
   );
 }

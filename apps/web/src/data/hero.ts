@@ -1,5 +1,9 @@
 export const hero = [
   {
+    name: "About",
+    href: "/about",
+  },
+  {
     name: "Portfolio",
     href: "/portfolio",
   },
@@ -10,9 +14,5 @@ export const hero = [
   {
     name: "Resume",
     href: `${process.env.NEXT_PUBLIC_WEB_URL}/Resume.pdf`,
-  },
-  {
-    name: "Contact",
-    href: "/contact",
   },
 ];
