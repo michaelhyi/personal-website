@@ -1,9 +1,7 @@
-// eslint-disable-next-line import/no-named-as-default -- Document is a default export
+/* eslint-disable import/no-named-as-default -- all default exports are correctly exported */
 import Document from "@tiptap/extension-document";
-// eslint-disable-next-line import/no-named-as-default -- Placeholder is a default export
 import Placeholder from "@tiptap/extension-placeholder";
 import { type Editor, useEditor as editor } from "@tiptap/react";
-// eslint-disable-next-line import/no-named-as-default -- StarterKit is a default export
 import StarterKit from "@tiptap/starter-kit";
 
 const CustomDocument = Document.extend({
@@ -30,7 +28,8 @@ export const useEditor = (content: string | null): Editor | null => {
     content,
     editorProps: {
       attributes: {
-        class: "prose dark:prose-invert prose-sm m-5 focus:outline-none",
+        class:
+          "prose dark:prose-invert prose-sm mx-[0.75vw] my-5 focus:outline-none",
       },
     },
   });

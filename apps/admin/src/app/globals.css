@@ -6,7 +6,10 @@
   overscroll-behavior: none;
 }
 
-/* Custom CSS Needed for TipTap PlaceHolder */
+.ProseMirror > * {
+  @apply w-[48.5vw] !important;
+}
+
 .ProseMirror p.is-editor-empty:first-child::before {
   color: #adb5bd;
   content: attr(data-placeholder);
