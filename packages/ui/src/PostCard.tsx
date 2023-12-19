@@ -33,11 +33,11 @@ export default function PostCard({
           href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.title}`}
         >
           <Image
-            className="rounded-lg border-[1px] border-neutral-300 shadow-md"
+            className="rounded-lg shadow-md"
             src={readPostImageUrl(data.id)}
             alt={data.title}
-            width={175}
-            height={175}
+            width={200}
+            height={200}
           />
           <div className="w-full">
             <div className="text-xs font-light text-neutral-500">
