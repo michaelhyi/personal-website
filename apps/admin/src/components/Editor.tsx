@@ -1,3 +1,5 @@
+"use client";
+
 import { EditorContent, type Editor as EditorType } from "@tiptap/react";
 import { FaBold, FaItalic } from "react-icons/fa";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Container from "./Container";
+import { Container } from ".";
 
 export default function NotFound() {
   return (

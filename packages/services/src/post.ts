@@ -54,13 +54,6 @@ export const readPostImageUrl = (id: number): string => {
   return `${process.env.NEXT_PUBLIC_API_URL}/post/${id}/image`;
 };
 
-export const readPostImageBytes = async (id: number): Promise<ArrayBuffer> => {
-  const { data } = await axios(
-    `${process.env.NEXT_PUBLIC_API_URL}/post/${id}/image/bytes`,
-  );
-  return data;
-};
-
 export const readAllPosts = async (): Promise<Post[]> => {
   const { data } = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post`);
   return data;

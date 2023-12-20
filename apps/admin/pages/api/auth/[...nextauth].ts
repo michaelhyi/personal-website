@@ -20,6 +20,7 @@ export const authOptions: AuthOptions = {
           await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`,
           );
+
           return true;
         } catch (e) {
           // @ts-expect-error -- errors are type AxiosError
@@ -36,7 +37,7 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60,
+    maxAge: 24 * 60 * 60 * 7,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

@@ -59,13 +59,6 @@ public class PostController {
         return ResponseEntity.ok(service.readPostImage(id));
     }
 
-    @GetMapping("{id}/image/bytes")
-    public ResponseEntity<byte[]> readPostImageBytes(
-            @PathVariable("id") Long id
-    ) {
-        return ResponseEntity.ok(service.readPostImage(id));
-    }
-
     @GetMapping
     public ResponseEntity<List<Post>> readAllPosts() {
         return ResponseEntity.ok(service.readAllPosts());

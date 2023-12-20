@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import Container from "./Container";
-import Spinner from "./Spinner";
+import { Container, Spinner } from ".";
 
 export default function Loading() {
   return (

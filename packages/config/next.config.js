@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   transpilePackages: [
     "@personal-website/config",
@@ -10,7 +11,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
+        protocol: process.env.NODE_ENV === "production" ? "https" : "http",
         hostname: "**",
       },
     ],

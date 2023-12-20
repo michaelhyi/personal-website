@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import React, { type ReactNode } from "react";
-import Footer from "./Footer";
+import { Footer } from ".";
 
 export default function Container({
   children,

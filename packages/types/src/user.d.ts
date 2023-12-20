@@ -1,8 +1,8 @@
-export interface User {
+export type User = {
   username: string;
   authorities: Authority[];
-}
+};
 
-interface Authority {
+type Authority = {
   authority: string;
-}
+};

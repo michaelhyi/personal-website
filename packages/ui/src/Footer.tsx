@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import React from "react";
-import type { FooterLink } from "@personal-website/types";
-import { footer } from "./data/footer";
+import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
+import { Hoverable } from ".";
 
 export default function Footer({ absolute = false }: { absolute?: boolean }) {
   return (
@@ -21,17 +21,24 @@ export default function Footer({ absolute = false }: { absolute?: boolean }) {
                      }`}
     >
       <div className="flex gap-2">
-        {footer.map((v: FooterLink) => (
+        <Hoverable>
           <Link
-            key={v.href}
-            href={v.href}
+            href="https://github.com/michaelhyi"
             rel="noopener noreferrer"
             target="_blank"
-            className="duration-500 hover:opacity-50"
           >
-            <v.icon size={15} />
+            <AiFillGithub size={15} />
           </Link>
-        ))}
+        </Hoverable>
+        <Hoverable>
+          <Link
+            href="https://www.linkedin.com/in/michaelhyi/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <AiFillLinkedin size={15} />
+          </Link>
+        </Hoverable>
       </div>
       <div>&copy; 2023 Michael Yi, All Rights Reserved.</div>
     </div>

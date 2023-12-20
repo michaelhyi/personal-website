@@ -7,8 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { IoEllipsisHorizontal } from "react-icons/io5";
-import Menu from "./Menu";
-import Hoverable from "./Hoverable";
+import { Hoverable, Menu } from ".";
 
 export default function PostCard({
   admin = false,

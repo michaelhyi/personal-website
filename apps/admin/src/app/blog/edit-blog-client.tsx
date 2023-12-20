@@ -16,7 +16,7 @@ import { useCallback, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Dropzone from "@/components/Dropzone";
 import Editor from "@/components/Editor";
-import { useEditor } from "@/hooks/useEditor";
+import useEditor from "@/hooks/useEditor";
 import { validateForm } from "@/utils/validateForm";
 
 export default function EditBlogClient({
