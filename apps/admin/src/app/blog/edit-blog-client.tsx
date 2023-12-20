@@ -7,12 +7,10 @@
 import {
   createPost,
   createPostImage,
-  readPost,
   updatePost,
 } from "@personal-website/services";
 import { BackButton, Container, Spinner } from "@personal-website/ui";
 import type { Editor as EditorType } from "@tiptap/react";
-import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Dropzone from "@/components/Dropzone";
@@ -20,6 +18,7 @@ import Editor from "@/components/Editor";
 import useEditor from "@/hooks/useEditor";
 import { validateForm } from "@/utils/validateForm";
 import ToastError from "@/components/toast/ToastError";
+import ToastSuccess from "@/components/toast/ToastSuccess";
 
 export default function EditBlogClient({
   id,
@@ -30,7 +29,6 @@ export default function EditBlogClient({
   title: string | null;
   content: string | null;
 }) {
-  const router = useRouter();
   const [image, setImage] = useState<File | null>(null);
   const [showImage, setShowImage] = useState<boolean>(id !== null);
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -66,17 +64,21 @@ export default function EditBlogClient({
         await createPostImage(id || postId!, formData);
       }
 
-      const post = await readPost(id || postId!);
-
-      router.push(`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post!.title}`);
+      toast.custom(({ visible }) => (
+        <ToastSuccess
+          visible={visible}
+          message={`Post successfully ${id ? "updated" : "published"}!`}
+        />
+      ));
     } catch (e) {
       toast.custom(({ visible }) => (
         // @ts-expect-error -- e is of type AxiosError
         <ToastError visible={visible} message={e.response.data} />
       ));
-      setSubmitting(false);
     }
-  }, [setSubmitting, id, editor, image, showImage, router]);
+
+    setSubmitting(false);
+  }, [setSubmitting, id, editor, image, showImage]);
 
   return (
     <Container>
