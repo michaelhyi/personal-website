@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { toast, Toaster, useToasterStore } from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
+import ToastError from "@/components/toast/ToastError";
 
 export default function AuthClient() {
   const { toasts } = useToasterStore();
@@ -30,20 +31,9 @@ export default function AuthClient() {
 
   useEffect(() => {
     if (searchParams && searchParams.has("error"))
-      toast.custom((t) => (
-        <div
-          className={`${
-            t.visible ? "animate-enter" : "animate-leave"
-          }  bg-red-400 
-        shadow-lg 
-        rounded-lg 
-        flex 
-        justify-center`}
-        >
-          <div className="px-5 py-3 font-semibold text-sm">
-            {searchParams.get("error")}
-          </div>
-        </div>
+      toast.custom(({ visible }) => (
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- searchParams.get("error") is not null if if statement is true
+        <ToastError visible={visible} message={searchParams.get("error")!} />
       ));
   }, [searchParams]);
 

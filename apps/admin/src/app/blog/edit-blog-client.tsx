@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment -- e is an instanceof Error or AxiosError */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access -- e is an instanceof Error or AxiosError */
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- all non-null assertions are true */
 
@@ -18,6 +19,7 @@ import Dropzone from "@/components/Dropzone";
 import Editor from "@/components/Editor";
 import useEditor from "@/hooks/useEditor";
 import { validateForm } from "@/utils/validateForm";
+import ToastError from "@/components/toast/ToastError";
 
 export default function EditBlogClient({
   id,
@@ -41,23 +43,9 @@ export default function EditBlogClient({
     try {
       validateForm(text, image, showImage);
     } catch (e) {
-      toast.custom((t) => (
-        <div
-          className={`${
-            t.visible ? "animate-enter" : "animate-leave"
-          }  bg-red-400 
-          shadow-lg 
-          rounded-lg 
-          flex 
-          justify-center`}
-        >
-          <div className="px-5 py-3 font-semibold text-sm">
-            {
-              // @ts-expect-error -- e is of type Error
-              e.message
-            }
-          </div>
-        </div>
+      toast.custom(({ visible }) => (
+        // @ts-expect-error -- e is of type Error
+        <ToastError visible={visible} message={e.message} />
       ));
       setSubmitting(false);
       return;
@@ -82,23 +70,9 @@ export default function EditBlogClient({
 
       router.push(`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post!.title}`);
     } catch (e) {
-      toast.custom((t) => (
-        <div
-          className={`${
-            t.visible ? "animate-enter" : "animate-leave"
-          }  bg-red-400 
-          shadow-lg 
-          rounded-lg 
-          flex 
-          justify-center`}
-        >
-          <div className="px-5 py-3 font-semibold text-sm">
-            {
-              // @ts-expect-error -- e is of type AxiosError
-              e.response.data
-            }
-          </div>
-        </div>
+      toast.custom(({ visible }) => (
+        // @ts-expect-error -- e is of type AxiosError
+        <ToastError visible={visible} message={e.response.data} />
       ));
       setSubmitting(false);
     }
