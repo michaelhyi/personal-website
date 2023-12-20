@@ -1,6 +1,5 @@
 package com.personalwebsite.api.post;
 
-
 import com.personalwebsite.api.exception.PostNotFoundException;
 import com.personalwebsite.api.s3.S3Buckets;
 import com.personalwebsite.api.s3.S3Service;
@@ -29,7 +28,7 @@ public class PostService {
 
     public Long createPost(PostRequest req) {
         PostDestructuredRequest postDestructuredRequest
-                = destructuredRequest(req);
+                = destructureRequest(req);
         String title = postDestructuredRequest.title();
         String content = postDestructuredRequest.content();
 
@@ -95,7 +94,7 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
 
         PostDestructuredRequest postDestructuredRequest
-                = destructuredRequest(req);
+                = destructureRequest(req);
         String title = postDestructuredRequest.title();
         String content = postDestructuredRequest.content();
 
@@ -107,7 +106,7 @@ public class PostService {
         repository.deleteById(id);
     }
 
-    private PostDestructuredRequest destructuredRequest(PostRequest req) {
+    private PostDestructuredRequest destructureRequest(PostRequest req) {
         if (req.text() == null
                 || req.text().isBlank()
                 || req.text().isEmpty()) {
@@ -134,6 +133,7 @@ public class PostService {
 
         return new PostDestructuredRequest(
                 title.replaceAll("<[^>]*>", ""),
-                content);
+                content
+        );
     }
 }

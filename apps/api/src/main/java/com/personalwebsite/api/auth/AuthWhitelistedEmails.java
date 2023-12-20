@@ -11,7 +11,8 @@ public class AuthWhitelistedEmails {
 
     public AuthWhitelistedEmails(
             @Value("#{'${auth.whitelisted-emails}'.split(',')}")
-            List<String> whitelistedEmails) {
+            List<String> whitelistedEmails
+    ) {
         this.whitelistedEmails = whitelistedEmails;
     }
 

@@ -20,8 +20,9 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthFilter;
 
-    public SecurityConfig(AuthenticationProvider authenticationProvider,
-                          JwtAuthenticationFilter jwtAuthFilter
+    public SecurityConfig(
+            AuthenticationProvider authenticationProvider,
+            JwtAuthenticationFilter jwtAuthFilter
     ) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.authenticationProvider = authenticationProvider;
@@ -55,7 +56,8 @@ public class SecurityConfig {
                                 SessionCreationPolicy.STATELESS
                         ))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter,
+                .addFilterBefore(
+                        jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

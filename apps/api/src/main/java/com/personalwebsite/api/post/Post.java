@@ -19,6 +19,7 @@ public class Post {
 
     @Column(unique = true)
     private String title;
+
     private String image;
 
     @Column(columnDefinition = "TEXT")

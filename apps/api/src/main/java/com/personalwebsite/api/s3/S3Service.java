@@ -18,16 +18,6 @@ public class S3Service {
         this.client = client;
     }
 
-    public void putObject(String bucketName, String key, byte[] file) {
-        PutObjectRequest putObjectRequest = PutObjectRequest
-                .builder()
-                .bucket(bucketName)
-                .key(key)
-                .build();
-
-        client.putObject(putObjectRequest, RequestBody.fromBytes(file));
-    }
-
     public byte[] getObject(String bucketName, String key) {
         GetObjectRequest getObjectRequest = GetObjectRequest
                 .builder()
@@ -43,5 +33,15 @@ public class S3Service {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void putObject(String bucketName, String key, byte[] file) {
+        PutObjectRequest putObjectRequest = PutObjectRequest
+                .builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        client.putObject(putObjectRequest, RequestBody.fromBytes(file));
     }
 }
