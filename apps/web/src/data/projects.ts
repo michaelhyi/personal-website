@@ -3,7 +3,7 @@ import type { Project } from "@personal-website/types";
 export const projects: Project[] = [
   {
     name: "ScribeAI",
-    date: "2023",
+    date: "Oct 2023",
     description:
       "1st Place @ HackGT X. HIPAA-compliant, decentralized healthcare management platform that uses AI to transform physical healthcare documents into electronic health records.",
     tech: "Java, JavaScript, Spring, PostgreSQL, Docker, Kubernetes, React, Tesseract, OpenAI",
@@ -12,7 +12,7 @@ export const projects: Project[] = [
   },
   {
     name: "health{hacks} Website",
-    date: "2023",
+    date: "Jan - Jun 2023",
     description: "Assembling the future innovators of medicine.",
     tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
     image: "/projects/joinhealthhacks.png",
@@ -20,7 +20,7 @@ export const projects: Project[] = [
   },
   {
     name: "HealthRelay",
-    date: "2021 - 2022",
+    date: "Nov 2021 - Nov 2022",
     description:
       "Streamlining secure communication between radiologists and ordering physicians.",
     tech: "TypeScript, React Native, PostgreSQL, GraphQL",
@@ -29,7 +29,7 @@ export const projects: Project[] = [
   },
   {
     name: "RetinaOCT",
-    date: "2021 - 2022",
+    date: "Nov 2021 - Nov 2022",
     description:
       "Enhancing Retinal Abnormality Detection through Deep-Learning-based Optical Coherence Tomography Analysis",
     tech: "Python, Tensorflow, Keras, TypeScript, React Native, PostgreSQL, GraphQL",
@@ -38,7 +38,7 @@ export const projects: Project[] = [
   },
   {
     name: "Enhancing Generative Commonsense Reasoning Using Image Cues",
-    date: "2022",
+    date: "Jun - Jul 2022",
     description:
       "An NLP + Vision model that generates coherent sentences given respective keywords (concepts) and a coresponding image.",
     tech: "Python, PyTorch",
@@ -47,7 +47,7 @@ export const projects: Project[] = [
   },
   {
     name: "CarCam",
-    date: "2021",
+    date: "Jun - Oct 2021",
     description:
       "3rd Place @ 2021 Congressional App Challenge CA45 District. Bridging the digital divide by providing powerful dashcam technology to your phone.",
     tech: "JavaScript, React Native",
@@ -55,7 +55,7 @@ export const projects: Project[] = [
   },
   {
     name: "MelaModel",
-    date: "2022",
+    date: "Mar 2022",
     description:
       "Best Access to Healthcare Hack @ PennApps Health Hacks. An image-recognition software that differentiates between benign and malignant skin moles using Artificial Intelligence.",
     tech: "Python, Tensorflow, Keras, TypeScript, React Native, Node.js, AWS Lambda, AWS DynamoDB, AWS CloudWatch",
@@ -63,7 +63,7 @@ export const projects: Project[] = [
   },
   {
     name: "ChestRay",
-    date: "2022",
+    date: "Jan 2022",
     description:
       "2nd Place @ Coding Your Future Hackathon. A powerful bridge between doctors, patients, and Artificial Intelligence based x-ray diagnosis.",
     tech: "Python, Tensorflow, Keras, JavaScript, React Native, Firebase",
@@ -71,7 +71,7 @@ export const projects: Project[] = [
   },
   {
     name: "LeafX",
-    date: "2022",
+    date: "Jan 2022",
     description:
       "Best Environmental Hack @ Unlock Hacks. A powerful medical tool for plant health.",
     tech: "Python, Tensorflow, Keras, JavaScript, React Native",

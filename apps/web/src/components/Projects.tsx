@@ -1,13 +1,13 @@
 "use client";
 
 import type { Project } from "@personal-website/types";
-import Card from "../Card";
-import Section from "../Section";
+import Card from "./Card";
+import { projects } from "@/data/projects";
 
-export default function Projects({ data }: { data: Project[] }) {
+export default function Projects() {
   return (
-    <Section title="Projects">
-      {data.map((v: Project) => (
+    <>
+      {projects.map((v: Project) => (
         <Card
           date={v.date}
           desc={v.description}
@@ -18,6 +18,6 @@ export default function Projects({ data }: { data: Project[] }) {
           tech={v.tech}
         />
       ))}
-    </Section>
+    </>
   );
 }
