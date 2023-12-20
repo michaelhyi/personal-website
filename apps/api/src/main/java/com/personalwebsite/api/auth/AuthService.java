@@ -1,6 +1,7 @@
 package com.personalwebsite.api.auth;
 
 import com.personalwebsite.api.exception.UnauthorizedUserException;
+import com.personalwebsite.api.exception.UserNotFoundException;
 import com.personalwebsite.api.security.JwtService;
 import com.personalwebsite.api.user.User;
 import com.personalwebsite.api.user.UserRepository;
@@ -50,5 +51,14 @@ public class AuthService {
         repository.save(newUser);
 
         return jwtService.generateToken(newUser);
+    }
+
+    public boolean validateToken(String token) {
+        String email = jwtService.extractUsername(token);
+        User user = repository
+                .findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+
+        return jwtService.isTokenValid(token, user);
     }
 }

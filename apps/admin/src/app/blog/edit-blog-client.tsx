@@ -5,13 +5,17 @@
 "use client";
 
 import {
+  authenticate,
   createPost,
   createPostImage,
   updatePost,
+  validateToken,
 } from "@personal-website/services";
-import { BackButton, Container, Spinner } from "@personal-website/ui";
+import { BackButton, Container, Loading, Spinner } from "@personal-website/ui";
+import type { User } from "@personal-website/types";
 import type { Editor as EditorType } from "@tiptap/react";
-import { useCallback, useState } from "react";
+import { signOut } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Dropzone from "@/components/Dropzone";
 import Editor from "@/components/Editor";
@@ -21,14 +25,17 @@ import ToastError from "@/components/toast/ToastError";
 import ToastSuccess from "@/components/toast/ToastSuccess";
 
 export default function EditBlogClient({
+  user,
   id,
   title: postTitle,
   content,
 }: {
+  user: User;
   id: number | null;
   title: string | null;
   content: string | null;
 }) {
+  const [loading, setLoading] = useState<boolean>(true);
   const [image, setImage] = useState<File | null>(null);
   const [showImage, setShowImage] = useState<boolean>(id !== null);
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -79,6 +86,38 @@ export default function EditBlogClient({
 
     setSubmitting(false);
   }, [setSubmitting, id, editor, image, showImage]);
+
+  useEffect(() => {
+    let token: string | null = localStorage.getItem("token");
+
+    if (!token) {
+      void (async () => {
+        token = await authenticate(user.username);
+        localStorage.setItem("token", token);
+        setLoading(false);
+      })();
+    } else {
+      void (async () => {
+        try {
+          const validToken = await validateToken(token);
+
+          if (!validToken) {
+            localStorage.removeItem("token");
+            await signOut();
+          } else {
+            setLoading(false);
+          }
+        } catch {
+          localStorage.removeItem("token");
+          await signOut();
+        }
+      })();
+    }
+  }, [user.username]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Container>

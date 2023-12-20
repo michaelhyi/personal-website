@@ -1,8 +1,8 @@
 "use client";
 
-import { authenticate } from "@personal-website/services";
+import { authenticate, validateToken } from "@personal-website/services";
 import type { Post, User } from "@personal-website/types";
-import { Container, Hoverable, PostCard } from "@personal-website/ui";
+import { Container, Hoverable, Loading, PostCard } from "@personal-website/ui";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
@@ -18,6 +18,7 @@ export default function BlogClient({
   data: Post[];
 }) {
   const [id, setId] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean[]>(
     new Array(data.length).fill(false),
@@ -61,9 +62,30 @@ export default function BlogClient({
       void (async () => {
         token = await authenticate(user.username);
         localStorage.setItem("token", token);
+        setLoading(false);
+      })();
+    } else {
+      void (async () => {
+        try {
+          const validToken = await validateToken(token);
+
+          if (!validToken) {
+            localStorage.removeItem("token");
+            await signOut();
+          } else {
+            setLoading(false);
+          }
+        } catch {
+          localStorage.removeItem("token");
+          await signOut();
+        }
       })();
     }
   }, [user.username]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Container>

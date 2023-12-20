@@ -36,6 +36,7 @@ export default async function Blog({
 
   return (
     <EditBlogClient
+      user={user}
       id={searchParams.id ? parseInt(searchParams.id) : null}
       title={title}
       content={

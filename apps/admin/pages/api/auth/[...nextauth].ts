@@ -14,6 +14,20 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
+    async session({ session }) {
+      if (new Date(session.expires).getTime() < Date.now()) {
+        await fetch("/api/auth/signout?callbackUrl=/api/auth/session", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: await fetch("/api/auth/csrf").then((rs) => rs.text()),
+        });
+      }
+
+      return session;
+    },
     async signIn({ user }) {
       if (user.email) {
         try {
