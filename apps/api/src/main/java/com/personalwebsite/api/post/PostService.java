@@ -15,14 +15,14 @@ import java.util.UUID;
 @Service
 public class PostService {
     private final PostRepository repository;
-    private final S3Service service;
+    private final S3Service s3Service;
     private final S3Buckets buckets;
 
     public PostService(PostRepository repository,
                        S3Service service,
                        S3Buckets buckets) {
         this.repository = repository;
-        this.service = service;
+        this.s3Service = service;
         this.buckets = buckets;
     }
 
@@ -48,10 +48,21 @@ public class PostService {
     @Transactional
     public void createPostImage(Long id, MultipartFile file) {
         Post post = readPost(id);
+
+        if (post.getImage() != null
+                && !post.getImage().isEmpty()
+                && !post.getImage().isBlank()
+        ) {
+            s3Service.deleteObject(
+                    buckets.getBlog(),
+                    String.format("%s/%s", id, post.getImage())
+            );
+        }
+
         String imageId = UUID.randomUUID().toString();
 
         try {
-            service.putObject(
+            s3Service.putObject(
                     buckets.getBlog(),
                     String.format("%s/%s", id, imageId),
                     file.getBytes()
@@ -78,9 +89,10 @@ public class PostService {
     public byte[] readPostImage(Long id) {
         Post post = readPost(id);
 
-        return service.getObject(
+        return s3Service.getObject(
                 buckets.getBlog(),
-                String.format("%s/%s", id, post.getImage()));
+                String.format("%s/%s", id, post.getImage())
+        );
     }
 
     public List<Post> readAllPosts() {
@@ -103,6 +115,13 @@ public class PostService {
     }
 
     public void deletePost(Long id) {
+        Post post = readPost(id);
+
+        s3Service.deleteObject(
+                buckets.getBlog(),
+                String.format("%s/%s", id, post.getImage())
+        );
+
         repository.deleteById(id);
     }
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -16,6 +17,16 @@ public class S3Service {
 
     public S3Service(S3Client client) {
         this.client = client;
+    }
+
+    public void putObject(String bucketName, String key, byte[] file) {
+        PutObjectRequest putObjectRequest = PutObjectRequest
+                .builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        client.putObject(putObjectRequest, RequestBody.fromBytes(file));
     }
 
     public byte[] getObject(String bucketName, String key) {
@@ -35,13 +46,13 @@ public class S3Service {
         }
     }
 
-    public void putObject(String bucketName, String key, byte[] file) {
-        PutObjectRequest putObjectRequest = PutObjectRequest
+    public void deleteObject(String bucketName, String key) {
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest
                 .builder()
                 .bucket(bucketName)
                 .key(key)
                 .build();
 
-        client.putObject(putObjectRequest, RequestBody.fromBytes(file));
+        client.deleteObject(deleteObjectRequest);
     }
 }
