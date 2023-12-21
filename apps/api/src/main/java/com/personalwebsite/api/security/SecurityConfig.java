@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,28 +34,38 @@ public class SecurityConfig {
             HttpSecurity http
     ) throws Exception {
         return http
+                .headers(
+                        httpSecurityHeadersConfigurer ->
+                                httpSecurityHeadersConfigurer
+                                        .cacheControl(HeadersConfigurer
+                                                .CacheControlConfig::disable)
+                                        .frameOptions(HeadersConfigurer
+                                                .FrameOptionsConfig::disable)
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**")
-                        .permitAll()
-                        .requestMatchers("/api/v1/user/**")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST)
-                        .hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.PUT)
-                        .hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE)
-                        .hasAnyRole("ADMIN")
-                        .anyRequest()
-                        .authenticated()
+                .authorizeHttpRequests(
+                        auth -> auth
+                                .requestMatchers("/api/v1/auth/**")
+                                .permitAll()
+                                .requestMatchers("/api/v1/user/**")
+                                .permitAll()
+                                .requestMatchers(HttpMethod.POST)
+                                .hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET)
+                                .permitAll()
+                                .requestMatchers(HttpMethod.PUT)
+                                .hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE)
+                                .hasAnyRole("ADMIN")
+                                .anyRequest()
+                                .authenticated()
                 )
-                .sessionManagement(sess ->
-                        sess.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        ))
+                .sessionManagement(
+                        sess ->
+                                sess.sessionCreationPolicy(
+                                        SessionCreationPolicy.STATELESS
+                                ))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(
                         jwtAuthFilter,
