@@ -126,7 +126,7 @@ export default function EditBlogClient({
       <div className="mt-2 mb-8 text-sm font-medium text-neutral-400">
         Craft and customize your written works.
       </div>
-      <Editor editor={editor} />
+      <Editor editor={editor} disabled={submitting} />
       <div className="mt-4" />
       <Dropzone
         id={id}

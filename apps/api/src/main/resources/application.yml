@@ -2,9 +2,9 @@ spring:
   application:
     name: api
   datasource:
-    url: jdbc:postgresql://localhost:5433/api
-    password: postgres
-    username: postgres
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,20 +15,22 @@ spring:
       show-sql: true
 
 auth:
-  whitelisted-emails: "dev@mail.com"
+  whitelisted-emails: ${AUTH_WHITELISTED_EMAILS}
 
 aws:
-  region: us-east-2
+  access-key: ${AWS_ACCESS_KEY}
+  secret-key: ${AWS_SECRET_KEY}
+  region: ${AWS_REGION}
   s3:
     buckets:
-      blog: personal-website-api-bucket
+      blog: ${AWS_S3_BUCKETS_BLOG}
 
 security:
   jwt:
-    secret-key: 94ac7fa1d3804af762a5bd71d5179631b6bed797446ade2d1536e87d21c1dbc1ecc85f84edfdbc4ca31a44f831dfb48ada7c058c68fe5081ed5a6907b74d079af63cb9842c29b00fc386d5ea52a690416dba638c4775a13ea7f512604525d83620f5a157c2620325cbd5cf8f0df93b6d4bace64c70dcc0f0f2902b2a3c3be837a56518573a5c44c56100d947f257b08d8307ab9fb7ba27d3a76cb82e70bfdd779339d6294532374556e1506f7e2bab8e44460e8f43f76f6280a0b0718928912c5c4e3686b0a37374829c82ea2f1cdf1bc3644fabb932fe60b5064b5f8415d9a6c7ca6ee8ee992574791591c5b32be09dc3d8b2423225af2ee0a5dd214dbfea874d933fd7c5d03b280641d373a8a34933136c6d1466da99fb062868a597bb089fc4517e2289892f18ee2a1cbbbe2cd67d655c886f5e7a557f194b0112fc98ae455302dfbd00e26278bb3a4b215564f373ac0785b5449707f2825bddb8e54730d45f5b6b633ec861268eec7a738e1c4263a928357c85359f99711b38392693a6b5020daeec8666ff0dca51c3b9f1ff9008886969437377398999f4319919826f7f22f947baf2b7d705ad7ced45a11fd842ad7eeef32d2eee2650373f6eaac1bdc0e6b485fddd6aea8d53a2e3dbedd971757ca1832aa38f2ffa64aaccf625335d87f415fb17a03b53b8ae49997a32f253f8b5dc9f0e2dbc6eb65ce92ebe6e3c46cd
-    expiration: 604800000
+    secret-key: ${SECURITY_JWT_SECRET_KEY}
+    expiration: ${SECURITY_JWT_EXPIRATION}
   cors:
-    allowed-origins: "*"
-    allowed-methods: "*"
-    allowed-headers: "*"
-    exposed-headers: "*"
+    allowed-origins: ${SECURITY_CORS_ALLOWED_ORIGINS}
+    allowed-methods: ${SECURITY_CORS_ALLOWED_METHODS}
+    allowed-headers: ${SECURITY_CORS_ALLOWED_HEADERS}
+    exposed-headers: ${SECURITY_CORS_EXPOSED_HEADERS}

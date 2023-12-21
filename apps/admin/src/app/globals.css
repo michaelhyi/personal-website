@@ -7,7 +7,7 @@
 }
 
 .ProseMirror > * {
-  @apply w-[48.5vw] !important;
+  @apply w-[47vw] !important;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {

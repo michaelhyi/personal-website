@@ -15,7 +15,7 @@ export default function useEditor(content: string | null): Editor | null {
     editorProps: {
       attributes: {
         class:
-          "prose dark:prose-invert prose-sm mx-[0.75vw] my-5 focus:outline-none",
+          "prose dark:prose-invert prose-sm mx-[1.5vw] my-5 focus:outline-none",
       },
     },
     extensions: [
