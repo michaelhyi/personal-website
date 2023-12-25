@@ -12,7 +12,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: process.env.NODE_ENV === "production" ? "https" : "http",
-        hostname: "**",
+        hostname:
+          process.env.NODE_ENV === "production"
+            ? "api.michael-yi.com"
+            : "localhost",
       },
     ],
   },
