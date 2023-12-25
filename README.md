@@ -19,9 +19,9 @@
 - [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
+- [AWS EC2, S3](https://aws.amazon.com/)
 - [Docker](https://www.docker.com/)
 - [Kubernetes](https://kubernetes.io/)
-- [AWS EC2, EBS, RDS](https://aws.amazon.com/)
 
 ### Repo Activity
 

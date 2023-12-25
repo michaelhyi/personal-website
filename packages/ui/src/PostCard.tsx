@@ -32,7 +32,6 @@ export default function PostCard({
           href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.title}`}
         >
           <Image
-            priority
             className="rounded-lg shadow-md"
             src={readPostImageUrl(data.id)}
             alt={data.title}
