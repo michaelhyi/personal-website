@@ -7,6 +7,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "clean": "rm -rf node_modules .turbo",
+    "setup": "yarn install"
+  },
   "devDependencies": {
     "@vercel/style-guide": "^5.0.1",
     "eslint-config-turbo": "^1.10.16",

@@ -26,14 +26,31 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       
+      - name: Setup .env File in admin
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          envkey_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          envkey_NEXTAUTH_MAXAGE: ${{ secrets.NEXTAUTH_MAXAGE }}
+          envkey_NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          envkey_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          envkey_NEXT_PUBLIC_WEB_URL: ${{ secrets.NEXT_PUBLIC_WEB_URL }}
+          directory: ./apps/admin
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
+      
       - name: Setup .env File in web
         uses: SpicyPizza/create-envfile@v2.0
         with:
-          envkey_API_URL: ${{ secrets.API_URL }}
+          envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          envkey_NEXT_PUBLIC_WEB_URL: ${{ secrets.NEXT_PUBLIC_WEB_URL }}
           directory: ./apps/web
           file_name: .env
           fail_on_empty: false
           sort_keys: false
+
 
       - name: Install Dependencies
         uses: borales/actions-yarn@v4

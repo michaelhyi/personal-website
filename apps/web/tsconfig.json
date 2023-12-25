@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/web.json",
+  "extends": "@personal-website/tsconfig/web.json",
   "compilerOptions": {
     "plugins": [{ "name": "next" }]
   },
@@ -9,7 +9,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "archive"
+    "tailwind.config.js"
   ],
   "exclude": ["node_modules"]
 }

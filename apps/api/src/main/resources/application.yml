@@ -1,10 +1,13 @@
+server:
+  port: ${SERVER_PORT}
+
 spring:
   application:
     name: api
   datasource:
-    url: jdbc:postgresql://localhost:5433/api
-    password: postgres
-    username: postgres
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,10 +17,23 @@ spring:
         format_sql: true
       show-sql: true
 
-application:
-  security:
-    cors:
-      allowed-origins: "http://localhost:3000"
-      allowed-methods: "*"
-      allowed-headers: "*"
-      exposed-headers: "*"
+auth:
+  whitelisted-emails: ${AUTH_WHITELISTED_EMAILS}
+
+aws:
+  access-key: ${AWS_ACCESS_KEY}
+  secret-key: ${AWS_SECRET_KEY}
+  region: ${AWS_REGION}
+  s3:
+    buckets:
+      blog: ${AWS_S3_BUCKETS_BLOG}
+
+security:
+  jwt:
+    secret-key: ${SECURITY_JWT_SECRET_KEY}
+    expiration: ${SECURITY_JWT_EXPIRATION}
+  cors:
+    allowed-origins: ${SECURITY_CORS_ALLOWED_ORIGINS}
+    allowed-methods: ${SECURITY_CORS_ALLOWED_METHODS}
+    allowed-headers: ${SECURITY_CORS_ALLOWED_HEADERS}
+    exposed-headers: ${SECURITY_CORS_EXPOSED_HEADERS}

@@ -1,17 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 
-interface Props {
+export default function Section({
+  title,
+  children,
+  href,
+}: {
   title: string;
   children: ReactNode;
   href?: string;
-  nonDesc?: boolean;
-}
-
-const Section: FC<Props> = ({ title, children, href, nonDesc = false }) => {
+}) {
   return (
     <div className="mt-10">
       {href ? (
@@ -30,11 +31,7 @@ const Section: FC<Props> = ({ title, children, href, nonDesc = false }) => {
       ) : (
         <div className="font-normal">{title}</div>
       )}
-      <div className={`mt-6 flex flex-col ${nonDesc ? "gap-4" : "gap-8"}`}>
-        {children}
-      </div>
+      <div className="mt-6 flex flex-col gap-8">{children}</div>
     </div>
   );
-};
-
-export default Section;
+}
