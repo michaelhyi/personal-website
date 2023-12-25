@@ -26,9 +26,9 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(ALLOWED_ORIGINS);
-        configuration.setAllowedMethods(ALLOWED_METHODS);
         configuration.setAllowedHeaders(ALLOWED_HEADERS);
+        configuration.setAllowedMethods(ALLOWED_METHODS);
+        configuration.setAllowedOrigins(ALLOWED_ORIGINS);
         configuration.setExposedHeaders(EXPOSED_HEADERS);
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
