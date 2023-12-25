@@ -13,6 +13,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@personal-website/config": "*",
     "@personal-website/services": "*",
     "@personal-website/types": "*",
     "@personal-website/ui": "*",
