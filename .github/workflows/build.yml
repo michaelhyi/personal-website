@@ -27,7 +27,8 @@ jobs:
       - name: Setup .env File in web
         uses: SpicyPizza/create-envfile@v2.0
         with:
-          envkey_API_URL: ${{ secrets.API_URL }}
+          envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          envkey_NEXT_PUBLIC_WEB_URL: ${{ secrets.NEXT_PUBLIC_WEB_URL }}
           directory: ./apps/web
           file_name: .env
           fail_on_empty: false
