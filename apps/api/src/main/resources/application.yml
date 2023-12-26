@@ -3,19 +3,19 @@ server:
 
 spring:
   application:
-    name: api
+    name: ${SPRING_APPLICATION_NAME}
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-      show-sql: true
+        dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
+        format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL}
+      show-sql: ${SPRING_JPA_PROPERTIES_SHOW_SQL}
 
 auth:
   whitelisted-emails: ${AUTH_WHITELISTED_EMAILS}
