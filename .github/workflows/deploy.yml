@@ -110,6 +110,7 @@ jobs:
             sudo docker rm ${API_SPRING_APPLICATION_NAME} || true
             sudo docker pull ${DOCKERHUB_USERNAME}/${DOCKER_REPOSITORY}:latest
             sudo docker run --name ${API_SPRING_APPLICATION_NAME} -d -p ${API_SERVER_PORT}:${API_SERVER_PORT} \
+              -e SERVER_PORT=${API_SERVER_PORT} \
               -e SPRING_DATASOURCE_URL=${API_SPRING_DATASOURCE_URL} \
               -e SPRING_DATASOURCE_USERNAME=${API_SPRING_DATASOURCE_USERNAME} \
               -e SPRING_DATASOURCE_PASSWORD=${API_SPRING_DATASOURCE_PASSWORD} \
