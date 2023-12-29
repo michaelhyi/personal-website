@@ -63,16 +63,10 @@ yarn ci
 6. Add environment variables to `.env` file.
 
 ```ts
-API_SERVER_PORT=8080 // port number to run the api
-
-API_SPRING_APPLICATION_NAME=personal-website-api // api application name
 API_SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/personal_website_api_db // db url
 API_SPRING_DATASOURCE_USERNAME=postgres // db username
 API_SPRING_DATASOURCE_PASSWORD=postgres // db password
 API_SPRING_JPA_HIBERNATE_DDL_AUTO=update // use create-drop or update for dev, validate for prod
-API_SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
-API_SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true // true for dev, false for prod
-API_SPRING_JPA_PROPERTIES_SHOW_SQL=true // true for dev, false for prod
 
 API_AUTH_WHITELISTED_EMAILS="user@mail.com" // whitelisted emails for user authentication
 
@@ -82,17 +76,11 @@ API_AWS_REGION=us-east-2 // aws region
 API_AWS_S3_BUCKETS_BLOG=personal-website-api-bucket // bucket name of
 
 API_SECURITY_JWT_SECRET_KEY= // secret key, generate using
-API_SECURITY_JWT_EXPIRATION=604800000 // 7 days
-
 API_SECURITY_CORS_ALLOWED_ORIGINS="*" // allowed origins for cors
-API_SECURITY_CORS_ALLOWED_METHODS="*" // allowed methods for cors
-API_SECURITY_CORS_ALLOWED_HEADERS="*" // allowed headers for cors
-API_SECURITY_CORS_EXPOSED_HEADERS="*" // exposed methods for cors
 
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 
-NEXTAUTH_MAXAGE=604800 // 7 days
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=http://localhost:3001 // url of the admin app
 

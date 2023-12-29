@@ -32,7 +32,7 @@ export const authOptions: AuthOptions = {
       if (user.email) {
         try {
           await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`
           );
 
           return true;
@@ -51,7 +51,7 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
-    maxAge: parseInt(process.env.NEXTAUTH_MAXAGE!),
+    maxAge: 604800,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

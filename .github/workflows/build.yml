@@ -29,7 +29,6 @@ jobs:
         with:
           envkey_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           envkey_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          envkey_NEXTAUTH_MAXAGE: ${{ secrets.NEXTAUTH_MAXAGE }}
           envkey_NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           envkey_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
           envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
