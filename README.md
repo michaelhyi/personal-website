@@ -1,15 +1,17 @@
 <div align="center">
-  <img src="https://www.michael-yi.com/michael.png" width="100" height="100" />
-  <h1>michael-yi.com</h1>
-  © 2023 Michael Yi, All Rights Reserved.
-  <br/>
-  <br/>
-  <a href="https://www.michael-yi.com/">Website</a>
+  <img src="https://michael-yi.com/michael.png" width="100" height="100" />
+  <h2>Michael Yi's Personal Website</h2>
+  <p>© 2023 Michael Yi, All Rights Reserved.</p>
+  <a href="https://michael-yi.com/">Website</a>
 </div>
 
 <hr/>
 
-### Built With
+## Project Stats
+
+![Alt](https://repobeats.axiom.co/api/embed/0d0e559984591c9b57adbc13a96171939ad77a0f.svg "Repobeats analytics image")
+
+## Tech Stack
 
 - [Turborepo](https://turbo.build/)
 - [Java](https://www.java.com/en/)
@@ -21,22 +23,16 @@
 - [AWS EC2, S3](https://aws.amazon.com/)
 - [Docker](https://www.docker.com/)
 
-### Repo Activity
+## Development Setup
 
-![Alt](https://repobeats.axiom.co/api/embed/0d0e559984591c9b57adbc13a96171939ad77a0f.svg "Repobeats analytics image")
-
-### Getting Started
-
-#### Prerequisites:
+#### Pre-requisites:
 
 - Node
 - Maven
 - Docker
 - Yarn
 
-#### Setup:
-
-1. Clone the repo.
+1. Clone the repository using git.
 
 ```shell
 git clone https://github.com/michaelhyi/personal-website.git
@@ -48,56 +44,96 @@ git clone https://github.com/michaelhyi/personal-website.git
 cd personal-website
 ```
 
-3. Run docker-compose and installation of Maven & Node dependencies/packages.
+3. Install all dependencies and packages using npm, Maven, and docker-compose.
 
 ```shell
 yarn ci
 ```
 
-4. Navigate to the website application directory.
+4. Create a `.env` file to store environment variables.
 
-```shell
-cd apps/web
+> Copy `.env.example` into a `.env` file in the root of the project.
+
+5. Generate all secrets and keys.
+
+> To generate AWS secret keys, log in to your [AWS console](https://aws.amazon.com/). Click on your username, and click `Security credentials` on the dropdown menu. Scroll down to `Access keys`, and click `Create access key`. Paste the Access Key into `API_AWS_ACCESS_KEY` and the Secret Key into `API_AWS_SECRET_KEY` in `.env` below.
+
+> Use `openssl rand -base64 512` to generate a secret key for JWT signing. Paste it into `API_SECURITY_JWT_SECRET_KEY` and `NEXTAUTH_SECRET` in `.env`.
+
+6. Add environment variables to `.env` file.
+
+```ts
+API_SERVER_PORT=8080 // port number to run the api
+
+API_SPRING_APPLICATION_NAME=personal-website-api // api application name
+API_SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/personal_website_api_db // db url
+API_SPRING_DATASOURCE_USERNAME=postgres // db username
+API_SPRING_DATASOURCE_PASSWORD=postgres // db password
+API_SPRING_JPA_HIBERNATE_DDL_AUTO=update // use create-drop or update for dev, validate for prod
+API_SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+API_SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true // true for dev, false for prod
+API_SPRING_JPA_PROPERTIES_SHOW_SQL=true // true for dev, false for prod
+
+API_AUTH_WHITELISTED_EMAILS="user@mail.com" // whitelisted emails for user authentication
+
+API_AWS_ACCESS_KEY= // aws access key
+API_AWS_SECRET_KEY= // aws secret key
+API_AWS_REGION=us-east-2 // aws region
+API_AWS_S3_BUCKETS_BLOG=personal-website-api-bucket // bucket name of
+
+API_SECURITY_JWT_SECRET_KEY= // secret key, generate using
+API_SECURITY_JWT_EXPIRATION=604800000 // 7 days
+
+API_SECURITY_CORS_ALLOWED_ORIGINS="*" // allowed origins for cors
+API_SECURITY_CORS_ALLOWED_METHODS="*" // allowed methods for cors
+API_SECURITY_CORS_ALLOWED_HEADERS="*" // allowed headers for cors
+API_SECURITY_CORS_EXPOSED_HEADERS="*" // exposed methods for cors
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+NEXTAUTH_MAXAGE=604800 // 7 days
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3001 // url of the admin app
+
+NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1 // url of the api
+NEXT_PUBLIC_WEB_URL=http://localhost:3000 // url of the main web app
 ```
 
-5. Create a file for environment variables.
-
-> Copy `.env.example` into a `.env.local` file in the root of the Next.js project.
->
-> Set `NEXT_PUBLIC_API_URL` equal to your Spring Boot / API url.
-
-6. Navigate back to the root of the project.
-
-```shell
-cd ../../
-```
-
-1. Run the project, starting both Spring Boot and Next.js applications.
+6. Run the project, starting both Spring Boot and Next.js applications.
 
 ```shell
 yarn dev
 ```
 
-8. Format the project using Prettier and ESLint.
+6. Format the project using Prettier and ESLint.
 
 ```shell
 yarn format
 ```
 
-9. Build the project using Maven packaging and Next.js.
+7. Build the project using Maven packaging and Next.js.
 
 ```shell
 yarn build
 ```
 
-10. Lint the project using Checkstyle, Prettier, and ESLint.
+8. Lint the project using Checkstyle, Prettier, and ESLint.
 
 ```shell
 yarn lint
 ```
 
-11. Run unit and integration testing using JUnit and E2E testing using Cypress.
+9. Run unit and integration testing using JUnit and E2E testing using Cypress.
 
 ```shell
 yarn run test
 ```
+
+## Deployment
+
+### Postgres Server Setup
+
+1. Login to [AWS console](https://aws.amazon.com/).
+2. Navigate to the EC2 dashboard, and click `Launch instance`.
+3. Provide a name for the server,
