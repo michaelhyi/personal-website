@@ -62,7 +62,7 @@ yarn ci
 
 6. Add environment variables to `.env` file.
 
-```ts
+```shell
 API_SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/personal_website_api_db // db url
 API_SPRING_DATASOURCE_USERNAME=postgres // db username
 API_SPRING_DATASOURCE_PASSWORD=postgres // db password
