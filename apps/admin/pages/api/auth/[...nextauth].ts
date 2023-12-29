@@ -32,7 +32,7 @@ export const authOptions: AuthOptions = {
       if (user.email) {
         try {
           await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`,
           );
 
           return true;
