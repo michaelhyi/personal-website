@@ -3,7 +3,6 @@ package com.personalwebsite.api.post;
 import com.personalwebsite.api.exception.PostNotFoundException;
 import com.personalwebsite.api.s3.S3Buckets;
 import com.personalwebsite.api.s3.S3Service;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,7 +44,6 @@ public class PostService {
         return newPost.getId();
     }
 
-    @Transactional
     public void createPostImage(Long id, MultipartFile file) {
         Post post = readPost(id);
 
@@ -72,6 +70,7 @@ public class PostService {
         }
 
         post.setImage(imageId);
+        repository.save(post);
     }
 
     public Post readPost(Long id) {
@@ -100,7 +99,6 @@ public class PostService {
                 .findAllByOrderByDateDesc();
     }
 
-    @Transactional
     public void updatePost(Long id, PostRequest req) {
         Post post = repository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
@@ -112,6 +110,8 @@ public class PostService {
 
         post.setTitle(title);
         post.setContent(content);
+
+        repository.save(post);
     }
 
     public void deletePost(Long id) {
