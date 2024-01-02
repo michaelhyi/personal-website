@@ -10,6 +10,6 @@
     "dev": "sh run.sh",
     "lint": "mvn validate",
     "setup": "mvn install",
-    "test": "mvn test"
+    "test": "sh test.sh"
   }
 }

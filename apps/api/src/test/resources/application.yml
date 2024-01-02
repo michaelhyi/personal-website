@@ -9,7 +9,7 @@ spring:
       ddl-auto: create-drop
 
 auth:
-  whitelisted-emails: ${AUTH_WHITELISTED_EMAILS}
+  whitelisted-emails: "test@mail.com"
 
 aws:
   access-key: ${AWS_ACCESS_KEY}
@@ -17,7 +17,7 @@ aws:
   region: us-east-2
   s3:
     buckets:
-      blog: ${AWS_S3_BUCKETS_BLOG}
+      blog: personal-website-api-bucket-test
 
 security:
   jwt:

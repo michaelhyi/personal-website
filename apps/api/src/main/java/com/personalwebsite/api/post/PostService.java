@@ -25,7 +25,7 @@ public class PostService {
         this.buckets = buckets;
     }
 
-    public Long createPost(PostRequest req) throws IllegalArgumentException {
+    public Long createPost(PostRequest req) {
         PostDestructuredRequest postDestructuredRequest
                 = destructureRequest(req);
         String title = postDestructuredRequest.title();
@@ -100,8 +100,7 @@ public class PostService {
     }
 
     public void updatePost(Long id, PostRequest req) {
-        Post post = repository.findById(id)
-                .orElseThrow(PostNotFoundException::new);
+        Post post = readPost(id);
 
         PostDestructuredRequest postDestructuredRequest
                 = destructureRequest(req);
