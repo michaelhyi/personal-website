@@ -25,7 +25,7 @@ public class PostService {
         this.buckets = buckets;
     }
 
-    public Long createPost(PostRequest req) {
+    public Long createPost(PostRequest req) throws IllegalArgumentException {
         PostDestructuredRequest postDestructuredRequest
                 = destructureRequest(req);
         String title = postDestructuredRequest.title();
