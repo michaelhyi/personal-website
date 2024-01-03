@@ -35,6 +35,7 @@
     "format": {},
     "lint": {},
     "prepare": {},
-    "setup": {}
+    "setup": {},
+    "test": {}
   }
 }

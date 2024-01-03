@@ -8,7 +8,8 @@
     "dev": "PORT=3001 next dev --turbo",
     "lint": "next lint",
     "setup": "yarn install",
-    "start": "next start"
+    "start": "next start",
+    "test": ""
   },
   "dependencies": {
     "@personal-website/config": "*",

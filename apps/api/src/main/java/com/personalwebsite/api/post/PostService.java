@@ -100,8 +100,7 @@ public class PostService {
     }
 
     public void updatePost(Long id, PostRequest req) {
-        Post post = repository.findById(id)
-                .orElseThrow(PostNotFoundException::new);
+        Post post = readPost(id);
 
         PostDestructuredRequest postDestructuredRequest
                 = destructureRequest(req);

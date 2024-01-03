@@ -17,7 +17,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix && turbo run format",
     "lint": "prettier --check . && turbo run lint",
     "prepare": "husky install",
-    "setup": "yarn install && docker compose up -d && yarn prepare && turbo run setup"
+    "setup": "yarn install && docker compose up -d && yarn prepare && turbo run setup",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@types/node": "^20.8.2",

@@ -14,14 +14,14 @@ import java.util.Optional;
 public class AuthService {
     private final UserRepository repository;
     private final JwtService jwtService;
-    private final AuthWhitelistedEmails authWhitelistedEmails;
+    private final List<String> whitelistedEmails;
 
     public AuthService(UserRepository repository,
                        JwtService jwtService,
-                       AuthWhitelistedEmails authWhitelistedEmails) {
+                       List<String> whitelistedEmails) {
         this.repository = repository;
         this.jwtService = jwtService;
-        this.authWhitelistedEmails = authWhitelistedEmails;
+        this.whitelistedEmails = whitelistedEmails;
     }
 
     public String authenticate(String email) {
@@ -32,9 +32,6 @@ public class AuthService {
         }
 
         boolean authorized = false;
-
-        List<String> whitelistedEmails = authWhitelistedEmails
-                .getWhitelistedEmails();
 
         for (String whitelistedEmail : whitelistedEmails) {
             if (whitelistedEmail.equals(email)) {

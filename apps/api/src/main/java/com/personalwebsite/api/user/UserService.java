@@ -11,7 +11,8 @@ public class UserService {
         this.repository = repository;
     }
 
-    public User readUserByEmail(String email) {
+    public User readUserByEmail(String email)
+            throws IllegalArgumentException, UserNotFoundException {
         if (email == null
                 || email.isBlank()
                 || email.isEmpty()
