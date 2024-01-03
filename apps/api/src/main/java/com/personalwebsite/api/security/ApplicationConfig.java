@@ -1,6 +1,7 @@
 package com.personalwebsite.api.security;
 
 import com.personalwebsite.api.user.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,8 +11,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
+
 @Configuration
 public class ApplicationConfig {
+    @Value("#{'${auth.whitelisted-emails}'.split(',')}")
+    private List<String> WHITELISTED_EMAILS;
     private final UserRepository repository;
 
     public ApplicationConfig(UserRepository repository) {
@@ -39,5 +44,10 @@ public class ApplicationConfig {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found.")
                 );
+    }
+
+    @Bean
+    public List<String> whitelistedEmails() {
+        return WHITELISTED_EMAILS;
     }
 }
