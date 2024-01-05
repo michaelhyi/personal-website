@@ -6,7 +6,7 @@ on:
       - prod
 
 jobs:
-  api-cd:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
