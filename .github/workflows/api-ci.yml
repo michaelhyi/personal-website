@@ -2,8 +2,6 @@ name: api-ci
 
 on:
   pull_request:
-    paths:
-      - apps/api/**
 
 jobs:
   api-ci:
