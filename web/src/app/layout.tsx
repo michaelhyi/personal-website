@@ -1,5 +1,5 @@
-import { Providers } from "@personal-website/ui";
-import { font } from "@personal-website/utils";
+import Providers from "@/components/Providers";
+import { font } from "@/utils/font";
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";

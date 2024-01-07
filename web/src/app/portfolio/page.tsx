@@ -1,5 +1,6 @@
-import { BackButton, Container } from "@personal-website/ui";
-import type { Project } from "@personal-website/types";
+import Container from "@/components/Container";
+import BackButton from "@/components/BackButton";
+import type { Project } from "@/types/project";
 import { projects } from "@/data/projects";
 import Card from "@/components/Card";
 

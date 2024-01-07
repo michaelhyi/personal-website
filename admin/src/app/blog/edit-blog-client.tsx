@@ -4,15 +4,13 @@
 
 "use client";
 
-import {
-  authenticate,
-  createPost,
-  createPostImage,
-  updatePost,
-  validateToken,
-} from "@personal-website/services";
-import { BackButton, Container, Loading, Spinner } from "@personal-website/ui";
-import type { User } from "@personal-website/types";
+import { createPost, createPostImage, updatePost } from "@/services/post";
+import { authenticate, validateToken } from "@/services/auth";
+import BackButton from "@/components/BackButton";
+import Container from "@/components/Container";
+import Loading from "@/components/Loading";
+import Spinner from "@/components/Spinner";
+import type { User } from "@/types/user";
 import type { Editor as EditorType } from "@tiptap/react";
 import { signOut } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";

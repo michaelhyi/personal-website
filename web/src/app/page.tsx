@@ -1,4 +1,4 @@
-import { Container } from "@personal-website/ui";
+import Container from "@/components/Container";
 import Hero from "@/components/Hero";
 
 export default function Home() {

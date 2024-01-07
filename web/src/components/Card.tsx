@@ -1,8 +1,8 @@
 "use client";
 
-import { Hoverable } from "@personal-website/ui";
 import Image from "next/image";
 import Link from "next/link";
+import Hoverable from "@/components/Hoverable";
 
 export default function Card({
   name,

@@ -1,4 +1,6 @@
-import { BackButton, Container, Hoverable } from "@personal-website/ui";
+import BackButton from "@/components/BackButton";
+import Container from "@/components/Container";
+import Hoverable from "@/components/Hoverable";
 import Link from "next/link";
 
 export default function About() {

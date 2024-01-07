@@ -1,9 +1,10 @@
-import { readPostByTitle, readPostImageUrl } from "@personal-website/services";
-import type { Post } from "@personal-website/types";
-import { BackButton, Container } from "@personal-website/ui";
+import { readPostByTitle, readPostImageUrl } from "@/services/post";
+import BackButton from "@/components/BackButton";
+import Container from "@/components/Container";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import type { Post } from "@/types/post";
 
 export default async function View({ params }: { params: { title: string } }) {
   const { title } = params;

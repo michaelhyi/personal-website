@@ -1,7 +1,7 @@
-import { deletePost } from "@personal-website/services";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
+import { deletePost } from "@/services/post";
 
 export default function DeleteModal({
   id,

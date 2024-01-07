@@ -7,8 +7,8 @@ docker compose up -d
 cd admin
 yarn install
 
-cd api
+cd ../api
 mvn install
 
-cd web
+cd ../web
 yarn install

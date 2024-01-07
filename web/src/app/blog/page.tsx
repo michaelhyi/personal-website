@@ -1,6 +1,8 @@
-import { readAllPosts } from "@personal-website/services";
-import type { Post } from "@personal-website/types";
-import { BackButton, Container, PostCard } from "@personal-website/ui";
+import { readAllPosts } from "@/services/post";
+import type { Post } from "@/types/post";
+import BackButton from "@/components/BackButton";
+import Container from "@/components/Container";
+import PostCard from "@/components/PostCard";
 
 export default async function Blog() {
   const data: Post[] = await readAllPosts();
@@ -16,7 +18,7 @@ export default async function Blog() {
         </div>
         <div className="mt-12 flex flex-col gap-8">
           {data.map((post, index) => (
-            <PostCard key={post.id} data={post} index={index} />
+            <PostCard key={post.id} data={post} />
           ))}
         </div>
       </div>

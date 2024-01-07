@@ -1,12 +1,13 @@
 "use client";
 
-import { Container, Spinner } from "@personal-website/ui";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { toast, Toaster, useToasterStore } from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
+import Container from "@/components/Container";
+import Spinner from "@/components/Spinner";
 import ToastError from "@/components/toast/ToastError";
 
 export default function AuthClient() {

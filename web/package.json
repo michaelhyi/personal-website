@@ -6,10 +6,8 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "clean": "rm -rf node_modules .next .turbo",
     "dev": "next dev --turbo",
     "lint": "next lint",
-    "setup": "yarn install",
     "start": "next start",
     "test": ""
   },

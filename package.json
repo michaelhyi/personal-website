@@ -7,7 +7,7 @@
   "scripts": {
     "ci": "yarn clean && yarn setup",
     "clean": "cd scripts && sh clean.sh",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix && turbo run format",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix",
     "lint": "prettier --check . && turbo run lint",
     "setup": "cd scripts && sh setup.sh"
   },

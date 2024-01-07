@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "clean": "rm -rf node_modules .next .turbo",
-    "dev": "PORT=3001 next dev --turbo",
+    "dev": "next dev -p 3001 --turbo",
     "lint": "next lint",
-    "setup": "yarn install",
     "start": "next start",
     "test": ""
   },

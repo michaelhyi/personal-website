@@ -1,5 +1,4 @@
 .github/
-.husky/
 node_modules/
 
 **/.idea
@@ -15,7 +14,5 @@ node_modules/
 
 .eslintignore
 .gitignore
-.npmrc
-.prettierignore
 LICENSE
 yarn.lock

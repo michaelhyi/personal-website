@@ -1,9 +1,7 @@
-import {
-  readAllPosts,
-  readPost,
-  readUserByEmail,
-} from "@personal-website/services";
-import type { Post, User } from "@personal-website/types";
+import { readAllPosts, readPost } from "@/services/post";
+import { readUserByEmail } from "@/services/user";
+import type { Post } from "@/types/post";
+import type { User } from "@/types/user";
 import { notFound, redirect } from "next/navigation";
 import BlogClient from "./blog-client";
 import EditBlogClient from "./edit-blog-client";

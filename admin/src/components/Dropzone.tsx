@@ -1,4 +1,4 @@
-import { readPostImageUrl } from "@personal-website/services";
+import { readPostImageUrl } from "@/services/post";
 import Image from "next/image";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
@@ -30,7 +30,7 @@ export default function Dropzone({
       setShowImage(true);
       setSubmitting(false);
     },
-    [setSubmitting, setImage, setShowImage],
+    [setSubmitting, setImage, setShowImage]
   );
 
   const handleImageDelete = useCallback(() => {

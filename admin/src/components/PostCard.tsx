@@ -1,13 +1,14 @@
 "use client";
 
-import { readPostImageUrl } from "@personal-website/services";
-import type { Post } from "@personal-website/types";
+import { readPostImageUrl } from "@/services/post";
+import type { Post } from "@/types/post";
 import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { IoEllipsisHorizontal } from "react-icons/io5";
-import { Hoverable, Menu } from ".";
+import Hoverable from "./Hoverable";
+import Menu from "./Menu";
 
 export default function PostCard({
   admin = false,

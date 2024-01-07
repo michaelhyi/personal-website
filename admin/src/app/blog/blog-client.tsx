@@ -1,8 +1,12 @@
 "use client";
 
-import { authenticate, validateToken } from "@personal-website/services";
-import type { Post, User } from "@personal-website/types";
-import { Container, Hoverable, Loading, PostCard } from "@personal-website/ui";
+import { authenticate, validateToken } from "@/services/auth";
+import type { Post } from "@/types/post";
+import type { User } from "@/types/user";
+import Container from "@/components/Container";
+import Hoverable from "@/components/Hoverable";
+import Loading from "@/components/Loading";
+import PostCard from "@/components/PostCard";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
@@ -21,7 +25,7 @@ export default function BlogClient({
   const [loading, setLoading] = useState<boolean>(true);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean[]>(
-    new Array(data.length).fill(false),
+    new Array(data.length).fill(false)
   );
 
   const handleToggleMenu = useCallback(
@@ -30,10 +34,10 @@ export default function BlogClient({
         menuOpen.map((v, i) => {
           if (i === index) return !v;
           return false;
-        }),
+        })
       );
     },
-    [setMenuOpen, menuOpen],
+    [setMenuOpen, menuOpen]
   );
 
   const handleToggleModal = useCallback(
@@ -47,7 +51,7 @@ export default function BlogClient({
         setId(postId);
       }
     },
-    [setMenuOpen, data.length, modalOpen, setModalOpen, setId],
+    [setMenuOpen, data.length, modalOpen, setModalOpen, setId]
   );
 
   const handleLogout = useCallback(async () => {

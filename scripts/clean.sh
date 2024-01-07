@@ -6,8 +6,8 @@ rm -rf node_modules
 cd admin
 rm -rf .next node_modules
 
-cd api
+cd ../api
 mvn clean
 
-cd web 
+cd ../web 
 rm -rf .next node_modules
