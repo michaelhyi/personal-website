@@ -1,8 +1,0 @@
-.github/
-node_modules/
-
-.gitignore
-.prettierignore
-docker-compose.yml
-LICENSE
-yarn.lock

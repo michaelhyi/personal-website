@@ -1,5 +1,7 @@
 .github/
 node_modules/
+api/
+scripts/
 
 **/.idea
 **/.next

@@ -1,8 +1,8 @@
-import { readPostImageUrl } from "@/services/post";
 import Image from "next/image";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineClose, AiOutlineCloudDownload } from "react-icons/ai";
+import { readPostImageUrl } from "@/services/post";
 
 export default function Dropzone({
   id,
@@ -69,8 +69,7 @@ export default function Dropzone({
               src={
                 !image && id
                   ? readPostImageUrl(id)
-                  : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- image will not be null
-                    URL.createObjectURL(image!)
+                  : URL.createObjectURL(image!)
               }
               alt="image"
             />

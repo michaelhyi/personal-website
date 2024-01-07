@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion -- text is never undefined */
-
 export function validateForm(
   text: string | undefined,
   image: File | null,

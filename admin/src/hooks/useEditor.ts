@@ -1,5 +1,3 @@
-/* eslint-disable import/no-named-as-default -- all default exports are correctly exported */
-
 import Document from "@tiptap/extension-document";
 import Placeholder from "@tiptap/extension-placeholder";
 import { type Editor, useEditor as editor } from "@tiptap/react";

@@ -1,10 +1,10 @@
 import { notFound, redirect } from "next/navigation";
-import BlogClient from "./blog-client";
-import EditBlogClient from "./edit-blog-client";
 import { readAllPosts, readPost } from "@/services/post";
 import { readUserByEmail } from "@/services/user";
 import type { Post } from "@/types/post";
 import type { User } from "@/types/user";
+import BlogClient from "./blog-client";
+import EditBlogClient from "./edit-blog-client";
 
 export default async function Blog({
   searchParams,
@@ -37,10 +37,7 @@ export default async function Blog({
       user={user}
       id={searchParams.id ? parseInt(searchParams.id) : null}
       title={title}
-      content={
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- JSON.parse is safe
-        JSON.parse(JSON.stringify(content))
-      }
+      content={JSON.parse(JSON.stringify(content))}
     />
   );
 }

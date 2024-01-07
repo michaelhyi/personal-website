@@ -33,7 +33,6 @@ export default function AuthClient() {
   useEffect(() => {
     if (searchParams && searchParams.has("error"))
       toast.custom(({ visible }) => (
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- searchParams.get("error") is not null if if statement is true
         <ToastError visible={visible} message={searchParams.get("error")!} />
       ));
   }, [searchParams]);

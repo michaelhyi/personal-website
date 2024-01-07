@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment -- e is an instanceof Error or AxiosError */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access -- e is an instanceof Error or AxiosError */
-/* eslint-disable @typescript-eslint/no-non-null-assertion -- all non-null assertions are true */
-
 "use client";
 
 import type { Editor as EditorType } from "@tiptap/react";

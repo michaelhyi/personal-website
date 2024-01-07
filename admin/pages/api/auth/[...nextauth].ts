@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access -- errors are type AxiosError */
-/* eslint-disable @typescript-eslint/no-unsafe-argument -- errors are type AxiosError */
-/* eslint-disable @typescript-eslint/no-non-null-assertion -- env variables will always be non-null */
-
 import axios from "axios";
 import NextAuth, { type AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
