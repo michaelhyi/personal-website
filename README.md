@@ -13,7 +13,6 @@
 
 ## Tech Stack
 
-- [Turborepo](https://turbo.build/)
 - [Java](https://www.java.com/en/)
 - [Spring Framework](https://spring.io/)
 - [PostgreSQL](https://www.postgresql.org/)

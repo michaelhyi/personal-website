@@ -1,13 +1,16 @@
 .github/
-.husky/
 node_modules/
+api/
+scripts/
 
 **/.idea
 **/.next
 **/node_modules
 **/public
 
+**/.env
 **/.env.example
+**/.env.production.local
 **/.eslintignore
 **/.gitignore
 **/.prettierignore
@@ -15,7 +18,5 @@ node_modules/
 
 .eslintignore
 .gitignore
-.npmrc
-.prettierignore
 LICENSE
 yarn.lock
