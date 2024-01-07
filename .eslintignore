@@ -1,9 +1,7 @@
 .github/
-.husky/
 node_modules/
 
 .gitignore
-.npmrc
 .prettierignore
 docker-compose.yml
 LICENSE

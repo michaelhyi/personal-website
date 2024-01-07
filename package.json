@@ -4,32 +4,17 @@
   "author": "michaelhyi",
   "license": "MIT",
   "private": true,
-  "packageManager": "yarn@1.22.19",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
-    "build": "dotenv -- turbo run build",
     "ci": "yarn clean && yarn setup",
-    "clean": "rm -rf .turbo node_modules && turbo run clean",
-    "dev": "dotenv -- turbo run dev",
+    "clean": "cd scripts && sh clean.sh",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix && turbo run format",
     "lint": "prettier --check . && turbo run lint",
-    "setup": "yarn install && docker compose up -d && yarn prepare && turbo run setup",
-    "test": "turbo run test"
+    "setup": "cd scripts && sh setup.sh"
   },
   "devDependencies": {
-    "@types/node": "^20.8.2",
     "eslint": "^8.52.0",
     "prettier": "^3.0.3",
     "prettier-plugin-organize-imports": "^3.2.3",
-    "prettier-plugin-tailwindcss": "^0.5.6",
-    "ts-node": "^10.9.1",
-    "turbo": "^1.10.16",
-    "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "dotenv-cli": "^7.3.0"
+    "prettier-plugin-tailwindcss": "^0.5.6"
   }
 }
