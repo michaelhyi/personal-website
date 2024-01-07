@@ -22,13 +22,13 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: michaelyi
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build & Push API to Docker Hub 
         run: |
-          docker build . -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+          docker build . -t michaelyi/personal-website-api:latest
+          docker push michaelyi/personal-website-api:latest
       
       - name: Deploy on EC2 Instance
         env:
@@ -42,7 +42,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i personal-website-api-keypair.pem ${SSH_USER}@${SSH_HOST} '
             sudo docker stop personal-website-api || true
             sudo docker rm personal-website-api || true
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+            sudo docker pull michaelyi/personal-website-api:latest
             sudo docker run --name personal-website-api -d -p 8080:8080 \
               -e SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.API_SPRING_DATASOURCE_USERNAME }} \
@@ -54,5 +54,5 @@ jobs:
               -e AWS_S3_BUCKETS_BLOG=${{ secrets.API_AWS_S3_BUCKETS_BLOG }} \
               -e SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
               -e SECURITY_CORS_ALLOWED_ORIGINS=${{ secrets.API_SECURITY_CORS_ALLOWED_ORIGINS }} \
-              ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
+              michaelyi/personal-website-api
             '
