@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
-import { Hoverable } from ".";
+import Hoverable from "./Hoverable";
 
 export default function Footer({ absolute = false }: { absolute?: boolean }) {
   return (

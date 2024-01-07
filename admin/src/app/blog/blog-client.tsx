@@ -25,7 +25,7 @@ export default function BlogClient({
   const [loading, setLoading] = useState<boolean>(true);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean[]>(
-    new Array(data.length).fill(false)
+    new Array(data.length).fill(false),
   );
 
   const handleToggleMenu = useCallback(
@@ -34,10 +34,10 @@ export default function BlogClient({
         menuOpen.map((v, i) => {
           if (i === index) return !v;
           return false;
-        })
+        }),
       );
     },
-    [setMenuOpen, menuOpen]
+    [setMenuOpen, menuOpen],
   );
 
   const handleToggleModal = useCallback(
@@ -51,7 +51,7 @@ export default function BlogClient({
         setId(postId);
       }
     },
-    [setMenuOpen, data.length, modalOpen, setModalOpen, setId]
+    [setMenuOpen, data.length, modalOpen, setModalOpen, setId],
   );
 
   const handleLogout = useCallback(async () => {

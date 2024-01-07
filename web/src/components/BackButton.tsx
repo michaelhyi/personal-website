@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { Hoverable } from ".";
+import Hoverable from "./Hoverable";
 
 export default function BackButton({
   href,
