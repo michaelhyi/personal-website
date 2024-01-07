@@ -1,7 +1,3 @@
-const { resolve } = require("node:path");
-
-const project = resolve(process.cwd(), "tsconfig.json");
-
 /*
  * This is a custom ESLint configuration for use with
  * Next.js apps.
@@ -18,10 +14,9 @@ module.exports = {
     "@vercel/style-guide/eslint/typescript",
     "@vercel/style-guide/eslint/react",
     "@vercel/style-guide/eslint/next",
-    "eslint-config-turbo",
   ].map(require.resolve),
   parserOptions: {
-    project,
+    project: "./tsconfig.json",
   },
   globals: {
     React: true,
@@ -56,4 +51,3 @@ module.exports = {
     ],
   },
 };
-

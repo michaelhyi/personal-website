@@ -9,7 +9,7 @@ export const createPost = async (text: string): Promise<number> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    }
+    },
   );
 
   return data;
@@ -24,14 +24,14 @@ export const createPostImage = async (id: number, formData: FormData) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "multipart/form-data",
       },
-    }
+    },
   );
 };
 
 export const readPost = async (id: number): Promise<Post | null> => {
   try {
     const { data } = await axios(
-      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`,
     );
     return data;
   } catch {
@@ -42,7 +42,7 @@ export const readPost = async (id: number): Promise<Post | null> => {
 export const readPostByTitle = async (title: string): Promise<Post | null> => {
   try {
     const { data } = await axios(
-      `${process.env.NEXT_PUBLIC_API_URL}/post/title/${title}`
+      `${process.env.NEXT_PUBLIC_API_URL}/post/title/${title}`,
     );
     return data;
   } catch {
@@ -67,7 +67,7 @@ export const updatePost = async (id: number, text: string): Promise<void> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    }
+    },
   );
 };
 

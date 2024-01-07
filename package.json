@@ -8,7 +8,7 @@
     "ci": "yarn clean && yarn setup",
     "clean": "cd scripts && sh clean.sh",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix",
-    "lint": "prettier --check . && turbo run lint",
+    "lint": "cd scripts && sh lint.sh",
     "setup": "cd scripts && sh setup.sh"
   },
   "devDependencies": {

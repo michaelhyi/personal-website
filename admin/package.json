@@ -15,6 +15,7 @@
     "@tiptap/react": "^2.1.13",
     "@tiptap/starter-kit": "^2.1.13",
     "@vercel/analytics": "^1.1.1",
+    "@vercel/style-guide": "^5.1.0",
     "axios": "^1.6.1",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.5",

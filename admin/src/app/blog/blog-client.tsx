@@ -1,18 +1,18 @@
 "use client";
 
-import { authenticate, validateToken } from "@/services/auth";
-import type { Post } from "@/types/post";
-import type { User } from "@/types/user";
-import Container from "@/components/Container";
-import Hoverable from "@/components/Hoverable";
-import Loading from "@/components/Loading";
-import PostCard from "@/components/PostCard";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import Container from "@/components/Container";
 import DeleteModal from "@/components/DeleteModal";
+import Hoverable from "@/components/Hoverable";
+import Loading from "@/components/Loading";
+import PostCard from "@/components/PostCard";
+import { authenticate, validateToken } from "@/services/auth";
+import type { Post } from "@/types/post";
+import type { User } from "@/types/user";
 
 export default function BlogClient({
   user,

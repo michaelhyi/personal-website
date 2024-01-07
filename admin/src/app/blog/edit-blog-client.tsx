@@ -4,23 +4,23 @@
 
 "use client";
 
-import { createPost, createPostImage, updatePost } from "@/services/post";
-import { authenticate, validateToken } from "@/services/auth";
-import BackButton from "@/components/BackButton";
-import Container from "@/components/Container";
-import Loading from "@/components/Loading";
-import Spinner from "@/components/Spinner";
-import type { User } from "@/types/user";
 import type { Editor as EditorType } from "@tiptap/react";
 import { signOut } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import BackButton from "@/components/BackButton";
+import Container from "@/components/Container";
 import Dropzone from "@/components/Dropzone";
 import Editor from "@/components/Editor";
-import useEditor from "@/hooks/useEditor";
-import { validateForm } from "@/utils/validateForm";
+import Loading from "@/components/Loading";
+import Spinner from "@/components/Spinner";
 import ToastError from "@/components/toast/ToastError";
 import ToastSuccess from "@/components/toast/ToastSuccess";
+import useEditor from "@/hooks/useEditor";
+import { validateForm } from "@/utils/validateForm";
+import { authenticate, validateToken } from "@/services/auth";
+import { createPost, createPostImage, updatePost } from "@/services/post";
+import type { User } from "@/types/user";
 
 export default function EditBlogClient({
   user,
