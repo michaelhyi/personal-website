@@ -22,15 +22,15 @@ export default function About() {
       >
         <BackButton href="/" text="Home" />
         <div>
-          Michael Yi is a software engineer based in Atlanta, GA. He’s currently
-          studying computer science at Georgia Tech with concentrations in
-          Artificial Intelligence and Information Internetworks. Previously, he
-          interned at Ardent Labs and MegaEvolution.
+          Michael Yi is a software engineer based in Atlanta, GA. He&apos;s
+          currently studying computer science at Georgia Tech with
+          concentrations in Artificial Intelligence and Information
+          Internetworks. Previously, he interned at Ardent Labs and
+          MegaEvolution.
         </div>
         <div>
-          Michael loves building; he finds an inexplicable joy in challenging
-          the status quo through his works. When he’s not creating software, he
-          loves watching cinema.
+          Michael loves building. When he&apos;s not creating software, he loves
+          watching cinema.
         </div>
         <div className="flex">
           Reach him at&nbsp;
