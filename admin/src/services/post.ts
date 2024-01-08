@@ -9,7 +9,7 @@ export const createPost = async (text: string): Promise<number> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    },
+    }
   );
 
   return data;
@@ -24,14 +24,14 @@ export const createPostImage = async (id: number, formData: FormData) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "multipart/form-data",
       },
-    },
+    }
   );
 };
 
 export const readPost = async (id: number): Promise<Post | null> => {
   try {
     const { data } = await axios(
-      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}?d=${new Date()}`
     );
     return data;
   } catch {
@@ -42,7 +42,7 @@ export const readPost = async (id: number): Promise<Post | null> => {
 export const readPostByTitle = async (title: string): Promise<Post | null> => {
   try {
     const { data } = await axios(
-      `${process.env.NEXT_PUBLIC_API_URL}/post/title/${title}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/post/title/${title}?d=${new Date()}`
     );
     return data;
   } catch {
@@ -55,7 +55,9 @@ export const readPostImageUrl = (id: number): string => {
 };
 
 export const readAllPosts = async (): Promise<Post[]> => {
-  const { data } = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post`);
+  const { data } = await axios(
+    `${process.env.NEXT_PUBLIC_API_URL}/post?d=${new Date()}`
+  );
   return data;
 };
 
@@ -67,7 +69,7 @@ export const updatePost = async (id: number, text: string): Promise<void> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    },
+    }
   );
 };
 
