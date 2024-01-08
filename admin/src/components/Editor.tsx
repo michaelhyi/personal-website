@@ -28,7 +28,7 @@ export default function Editor({
           onClick={() => editor?.chain().focus().toggleItalic().run()}
           disabled={disabled}
           className={`duration-500 ${
-            editor?.isActive("bold") ? "text-white" : "text-neutral-500"
+            editor?.isActive("italic") ? "text-white" : "text-neutral-500"
           }`}
         >
           <FaItalic size={12} />
