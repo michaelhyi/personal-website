@@ -141,7 +141,7 @@ export default function EditBlogClient({
                      flex
                      items-center 
                      gap-3 
-                     bg-neutral-800 
+                     bg-black 
                      text-white 
                      border-[1px] 
                      border-neutral-500 

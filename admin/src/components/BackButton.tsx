@@ -16,7 +16,7 @@ export default function BackButton({
     <Hoverable>
       <Link
         href={href}
-        className="flex items-center gap-2 text-xs text-neutral-300"
+        className="flex items-center gap-2 text-xs text-neutral-400"
       >
         <FaArrowLeftLong /> Back to {text}
       </Link>

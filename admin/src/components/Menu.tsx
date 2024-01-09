@@ -12,7 +12,7 @@ export default function Menu({
   handleToggleModal: (id?: number | undefined) => void;
 }) {
   return (
-    <div className="z-10 flex flex-col gap-2 absolute rounded-md shadow-lg w-36 bg-neutral-800 text-white font-medium overflow-hidden right-0 top-5 p-3 border-[1px]">
+    <div className="z-10 flex flex-col gap-2 absolute rounded-md shadow-lg w-36 bg-black text-white font-medium overflow-hidden right-0 top-5 p-3 border-[1px]">
       <Link
         href={`/blog?mode=edit&id=${id}`}
         className="flex items-center gap-2 duration:500 hover:opacity-50 text-sm"
