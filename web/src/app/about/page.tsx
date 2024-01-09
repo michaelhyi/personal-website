@@ -1,11 +1,11 @@
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
-import Container from "@/components/Container";
 import Hoverable from "@/components/Hoverable";
+import Footer from "@/components/Footer";
 
 export default function About() {
   return (
-    <Container absoluteFooter>
+    <div className="h-screen bg-black text-white">
       <div
         className="absolute
                    left-1/2
@@ -18,7 +18,8 @@ export default function About() {
                    text-left
                    text-[13px]
                    gap-4
-                   w-[35vw]
+                   sm:w-[360px]
+                   md:w-[576px]
                    "
       >
         <BackButton href="/" text="Home" />
@@ -46,6 +47,7 @@ export default function About() {
           .
         </div>
       </div>
-    </Container>
+      <Footer absolute />
+    </div>
   );
 }
