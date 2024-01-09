@@ -66,7 +66,7 @@ export default function AuthClient() {
           type="button"
           onClick={handleClick}
           disabled={submitting}
-          className="focus:outline-none mt-4 text-sm flex items-center gap-3 bg-neutral-800 text-white border-[1px] border-neutral-500 font-semibold px-6 py-2 rounded-md shadow-md duration-500 hover:opacity-50"
+          className="focus:outline-none mt-4 text-sm flex items-center gap-3 bg-black border-[1px] border-neutral-500 font-semibold px-6 py-2 rounded-md shadow-md duration-500 hover:opacity-50"
         >
           {submitting ? <Spinner /> : <FcGoogle />}
         </button>

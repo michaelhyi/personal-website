@@ -13,7 +13,6 @@ export default function Footer({ absolute = false }: { absolute?: boolean }) {
                      items-center
                      gap-3
                      text-[10px]
-                     text-neutral-300
                      ${
                        absolute
                          ? "absolute bottom-4 left-0 right-0"

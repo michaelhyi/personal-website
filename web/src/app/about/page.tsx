@@ -18,6 +18,7 @@ export default function About() {
                    text-left
                    text-[13px]
                    gap-4
+                   w-[35vw]
                    "
       >
         <BackButton href="/" text="Home" />

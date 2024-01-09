@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../../.env
+source .env 
 
 mvn test -Dtest.arguments=" \
 --AWS_ACCESS_KEY=$API_AWS_ACCESS_KEY \
