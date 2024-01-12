@@ -21,9 +21,9 @@ class PostRepositoryTest {
 
     @Test
     void findAllByOrderByDateDesc() throws InterruptedException {
-        Post post1 = new Post("id1", "title1", null, "content1");
-        Post post2 = new Post("id2", "title2", null, "content2");
-        Post post3 = new Post("id3", "title3", null, "content3");
+        Post post1 = new Post("id1", "title1", "content1");
+        Post post2 = new Post("id2", "title2", "content2");
+        Post post3 = new Post("id3", "title3", "content3");
 
         underTest.save(post1);
         underTest.save(post2);
