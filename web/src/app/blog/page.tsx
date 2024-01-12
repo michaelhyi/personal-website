@@ -3,10 +3,8 @@ import Container from "@/components/Container";
 import PostCard from "@/components/PostCard";
 import { readAllPosts } from "@/services/post";
 import type { Post } from "@/types/post";
-import { revalidatePath } from "next/cache";
 
 export default async function Blog() {
-  revalidatePath("/blog");
   const data: Post[] = await readAllPosts();
 
   return (

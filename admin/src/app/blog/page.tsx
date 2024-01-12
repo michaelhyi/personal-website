@@ -5,7 +5,6 @@ import type { Post } from "@/types/post";
 import type { User } from "@/types/user";
 import BlogClient from "./blog-client";
 import EditBlogClient from "./edit-blog-client";
-import { revalidatePath } from "next/cache";
 
 export default async function Blog({
   searchParams,
@@ -19,12 +18,11 @@ export default async function Blog({
   if (!user) redirect("/");
 
   if (Object.keys(searchParams).length === 0) {
-    revalidatePath("/blog");
     const data: Post[] = await readAllPosts();
 
     return <BlogClient user={user} data={data} />;
   } else if (searchParams.mode === "edit" && searchParams.id) {
-    const post = await readPost(parseInt(searchParams.id));
+    const post = await readPost(searchParams.id);
 
     if (!post) notFound();
 
@@ -37,7 +35,7 @@ export default async function Blog({
   return (
     <EditBlogClient
       user={user}
-      id={searchParams.id ? parseInt(searchParams.id) : null}
+      id={searchParams.id ? searchParams.id : null}
       title={title}
       content={JSON.parse(JSON.stringify(content))}
     />

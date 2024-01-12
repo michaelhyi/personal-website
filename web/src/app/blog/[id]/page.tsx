@@ -1,4 +1,4 @@
-import { readPostByTitle, readPostImageUrl } from "@/services/post";
+import { readPost, readPostImageUrl } from "@/services/post";
 import BackButton from "@/components/BackButton";
 import Container from "@/components/Container";
 import { format } from "date-fns";
@@ -6,9 +6,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Post } from "@/types/post";
 
-export default async function View({ params }: { params: { title: string } }) {
-  const { title } = params;
-  const data: Post | null = await readPostByTitle(title);
+export default async function View({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const data: Post | null = await readPost(id);
 
   if (!data) notFound();
 

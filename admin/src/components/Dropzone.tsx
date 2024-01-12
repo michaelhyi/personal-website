@@ -14,7 +14,7 @@ export default function Dropzone({
   image,
   setImage,
 }: {
-  id: number | null;
+  id: string | null;
   showImage: boolean;
   setShowImage: Dispatch<SetStateAction<boolean>>;
   title: string | null;

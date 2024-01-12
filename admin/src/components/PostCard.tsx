@@ -23,14 +23,14 @@ export default function PostCard({
   index: number;
   menuOpen?: boolean | undefined;
   handleToggleMenu?: (index: number) => void | undefined;
-  handleToggleModal?: (id?: number | undefined) => void | undefined;
+  handleToggleModal?: (id?: string | undefined) => void | undefined;
 }) {
   return (
     <div className="relative">
       <Hoverable>
         <Link
           className="flex sm:flex-col md:flex-row gap-12"
-          href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.title}`}
+          href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.id}`}
         >
           <Image
             className="rounded-lg shadow-md"
