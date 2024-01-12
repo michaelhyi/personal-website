@@ -14,7 +14,7 @@ export default function PostCard({ data }: { data: Post }) {
       <Hoverable>
         <Link
           className="flex sm:flex-col md:flex-row gap-12"
-          href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.title}`}
+          href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${data.id}`}
         >
           <Image
             className="rounded-lg shadow-md"

@@ -8,8 +8,8 @@ export default function Menu({
   id,
   handleToggleModal,
 }: {
-  id: number;
-  handleToggleModal: (id?: number | undefined) => void;
+  id: string;
+  handleToggleModal: (id?: string | undefined) => void;
 }) {
   return (
     <div className="z-10 flex flex-col gap-2 absolute rounded-md shadow-lg w-36 bg-black text-white font-medium overflow-hidden right-0 top-5 p-3 border-[1px]">

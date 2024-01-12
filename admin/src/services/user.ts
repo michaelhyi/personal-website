@@ -12,9 +12,7 @@ export const readUserByEmail = async (): Promise<User | null> => {
 
   try {
     const { data } = await axios(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/${
-        session.user.email
-      }?d=${new Date()}`
+      `${process.env.NEXT_PUBLIC_API_URL}/user/${session.user.email}`,
     );
 
     return data;

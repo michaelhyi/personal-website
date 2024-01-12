@@ -2,14 +2,13 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
 import { deletePost } from "@/services/post";
-import { revalidatePath } from "next/cache";
 
 export default function DeleteModal({
   id,
   modalOpen,
   handleToggleModal,
 }: {
-  id: number;
+  id: string;
   modalOpen: boolean;
   handleToggleModal: () => void;
 }) {
@@ -18,7 +17,6 @@ export default function DeleteModal({
   const handleDelete = useCallback(async () => {
     await deletePost(id);
     handleToggleModal();
-    revalidatePath("/blog");
   }, [id, handleToggleModal, router]);
 
   return (
