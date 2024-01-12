@@ -31,7 +31,7 @@ export const createPostImage = async (id: number, formData: FormData) => {
 export const readPost = async (id: number): Promise<Post | null> => {
   try {
     const { data } = await axios(
-      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}?d=${new Date()}`
+      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`
     );
     return data;
   } catch {
@@ -42,7 +42,7 @@ export const readPost = async (id: number): Promise<Post | null> => {
 export const readPostByTitle = async (title: string): Promise<Post | null> => {
   try {
     const { data } = await axios(
-      `${process.env.NEXT_PUBLIC_API_URL}/post/title/${title}?d=${new Date()}`
+      `${process.env.NEXT_PUBLIC_API_URL}/post/title/${title}`
     );
     return data;
   } catch {
@@ -55,9 +55,7 @@ export const readPostImageUrl = (id: number): string => {
 };
 
 export const readAllPosts = async (): Promise<Post[]> => {
-  const { data } = await axios(
-    `${process.env.NEXT_PUBLIC_API_URL}/post?d=${new Date()}`
-  );
+  const { data } = await axios(`${process.env.NEXT_PUBLIC_API_URL}/post`);
   return data;
 };
 

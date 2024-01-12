@@ -1,10 +1,12 @@
-import { readAllPosts } from "@/services/post";
-import type { Post } from "@/types/post";
 import BackButton from "@/components/BackButton";
 import Container from "@/components/Container";
 import PostCard from "@/components/PostCard";
+import { readAllPosts } from "@/services/post";
+import type { Post } from "@/types/post";
+import { revalidatePath } from "next/cache";
 
 export default async function Blog() {
+  revalidatePath("/blog");
   const data: Post[] = await readAllPosts();
 
   return (
@@ -17,7 +19,7 @@ export default async function Blog() {
           and essays on various films.
         </div>
         <div className="mt-12 flex flex-col gap-8">
-          {data.map((post, index) => (
+          {data.map((post) => (
             <PostCard key={post.id} data={post} />
           ))}
         </div>

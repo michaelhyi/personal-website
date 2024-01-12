@@ -5,6 +5,7 @@ import type { Post } from "@/types/post";
 import type { User } from "@/types/user";
 import BlogClient from "./blog-client";
 import EditBlogClient from "./edit-blog-client";
+import { revalidatePath } from "next/cache";
 
 export default async function Blog({
   searchParams,
@@ -18,6 +19,7 @@ export default async function Blog({
   if (!user) redirect("/");
 
   if (Object.keys(searchParams).length === 0) {
+    revalidatePath("/blog");
     const data: Post[] = await readAllPosts();
 
     return <BlogClient user={user} data={data} />;
