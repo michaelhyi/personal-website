@@ -25,7 +25,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createPost(@RequestBody PostRequest req) {
+    public ResponseEntity<String> createPost(@RequestBody PostRequest req) {
         return ResponseEntity.ok(service.createPost(req));
     }
 
@@ -34,28 +34,21 @@ public class PostController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public void createPostImage(
-            @PathVariable("id") Long id,
+            @PathVariable("id") String id,
             @RequestParam("file") MultipartFile file) {
         service.createPostImage(id, file);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Post> readPost(@PathVariable("id") Long id) {
+    public ResponseEntity<Post> readPost(@PathVariable("id") String id) {
         return ResponseEntity.ok(service.readPost(id));
-    }
-
-    @GetMapping("title/{title}")
-    public ResponseEntity<Post> readPostByTitle(
-            @PathVariable("title") String title
-    ) {
-        return ResponseEntity.ok(service.readPostByTitle(title));
     }
 
     @GetMapping(
             value = "{id}/image",
             produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public ResponseEntity<byte[]> readPostImage(@PathVariable("id") Long id) {
+    public ResponseEntity<byte[]> readPostImage(@PathVariable("id") String id) {
         return ResponseEntity.ok(service.readPostImage(id));
     }
 
@@ -66,7 +59,7 @@ public class PostController {
 
     @PutMapping("{id}")
     public ResponseEntity<Void> updatePost(
-            @PathVariable("id") Long id,
+            @PathVariable("id") String id,
             @RequestBody PostRequest req
     ) {
         service.updatePost(id, req);
@@ -74,7 +67,7 @@ public class PostController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deletePost(@PathVariable("id") String id) {
         service.deletePost(id);
         return ResponseEntity.ok().build();
     }

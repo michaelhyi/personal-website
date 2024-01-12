@@ -39,27 +39,27 @@ class PostServiceTest {
 
     @Test
     void willThrowWhenCreatePostWithSameTitle() {
-        Post post = new Post("title", null, "content");
-        given(repository.findByTitle(post.getTitle())).willReturn(Optional.of(post));
+        Post post = new Post("id", "title", null, "content");
+        given(repository.findById(post.getId())).willReturn(Optional.of(post));
 
         assertThrows(IllegalArgumentException.class, () ->
-                underTest.createPost(new PostRequest("<h1>title</h1><p>content</p>")));
-        verify(repository).findByTitle(post.getTitle());
+                underTest.createPost(new PostRequest("id", "<h1>title</h1><p>content</p>")));
+        verify(repository).findById(post.getId());
         verify(repository, never()).saveAndFlush(any());
     }
 
     @Test
     void createPost() {
-        Post post = new Post("title", null, "content");
-        given(repository.findByTitle(post.getTitle())).willReturn(Optional.empty());
+        Post post = new Post("id", "title", null, "content");
+        given(repository.findById(post.getId())).willReturn(Optional.empty());
 
         underTest.createPost(
-                new PostRequest("<h1>title</h1>content")
+                new PostRequest("id", "<h1>title</h1>content")
         );
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
-        verify(repository).findByTitle(post.getTitle());
+        verify(repository).findById(post.getId());
         verify(repository).saveAndFlush(postArgumentCaptor.capture());
 
         Post capturedPost = postArgumentCaptor.getValue();
@@ -71,10 +71,10 @@ class PostServiceTest {
 
     @Test
     void willThrowWhenCreatePostImageOnNonexistentPost() {
-        given(repository.findById(1L)).willReturn(Optional.empty());
+        given(repository.findById("id")).willReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, () -> underTest.createPostImage(1L, null));
-        verify(repository).findById(1L);
+        assertThrows(PostNotFoundException.class, () -> underTest.createPostImage("id", null));
+        verify(repository).findById("id");
         verify(s3Service, never()).deleteObject(any(), any());
         verify(s3Service, never()).putObject(any(), any(), any());
         verify(repository, never()).save(any());
@@ -82,10 +82,10 @@ class PostServiceTest {
 
     @Test
     void willDeleteS3ObjectWhenCreatePostImageIfImageAlreadyExists() {
-        given(repository.findById(1L)).willReturn(Optional.of(new Post("title", "image", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "image", "content")));
 
-        assertThrows(RuntimeException.class, () -> underTest.createPostImage(1L, null));
-        verify(repository).findById(1L);
+        assertThrows(RuntimeException.class, () -> underTest.createPostImage("id", null));
+        verify(repository).findById("id");
         verify(s3Service).deleteObject(buckets.getBlog(), "1/image");
         verify(s3Service, never()).putObject(any(), any(), any());
         verify(repository, never()).save(any());
@@ -93,23 +93,23 @@ class PostServiceTest {
 
     @Test
     void willThrowWhenCreatePostImageWithBadFile() {
-        given(repository.findById(1L)).willReturn(Optional.of(new Post("title", null, "content")));
+        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", null, "content")));
 
-        underTest.createPostImage(1L, new MockMultipartFile("file", new byte[0]));
-        verify(repository).findById(1L);
+        underTest.createPostImage("id", new MockMultipartFile("file", new byte[0]));
+        verify(repository).findById("id");
         verify(s3Service).putObject(eq(buckets.getBlog()), any(), eq(new byte[0]));
         verify(repository).save(any());
     }
 
     @Test
     void createPostImage() {
-        given(repository.findById(1L)).willReturn(Optional.of(new Post("title", null, "content")));
+        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", null, "content")));
 
-        underTest.createPostImage(1L, new MockMultipartFile("file", new byte[0]));
+        underTest.createPostImage("id", new MockMultipartFile("file", new byte[0]));
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
-        verify(repository).findById(1L);
+        verify(repository).findById("id");
         verify(s3Service).putObject(eq(buckets.getBlog()), any(), eq(new byte[0]));
         verify(repository).save(postArgumentCaptor.capture());
 
@@ -122,62 +122,42 @@ class PostServiceTest {
 
     @Test
     void willThrowReadPostWhenPostNotFound() {
-        given(repository.findById(1L)).willReturn(Optional.empty());
+        given(repository.findById("id")).willReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, () -> underTest.readPost(1L));
-        verify(repository).findById(1L);
+        assertThrows(PostNotFoundException.class, () -> underTest.readPost("id"));
+        verify(repository).findById("id");
     }
 
     @Test
     void readPost() {
-        given(repository.findById(1L)).willReturn(Optional.of(new Post("title", "image", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "image", "content")));
 
-        Post post = underTest.readPost(1L);
-
-        assertEquals("title", post.getTitle());
-        assertEquals("image", post.getImage());
-        assertEquals("content", post.getContent());
-        verify(repository).findById(1L);
-    }
-
-    @Test
-    void willThrowReadPostByTitleWhenPostNotFound() {
-        given(repository.findByTitle("title")).willReturn(Optional.empty());
-
-        assertThrows(PostNotFoundException.class, () -> underTest.readPostByTitle("title"));
-        verify(repository).findByTitle("title");
-    }
-
-    @Test
-    void readPostByTitle() {
-        given(repository.findByTitle("title")).willReturn(Optional.of(new Post("title", "image", "content")));
-
-        Post post = underTest.readPostByTitle("title");
+        Post post = underTest.readPost("id");
 
         assertEquals("title", post.getTitle());
         assertEquals("image", post.getImage());
         assertEquals("content", post.getContent());
-        verify(repository).findByTitle("title");
+        verify(repository).findById("id");
     }
 
     @Test
     void willThrowReadPostImageWhenPostNotFound() {
-        given(repository.findById(1L)).willReturn(Optional.empty());
+        given(repository.findById("id")).willReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, () -> underTest.readPostImage(1L));
-        verify(repository).findById(1L);
+        assertThrows(PostNotFoundException.class, () -> underTest.readPostImage("id"));
+        verify(repository).findById("id");
         verify(s3Service, never()).getObject(eq(buckets.getBlog()), any());
     }
 
     @Test
     void readPostImage() {
-        given(repository.findById(1L)).willReturn(Optional.of(new Post("title", "image", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "image", "content")));
         byte[] expectedFile = new byte[0];
         given(s3Service.getObject(buckets.getBlog(), "1/image")).willReturn(expectedFile);
 
-        byte[] file = underTest.readPostImage(1L);
+        byte[] file = underTest.readPostImage("id");
         assertEquals(expectedFile, file);
-        verify(repository).findById(1L);
+        verify(repository).findById("id");
         verify(s3Service).getObject(buckets.getBlog(), "1/image");
     }
 
@@ -189,42 +169,42 @@ class PostServiceTest {
 
     @Test
     void willThrowUpdatePostWhenPostDoesNotExist() {
-        given(repository.findById(1L)).willReturn(Optional.empty());
+        given(repository.findById("id")).willReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, () -> underTest.updatePost(1L, new PostRequest("<h1>title1</h1>content1")));
+        assertThrows(PostNotFoundException.class, () -> underTest.updatePost("id", new PostRequest("id", "<h1>title1</h1>content1")));
 
-        verify(repository).findById(1L);
+        verify(repository).findById("id");
         verify(repository, never()).save(any());
     }
 
     @Test
     void updatePost() {
-        given(repository.findById(1L)).willReturn(Optional.of(new Post("title", "image", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "image", "content")));
 
-        underTest.updatePost(1L, new PostRequest("<h1>title1</h1>content1"));
+        underTest.updatePost("id", new PostRequest("id", "<h1>title1</h1>content1"));
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
-        verify(repository).findById(1L);
+        verify(repository).findById("id");
         verify(repository).save(postArgumentCaptor.capture());
     }
 
     @Test
     void willThrowDeletePostWhenPostNotFound() {
-        given(repository.findById(1L)).willReturn(Optional.empty());
+        given(repository.findById("id")).willReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, () -> underTest.deletePost(1L));
+        assertThrows(PostNotFoundException.class, () -> underTest.deletePost("id"));
         verify(s3Service, never()).deleteObject(eq(buckets.getBlog()), any());
-        verify(repository, never()).deleteById(1L);
+        verify(repository, never()).deleteById("id");
     }
 
     @Test
     void deletePost() {
-        given(repository.findById(1L)).willReturn(Optional.of(new Post("title", "image", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "image", "content")));
 
-        underTest.deletePost(1L);
+        underTest.deletePost("id");
 
         verify(s3Service).deleteObject(buckets.getBlog(), "1/image");
-        verify(repository).deleteById(1L);
+        verify(repository).deleteById("id");
     }
 }

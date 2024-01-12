@@ -2,7 +2,6 @@ package com.personalwebsite.api.post;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,8 +10,7 @@ import java.util.Date;
 @Entity
 public class Post {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     @CreationTimestamp
     private Date date;
@@ -25,9 +23,11 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    public Post(String title,
+    public Post(String id,
+                String title,
                 String image,
                 String content) {
+        this.id = id;
         this.title = title;
         this.image = image;
         this.content = content;
@@ -36,7 +36,7 @@ public class Post {
     public Post() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

@@ -16,6 +16,7 @@ public class PostService {
     private final PostRepository repository;
     private final S3Service s3Service;
     private final S3Buckets buckets;
+    private static final String S3_KEY_FORMAT = "%s/%s";
 
     public PostService(PostRepository repository,
                        S3Service service,
@@ -25,13 +26,13 @@ public class PostService {
         this.buckets = buckets;
     }
 
-    public Long createPost(PostRequest req) {
+    public String createPost(PostRequest req) {
         PostDestructuredRequest postDestructuredRequest
                 = destructureRequest(req);
         String title = postDestructuredRequest.title();
         String content = postDestructuredRequest.content();
 
-        Optional<Post> post = repository.findByTitle(title);
+        Optional<Post> post = repository.findById(req.id());
 
         if (post.isPresent()) {
             throw new IllegalArgumentException(
@@ -39,12 +40,12 @@ public class PostService {
             );
         }
 
-        Post newPost = new Post(title, null, content);
+        Post newPost = new Post(req.id(), title, null, content);
         repository.saveAndFlush(newPost);
         return newPost.getId();
     }
 
-    public void createPostImage(Long id, MultipartFile file) {
+    public void createPostImage(String id, MultipartFile file) {
         Post post = readPost(id);
 
         if (post.getImage() != null
@@ -53,7 +54,7 @@ public class PostService {
         ) {
             s3Service.deleteObject(
                     buckets.getBlog(),
-                    String.format("%s/%s", id, post.getImage())
+                    String.format(S3_KEY_FORMAT, id, post.getImage())
             );
         }
 
@@ -62,7 +63,7 @@ public class PostService {
         try {
             s3Service.putObject(
                     buckets.getBlog(),
-                    String.format("%s/%s", id, imageId),
+                    String.format(S3_KEY_FORMAT, id, imageId),
                     file.getBytes()
             );
         } catch (IOException e) {
@@ -73,24 +74,18 @@ public class PostService {
         repository.save(post);
     }
 
-    public Post readPost(Long id) {
+    public Post readPost(String id) {
         return repository
                 .findById(id)
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    public Post readPostByTitle(String title) {
-        return repository
-                .findByTitle(title)
-                .orElseThrow(PostNotFoundException::new);
-    }
-
-    public byte[] readPostImage(Long id) {
+    public byte[] readPostImage(String id) {
         Post post = readPost(id);
 
         return s3Service.getObject(
                 buckets.getBlog(),
-                String.format("%s/%s", id, post.getImage())
+                String.format(S3_KEY_FORMAT, id, post.getImage())
         );
     }
 
@@ -99,7 +94,7 @@ public class PostService {
                 .findAllByOrderByDateDesc();
     }
 
-    public void updatePost(Long id, PostRequest req) {
+    public void updatePost(String id, PostRequest req) {
         Post post = readPost(id);
 
         PostDestructuredRequest postDestructuredRequest
@@ -113,12 +108,12 @@ public class PostService {
         repository.save(post);
     }
 
-    public void deletePost(Long id) {
+    public void deletePost(String id) {
         Post post = readPost(id);
 
         s3Service.deleteObject(
                 buckets.getBlog(),
-                String.format("%s/%s", id, post.getImage())
+                String.format(S3_KEY_FORMAT, id, post.getImage())
         );
 
         repository.deleteById(id);
