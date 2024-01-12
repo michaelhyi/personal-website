@@ -9,14 +9,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class PostService {
     private final PostRepository repository;
     private final S3Service s3Service;
     private final S3Buckets buckets;
-    private static final String S3_KEY_FORMAT = "%s/%s";
 
     public PostService(PostRepository repository,
                        S3Service service,
@@ -40,7 +38,7 @@ public class PostService {
             );
         }
 
-        Post newPost = new Post(req.id(), title, null, content);
+        Post newPost = new Post(req.id(), title, content);
         repository.saveAndFlush(newPost);
         return newPost.getId();
     }
@@ -48,29 +46,23 @@ public class PostService {
     public void createPostImage(String id, MultipartFile file) {
         Post post = readPost(id);
 
-        if (post.getImage() != null
-                && !post.getImage().isEmpty()
-                && !post.getImage().isBlank()
-        ) {
+        if (readPostImage(id) != null) {
             s3Service.deleteObject(
                     buckets.getBlog(),
-                    String.format(S3_KEY_FORMAT, id, post.getImage())
+                    id
             );
         }
-
-        String imageId = UUID.randomUUID().toString();
 
         try {
             s3Service.putObject(
                     buckets.getBlog(),
-                    String.format(S3_KEY_FORMAT, id, imageId),
+                    id,
                     file.getBytes()
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        post.setImage(imageId);
         repository.save(post);
     }
 
@@ -81,11 +73,11 @@ public class PostService {
     }
 
     public byte[] readPostImage(String id) {
-        Post post = readPost(id);
+        readPost(id);
 
         return s3Service.getObject(
                 buckets.getBlog(),
-                String.format(S3_KEY_FORMAT, id, post.getImage())
+                id
         );
     }
 
@@ -109,11 +101,11 @@ public class PostService {
     }
 
     public void deletePost(String id) {
-        Post post = readPost(id);
+        readPost(id);
 
         s3Service.deleteObject(
                 buckets.getBlog(),
-                String.format(S3_KEY_FORMAT, id, post.getImage())
+                id
         );
 
         repository.deleteById(id);
