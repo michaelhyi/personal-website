@@ -15,6 +15,7 @@ public class PostService {
     private final PostRepository repository;
     private final S3Service s3Service;
     private final S3Buckets buckets;
+    private static final String S3_KEY_FORMAT = "%s/%s";
 
     public PostService(PostRepository repository,
                        S3Service service,
