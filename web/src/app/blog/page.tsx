@@ -8,7 +8,7 @@ export default async function Blog() {
   const data: Post[] = await readAllPosts();
 
   return (
-    <Container>
+    <Container absoluteFooter>
       <BackButton href="/" text="Home" />
       <div className="mt-8">
         <div className="font-bold text-3xl">Blog</div>

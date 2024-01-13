@@ -8,9 +8,9 @@ import EditBlogClient from "./edit-blog-client";
 
 export default async function Blog({
   searchParams,
-}: {
+}: Readonly<{
   searchParams: Record<string, string | undefined>;
-}) {
+}>) {
   const user: User | null = await readUserByEmail();
   let title: string | null = null;
   let content: string | null = null;

@@ -6,7 +6,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Post } from "@/types/post";
 
-export default async function View({ params }: { params: { id: string } }) {
+export default async function View({
+  params,
+}: Readonly<{ params: { id: string } }>) {
   const { id } = params;
   const data: Post | null = await readPost(id);
 
@@ -27,7 +29,7 @@ export default async function View({ params }: { params: { id: string } }) {
         className="mt-6"
       />
       <div
-        className="text-base mt-8"
+        className="text-[15px] mt-8"
         dangerouslySetInnerHTML={{
           __html: data.content,
         }}

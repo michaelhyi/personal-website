@@ -17,10 +17,10 @@ import type { User } from "@/types/user";
 export default function BlogClient({
   user,
   data,
-}: {
+}: Readonly<{
   user: User;
   data: Post[];
-}) {
+}>) {
   const [id, setId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -92,7 +92,7 @@ export default function BlogClient({
   }
 
   return (
-    <Container>
+    <Container absoluteFooter>
       <Hoverable>
         <button
           type="button"
