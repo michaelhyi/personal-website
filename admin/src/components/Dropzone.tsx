@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Image from "next/image";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
@@ -13,7 +15,7 @@ export default function Dropzone({
   setSubmitting,
   image,
   setImage,
-}: {
+}: Readonly<{
   id: string | null;
   showImage: boolean;
   setShowImage: Dispatch<SetStateAction<boolean>>;
@@ -22,7 +24,7 @@ export default function Dropzone({
   setSubmitting: Dispatch<SetStateAction<boolean>>;
   image: File | null;
   setImage: Dispatch<SetStateAction<File | null>>;
-}) {
+}>) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       setSubmitting(true);

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { redirect } from "next/navigation";
 import { readUserByEmail } from "@/services/user";
 import type { User } from "@/types/user";

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { notFound, redirect } from "next/navigation";
 import { readAllPosts, readPost } from "@/services/post";
 import { readUserByEmail } from "@/services/user";

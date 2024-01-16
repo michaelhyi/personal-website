@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import BackButton from "@/components/BackButton";
 import Container from "@/components/Container";
 import PostCard from "@/components/PostCard";
