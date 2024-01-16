@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { readPost, readPostImageUrl } from "@/services/post";
 import BackButton from "@/components/BackButton";
 import Container from "@/components/Container";

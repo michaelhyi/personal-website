@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import type { Editor as EditorType } from "@tiptap/react";
 import { signOut } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
@@ -24,12 +26,12 @@ export default function EditBlogClient({
   id,
   title: postTitle,
   content,
-}: {
+}: Readonly<{
   user: User;
   id: string | null;
   title: string | null;
   content: string | null;
-}) {
+}>) {
   const [loading, setLoading] = useState<boolean>(true);
   const [image, setImage] = useState<File | null>(null);
   const [showImage, setShowImage] = useState<boolean>(id !== null);
@@ -69,7 +71,7 @@ export default function EditBlogClient({
         if (image) {
           const formData = new FormData();
           formData.append("file", image);
-          await createPostImage(id || data.id, formData);
+          await createPostImage(id ?? data.id, formData);
         }
 
         toast.custom(({ visible }) => (
