@@ -11,17 +11,17 @@ export default function Card({
   tech,
   img,
   href,
-}: {
+}: Readonly<{
   name: string;
   date: string;
   desc?: string;
   tech?: string;
   img?: string;
   href: string;
-}) {
+}>) {
   return (
     <Hoverable>
-      <Link rel="noopener noreferre" target="_blank" href={href}>
+      <Link rel="noopener noreferrer" target="_blank" href={href}>
         <div className="flex sm:flex-col md:flex-row">
           <div className="w-56 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
             {date}
