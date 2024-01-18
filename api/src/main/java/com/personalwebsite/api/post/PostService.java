@@ -46,24 +46,27 @@ public class PostService {
     public void createPostImage(String id, MultipartFile file) {
         Post post = readPost(id);
 
-        if (readPostImage(id) != null) {
-            s3Service.deleteObject(
+        try {
+            if (readPostImage(id) != null) {
+                s3Service.deleteObject(
                     buckets.getBlog(),
                     id
-            );
+                );
+            }
+        } finally {
+            try {
+                s3Service.putObject(
+                        buckets.getBlog(),
+                        id,
+                        file.getBytes()
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            repository.save(post);
         }
 
-        try {
-            s3Service.putObject(
-                    buckets.getBlog(),
-                    id,
-                    file.getBytes()
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        repository.save(post);
     }
 
     public Post readPost(String id) {
