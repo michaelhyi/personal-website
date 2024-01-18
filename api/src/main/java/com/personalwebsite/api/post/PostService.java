@@ -63,7 +63,7 @@ public class PostService {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            
+
             repository.save(post);
         }
 
