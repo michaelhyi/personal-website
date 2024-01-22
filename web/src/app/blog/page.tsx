@@ -18,7 +18,7 @@ export default async function Blog() {
           An exploration of my enthusiasm for cinema through reviews, analyses,
           and essays on various films.
         </div>
-        <div className="mt-12 flex flex-col gap-4">
+        <div className="mt-12 flex flex-col gap-2">
           {data.map((post) => (
             <PostCard key={post.id} data={post} />
           ))}
