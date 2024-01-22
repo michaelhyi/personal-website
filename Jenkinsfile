@@ -8,21 +8,23 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-              sh 'cd api
-                  docker build . -t michaelyi/personal-website-api:latest
-              '
+              dir('api') {
+                sh 'docker build . -t michaelyi/personal-website-api:latest'
+              }
             }
         }
         stage('Test') {
             steps {
-                sh 'cd api
-                    mvn verify
-                '
+              dir('api') {
+                sh 'docker run --rm michaelyi/personal-website-api:latest mvn verify'
+              }
             }
         }
         stage('Deploy') {
             steps {
+              dir('api') {
                 sh 'docker push michaelyi/personal-website-api:latest'
+              }
             }
         }
     }
