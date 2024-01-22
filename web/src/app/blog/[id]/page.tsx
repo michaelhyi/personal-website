@@ -26,9 +26,11 @@ export default async function View({
       <Image
         src={readPostImageUrl(data.id)}
         alt={data.title}
-        width={450}
-        height={450}
-        className="mt-6"
+        width={1000}
+        height={1000}
+        quality={100}
+        priority
+        className="w-full mt-6"
       />
       <div
         className="text-[15px] mt-8"
