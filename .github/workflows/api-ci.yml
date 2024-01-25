@@ -17,5 +17,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build API 
+      - name: Build & Test API 
         run: docker build . -t michaelyi/personal-website-api:latest

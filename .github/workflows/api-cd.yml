@@ -25,7 +25,7 @@ jobs:
           username: michaelyi
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & Push API to Docker Hub 
+      - name: Build, Test, Deploy API
         run: |
           docker build . -t michaelyi/personal-website-api:latest
           docker push michaelyi/personal-website-api:latest

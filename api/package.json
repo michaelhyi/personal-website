@@ -5,11 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "mvn clean package",
-    "clean": "rm -rf .turbo && mvn clean",
     "dev": "sh run.sh",
-    "lint": "mvn validate",
-    "setup": "mvn clean install",
     "test": "sh test.sh"
   }
 }
