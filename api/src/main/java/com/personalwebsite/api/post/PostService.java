@@ -3,6 +3,8 @@ package com.personalwebsite.api.post;
 import com.personalwebsite.api.exception.PostNotFoundException;
 import com.personalwebsite.api.s3.S3Buckets;
 import com.personalwebsite.api.s3.S3Service;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,8 +46,6 @@ public class PostService {
     }
 
     public void createPostImage(String id, MultipartFile file) {
-        Post post = readPost(id);
-
         try {
             if (readPostImage(id) != null) {
                 s3Service.deleteObject(
@@ -53,20 +53,19 @@ public class PostService {
                     id
                 );
             }
-        } finally {
-            try {
-                s3Service.putObject(
-                        buckets.getBlog(),
-                        id,
-                        file.getBytes()
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            repository.save(post);
+        } catch (PostNotFoundException e) {
+            throw new PostNotFoundException();
         }
 
+        try {
+            s3Service.putObject(
+                buckets.getBlog(),
+                id,
+                file.getBytes()
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Post readPost(String id) {
@@ -86,7 +85,7 @@ public class PostService {
 
     public List<Post> readAllPosts() {
         return repository
-                .findAllByOrderByDateDesc();
+                .findAll(Sort.by(Sort.Direction.DESC, "date"));
     }
 
     public void updatePost(String id, PostRequest req) {

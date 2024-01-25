@@ -9,10 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockMultipartFile;
-
+            
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,6 +22,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -69,26 +72,31 @@ class PostServiceTest {
 
     @Test
     void willThrowWhenCreatePostImageOnNonexistentPost() {
-        given(repository.findById("id")).willReturn(Optional.empty());
+        given(repository.findById("id")).willThrow(new PostNotFoundException());
 
         assertThrows(PostNotFoundException.class, () -> underTest.createPostImage("id", null));
+
         verify(repository).findById("id");
-        verify(s3Service, never()).deleteObject(any(), any());
-        verify(s3Service, never()).putObject(any(), any(), any());
-        verify(repository, never()).save(any());
+        verifyNoMoreInteractions(repository);
+        verifyNoMoreInteractions(s3Service);
     }
 
     @Test
     void willDeleteS3ObjectWhenCreatePostImageIfImageAlreadyExists() {
         given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+        given(s3Service.getObject(buckets.getBlog(), "id")).willReturn(new byte[0]);
 
-        assertThrows(RuntimeException.class, () -> underTest.createPostImage("id", null));
+        underTest.createPostImage("id", new MockMultipartFile("file", new byte[0]));
+
+        assertDoesNotThrow(() -> PostNotFoundException.class);
+        assertDoesNotThrow(() -> RuntimeException.class);
+
         verify(repository).findById("id");
-        verify(s3Service).deleteObject(buckets.getBlog(), "1/image");
-        verify(s3Service, never()).putObject(any(), any(), any());
-        verify(repository, never()).save(any());
+        verify(s3Service).deleteObject(buckets.getBlog(), "id");
+        verify(s3Service).putObject(buckets.getBlog(), "id", new byte[0]); 
     }
 
+    //TODO: complete this test
     @Test
     void willThrowWhenCreatePostImageWithBadFile() {
         given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
@@ -96,25 +104,17 @@ class PostServiceTest {
         underTest.createPostImage("id", new MockMultipartFile("file", new byte[0]));
         verify(repository).findById("id");
         verify(s3Service).putObject(eq(buckets.getBlog()), any(), eq(new byte[0]));
-        verify(repository).save(any());
     }
 
     @Test
     void createPostImage() {
         given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+        given(s3Service.getObject(buckets.getBlog(), "id")).willReturn(null);
 
         underTest.createPostImage("id", new MockMultipartFile("file", new byte[0]));
 
-        ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
-
         verify(repository).findById("id");
         verify(s3Service).putObject(eq(buckets.getBlog()), any(), eq(new byte[0]));
-        verify(repository).save(postArgumentCaptor.capture());
-
-        Post capturedPost = postArgumentCaptor.getValue();
-
-        assertEquals("title", capturedPost.getTitle());
-        assertEquals("content", capturedPost.getContent());
     }
 
     @Test
@@ -149,18 +149,18 @@ class PostServiceTest {
     void readPostImage() {
         given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
         byte[] expectedFile = new byte[0];
-        given(s3Service.getObject(buckets.getBlog(), "1/image")).willReturn(expectedFile);
+        given(s3Service.getObject(buckets.getBlog(), "id")).willReturn(expectedFile);
 
         byte[] file = underTest.readPostImage("id");
         assertEquals(expectedFile, file);
         verify(repository).findById("id");
-        verify(s3Service).getObject(buckets.getBlog(), "1/image");
+        verify(s3Service).getObject(buckets.getBlog(), "id");
     }
 
     @Test
     void readAllPosts() {
         underTest.readAllPosts();
-        verify(repository).findAllByOrderByDateDesc();
+        verify(repository).findAll(Sort.by(Sort.Direction.DESC, "date"));
     }
 
     @Test
@@ -200,7 +200,7 @@ class PostServiceTest {
 
         underTest.deletePost("id");
 
-        verify(s3Service).deleteObject(buckets.getBlog(), "1/image");
+        verify(s3Service).deleteObject(buckets.getBlog(), "id");
         verify(repository).deleteById("id");
     }
 }
