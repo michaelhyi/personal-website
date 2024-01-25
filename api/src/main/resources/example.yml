@@ -1,0 +1,43 @@
+auth:
+  whitelisted-emails: ${AUTH_WHITELISTED_EMAILS}
+
+aws:
+  access-key: ${AWS_ACCESS_KEY}
+  secret-key: ${AWS_SECRET_KEY}
+  region: us-east-2
+  s3:
+    buckets:
+      blog: personal-website-api-bucket-dev 
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["prometheus"]
+
+security:
+  jwt:
+    secret-key: ${SECURITY_JWT_SECRET_KEY}
+    expiration: 604800000
+  cors:
+    allowed-origins: "http://localhost:3000,http://localhost:3001"
+    allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+    allowed-headers: "Authorization,Content-Type"
+    exposed-headers: "Authorization,Content-Type"
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: personal-website-api
+  datasource:
+    url: jdbc:postgresql://localhost:5433/personal_website_api_db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
