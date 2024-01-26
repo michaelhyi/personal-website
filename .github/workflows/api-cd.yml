@@ -15,14 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
     
-      - name: Create New Properties File
-        working-directory: ./api/src/test/resources 
-        run: touch application-it.properties
+      - name: Create New Properties Files
+        run: |
+          touch ./api/src/main/resources/application.properties
+          touch ./api/src/test/resources/application-it.properties
 
-     - name: Update Properties File for Integration Tests 
+      - name: Update Properties File for Integration Tests 
         uses: christian-draeger/write-properties@1.1.0
         with:
-          path: './api/src/test/resources/application-it.properties'
+          path: './api/src/test/resources/application.properties'
           property: |
             'auth.whitelisted-emails'
             'aws.access-key'
@@ -60,6 +61,48 @@ jobs:
             '${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}'
             'org.postgresql.Driver'
             'update'
+            'org.hibernate.dialect.PostgreSQLDialect'
+
+
+     - name: Update Properties File for Production 
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './api/src/main/resources/application.properties'
+          property: |
+            'auth.whitelisted-emails'
+            'aws.access-key'
+            'aws.secret-key'
+            'aws.region'
+            'aws.s3.buckets.blog'
+            'security.jwt.secret-key'
+            'security.jwt.expiration'
+            'security.cors.allowed-origins'
+            'security.cors.allowed-methods'
+            'security.cors.allowed-headers'
+            'security.cors.exposed-headers'
+            'spring.application.name'
+            'spring.datasource.url'
+            'spring.datasource.username'
+            'spring.datasource.password'
+            'spring.jpa.hibernate.ddl-auto'
+            'spring.jpa.properties.hibernate.dialect'
+          value: |
+            '${{ secrets.API_AUTH_WHITELISTED_EMAILS }}'
+            '${{ secrets.API_AWS_ACCESS_KEY }}'
+            '${{ secrets.API_AWS_SECRET_KEY }}'
+            'us-east-2'
+            'personal-website-api-bucket-prod'
+            '${{ secrets.API_SECURITY_JWT_SECRET_KEY }}'
+            '604800000'
+            '${{ secrets.API_SECURITY_CORS_ALLOWED_ORIGINS }}'
+            '"GET,POST,PUT,DELETE,OPTIONS"'
+            '"Authorization,Content-Type"'
+            '"Authorization,Content-Type"'
+            'personal-website-api'
+            '${{ secrets.API_SPRING_DATASOURCE_URL }}'
+            '${{ secrets.API_SPRING_DATASOURCE_USERNAME }}'
+            '${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}'
+            'validate'
             'org.hibernate.dialect.PostgreSQLDialect'
 
       - name: Login to Docker Hub
