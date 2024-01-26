@@ -1,21 +1,29 @@
 package com.personalwebsite.api.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@SpringBootTest
 @TestPropertySource("classpath:application-it.properties")
+@AutoConfigureMockMvc
 class UserIntegrationTest {
   @Autowired
-  private WebTestClient client;
+  private MockMvc mockMvc;
+
+  @Autowired
+  private ObjectMapper mapper;
 
   @Autowired
   private UserRepository repository;
@@ -26,44 +34,32 @@ class UserIntegrationTest {
   }
 
   @Test
-  void readUserByEmail() {
-    client
-      .get()
-      .uri("/api/v1/user/null")
-      .accept(MediaType.APPLICATION_JSON)
-      .exchange()
-      .expectStatus()
-      .isBadRequest();
+  void readUserByEmail() throws Exception {
+    mockMvc.perform(get("/api/v1/user/null")
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isBadRequest()); 
 
-    client
-      .get()
-      .uri("/api/v1/user/undefined")
-      .accept(MediaType.APPLICATION_JSON)
-      .exchange()
-      .expectStatus()
-      .isBadRequest();
+    mockMvc.perform(get("/api/v1/user/undefined")
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isBadRequest()); 
 
-    client
-      .get()
-      .uri("/api/v1/user/test@mail.com")
-      .accept(MediaType.APPLICATION_JSON)
-      .exchange()
-      .expectStatus()
-      .isNotFound();
+    mockMvc.perform(get("/api/v1/user/test@mail.com")
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isNotFound());
     
     User expected = new User("test@mail.com");
     repository.save(expected);
 
-    assertEquals(expected.getId(), client
-      .get()
-      .uri("/api/v1/user/test@mail.com")
-      .accept(MediaType.APPLICATION_JSON)
-      .exchange()
-      .expectStatus()
-      .isOk()
-      .expectBody(new ParameterizedTypeReference<User>() {})
-      .returnResult()
-      .getResponseBody()
-      .getId());
+    String response = mockMvc
+                          .perform(get("/api/v1/user/test@mail.com")
+                          .accept(MediaType.APPLICATION_JSON))
+                          .andExpect(status().isOk())
+                          .andReturn()
+                          .getResponse()
+                          .getContentAsString();
+    
+    User actual = mapper.readValue(response, User.class);
+
+    assertEquals(expected.getId(), actual.getId());
   }
 }
