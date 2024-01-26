@@ -17,7 +17,7 @@ jobs:
         working-directory: ./api/src/main/resources 
         run: touch application-it.properties
 
-      - name: Create Properties File for Integration Tests 
+      - name: Update Properties File for Integration Tests 
         uses: christian-draeger/write-properties@1.1.0
         with:
           path: './api/src/test/resources/application-it.properties'
