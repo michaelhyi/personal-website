@@ -9,14 +9,12 @@ import Menu from "./Menu";
 import type { Post } from "@/types/post";
 
 export default function PostCard({
-  admin = false,
   data,
   index,
   menuOpen,
   handleToggleMenu,
   handleToggleModal,
 }: Readonly<{
-  admin?: boolean;
   data: Post;
   index: number;
   menuOpen: boolean;
