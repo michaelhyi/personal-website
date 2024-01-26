@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create New Properties File
+      - name: Create Properties File for Integration Tests
         run: touch ./api/src/test/resources/application-it.properties
 
       - name: Update Properties File for Integration Tests 
