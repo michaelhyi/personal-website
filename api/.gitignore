@@ -1,3 +1,4 @@
 target/
 src/main/resources/application.yml
 src/main/resources/application-prod.yml
+src/test/resources/application-it.properties
