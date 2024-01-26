@@ -10,17 +10,17 @@ jobs:
       contents: read
       packages: write
 
-    defaults:
-      run:
-        working-directory: api
-
     steps:
       - uses: actions/checkout@v3
+
+      - name: Create New Properties File
+        working-directory: ./api/src/main/resources 
+        run: touch application-it.properties
 
       - name: Create Properties File for Integration Tests 
         uses: christian-draeger/write-properties@1.1.0
         with:
-          path: './src/test/resources/application-it.properties'
+          path: './api/src/test/resources/application-it.properties'
           property: |
             'auth.whitelisted-emails'
             'aws.access-key'
@@ -61,4 +61,5 @@ jobs:
             'org.hibernate.dialect.PostgreSQLDialect'
 
       - name: Build & Test API 
+        working-directory: ./api
         run: docker build . -t michaelyi/personal-website-api:latest
