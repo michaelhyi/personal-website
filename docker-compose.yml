@@ -36,7 +36,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./apps/api/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./api/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   grafana:
     image: grafana/grafana:9.5.2
@@ -45,7 +45,7 @@ services:
       - "3030:3000"
     restart: unless-stopped
     volumes:
-      - ./apps/api/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./api/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
 
 networks:
   postgres:

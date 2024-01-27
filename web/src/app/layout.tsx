@@ -1,8 +1,10 @@
 import Providers from "@/components/Providers";
-import { font } from "@/utils/font";
+import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const font = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Michael Yi",
@@ -17,7 +19,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <body className={font.className}>
