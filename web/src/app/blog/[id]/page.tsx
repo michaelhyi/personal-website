@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import BackButton from "@/components/BackButton";
 import Container from "@/components/Container";
 import { readPost, readPostImageUrl } from "@/services/post";
@@ -26,11 +24,11 @@ export default async function View({
       <Image
         src={readPostImageUrl(data.id)}
         alt={data.title}
+        className="w-full mt-6"
         width={1000}
         height={1000}
         quality={100}
         priority
-        className="w-full mt-6"
       />
       <div
         className="text-[15px] mt-8"
