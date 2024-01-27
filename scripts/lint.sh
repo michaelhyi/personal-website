@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ../
-prettier --check .
+# prettier --check .
 
 cd admin 
 yarn lint

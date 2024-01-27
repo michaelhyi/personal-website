@@ -1,6 +1,8 @@
-import Container from "@/components/Container";
 import BackButton from "@/components/BackButton";
-import Card from "@/components/Card";
+import Container from "@/components/Container";
+import Hoverable from "@/components/Hoverable";
+import Image from "next/image";
+import Link from "next/link";
 
 type Project = {
   name: string;
@@ -95,16 +97,37 @@ export default function Home() {
     <Container>
       <BackButton href="/" text="Home" />
       <div className="mt-10 flex flex-col gap-8">
-        {projects.map((v: Project) => (
-          <Card
-            date={v.date}
-            desc={v.description}
-            href={v.href}
-            img={v.image}
-            key={v.name}
-            name={v.name}
-            tech={v.tech}
-          />
+        {projects.map((project: Project) => (
+          <Hoverable>
+            <Link rel="noopener noreferrer" target="_blank" href={project.href}>
+              <div className="flex sm:flex-col md:flex-row">
+                <div className="w-56 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
+                  {project.date}
+                </div>
+                <div className="w-full">
+                  <div className="flex gap-1 text-sm font-medium">
+                    {project.name}
+                  </div>
+                  <div className="mt-2 text-xs text-neutral-400">
+                    {project.description}
+                  </div>
+                  <div className="mt-2 text-[10px] text-neutral-300 font-light">
+                    {project.tech}
+                  </div>
+                  {project.image !== undefined &&
+                    project.image.length !== 0 && (
+                      <Image
+                        className="mt-4 rounded-md shadow-md"
+                        src={project.image}
+                        alt={project.name}
+                        width={200}
+                        height={120}
+                      />
+                    )}
+                </div>
+              </div>
+            </Link>
+          </Hoverable>
         ))}
       </div>
     </Container>

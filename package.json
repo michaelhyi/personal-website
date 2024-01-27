@@ -6,13 +6,6 @@
   "private": true,
   "scripts": {
     "ci": "cd scripts && sh ci.sh",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix",
     "lint": "cd scripts && sh lint.sh"
-  },
-  "devDependencies": {
-    "eslint": "^8.52.0",
-    "prettier": "^3.0.3",
-    "prettier-plugin-organize-imports": "^3.2.3",
-    "prettier-plugin-tailwindcss": "^0.5.6"
   }
 }

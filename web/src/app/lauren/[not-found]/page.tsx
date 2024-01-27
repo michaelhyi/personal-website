@@ -1,7 +1,3 @@
-import { default as NotFoundClient } from "@/components/NotFound";
-
-const NotFound = () => {
-  return <NotFoundClient />;
-};
+import NotFound from "@/components/NotFound";
 
 export default NotFound;
