@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Container from "./Container";
 import Spinner from "./Spinner";
 

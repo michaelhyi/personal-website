@@ -1,8 +1,8 @@
 "use client";
 
+import { projects } from "@/data/projects";
 import type { Project } from "@/types/project";
 import Card from "./Card";
-import { projects } from "@/data/projects";
 
 export default function Projects() {
   return (

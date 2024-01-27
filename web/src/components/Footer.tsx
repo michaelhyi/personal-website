@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import Hoverable from "./Hoverable";
 
-export default function Footer({ absolute = false }: { absolute?: boolean }) {
+export default function Footer({ absolute = false }: Readonly<{ absolute?: boolean }>) {
   return (
     <div
       className={`flex 

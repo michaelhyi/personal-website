@@ -1,17 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Hoverable from "./Hoverable";
 
 export default function BackButton({
   href,
   text,
-}: {
+}: Readonly<{
   href: string;
   text: string;
-}) {
+}>) {
   return (
     <Hoverable>
       <Link
