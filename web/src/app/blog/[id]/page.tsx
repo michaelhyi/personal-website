@@ -1,12 +1,12 @@
 export const dynamic = "force-dynamic";
 
-import { readPost, readPostImageUrl } from "@/services/post";
 import BackButton from "@/components/BackButton";
 import Container from "@/components/Container";
+import { readPost, readPostImageUrl } from "@/services/post";
+import type { Post } from "@/types/post";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import type { Post } from "@/types/post";
 
 export default async function View({
   params,
