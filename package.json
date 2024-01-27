@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ci": "cd scripts && ci.sh",
+    "ci": "cd scripts && sh ci.sh",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix",
     "lint": "cd scripts && sh lint.sh"
   },
