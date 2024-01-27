@@ -1,7 +1,7 @@
 import Providers from "@/components/Providers";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
-import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const font = Inter({ subsets: ["latin"] });

@@ -16,11 +16,12 @@
 - [Java](https://www.java.com/en/)
 - [Spring Framework](https://spring.io/)
 - [PostgreSQL](https://www.postgresql.org/)
+- [AWS EC2, S3](https://aws.amazon.com/)
+- [Docker](https://www.docker.com/)
+- [JUnit](https://junit.org/junit5/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
-- [AWS EC2, S3](https://aws.amazon.com/)
-- [Docker](https://www.docker.com/)
 
 ## Development Setup
 
