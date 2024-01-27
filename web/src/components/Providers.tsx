@@ -2,9 +2,9 @@
 
 import { Analytics } from "@vercel/analytics/react";
 import { AnimatePresence } from "framer-motion";
-import React, { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
-export default function Providers({ children }: { children: ReactNode }) {
+export default function Providers({ children }: Readonly<{ children: ReactNode }>) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 "use client";
 
+import { hero } from "@/data/hero";
 import Image from "next/image";
 import Link from "next/link";
-import { hero } from "@/data/hero";
 import Hoverable from "./Hoverable";
 
 export default function Hero() {
@@ -33,7 +33,7 @@ export default function Hero() {
       <div className="flex mt-2 text-[10px]">
         {hero.map((v, i) => {
           return (
-            <Hoverable>
+            <Hoverable key={v.name}>
               {i !== 0 && <>&nbsp;&nbsp;&#183;&nbsp;&nbsp;</>}
               <Link href={v.href}>{v.name}</Link>
             </Hoverable>

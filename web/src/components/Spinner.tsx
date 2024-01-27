@@ -1,10 +1,8 @@
 "use client";
 
-import React from "react";
-
 export default function Spinner() {
   return (
-    <div role="status">
+    <output>
       <svg
         aria-hidden="true"
         className="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-white"
@@ -21,6 +19,6 @@ export default function Spinner() {
           fill="currentFill"
         />
       </svg>
-    </div>
+    </output>
   );
 }

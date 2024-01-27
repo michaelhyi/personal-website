@@ -1,11 +1,10 @@
 "use client";
 
+import Hoverable from "@/components/Hoverable";
 import type { Post } from "@/types/post";
 import { format } from "date-fns";
 import Link from "next/link";
-import React from "react";
 import { FiArrowUpRight } from "react-icons/fi";
-import Hoverable from "@/components/Hoverable";
 
 export default function PostCard({ data }: Readonly<{ data: Post }>) {
   return (
