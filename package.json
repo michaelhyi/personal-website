@@ -5,10 +5,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ci": "cd scripts && sh clean.sh && cd ../ && yarn setup",
+    "ci": "cd scripts && sh clean.sh && cd ../ && docker compose up -d && yarn install",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix",
-    "lint": "cd scripts && sh lint.sh",
-    "setup": "cd scripts && sh setup.sh"
+    "lint": "cd scripts && sh lint.sh"
   },
   "devDependencies": {
     "eslint": "^8.52.0",
