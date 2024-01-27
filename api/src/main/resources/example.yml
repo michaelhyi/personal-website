@@ -4,7 +4,6 @@ auth:
 aws:
   access-key: ${AWS_ACCESS_KEY}
   secret-key: ${AWS_SECRET_KEY}
-  region: us-east-2
   s3:
     buckets:
       blog: personal-website-api-bucket-dev 
@@ -18,12 +17,8 @@ management:
 security:
   jwt:
     secret-key: ${SECURITY_JWT_SECRET_KEY}
-    expiration: 604800000
   cors:
     allowed-origins: "http://localhost:3000,http://locahost:3001"
-    allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
-    allowed-headers: "Authorization,Content-Type"
-    exposed-headers: "Authorization,Content-Type"
 
 spring:
   application:
