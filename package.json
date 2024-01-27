@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ci": "cd scripts && sh clean.sh && cd ../ && docker compose up -d && yarn install",
+    "ci": "cd scripts && sh ci.sh",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,md}\" && eslint --fix",
     "lint": "cd scripts && sh lint.sh"
   },
