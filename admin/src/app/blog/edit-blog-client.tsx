@@ -173,22 +173,18 @@ export default function EditBlogClient({
   return (
     <Container>
       <BackButton href="/blog" text="Blog" />
-      <div className="mt-8 font-bold text-3xl">Create or Edit Post</div>
-      <div className="mt-2 mb-8 text-sm font-medium text-neutral-400">
-        Craft and customize your written works.
-      </div>
       {id ? null : (
-        <>
-          <label htmlFor="id" className="font-medium">
+        <div className="flex flex-col mt-10">
+          <label htmlFor="id" className="font-normal text-sm">
             Post ID
           </label>
           <input
             id="id"
             {...register("id")}
             disabled={submitting}
-            className="focus:outline-none mt-2 bg-black border-[1px] border-neutral-600 rounded-md shadow-lg mb-5 w-96 px-2 py-2 text-sm font-light text-neutral-200"
+            className="focus:outline-none mt-2 bg-black border-[1px] border-neutral-600 rounded-md shadow-lg mb-5 w-72 px-2 py-2 text-sm font-light text-neutral-200"
           />
-        </>
+        </div>
       )}
       <Editor editor={editor} disabled={submitting} />
       <div className="mt-4" />

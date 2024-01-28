@@ -97,41 +97,37 @@ export default function BlogClient({
 
   return (
     <Container absoluteFooter>
-      <Hoverable>
+      <div className="flex items-center justify-between">
         <button
           type="button"
           onClick={handleLogout}
-          className="flex items-center gap-2 text-xs text-neutral-300"
+          className="text-xs text-neutral-300"
         >
-          <FaArrowLeftLong /> Logout
+          <Hoverable className="flex items-center gap-2">
+            <FaArrowLeftLong /> Logout
+          </Hoverable>
         </button>
-      </Hoverable>
-      <div className="mt-8 flex flex-col gap-2">
         <Link
           href="/blog?mode=create"
-          className="flex 
-                     items-center 
-                     gap-2 
-                     ml-auto
-                     focus:outline-none 
+          className="focus:outline-none 
                      text-xs 
                    bg-black
                    text-white 
                      border-[1px] 
-                   border-neutral-500 
+                   border-white 
                      font-semibold 
                      px-3 
                      py-2 
                      rounded-md 
-                     shadow-md
-                     cursor-pointer
-                     mb-8
-                     duration-500 
-                     hover:opacity-50"
+                     shadow-md"
         >
-          <FaPlus />
-          Create Post
+          <Hoverable className="flex items-center gap-2">
+            <FaPlus />
+            Create Post
+          </Hoverable>
         </Link>
+      </div>
+      <div className="mt-8 flex flex-col gap-2">
         {data.map((post, index) => (
           <div key={post.id} className="flex justify-between">
             <Hoverable>
