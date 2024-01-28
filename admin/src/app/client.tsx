@@ -1,14 +1,16 @@
 "use client";
 
+import Center from "@/components/Center";
+import Container from "@/components/Container";
+import Hoverable from "@/components/Hoverable";
+import Spinner from "@/components/Spinner";
+import Toast from "@/components/Toast";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
-import { toast, Toaster, useToasterStore } from "react-hot-toast";
+import { Toaster, toast, useToasterStore } from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
-import Container from "@/components/Container";
-import Spinner from "@/components/Spinner";
-import ToastError from "@/components/toast/ToastError";
 
 export default function AuthClient() {
   const { toasts } = useToasterStore();
@@ -31,46 +33,56 @@ export default function AuthClient() {
   }, [toasts]);
 
   useEffect(() => {
-    if (searchParams && searchParams.has("error"))
+    if (searchParams?.has("error"))
       toast.custom(({ visible }) => (
-        <ToastError visible={visible} message={searchParams.get("error")!} />
+        <Toast
+          visible={visible}
+          message={searchParams.get("error")!}
+          success={false}
+        />
       ));
   }, [searchParams]);
 
   return (
     <Container absoluteFooter>
-      <div
-        className="absolute 
-                   left-1/2
-                   top-1/2 
-                   -translate-x-1/2 
-                   -translate-y-1/2 
-                   transform 
-                   flex 
-                   flex-col 
-                   items-center 
-                   text-center"
-      >
-        <Image
-          alt="michael"
-          className="rounded-full"
-          height={100}
-          src="/michael.png"
-          width={100}
-        />
-        <div className="mt-4 text-2xl font-light">Michael Yi</div>
-        <div className="mt-1 text-xs font-light text-neutral-400">
-          Personal Website Admin
+      <Center>
+        <div className="flex flex-col items-center text-center">
+          <Image
+            src="/michael.png"
+            alt="michael"
+            className="rounded-full"
+            height={100}
+            width={100}
+          />
+          <div className="mt-4 text-2xl font-light">Michael Yi</div>
+          <div className="mt-1 text-xs font-light text-neutral-500">
+            Personal Website Admin
+          </div>
+          <Hoverable>
+            <button
+              type="button"
+              onClick={handleClick}
+              disabled={submitting}
+              className="flex 
+                         items-center
+                         focus:outline-none
+                         text-sm 
+                         font-semibold 
+                       bg-black 
+                         shadow-md
+                         rounded-md 
+                         mt-4 
+                         gap-3
+                         border-[1px] 
+                       border-neutral-500 
+                         px-6 
+                         py-2"
+            >
+              {submitting ? <Spinner /> : <FcGoogle />}
+            </button>
+          </Hoverable>
         </div>
-        <button
-          type="button"
-          onClick={handleClick}
-          disabled={submitting}
-          className="focus:outline-none mt-4 text-sm flex items-center gap-3 bg-black border-[1px] border-neutral-500 font-semibold px-6 py-2 rounded-md shadow-md duration-500 hover:opacity-50"
-        >
-          {submitting ? <Spinner /> : <FcGoogle />}
-        </button>
-      </div>
+      </Center>
       <Toaster position="top-center" />
     </Container>
   );

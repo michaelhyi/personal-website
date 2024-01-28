@@ -1,25 +1,46 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
-import type { Editor as EditorType } from "@tiptap/react";
-import { signOut } from "next-auth/react";
-import { useCallback, useEffect, useState } from "react";
-import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
-import { toast, Toaster } from "react-hot-toast";
 import BackButton from "@/components/BackButton";
 import Container from "@/components/Container";
 import Dropzone from "@/components/Dropzone";
 import Editor from "@/components/Editor";
 import Loading from "@/components/Loading";
 import Spinner from "@/components/Spinner";
-import ToastError from "@/components/toast/ToastError";
-import ToastSuccess from "@/components/toast/ToastSuccess";
-import useEditor from "@/hooks/useEditor";
-import { validateForm } from "@/utils/validateForm";
+import Toast from "@/components/Toast";
 import { authenticate, validateToken } from "@/services/auth";
 import { createPost, createPostImage, updatePost } from "@/services/post";
 import type { User } from "@/types/user";
+import Document from "@tiptap/extension-document";
+import Placeholder from "@tiptap/extension-placeholder";
+import { useEditor, type Editor as EditorType } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { signOut } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
+import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { Toaster, toast } from "react-hot-toast";
+
+//TODO: refactor
+
+const CustomDocument = Document.extend({
+  content: "heading block*",
+});
+
+const validateForm = (
+  text: string | undefined,
+  image: File | null,
+  showImage: boolean
+) => {
+  const titleIndex = text!.search("</h1>");
+  const title = text!.substring(4, titleIndex);
+  const content = text!.substring(titleIndex + 5);
+
+  if (!title || title.length === 0) throw new Error("A title is required.");
+
+  if (!content || content.length === 0)
+    throw new Error("Post content is required.");
+
+  if (!image && !showImage) throw new Error("An image is required.");
+};
 
 export default function EditBlogClient({
   user,
@@ -36,7 +57,31 @@ export default function EditBlogClient({
   const [image, setImage] = useState<File | null>(null);
   const [showImage, setShowImage] = useState<boolean>(id !== null);
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const editor: EditorType | null = useEditor(content);
+  const editor: EditorType | null = useEditor({
+    content,
+    editorProps: {
+      attributes: {
+        class:
+          "prose dark:prose-invert prose-sm mx-[1.5vw] my-5 focus:outline-none",
+      },
+    },
+
+    extensions: [
+      CustomDocument,
+      Placeholder.configure({
+        placeholder: ({ node }) => {
+          if (node.type.name === "heading") {
+            return "Enter your title here...";
+          }
+
+          return "Start writing here...";
+        },
+        emptyNodeClass:
+          "cursor-text before:content-[attr(data-placeholder)] before:absolute before:text-mauve-11 before:opacity-50 before-pointer-events-none",
+      }),
+      StarterKit.configure({ document: false }),
+    ],
+  });
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -55,7 +100,7 @@ export default function EditBlogClient({
       } catch (e) {
         toast.custom(({ visible }) => (
           // @ts-expect-error -- e is of type Error
-          <ToastError visible={visible} message={e.message} />
+          <Toast visible={visible} message={e.message} success={false} />
         ));
         setSubmitting(false);
         return;
@@ -75,21 +120,22 @@ export default function EditBlogClient({
         }
 
         toast.custom(({ visible }) => (
-          <ToastSuccess
+          <Toast
             visible={visible}
             message={`Post successfully ${id ? "updated" : "published"}!`}
+            success
           />
         ));
       } catch (e) {
         toast.custom(({ visible }) => (
           // @ts-expect-error -- e is of type AxiosError
-          <ToastError visible={visible} message={e.response.data} />
+          <Toast visible={visible} message={e.response.data} success={false} />
         ));
       }
 
       setSubmitting(false);
     },
-    [setSubmitting, id, editor, image, showImage],
+    [setSubmitting, id, editor, image, showImage]
   );
 
   useEffect(() => {

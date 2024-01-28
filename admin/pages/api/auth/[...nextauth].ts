@@ -9,6 +9,7 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+
   callbacks: {
     async session({ session }) {
       if (new Date(session.expires).getTime() < Date.now()) {
@@ -24,11 +25,12 @@ export const authOptions: AuthOptions = {
 
       return session;
     },
+
     async signIn({ user }) {
       if (user.email) {
         try {
           await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/${user.email}`
           );
 
           return true;
@@ -37,13 +39,16 @@ export const authOptions: AuthOptions = {
           throw new Error(e.response.data);
         }
       }
+
       return false;
     },
   },
+
   pages: {
     signIn: "/",
     error: "/",
   },
+
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",

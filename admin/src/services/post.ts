@@ -1,5 +1,5 @@
-import axios from "axios";
 import { Post } from "@/types/post";
+import axios from "axios";
 
 export const createPost = async (id: string, text: string): Promise<string> => {
   const { data } = await axios.post(
@@ -9,7 +9,7 @@ export const createPost = async (id: string, text: string): Promise<string> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    },
+    }
   );
 
   return data;
@@ -24,14 +24,14 @@ export const createPostImage = async (id: string, formData: FormData) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "multipart/form-data",
       },
-    },
+    }
   );
 };
 
 export const readPost = async (id: string): Promise<Post | null> => {
   try {
     const { data } = await axios(
-      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`
     );
     return data;
   } catch {
@@ -56,7 +56,7 @@ export const updatePost = async (id: string, text: string): Promise<void> => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    },
+    }
   );
 };
 

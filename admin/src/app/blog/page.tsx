@@ -1,10 +1,8 @@
-export const dynamic = "force-dynamic";
-
-import { notFound, redirect } from "next/navigation";
 import { readAllPosts, readPost } from "@/services/post";
 import { readUserByEmail } from "@/services/user";
 import type { Post } from "@/types/post";
 import type { User } from "@/types/user";
+import { notFound, redirect } from "next/navigation";
 import BlogClient from "./blog-client";
 import EditBlogClient from "./edit-blog-client";
 
@@ -14,18 +12,17 @@ export default async function Blog({
   searchParams: Record<string, string | undefined>;
 }>) {
   const user: User | null = await readUserByEmail();
-  let title: string | null = null;
-  let content: string | null = null;
 
   if (!user) redirect("/");
 
-  if (Object.keys(searchParams).length === 0) {
-    const data: Post[] = await readAllPosts();
+  let data: Post[] | null = null;
+  let title: string | null = null;
+  let content: string | null = null;
 
-    return <BlogClient user={user} data={data} />;
+  if (Object.keys(searchParams).length === 0) {
+    data = await readAllPosts();
   } else if (searchParams.mode === "edit" && searchParams.id) {
     const post = await readPost(searchParams.id);
-
     if (!post) notFound();
 
     title = post.title;
@@ -34,7 +31,9 @@ export default async function Blog({
     notFound();
   }
 
-  return (
+  return Object.keys(searchParams).length === 0 ? (
+    <BlogClient user={user} data={data!} />
+  ) : (
     <EditBlogClient
       user={user}
       id={searchParams.id ? searchParams.id : null}
