@@ -5,8 +5,7 @@ aws:
   access-key: ${AWS_ACCESS_KEY}
   secret-key: ${AWS_SECRET_KEY}
   s3:
-    buckets:
-      blog: personal-website-api-bucket-dev 
+    bucket: personal-website-api-bucket-dev
 
 management:
   endpoints:
@@ -24,12 +23,12 @@ spring:
   application:
     name: personal-website-api
   datasource:
-    url: jdbc:postgresql://localhost:5433/personal_website_api_db 
-    username: postgres 
-    password: postgres 
+    url: jdbc:postgresql://localhost:5433/personal_website_api_db
+    username: postgres
+    password: postgres
   jpa:
     hibernate:
-      ddl-auto: update 
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

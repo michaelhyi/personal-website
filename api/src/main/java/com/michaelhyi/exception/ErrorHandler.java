@@ -21,7 +21,7 @@ public class ErrorHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleException(
-            RuntimeException e) {
+            S3Exception e) {
         return new ResponseEntity<>(
                 e.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR
