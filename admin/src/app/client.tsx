@@ -46,7 +46,7 @@ export default function AuthClient() {
   return (
     <Container absoluteFooter>
       <Center>
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center">
           <Image
             src="/michael.png"
             alt="michael"
@@ -54,7 +54,7 @@ export default function AuthClient() {
             height={100}
             width={100}
           />
-          <div className="mt-4 text-2xl font-light">Michael Yi</div>
+          <div className="mt-4 text-2xl font-medium">Michael Yi</div>
           <div className="mt-1 text-xs font-light text-neutral-500">
             Personal Website Admin
           </div>
@@ -74,7 +74,7 @@ export default function AuthClient() {
                          mt-4 
                          gap-3
                          border-[1px] 
-                       border-neutral-500 
+                       border-white
                          px-6 
                          py-2"
             >
