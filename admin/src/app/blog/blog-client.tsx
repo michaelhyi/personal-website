@@ -1,20 +1,22 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { useCallback, useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
-import { FaArrowLeftLong } from "react-icons/fa6";
 import Container from "@/components/Container";
 import DeleteModal from "@/components/DeleteModal";
 import Hoverable from "@/components/Hoverable";
 import Loading from "@/components/Loading";
-import PostCard from "@/components/PostCard";
+import Menu from "@/components/Menu";
 import { authenticate, validateToken } from "@/services/auth";
 import type { Post } from "@/types/post";
 import type { User } from "@/types/user";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import { FaPlus } from "react-icons/fa";
+import { FaArrowLeftLong } from "react-icons/fa6";
+import { FiArrowUpRight } from "react-icons/fi";
+import { IoEllipsisHorizontal } from "react-icons/io5";
+
+//TODO: refactor
 
 export default function BlogClient({
   user,
@@ -104,12 +106,7 @@ export default function BlogClient({
           <FaArrowLeftLong /> Logout
         </button>
       </Hoverable>
-      <div className="mt-8 font-bold text-3xl">Blog</div>
-      <div className="mt-2 text-sm font-medium text-neutral-400">
-        An exploration of my enthusiasm for cinema through reviews, analyses,
-        and essays on various films.
-      </div>
-      <div className="mt-8 flex flex-col gap-4">
+      <div className="mt-8 flex flex-col gap-2">
         <Link
           href="/blog?mode=create"
           className="flex 
@@ -118,32 +115,46 @@ export default function BlogClient({
                      ml-auto
                      focus:outline-none 
                      text-xs 
-                     bg-black
-                    text-white 
-                      border-[1px] 
-                      border-neutral-500 
-                      font-semibold 
-                      px-3 
-                      py-2 
-                      rounded-md 
-                      shadow-md
-                      cursor-pointer
-                      mb-8
-                      duration-500 
-                      hover:opacity-50"
+                   bg-black
+                   text-white 
+                     border-[1px] 
+                   border-neutral-500 
+                     font-semibold 
+                     px-3 
+                     py-2 
+                     rounded-md 
+                     shadow-md
+                     cursor-pointer
+                     mb-8
+                     duration-500 
+                     hover:opacity-50"
         >
           <FaPlus />
           Create Post
         </Link>
         {data.map((post, index) => (
-          <PostCard
-            key={post.id}
-            data={post}
-            index={index}
-            menuOpen={menuOpen[index]}
-            handleToggleMenu={handleToggleMenu}
-            handleToggleModal={handleToggleModal}
-          />
+          <div key={post.id} className="flex justify-between">
+            <Hoverable>
+              <Link
+                className="flex text-sm font-medium"
+                href={`${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post.id}`}
+              >
+                {post.title} <FiArrowUpRight />
+              </Link>
+            </Hoverable>
+            <div className="relative">
+              <Hoverable>
+                <IoEllipsisHorizontal
+                  onClick={() => {
+                    handleToggleMenu(index);
+                  }}
+                />
+              </Hoverable>
+              {menuOpen[index] ? (
+                <Menu id={post.id} handleToggleModal={handleToggleModal} />
+              ) : null}
+            </div>
+          </div>
         ))}
       </div>
       {modalOpen && id ? (

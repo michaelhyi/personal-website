@@ -1,18 +1,14 @@
 "use client";
 
-import React, { type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export default function Hoverable({
-  className,
   children,
-}: {
-  className?: string;
+}: Readonly<{
   children: ReactNode;
-}) {
+}>) {
   return (
-    <div
-      className={`${className} cursor-pointer duration-500 hover:opacity-50`}
-    >
+    <div className="cursor-pointer duration-500 hover:opacity-50">
       {children}
     </div>
   );

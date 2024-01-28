@@ -1,4 +1,4 @@
-name: api-cd 
+name: api-cd
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-    
+
       - name: Create Properties Files
         run: |
           touch ./api/src/main/resources/application.properties
@@ -56,13 +56,12 @@ jobs:
         run: |
           docker build . -t michaelyi/personal-website-api:latest
           docker push michaelyi/personal-website-api:latest
-      
+
       - name: Deploy on EC2 Instance
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_USER: ${{ secrets.SSH_USER }}
-
         run: |
           echo "$SSH_PRIVATE_KEY" > personal-website-api-keypair.pem
           chmod 400 personal-website-api-keypair.pem

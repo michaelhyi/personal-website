@@ -1,5 +1,3 @@
-import { default as LoadingClient } from "@/components/Loading";
+import Loading from "@/components/Loading";
 
-export default function Loading() {
-  return <LoadingClient />;
-}
+export default Loading;

@@ -1,10 +1,12 @@
 export const dynamic = "force-dynamic";
 
+import { readPostImageUrl } from "@/services/post";
 import Image from "next/image";
-import { type Dispatch, type SetStateAction, useCallback } from "react";
+import { useCallback, type Dispatch, type SetStateAction } from "react";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineClose, AiOutlineCloudDownload } from "react-icons/ai";
-import { readPostImageUrl } from "@/services/post";
+
+//TODO: refactor
 
 export default function Dropzone({
   id,
@@ -32,7 +34,7 @@ export default function Dropzone({
       setShowImage(true);
       setSubmitting(false);
     },
-    [setSubmitting, setImage, setShowImage],
+    [setSubmitting, setImage, setShowImage]
   );
 
   const handleImageDelete = useCallback(() => {
