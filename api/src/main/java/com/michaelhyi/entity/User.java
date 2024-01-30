@@ -14,27 +14,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "\"user\"")
 public class User implements UserDetails {
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, updatable = false)
     private String email;
-
-    public User(String email) {
-        this.email = email;
-    }
-
-    public User() {
-    }
-
-    public Long getId() {
-        return id;
-    }
 
     @Override
     @JsonIgnore

@@ -19,14 +19,13 @@ import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.service.PostService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("api/v1/post")
 public class PostController {
     private final PostService service;
-
-    public PostController(PostService service) {
-        this.service = service;
-    }
 
     @PostMapping
     public ResponseEntity<String> createPost(@RequestBody PostRequest req) {

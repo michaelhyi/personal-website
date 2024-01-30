@@ -57,7 +57,10 @@ class UserServiceTest {
 
     @Test
     void readUserByEmail() {
-        User user = new User("test@mail.com");
+        User user = User.builder()
+                        .email("test@mail.com")
+                        .build();
+
         given(repository.findByEmail(user.getUsername())).willReturn(Optional.of(user));
 
         assertEquals(user, underTest.readUserByEmail(user.getUsername()));

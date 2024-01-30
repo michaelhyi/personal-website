@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.michaelhyi.exception.S3Exception;
 
+import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -16,15 +17,12 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
+@RequiredArgsConstructor
 public class S3Service {
     @Value("${aws.s3.bucket}")
     private String bucket;
 
     private final S3Client client;
-
-    public S3Service(S3Client client) {
-        this.client = client;
-    }
 
     public void putObject(String key, byte[] file) {
         PutObjectRequest putObjectRequest = PutObjectRequest

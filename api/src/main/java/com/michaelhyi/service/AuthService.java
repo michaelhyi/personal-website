@@ -10,19 +10,14 @@ import com.michaelhyi.entity.User;
 import com.michaelhyi.exception.UnauthorizedUserException;
 import com.michaelhyi.exception.UserNotFoundException;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class AuthService {
     private final UserRepository repository;
     private final JwtService jwtService;
     private final List<String> whitelistedEmails;
-
-    public AuthService(UserRepository repository,
-                       JwtService jwtService,
-                       List<String> whitelistedEmails) {
-        this.repository = repository;
-        this.jwtService = jwtService;
-        this.whitelistedEmails = whitelistedEmails;
-    }
 
     public String authenticate(String email) {
         Optional<User> user = repository.findByEmail(email);
@@ -44,7 +39,10 @@ public class AuthService {
             throw new UnauthorizedUserException();
         }
 
-        User newUser = new User(email);
+        User newUser = User.builder()
+                           .email(email)
+                           .build();
+
         repository.save(newUser);
 
         return jwtService.generateToken(newUser);

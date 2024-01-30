@@ -14,15 +14,14 @@ import com.michaelhyi.entity.Post;
 import com.michaelhyi.exception.PostNotFoundException;
 import com.michaelhyi.exception.S3Exception;
 
+import lombok.AllArgsConstructor;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
+
 @Service
+@AllArgsConstructor
 public class PostService {
     private final PostRepository repository;
     private final S3Service s3Service;
-
-    public PostService(PostRepository repository, S3Service service) {
-        this.repository = repository;
-        this.s3Service = service;
-    }
 
     public String createPost(PostRequest req) {
         PostDestructuredRequest postDestructuredRequest
@@ -38,7 +37,12 @@ public class PostService {
             );
         }
 
-        Post newPost = new Post(req.id(), title, content);
+        Post newPost = Post.builder()
+                            .id(req.id())
+                            .title(title)
+                            .content(content)
+                            .build();
+
         repository.saveAndFlush(newPost);
         return newPost.getId();
     }
@@ -50,12 +54,12 @@ public class PostService {
             }
         } catch (PostNotFoundException e) {
             throw new PostNotFoundException();
-        }
-
-        try {
-            s3Service.putObject(id, file.getBytes());
-        } catch (IOException e) {
-            throw new S3Exception();
+        } catch (S3Exception e) {
+            try {
+                s3Service.putObject(id, file.getBytes());
+            } catch (IOException ex) {
+                throw new S3Exception();
+            }
         }
     }
 
@@ -68,7 +72,11 @@ public class PostService {
     public byte[] readPostImage(String id) {
         readPost(id);
 
-        return s3Service.getObject(id);
+        try {
+            return s3Service.getObject(id);
+        } catch (NoSuchKeyException e) {
+            throw new S3Exception();
+        }
     }
 
     public List<Post> readAllPosts() {

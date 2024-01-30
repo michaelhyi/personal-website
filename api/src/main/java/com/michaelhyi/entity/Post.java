@@ -7,13 +7,28 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Builder
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
     @Id
+    @Setter(AccessLevel.NONE)
+    @Column(updatable = false)
     private String id;
 
     @CreationTimestamp
+    @Setter(AccessLevel.NONE)
+    @Column(updatable = false)
     private Date date;
 
     @Column(unique = true)
@@ -21,39 +36,4 @@ public class Post {
 
     @Column(columnDefinition = "TEXT")
     private String content;
-
-    public Post(String id,
-                String title,
-                String content) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-    }
-
-    public Post() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

@@ -14,16 +14,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.michaelhyi.dao.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class ApplicationConfig {
     @Value("#{'${auth.whitelisted-emails}'.split(',')}")
     private List<String> whitelistedEmails;
 
     private final UserRepository repository;
-
-    public ApplicationConfig(UserRepository repository) {
-        this.repository = repository;
-    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

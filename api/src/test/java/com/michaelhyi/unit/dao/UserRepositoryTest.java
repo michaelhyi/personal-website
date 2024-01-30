@@ -24,7 +24,10 @@ class UserRepositoryTest {
 
     @Test
     void findByEmail() {
-        User user = new User(email);
+        User user = User.builder()
+                        .email(email)
+                        .build();
+
         underTest.save(user);
 
         assertTrue(underTest
