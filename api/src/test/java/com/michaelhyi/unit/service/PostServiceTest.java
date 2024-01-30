@@ -37,6 +37,11 @@ class PostServiceTest {
     private S3Service s3Service;
 
     private PostService underTest;
+    private static final Post post = Post.builder()
+                                         .id("id")     
+                                         .title("title")
+                                         .content("content")
+                                         .build();
 
     @BeforeEach
     void setUp() {
@@ -45,7 +50,6 @@ class PostServiceTest {
 
     @Test
     void willThrowWhenCreatePostWithSameTitle() {
-        Post post = new Post("id", "title", "content");
         given(repository.findById(post.getId())).willReturn(Optional.of(post));
 
         assertThrows(IllegalArgumentException.class, () ->
@@ -56,7 +60,6 @@ class PostServiceTest {
 
     @Test
     void createPost() {
-        Post post = new Post("id", "title", "content");
         given(repository.findById(post.getId())).willReturn(Optional.empty());
 
         underTest.createPost(
@@ -87,7 +90,17 @@ class PostServiceTest {
 
     @Test
     void willDeleteS3ObjectWhenCreatePostImageIfImageAlreadyExists() {
-        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+        given(repository.findById("id"))
+            .willReturn(
+                Optional.of(
+                            Post.builder()
+                                .id("id")
+                                .title("title")
+                                .content("content")
+                                .build()
+                            )
+                        );
+
         given(s3Service.getObject("id")).willReturn(new byte[0]);
 
         underTest.createPostImage("id", new MockMultipartFile("file", new byte[0]));
@@ -103,7 +116,7 @@ class PostServiceTest {
     //TODO: complete this test
     @Test
     void willThrowWhenCreatePostImageWithBadFile() {
-        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+       given(repository.findById("id")).willReturn(Optional.of(post));
 
         underTest.createPostImage("id", new MockMultipartFile("file", new byte[0]));
         verify(repository).findById("id");
@@ -112,7 +125,17 @@ class PostServiceTest {
 
     @Test
     void createPostImage() {
-        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+        given(repository.findById("id"))
+        .willReturn(
+            Optional.of(
+                        Post.builder()
+                            .id("id")
+                            .title("title")
+                            .content("content")
+                            .build()
+                        )
+                    );
+
         given(s3Service.getObject("id")).willReturn(null);
 
         underTest.createPostImage("id", new MockMultipartFile("file", new byte[0]));
@@ -131,12 +154,12 @@ class PostServiceTest {
 
     @Test
     void readPost() {
-        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(post));
 
-        Post post = underTest.readPost("id");
+        Post actual = underTest.readPost("id");
 
-        assertEquals("title", post.getTitle());
-        assertEquals("content", post.getContent());
+        assertEquals("title", actual.getTitle());
+        assertEquals("content", actual.getContent());
         verify(repository).findById("id");
     }
 
@@ -151,7 +174,7 @@ class PostServiceTest {
 
     @Test
     void readPostImage() {
-        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(post));
         byte[] expectedFile = new byte[0];
         given(s3Service.getObject("id")).willReturn(expectedFile);
 
@@ -181,7 +204,7 @@ class PostServiceTest {
 
     @Test
     void updatePost() {
-        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(post));
 
         underTest.updatePost("id", new PostRequest("id", "<h1>title1</h1>content1"));
 
@@ -202,7 +225,7 @@ class PostServiceTest {
 
     @Test
     void deletePost() {
-        given(repository.findById("id")).willReturn(Optional.of(new Post("id", "title", "content")));
+        given(repository.findById("id")).willReturn(Optional.of(post));
 
         underTest.deletePost("id");
 

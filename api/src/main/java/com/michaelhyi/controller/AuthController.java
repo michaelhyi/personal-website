@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.michaelhyi.service.AuthService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("api/v1/auth")
 public class AuthController {
     private final AuthService service;
-
-    public AuthController(AuthService service) {
-        this.service = service;
-    }
 
     @PostMapping("{email}")
     public ResponseEntity<String> authenticate(

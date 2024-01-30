@@ -16,21 +16,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.michaelhyi.misc.JwtAuthenticationFilter;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthFilter;
     private static final String ADMIN = "ADMIN";
-
-    public SecurityConfig(
-            AuthenticationProvider authenticationProvider,
-            JwtAuthenticationFilter jwtAuthFilter
-    ) {
-        this.jwtAuthFilter = jwtAuthFilter;
-        this.authenticationProvider = authenticationProvider;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(

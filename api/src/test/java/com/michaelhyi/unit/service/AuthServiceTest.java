@@ -40,7 +40,10 @@ class AuthServiceTest {
 
     @Test
     void willAuthenticateWhenUserAlreadyExists() {
-        User user = new User(email);
+        User user = User.builder()
+                        .email(email)
+                        .build();
+
         when(repository.findByEmail(email)).thenReturn(Optional.of(user));
 
         underTest.authenticate(email);
@@ -80,7 +83,10 @@ class AuthServiceTest {
 
     @Test
     void validateToken() {
-        User user = new User(email);
+        User user = User.builder()
+                        .email(email)
+                        .build();
+
         when(jwtService.extractUsername("token")).thenReturn(email);
         when(repository.findByEmail(email)).thenReturn(Optional.of(user));
 

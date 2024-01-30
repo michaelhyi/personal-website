@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.michaelhyi.entity.User;
 import com.michaelhyi.service.UserService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("api/v1/user")
 public class UserController {
     private final UserService service;
-
-    public UserController(UserService service) {
-        this.service = service;
-    }
 
     @GetMapping("{email}")
     public ResponseEntity<User> readUserByEmail(

@@ -6,13 +6,12 @@ import com.michaelhyi.dao.UserRepository;
 import com.michaelhyi.entity.User;
 import com.michaelhyi.exception.UserNotFoundException;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class UserService {
     private final UserRepository repository;
-
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }
 
     public User readUserByEmail(String email)
             throws IllegalArgumentException, UserNotFoundException {

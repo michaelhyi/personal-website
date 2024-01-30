@@ -49,7 +49,9 @@ class UserIntegrationTest {
       .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isNotFound());
     
-    User expected = new User("test@mail.com");
+    User expected = User.builder()
+                        .email("test@mail.com")
+                        .build();
     repository.save(expected);
 
     String response = mockMvc
