@@ -8,7 +8,7 @@ export default function Hoverable({
   children: ReactNode;
 }>) {
   return (
-    <div className="cursor-pointer duration-500 hover:opacity-50">
+    <div className="cursor-pointer duration-300 hover:opacity-50">
       {children}
     </div>
   );

@@ -98,16 +98,14 @@ export default function Home() {
       <BackButton href="/" text="Home" />
       <div className="mt-10 flex flex-col gap-8">
         {projects.map((project: Project) => (
-          <Hoverable>
+          <Hoverable key={project.name}>
             <Link rel="noopener noreferrer" target="_blank" href={project.href}>
               <div className="flex sm:flex-col md:flex-row">
                 <div className="w-56 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
                   {project.date}
                 </div>
                 <div className="w-full">
-                  <div className="flex gap-1 text-sm font-medium">
-                    {project.name}
-                  </div>
+                  <div className="flex gap-1 font-semibold">{project.name}</div>
                   <div className="mt-2 text-xs text-neutral-400">
                     {project.description}
                   </div>
