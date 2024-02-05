@@ -11,6 +11,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      API_VERSION: 1.2.0
 
     steps:
       - uses: actions/checkout@v3
@@ -54,8 +56,8 @@ jobs:
       - name: Build, Test, Deploy API
         working-directory: ./api
         run: |
-          docker build . -t michaelyi/personal-website-api:latest
-          docker push michaelyi/personal-website-api:latest
+          docker build . -t michaelyi/personal-website-api:${{ env.API_VERSION }}
+          docker push michaelyi/personal-website-api:${{ env.API_VERSION }}
 
       - name: Deploy on EC2 Instance
         env:
@@ -68,7 +70,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i personal-website-api-keypair.pem ${SSH_USER}@${SSH_HOST} '
             sudo docker stop personal-website-api || true
             sudo docker rm personal-website-api || true
-            sudo docker pull michaelyi/personal-website-api:latest
+            sudo docker pull michaelyi/personal-website-api:${{ env.API_VERSION }}
             sudo docker run --name personal-website-api -d -p 8080:8080 \
               -e SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.API_SPRING_DATASOURCE_USERNAME }} \
