@@ -45,4 +45,4 @@ jobs:
 
       - name: Build & Test API
         working-directory: ./api
-        run: docker build . -t michaelyi/personal-website-api:latest
+        run: docker build .
