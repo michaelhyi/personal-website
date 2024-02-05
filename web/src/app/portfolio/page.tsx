@@ -106,7 +106,7 @@ export default function Home() {
                 </div>
                 <div className="w-full">
                   <div className="flex gap-1 font-semibold">{project.name}</div>
-                  <div className="mt-2 text-xs text-neutral-400">
+                  <div className="mt-1 text-xs text-neutral-400">
                     {project.description}
                   </div>
                   <div className="mt-2 text-[10px] text-neutral-300 font-light">
