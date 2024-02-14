@@ -111,15 +111,13 @@ export default function BlogClient({
           href="/blog?mode=create"
           className="focus:outline-none 
                      text-xs 
-                   bg-black
+                   bg-neutral-800
                    text-white 
-                     border-[1px] 
-                   border-white 
                      font-semibold 
                      px-3 
                      py-2 
                      rounded-md 
-                     shadow-md"
+                     shadow-sm"
         >
           <Hoverable className="flex items-center gap-2">
             <FaPlus />

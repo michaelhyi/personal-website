@@ -12,7 +12,7 @@ export default function Container({
   absoluteFooter?: boolean;
 }>) {
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-neutral-900 text-white min-h-screen">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
