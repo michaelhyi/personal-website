@@ -21,14 +21,13 @@ export default function Menu({
                     rounded-md 
                     shadow-lg 
                     w-36 
-                    bg-black 
+                    bg-neutral-800
                     text-white 
                     font-medium 
                     overflow-hidden 
                     right-0 
                     top-5 
-                    p-3 
-                    border-[1px]"
+                    p-3"
     >
       <Hoverable>
         <Link

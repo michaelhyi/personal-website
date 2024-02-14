@@ -182,7 +182,7 @@ export default function EditBlogClient({
             id="id"
             {...register("id")}
             disabled={submitting}
-            className="focus:outline-none mt-2 bg-black border-[1px] border-neutral-600 rounded-md shadow-lg mb-5 w-72 px-2 py-2 text-sm font-light text-neutral-200"
+            className="focus:outline-none mt-2 bg-neutral-800 rounded-md shadow-sm mb-5 w-72 px-2 py-2 text-sm text-neutral-200"
           />
         </div>
       )}
@@ -207,15 +207,13 @@ export default function EditBlogClient({
                      flex
                      items-center 
                      gap-3 
-                     bg-black 
+                     bg-neutral-800
                      text-white 
-                     border-[1px] 
-                     border-neutral-500 
                      font-semibold 
                      px-6
                      py-2
                      rounded-md 
-                     shadow-md 
+                     shadow-sm
                      duration-500 
                      hover:opacity-50"
       >

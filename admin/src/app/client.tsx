@@ -55,7 +55,7 @@ export default function AuthClient() {
             width={100}
           />
           <div className="mt-4 text-2xl font-medium">Michael Yi</div>
-          <div className="mt-1 text-xs font-light text-neutral-500">
+          <div className="mt-1 text-xs font-light text-neutral-400">
             Personal Website Admin
           </div>
           <Hoverable>
@@ -64,17 +64,15 @@ export default function AuthClient() {
               onClick={handleClick}
               disabled={submitting}
               className="flex 
+                         bg-neutral-800
                          items-center
                          focus:outline-none
                          text-sm 
                          font-semibold 
-                       bg-black 
-                         shadow-md
+                         shadow-sm
                          rounded-md 
                          mt-4 
                          gap-3
-                         border-[1px] 
-                       border-white
                          px-6 
                          py-2"
             >

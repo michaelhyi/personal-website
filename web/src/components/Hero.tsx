@@ -36,7 +36,7 @@ export default function Hero() {
           width={100}
         />
         <div className="mt-4 text-2xl font-medium">Michael Yi</div>
-        <div className="mt-1 text-xs font-light text-neutral-500">
+        <div className="mt-1 text-xs font-light text-neutral-400">
           Software Engineer
         </div>
         <div className="flex mt-2 text-[10px]">
