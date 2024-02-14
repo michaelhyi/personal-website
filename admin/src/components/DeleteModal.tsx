@@ -23,10 +23,10 @@ export default function DeleteModal({
     <div
       className={`flex justify-center items-center fixed inset-0 ${
         modalOpen ? "z-50" : "-z-50"
-      } bg-neutral-800/70`}
+      } bg-neutral-900/70`}
     >
       <div
-        className={`w-2/5 bg-neutral-900 shadow-md rounded-xl overflow-y-auto max-h-[768px] ${
+        className={`w-2/5 bg-neutral-800 shadow-md rounded-xl overflow-y-auto max-h-[768px] ${
           modalOpen ? "animate-enter" : "animate-leave"
         }`}
       >
