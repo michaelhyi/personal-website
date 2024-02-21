@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 
@@ -12,8 +11,8 @@ export default function Blog() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios(`${process.env.REACT_APP_API_URL}/post`);
-      setData(data);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
+      setData(await res.json());
     })();
   }, []);
 
