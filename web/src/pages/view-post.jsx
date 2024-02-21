@@ -50,8 +50,6 @@ export default function ViewPost() {
         src={`${process.env.REACT_APP_API_URL}/post/${id}/image`}
         alt={data.title}
         className="w-full mt-6"
-        width={1000}
-        height={1000}
       />
       <div
         className="text-[15px] mt-8"
