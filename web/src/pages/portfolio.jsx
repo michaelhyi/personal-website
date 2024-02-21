@@ -1,26 +1,15 @@
-import BackButton from "@/components/BackButton";
-import Container from "@/components/Container";
-import Hoverable from "@/components/Hoverable";
-import Image from "next/image";
-import Link from "next/link";
+import BackButton from "../components/BackButton";
+import Container from "../components/Container";
+import Hoverable from "../components/Hoverable";
 
-type Project = {
-  name: string;
-  date: string;
-  description: string;
-  tech: string;
-  image?: string;
-  href: string;
-};
-
-const projects: Project[] = [
+const PROJECTS = [
   {
     name: "ScribeAI",
     date: "Oct 2023",
     description:
       "1st Place @ HackGT X. HIPAA-compliant, decentralized healthcare management platform that uses AI to transform physical healthcare documents into electronic health records.",
     tech: "Java, JavaScript, Spring, PostgreSQL, Docker, Kubernetes, React, Tesseract, OpenAI",
-    image: "/projects/scribeai.png",
+    image: require("../assets/projects/scribeai.png"),
     href: "https://devpost.com/software/scribeai",
   },
   {
@@ -28,7 +17,7 @@ const projects: Project[] = [
     date: "Jan - Jun 2023",
     description: "Assembling the future innovators of medicine.",
     tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
-    image: "/projects/joinhealthhacks.png",
+    image: require("../assets/projects/hhacks.png"),
     href: "https://www.joinhealthhacks.com/",
   },
   {
@@ -37,7 +26,7 @@ const projects: Project[] = [
     description:
       "Streamlining secure communication between radiologists and ordering physicians.",
     tech: "TypeScript, React Native, PostgreSQL, GraphQL",
-    image: "/projects/healthrelay.png",
+    image: require("../assets/projects/healthrelay.png"),
     href: "https://healthrelay.vercel.app/",
   },
   {
@@ -46,7 +35,7 @@ const projects: Project[] = [
     description:
       "Enhancing Retinal Abnormality Detection through Deep-Learning-based Optical Coherence Tomography Analysis",
     tech: "Python, Tensorflow, Keras, TypeScript, React Native, PostgreSQL, GraphQL",
-    image: "/projects/retinaoct.png",
+    image: require("../assets/projects/retinaoct.png"),
     href: "https://github.com/michaelhyi/retinaoct",
   },
   {
@@ -55,7 +44,7 @@ const projects: Project[] = [
     description:
       "An NLP + Vision model that generates coherent sentences given respective keywords (concepts) and a coresponding image.",
     tech: "Python, PyTorch",
-    image: "/projects/shine.png",
+    image: require("../assets/projects/shine.png"),
     href: "https://github.com/michaelhyi/usc-shine",
   },
   {
@@ -97,9 +86,9 @@ export default function Home() {
     <Container>
       <BackButton href="/" text="Home" />
       <div className="mt-10 flex flex-col gap-8">
-        {projects.map((project: Project) => (
+        {PROJECTS.map((project) => (
           <Hoverable key={project.name}>
-            <Link rel="noopener noreferrer" target="_blank" href={project.href}>
+            <a rel="noopener noreferrer" target="_blank" href={project.href}>
               <div className="flex sm:flex-col md:flex-row">
                 <div className="w-56 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
                   {project.date}
@@ -114,7 +103,7 @@ export default function Home() {
                   </div>
                   {project.image !== undefined &&
                     project.image.length !== 0 && (
-                      <Image
+                      <img
                         className="mt-4 rounded-md shadow-md"
                         src={project.image}
                         alt={project.name}
@@ -124,7 +113,7 @@ export default function Home() {
                     )}
                 </div>
               </div>
-            </Link>
+            </a>
           </Hoverable>
         ))}
       </div>

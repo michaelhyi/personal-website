@@ -1,8 +1,7 @@
-import BackButton from "@/components/BackButton";
-import Center from "@/components/Center";
-import Container from "@/components/Container";
-import Hoverable from "@/components/Hoverable";
-import Link from "next/link";
+import BackButton from "../components/BackButton";
+import Center from "../components/Center";
+import Container from "../components/Container";
+import Hoverable from "../components/Hoverable";
 
 export default function About() {
   return (
@@ -14,8 +13,8 @@ export default function About() {
             Michael Yi is a software engineer based in Atlanta, GA. He&apos;s
             currently studying computer science at Georgia Tech with
             concentrations in Artificial Intelligence and Information
-            Internetworks. Previously, he interned at Ardent Labs and
-            MegaEvolution.
+            Internetworks. He&apos;s an incoming intern at T-Mobile; previously,
+            he interned at Ardent Labs and MegaEvolution.
           </div>
           <div>
             Michael loves building. When he&apos;s not creating software, he
@@ -24,12 +23,12 @@ export default function About() {
           <div className="flex">
             Reach him at&nbsp;
             <Hoverable>
-              <Link
+              <a
                 href="mailto:contact@michael-yi.com"
                 className="underline text-neutral-400"
               >
                 contact@michael-yi.com
-              </Link>
+              </a>
             </Hoverable>
             .
           </div>

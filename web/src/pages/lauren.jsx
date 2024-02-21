@@ -1,16 +1,13 @@
-"use client";
-
-import Center from "@/components/Center";
-import Container from "@/components/Container";
-import Image from "next/image";
+import Center from "../components/Center";
+import Container from "../components/Container";
 
 export default function Lauren() {
   return (
     <Container absoluteFooter>
       <Center>
         <div className="flex flex-col items-center gap-4">
-          <Image
-            src="/lauren.png"
+          <img
+            src={require("../assets/lauren.png")}
             width={250}
             height={250}
             alt="mimi and lala"
