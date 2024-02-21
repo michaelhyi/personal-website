@@ -1,4 +1,3 @@
-import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -16,11 +15,8 @@ export default function ViewPost() {
   useEffect(() => {
     try {
       (async () => {
-        const { data } = await axios(
-          `${process.env.REACT_APP_API_URL}/post/${id}`
-        );
-
-        setData(data);
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
+        setData(await res.json());
       })();
     } catch {
       setNotFound(true);
