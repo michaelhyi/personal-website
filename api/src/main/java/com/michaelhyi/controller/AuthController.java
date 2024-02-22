@@ -24,8 +24,9 @@ public class AuthController {
     }
 
     @GetMapping("validate-token/{token}")
-    public ResponseEntity<Boolean> validateToken(
+    public ResponseEntity<Void> validateToken(
             @PathVariable("token") String token) {
-        return ResponseEntity.ok(service.validateToken(token));
+        service.validateToken(token);
+        return ResponseEntity.ok().build();
     }
 }

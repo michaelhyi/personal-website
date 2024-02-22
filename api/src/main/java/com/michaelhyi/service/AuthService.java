@@ -48,12 +48,14 @@ public class AuthService {
         return jwtService.generateToken(newUser);
     }
 
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         String email = jwtService.extractUsername(token);
         User user = repository
                 .findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
 
-        return jwtService.isTokenValid(token, user);
+        if (!jwtService.isTokenValid(token, user)) {
+            throw new UnauthorizedUserException();
+        }
     }
 }
