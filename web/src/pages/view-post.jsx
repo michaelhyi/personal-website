@@ -13,17 +13,16 @@ export default function ViewPost() {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    try {
-      (async () => {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
-        setData(await res.json());
-      })();
-    } catch {
-      setNotFound(true);
-    }
-  }, [id]);
+    (async () => {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
 
-  if (!data) return <Loading />;
+      if (!res.ok) {
+        setNotFound(true);
+      } else {
+        setData(await res.json());
+      }
+    })();
+  }, [id]);
 
   if (notFound) {
     return (
@@ -34,6 +33,8 @@ export default function ViewPost() {
       </Container>
     );
   }
+
+  if (!data) return <Loading />;
 
   return (
     <Container>

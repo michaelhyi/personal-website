@@ -19,8 +19,8 @@
 - [AWS EC2, S3](https://aws.amazon.com/)
 - [Docker](https://www.docker.com/)
 - [JUnit](https://junit.org/junit5/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Next.js](https://nextjs.org/)
+- [JavaScript](https://www.javascript.com/)
+- [React](https://react.dev/)
 - [TailwindCSS](https://tailwindcss.com/)
 
 ## Development Setup
