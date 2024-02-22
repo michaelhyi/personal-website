@@ -1,16 +1,11 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
-  plugins: [require("@tailwindcss/typography")],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       animation: {
         enter: "enter 300ms ease-out",
         leave: "leave 300ms ease-in forwards",
-      },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       keyframes: {
         enter: {
@@ -27,4 +22,5 @@ module.exports = {
       },
     },
   },
+  plugins: [require("@tailwindcss/typography")],
 };

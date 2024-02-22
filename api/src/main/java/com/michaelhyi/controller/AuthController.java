@@ -18,14 +18,15 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping("{email}")
-    public ResponseEntity<String> authenticate(
+    public ResponseEntity<String> login(
             @PathVariable("email") String email) {
-        return ResponseEntity.ok(service.authenticate(email));
+        return ResponseEntity.ok(service.login(email));
     }
 
     @GetMapping("validate-token/{token}")
-    public ResponseEntity<Boolean> validateToken(
+    public ResponseEntity<Void> validateToken(
             @PathVariable("token") String token) {
-        return ResponseEntity.ok(service.validateToken(token));
+        service.validateToken(token);
+        return ResponseEntity.ok().build();
     }
 }

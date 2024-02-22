@@ -19,7 +19,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final List<String> whitelistedEmails;
 
-    public String authenticate(String email) {
+    public String login(String email) {
         Optional<User> user = repository.findByEmail(email);
 
         if (user.isPresent()) {
@@ -48,12 +48,14 @@ public class AuthService {
         return jwtService.generateToken(newUser);
     }
 
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         String email = jwtService.extractUsername(token);
         User user = repository
                 .findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
 
-        return jwtService.isTokenValid(token, user);
+        if (!jwtService.isTokenValid(token, user)) {
+            throw new UnauthorizedUserException();
+        }
     }
 }

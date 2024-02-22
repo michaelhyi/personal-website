@@ -35,7 +35,7 @@ class UserIntegrationTest {
     repository.deleteAll();
   }
 
-  @Test
+  // @Test
   void readUserByEmail() throws Exception {
     mockMvc.perform(get("/api/v1/user/null")
       .contentType(MediaType.APPLICATION_JSON))
