@@ -19,7 +19,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final List<String> whitelistedEmails;
 
-    public String authenticate(String email) {
+    public String login(String email) {
         Optional<User> user = repository.findByEmail(email);
 
         if (user.isPresent()) {

@@ -18,9 +18,9 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping("{email}")
-    public ResponseEntity<String> authenticate(
+    public ResponseEntity<String> login(
             @PathVariable("email") String email) {
-        return ResponseEntity.ok(service.authenticate(email));
+        return ResponseEntity.ok(service.login(email));
     }
 
     @GetMapping("validate-token/{token}")

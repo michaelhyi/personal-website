@@ -46,7 +46,7 @@ class AuthServiceTest {
 
         when(repository.findByEmail(email)).thenReturn(Optional.of(user));
 
-        underTest.authenticate(email);
+        underTest.login(email);
         verify(repository).findByEmail(email);
         verify(jwtService).generateToken(user);
         verifyNoMoreInteractions(repository);
@@ -55,7 +55,7 @@ class AuthServiceTest {
 
     @Test
     void willThrowAuthenticateWhenUnauthorizedUser() {
-        assertThrows(UnauthorizedUserException.class, () -> underTest.authenticate("unauthorized@mail.com"));
+        assertThrows(UnauthorizedUserException.class, () -> underTest.login("unauthorized@mail.com"));
         verify(repository).findByEmail("unauthorized@mail.com");
         verifyNoMoreInteractions(repository);
         verifyNoInteractions(jwtService);
@@ -63,7 +63,7 @@ class AuthServiceTest {
 
     @Test
     void authenticate() {
-        underTest.authenticate("test@mail.com");
+        underTest.login("test@mail.com");
 
         verify(repository).findByEmail(email);
         verify(repository).save(any());
