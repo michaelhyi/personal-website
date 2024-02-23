@@ -33,7 +33,7 @@ public class CorsConfig {
         configuration.setExposedHeaders(EXPOSED_HEADERS);
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
