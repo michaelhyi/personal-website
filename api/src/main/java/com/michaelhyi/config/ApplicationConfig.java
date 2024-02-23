@@ -21,8 +21,14 @@ import lombok.RequiredArgsConstructor;
 public class ApplicationConfig {
     @Value("#{'${auth.whitelisted-emails}'.split(',')}")
     private List<String> whitelistedEmails;
-
     private final UserRepository repository;
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -30,13 +36,6 @@ public class ApplicationConfig {
                 new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService());
         return daoAuthenticationProvider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration
-    ) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
