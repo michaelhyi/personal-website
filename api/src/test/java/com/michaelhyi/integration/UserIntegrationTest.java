@@ -37,15 +37,15 @@ class UserIntegrationTest {
 
   // @Test
   void readUserByEmail() throws Exception {
-    mockMvc.perform(get("/api/v1/user/null")
+    mockMvc.perform(get("/v1/user/null")
       .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isBadRequest()); 
 
-    mockMvc.perform(get("/api/v1/user/undefined")
+    mockMvc.perform(get("/v1/user/undefined")
       .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isBadRequest()); 
 
-    mockMvc.perform(get("/api/v1/user/test@mail.com")
+    mockMvc.perform(get("/v1/user/test@mail.com")
       .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isNotFound());
     
@@ -55,7 +55,7 @@ class UserIntegrationTest {
     repository.save(expected);
 
     String response = mockMvc
-                          .perform(get("/api/v1/user/test@mail.com")
+                          .perform(get("/v1/user/test@mail.com")
                           .accept(MediaType.APPLICATION_JSON))
                           .andExpect(status().isOk())
                           .andReturn()
