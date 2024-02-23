@@ -10,6 +10,7 @@
 
     <packaging>jar</packaging>
 
+    <name>api</name>
     <url>https://www.michael-yi.com</url>
     <description>REST API for Personal Website Blog</description>
 
