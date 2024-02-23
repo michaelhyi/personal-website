@@ -4,10 +4,10 @@ cd ../
 # prettier --check .
 
 cd admin 
-yarn lint
+npm run lint
 
 cd ../api
 mvn validate
 
 cd ../web
-yarn lint
+npm run lint
