@@ -26,20 +26,18 @@ jobs:
           echo "aws.s3.bucket=personal-website-api-bucket-prod" >> ./api/src/main/resources/application.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./api/src/main/resources/application.properties
           echo "security.cors.allowed-origins=${{ secrets.API_SECURITY_CORS_ALLOWED_ORIGINS }}" >> ./api/src/main/resources/application.properties
-          echo "server.servlet.context-path=/" >> ./api/src/main/resources/application.properties
           echo "spring.application.name=personal-website-api" >> ./api/src/main/resources/application.properties
           echo "spring.datasource.url=${{ secrets.API_SPRING_TEST_DATASOURCE_URL }}" >> ./api/src/main/resources/application.properties
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./api/src/main/resources/application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./api/src/main/resources/application.properties
           echo "spring.jpa.hibernate.ddl-auto=update" >> ./api/src/main/resources/application.properties
           touch ./api/src/test/resources/application-it.properties
-          echo "auth.whitelisted-emails=\"test@mail.com\"" >> ./api/src/test/resources/application-it.properties
+          echo "auth.whitelisted-emails=test@mail.com" >> ./api/src/test/resources/application-it.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./api/src/test/resources/application-it.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./api/src/test/resources/application-it.properties
           echo "aws.s3.bucket=personal-website-api-bucket-test" >> ./api/src/test/resources/application-it.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./api/src/test/resources/application-it.properties
-          echo "security.cors.allowed-origins=\"*\"" >> ./api/src/test/resources/application-it.properties
-          echo "server.servlet.context-path=/" >> ./api/src/test/resources/application-it.properties
+          echo "security.cors.allowed-origins=*" >> ./api/src/test/resources/application-it.properties
           echo "spring.application.name=personal-website-api" >> ./api/src/test/resources/application-it.properties
           echo "spring.datasource.url=${{ secrets.API_SPRING_TEST_DATASOURCE_URL }}" >> ./api/src/test/resources/application-it.properties
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./api/src/test/resources/application-it.properties
