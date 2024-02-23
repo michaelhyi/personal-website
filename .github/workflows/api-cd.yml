@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create Properties Files
+      - name: Create application.properties
         run: |
           touch ./api/src/main/resources/application.properties
           echo "auth.whitelisted-emails=${{ secrets.API_AUTH_WHITELISTED_EMAILS }}" >> ./api/src/main/resources/application.properties
@@ -31,6 +31,8 @@ jobs:
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./api/src/main/resources/application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./api/src/main/resources/application.properties
           echo "spring.jpa.hibernate.ddl-auto=update" >> ./api/src/main/resources/application.properties
+
+      - name: Create application-it.properties
           touch ./api/src/test/resources/application-it.properties
           echo "auth.whitelisted-emails=test@mail.com" >> ./api/src/test/resources/application-it.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./api/src/test/resources/application-it.properties
@@ -61,16 +63,15 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_USER }}
         run: |
           echo "$SSH_PRIVATE_KEY" > personal-website-api-keypair.pem
           chmod 400 personal-website-api-keypair.pem
-          ssh -o StrictHostKeyChecking=no -i personal-website-api-keypair.pem ${SSH_USER}@${SSH_HOST} '
+          ssh -o StrictHostKeyChecking=no -i personal-website-api-keypair.pem ec2-user@SSH_HOST} '
             sudo docker stop personal-website-api || true
             sudo docker rm personal-website-api || true
             sudo docker pull michaelyi/personal-website-api:${{ env.API_VERSION }}
             sudo docker run --name personal-website-api -d -p 8080:8080 \
-              -e SPRING_DATSOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
+              -e SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
               -e SPRING_JPA_HIBERNATE_DDL_AUTO=validate \
               michaelyi/personal-website-api:${{ env.API_VERSION }}
             '
