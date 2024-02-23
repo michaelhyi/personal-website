@@ -76,6 +76,7 @@ jobs:
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.API_SPRING_DATASOURCE_USERNAME }} \
               -e SPRING_DATASOURCE_PASSWORD=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }} \
               -e SPRING_JPA_HIBERNATE_DDL_AUTO=${{ secrets.API_SPRING_JPA_HIBERNATE_DDL_AUTO }} \
+              -e SERVER_SERVLET_CONTEXT_PATH=/ \
               -e AUTH_WHITELISTED_EMAILS=${{ secrets.API_AUTH_WHITELISTED_EMAILS }} \
               -e AWS_ACCESS_KEY=${{ secrets.API_AWS_ACCESS_KEY }} \
               -e AWS_SECRET_KEY=${{ secrets.API_AWS_SECRET_KEY }} \
