@@ -27,10 +27,10 @@ jobs:
           echo "security.cors.allowed-origins=${{ secrets.API_SECURITY_CORS_ALLOWED_ORIGINS }}" >> ./api/src/main/resources/application.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./api/src/main/resources/application.properties
           echo "spring.application.name=personal-website-api" >> ./api/src/main/resources/application.properties
-          echo "spring.datasource.url=${{ secrets.API_SPRING_DATASOURCE_URL }}" >> ./api/src/main/resources/application.properties
+          echo "spring.datasource.url=${{ secrets.API_SPRING_TEST_DATASOURCE_URL }}" >> ./api/src/main/resources/application.properties
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./api/src/main/resources/application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./api/src/main/resources/application.properties
-          echo "spring.jpa.hibernate.ddl-auto=validate" >> ./api/src/main/resources/application.properties
+          echo "spring.jpa.hibernate.ddl-auto=update" >> ./api/src/main/resources/application.properties
           touch ./api/src/test/resources/application-it.properties
           echo "auth.whitelisted-emails=test@mail.com" >> ./api/src/test/resources/application-it.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./api/src/test/resources/application-it.properties
@@ -70,5 +70,7 @@ jobs:
             sudo docker rm personal-website-api || true
             sudo docker pull michaelyi/personal-website-api:${{ env.API_VERSION }}
             sudo docker run --name personal-website-api -d -p 8080:8080 \
+              -e SPRING_DATSOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
+              -e SPRING_JPA_HIBERNATE_DDL_AUTO=validate \
               michaelyi/personal-website-api:${{ env.API_VERSION }}
             '
