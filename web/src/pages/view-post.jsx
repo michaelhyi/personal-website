@@ -14,7 +14,7 @@ export default function ViewPost() {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/v1/post/${id}`);
 
       if (!res.ok) {
         setNotFound(true);
@@ -44,7 +44,7 @@ export default function ViewPost() {
         {format(new Date(data.date), "PPP")}
       </div>
       <img
-        src={`${process.env.REACT_APP_API_URL}/post/${id}/image`}
+        src={`${process.env.REACT_APP_API_URL}/v1/post/${id}/image`}
         alt={data.title}
         className="w-full mt-6"
       />

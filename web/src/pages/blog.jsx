@@ -11,7 +11,7 @@ export default function Blog() {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/v1/post`);
       setData(await res.json());
     })();
   }, []);
