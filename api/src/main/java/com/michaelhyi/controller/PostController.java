@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/post")
+@RequestMapping("v1/post")
 public class PostController {
     private final PostService service;
 
@@ -63,8 +63,7 @@ public class PostController {
     @PutMapping("{id}")
     public ResponseEntity<Void> updatePost(
             @PathVariable("id") String id,
-            @RequestBody PostRequest req
-    ) {
+            @RequestBody PostRequest req) {
         service.updatePost(id, req);
         return ResponseEntity.ok().build();
     }

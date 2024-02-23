@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const createPost = async (id, text) => {
   const { data } = await axios.post(
-    `${process.env.REACT_APP_API_URL}/post`,
+    `${process.env.REACT_APP_API_URL}/v1/post`,
     { id, text },
     {
       headers: {
@@ -16,7 +16,7 @@ export const createPost = async (id, text) => {
 
 export const createPostImage = async (id, formData) => {
   await axios.post(
-    `${process.env.REACT_APP_API_URL}/post/${id}/image`,
+    `${process.env.REACT_APP_API_URL}/v1/post/${id}/image`,
     formData,
     {
       headers: {
@@ -28,22 +28,24 @@ export const createPostImage = async (id, formData) => {
 };
 
 export const readPost = async (id) => {
-  const { data } = await axios(`${process.env.REACT_APP_API_URL}/post/${id}`);
+  const { data } = await axios(
+    `${process.env.REACT_APP_API_URL}/v1/post/${id}`
+  );
   return data;
 };
 
 export const readPostImageUrl = (id) => {
-  return `${process.env.REACT_APP_API_URL}/post/${id}/image`;
+  return `${process.env.REACT_APP_API_URL}/v1/post/${id}/image`;
 };
 
 export const readAllPosts = async () => {
-  const { data } = await axios(`${process.env.REACT_APP_API_URL}/post`);
+  const { data } = await axios(`${process.env.REACT_APP_API_URL}/v1/post`);
   return data;
 };
 
 export const updatePost = async (id, text) => {
   await axios.put(
-    `${process.env.REACT_APP_API_URL}/post/${id}`,
+    `${process.env.REACT_APP_API_URL}/v1/post/${id}`,
     { text },
     {
       headers: {
@@ -54,7 +56,7 @@ export const updatePost = async (id, text) => {
 };
 
 export const deletePost = async (id) => {
-  await axios.delete(`${process.env.REACT_APP_API_URL}/post/${id}`, {
+  await axios.delete(`${process.env.REACT_APP_API_URL}/v1/post/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };
