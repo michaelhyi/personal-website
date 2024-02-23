@@ -67,7 +67,7 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > personal-website-api-keypair.pem
           chmod 400 personal-website-api-keypair.pem
-          ssh -o StrictHostKeyChecking=no -i personal-website-api-keypair.pem ec2-user@SSH_HOST} '
+          ssh -o StrictHostKeyChecking=no -i personal-website-api-keypair.pem ec2-user@${SSH_HOST} '
             sudo docker stop personal-website-api || true
             sudo docker rm personal-website-api || true
             sudo docker pull michaelyi/personal-website-api:${{ env.API_VERSION }}
