@@ -33,6 +33,7 @@ jobs:
           echo "spring.jpa.hibernate.ddl-auto=update" >> ./api/src/main/resources/application.properties
 
       - name: Create application-it.properties
+        run: |
           touch ./api/src/test/resources/application-it.properties
           echo "auth.whitelisted-emails=test@mail.com" >> ./api/src/test/resources/application-it.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./api/src/test/resources/application-it.properties

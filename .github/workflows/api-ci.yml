@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create Properties Files
+      - name: Create application.properties
         run: |
           touch ./api/src/main/resources/application.properties
           echo "auth.whitelisted-emails=${{ secrets.API_AUTH_WHITELISTED_EMAILS }}" >> ./api/src/main/resources/application.properties
@@ -27,6 +27,9 @@ jobs:
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./api/src/main/resources/application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./api/src/main/resources/application.properties
           echo "spring.jpa.hibernate.ddl-auto=update" >> ./api/src/main/resources/application.properties
+
+      - name: Create application-it.properties
+        run: |
           touch ./api/src/test/resources/application-it.properties
           echo "auth.whitelisted-emails=test@mail.com" >> ./api/src/test/resources/application-it.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./api/src/test/resources/application-it.properties
