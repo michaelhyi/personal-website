@@ -10,9 +10,8 @@
 
     <packaging>jar</packaging>
 
-    <name>api</name>
-    <description>REST API for Personal Website Blog</description>
     <url>https://www.michael-yi.com</url>
+    <description>REST API for Personal Website Blog</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
