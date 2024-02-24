@@ -20,7 +20,7 @@ export default function Dropzone({
       setShowImage(true);
       setSubmitting(false);
     },
-    [setSubmitting, setImage, setShowImage]
+    [setSubmitting, setImage, setShowImage],
   );
 
   const handleImageDelete = useCallback(() => {

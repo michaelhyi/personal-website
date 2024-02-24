@@ -1,11 +1,17 @@
-export const PROJECTS = [
+import SCRIBEAI from "../assets/projects/scribeai.png";
+import HEALTHHACKS from "../assets/projects/hhacks.png";
+import HEALTHRELAY from "../assets/projects/healthrelay.png";
+import RETINAOCT from "../assets/projects/retinaoct.png";
+import SHINE from "../assets/projects/shine.png";
+
+const PROJECTS = [
   {
     name: "ScribeAI",
     date: "Oct 2023",
     description:
       "1st Place @ HackGT X. HIPAA-compliant, decentralized healthcare management platform that uses AI to transform physical healthcare documents into electronic health records.",
     tech: "Java, JavaScript, Spring, PostgreSQL, Docker, Kubernetes, React, Tesseract, OpenAI",
-    image: require("../assets/projects/scribeai.png"),
+    image: SCRIBEAI,
     href: "https://devpost.com/software/scribeai",
   },
   {
@@ -13,7 +19,7 @@ export const PROJECTS = [
     date: "Jan - Jun 2023",
     description: "Assembling the future innovators of medicine.",
     tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
-    image: require("../assets/projects/hhacks.png"),
+    image: HEALTHHACKS,
     href: "https://www.joinhealthhacks.com/",
   },
   {
@@ -22,7 +28,7 @@ export const PROJECTS = [
     description:
       "Streamlining secure communication between radiologists and ordering physicians.",
     tech: "TypeScript, React Native, PostgreSQL, GraphQL",
-    image: require("../assets/projects/healthrelay.png"),
+    image: HEALTHRELAY,
     href: "https://healthrelay.vercel.app/",
   },
   {
@@ -31,7 +37,7 @@ export const PROJECTS = [
     description:
       "Enhancing Retinal Abnormality Detection through Deep-Learning-based Optical Coherence Tomography Analysis",
     tech: "Python, Tensorflow, Keras, TypeScript, React Native, PostgreSQL, GraphQL",
-    image: require("../assets/projects/retinaoct.png"),
+    image: RETINAOCT,
     href: "https://github.com/michaelhyi/retinaoct",
   },
   {
@@ -40,7 +46,7 @@ export const PROJECTS = [
     description:
       "An NLP + Vision model that generates coherent sentences given respective keywords (concepts) and a coresponding image.",
     tech: "Python, PyTorch",
-    image: require("../assets/projects/shine.png"),
+    image: SHINE,
     href: "https://github.com/michaelhyi/usc-shine",
   },
   {
@@ -76,3 +82,5 @@ export const PROJECTS = [
     href: "https://github.com/michaelhyi/leafx",
   },
 ];
+
+export default PROJECTS;

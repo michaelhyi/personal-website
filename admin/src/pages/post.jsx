@@ -71,7 +71,7 @@ export default function Post() {
         StarterKit.configure({ document: false }),
       ],
     },
-    [content]
+    [content],
   );
 
   const handleClick = useCallback(async () => {

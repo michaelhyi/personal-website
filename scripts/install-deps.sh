@@ -1,8 +1,5 @@
 #!/bin/bash
 
-cd ../
-npm i
-
 cd admin
 npm i
 
