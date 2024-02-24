@@ -21,10 +21,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npx prettier . --check && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "npx prettier . --check && npx eslint .",
     "lint:fix": "npx prettier . --write && npx eslint . --fix"
   },
   "eslintConfig": {
