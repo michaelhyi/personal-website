@@ -78,7 +78,11 @@ export default function Blog() {
   return (
     <Container absoluteFooter>
       <div className="flex items-center justify-between">
-        <button type="button" onClick={logout} className="text-xs text-neutral-300">
+        <button
+          type="button"
+          onClick={logout}
+          className="text-xs text-neutral-300"
+        >
           <Hoverable className="flex items-center gap-2">
             <FaArrowLeftLong /> Logout
           </Hoverable>

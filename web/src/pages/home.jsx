@@ -37,10 +37,10 @@ export default function Home() {
           </div>
           <div className="flex mt-2 text-[10px]">
             {LINKS.map((v, i) => (
-                <Hoverable key={v.name}>
-                  {i !== 0 && <>&nbsp;&nbsp;&#183;&nbsp;&nbsp;</>}
-                  <a href={v.href}>{v.name}</a>
-                </Hoverable>
+              <Hoverable key={v.name}>
+                {i !== 0 && <>&nbsp;&nbsp;&#183;&nbsp;&nbsp;</>}
+                <a href={v.href}>{v.name}</a>
+              </Hoverable>
             ))}
           </div>
         </div>
