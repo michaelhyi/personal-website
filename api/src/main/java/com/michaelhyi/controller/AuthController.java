@@ -24,7 +24,8 @@ public class AuthController {
 
     @GetMapping("validate-token/{token}")
     public ResponseEntity<Void> validateToken(
-        @PathVariable("token") String token) {
+        @PathVariable("token") String token
+    ) {
         service.validateToken(token);
         return ResponseEntity.ok().build();
     }

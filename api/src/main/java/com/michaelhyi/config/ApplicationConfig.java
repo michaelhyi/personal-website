@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    @Value("#{'${auth.whitelisted-emails}'.split(',')}")
+    @Value("${auth.whitelisted-emails}")
     private List<String> whitelistedEmails;
     private final UserRepository repository;
 

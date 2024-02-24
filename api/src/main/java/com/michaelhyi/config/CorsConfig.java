@@ -18,10 +18,7 @@ public class CorsConfig {
     private static final List<String> ALLOWED_METHODS =
         Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
-    private static final List<String> ALLOWED_HEADERS =
-        Arrays.asList("Authorization", "Content-Type");
-
-    private static final List<String> EXPOSED_HEADERS =
+    private static final List<String> ALLOWED_AND_EXPOSED_HEADERS =
         Arrays.asList("Authorization", "Content-Type");
 
     @Bean
@@ -29,8 +26,8 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(ALLOWED_METHODS);
-        config.setAllowedHeaders(ALLOWED_HEADERS);
-        config.setExposedHeaders(EXPOSED_HEADERS);
+        config.setAllowedHeaders(ALLOWED_AND_EXPOSED_HEADERS);
+        config.setExposedHeaders(ALLOWED_AND_EXPOSED_HEADERS);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
