@@ -40,7 +40,7 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      let token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       if (!token) {
         setLoading(false);
@@ -73,6 +73,8 @@ export default function Home() {
           </div>
           <Hoverable>
             <button
+              type="button"
+              label="google login button"
               onClick={handleLogin}
               className="flex 
                          bg-neutral-800

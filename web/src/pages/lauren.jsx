@@ -1,3 +1,4 @@
+import lauren from "../assets/lauren.png";
 import Center from "../components/Center";
 import Container from "../components/Container";
 
@@ -7,7 +8,7 @@ export default function Lauren() {
       <Center>
         <div className="flex flex-col items-center gap-4">
           <img
-            src={require("../assets/lauren.png")}
+            src={lauren}
             width={250}
             height={250}
             alt="mimi and lala"

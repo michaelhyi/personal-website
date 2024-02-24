@@ -54,17 +54,17 @@ export default function Blog() {
 
   useEffect(() => {
     (async () => {
-      let token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       if (!token) {
         navigate("/");
       } else {
         try {
           await validateToken(token);
-          const data = await readAllPosts();
+          const posts = await readAllPosts();
 
-          setData(data);
-          setMenuOpen(new Array(data.length).fill(false));
+          setData(posts);
+          setMenuOpen(new Array(posts.length).fill(false));
           setLoading(false);
         } catch {
           logout();
@@ -78,7 +78,7 @@ export default function Blog() {
   return (
     <Container absoluteFooter>
       <div className="flex items-center justify-between">
-        <button onClick={logout} className="text-xs text-neutral-300">
+        <button type="button" onClick={logout} className="text-xs text-neutral-300">
           <Hoverable className="flex items-center gap-2">
             <FaArrowLeftLong /> Logout
           </Hoverable>

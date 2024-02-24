@@ -29,7 +29,7 @@ export default function Footer({ absolute }) {
       <div className="flex gap-2">
         {LINKS.map(({ href, icon: Icon }) => (
           <Hoverable key={href}>
-            <a href={href} rel="noopener noreferrer" target="_blank">
+            <a label="icon" href={href} rel="noopener noreferrer" target="_blank">
               <Icon size={15} />
             </a>
           </Hoverable>

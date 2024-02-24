@@ -40,7 +40,7 @@ export default function Container({ children, absoluteFooter = false }) {
           <div className="flex gap-2">
             {FOOTER_LINKS.map(({ href, icon: Icon }) => (
               <Hoverable key={href}>
-                <a href={href} rel="noopener noreferrer" target="_blank">
+                <a label="footer link" href={href} rel="noopener noreferrer" target="_blank">
                   <Icon size={15} />
                 </a>
               </Hoverable>

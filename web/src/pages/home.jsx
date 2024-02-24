@@ -17,7 +17,7 @@ const LINKS = [
   },
   {
     name: "Resume",
-    href: `/Resume.pdf`,
+    href: "/Resume.pdf",
   },
 ];
 
@@ -36,14 +36,12 @@ export default function Home() {
             Software Engineer
           </div>
           <div className="flex mt-2 text-[10px]">
-            {LINKS.map((v, i) => {
-              return (
+            {LINKS.map((v, i) => (
                 <Hoverable key={v.name}>
                   {i !== 0 && <>&nbsp;&nbsp;&#183;&nbsp;&nbsp;</>}
                   <a href={v.href}>{v.name}</a>
                 </Hoverable>
-              );
-            })}
+            ))}
           </div>
         </div>
       </Center>
