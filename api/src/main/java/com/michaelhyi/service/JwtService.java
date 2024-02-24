@@ -23,9 +23,9 @@ public class JwtService {
     private static final long EXPIRATION = 6048000000L;
 
     private String buildToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long expiration
+        Map<String, Object> extraClaims,
+        UserDetails userDetails,
+        long expiration
     ) {
         return Jwts
                 .builder()
@@ -49,8 +49,8 @@ public class JwtService {
     }
 
     public <T> T extractClaim(
-            String token,
-            Function<Claims, T> claimsResolver
+        String token,
+        Function<Claims, T> claimsResolver
     ) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -69,8 +69,8 @@ public class JwtService {
     }
 
     public String generateToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails
+        Map<String, Object> extraClaims,
+        UserDetails userDetails
     ) {
         return buildToken(extraClaims, userDetails, EXPIRATION);
     }

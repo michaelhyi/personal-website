@@ -32,40 +32,34 @@ public class SecurityConfig {
             HttpSecurity http
     ) throws Exception {
         return http
-                .headers(
-                        httpSecurityHeadersConfigurer ->
-                                httpSecurityHeadersConfigurer
+                .headers(headers -> headers
                                         .cacheControl(HeadersConfigurer
-                                                .CacheControlConfig::disable)
+                                            .CacheControlConfig::disable)
                                         .frameOptions(HeadersConfigurer
-                                                .FrameOptionsConfig::disable)
-                )
+                                            .FrameOptionsConfig::disable))
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(
-                        auth -> auth
-                                .requestMatchers("/v1/auth/**")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.POST)
-                                .hasAnyRole(ADMIN)
-                                .requestMatchers(HttpMethod.GET)
-                                .permitAll()
-                                .requestMatchers(HttpMethod.PUT)
-                                .hasAnyRole(ADMIN)
-                                .requestMatchers(HttpMethod.DELETE)
-                                .hasAnyRole(ADMIN)
-                                .anyRequest()
-                                .authenticated()
-                )
-                .sessionManagement(
-                        sess ->
-                                sess.sessionCreationPolicy(
-                                        SessionCreationPolicy.STATELESS
-                                ))
+                .authorizeHttpRequests(auth -> auth
+                                        .requestMatchers("/v1/auth/**")
+                                        .permitAll()
+                                        .requestMatchers(HttpMethod.POST)
+                                        .hasAnyRole(ADMIN)
+                                        .requestMatchers(HttpMethod.GET)
+                                        .permitAll()
+                                        .requestMatchers(HttpMethod.PUT)
+                                        .hasAnyRole(ADMIN)
+                                        .requestMatchers(HttpMethod.DELETE)
+                                        .hasAnyRole(ADMIN)
+                                        .anyRequest()
+                                        .authenticated())
+                .sessionManagement(sess -> sess
+                                            .sessionCreationPolicy(
+                                                SessionCreationPolicy.STATELESS
+                                            ))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(
-                        jwtAuthFilter,
-                        UsernamePasswordAuthenticationFilter.class)
+                    jwtAuthFilter,
+                    UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
