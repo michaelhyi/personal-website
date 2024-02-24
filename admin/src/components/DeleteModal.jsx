@@ -1,7 +1,7 @@
-import { deletePost } from "../services/post";
 import { useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { deletePost } from "../services/post";
 
 export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
   const navigate = useNavigate();

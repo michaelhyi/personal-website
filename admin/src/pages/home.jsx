@@ -16,12 +16,12 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   const handleLogin = useGoogleLogin({
-    onSuccess: async ({ access_token }) => {
+    onSuccess: async ({ token }) => {
       const { data } = await axios(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         {
-          headers: { Authorization: `Bearer ${access_token}` },
-        }
+          headers: { Authorization: `Bearer ${token}` },
+        },
       );
 
       localStorage.setItem("token", await login(data.email));

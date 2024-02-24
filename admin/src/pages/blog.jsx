@@ -32,10 +32,10 @@ export default function Blog() {
           menuOpen.map((v, i) => {
             if (i === index) return !v;
             return false;
-          })
+          }),
       );
     },
-    [setMenuOpen, menuOpen]
+    [setMenuOpen, menuOpen],
   );
 
   const toggleModal = useCallback(
@@ -49,7 +49,7 @@ export default function Blog() {
         setId(postId);
       }
     },
-    [setMenuOpen, data, modalOpen, setModalOpen, setId]
+    [setMenuOpen, data, modalOpen, setModalOpen, setId],
   );
 
   useEffect(() => {

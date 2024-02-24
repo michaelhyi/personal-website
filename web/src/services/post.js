@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function readPost(id) {
   const { data } = await axios(
-    `${process.env.REACT_APP_API_URL}/v1/post/${id}`
+    `${process.env.REACT_APP_API_URL}/v1/post/${id}`,
   );
   return data;
 }

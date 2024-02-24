@@ -1,7 +1,7 @@
 import BackButton from "../components/BackButton";
 import Container from "../components/Container";
 import Hoverable from "../components/Hoverable";
-import { PROJECTS } from "../constants/projects";
+import PROJECTS from "../constants/projects";
 
 export default function Home() {
   return (
