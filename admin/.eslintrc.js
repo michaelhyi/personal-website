@@ -21,6 +21,7 @@ module.exports = {
   },
   rules: {
     quotes: ["error", "double"],
+    "react/no-danger": "off",
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
