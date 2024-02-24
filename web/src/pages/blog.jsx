@@ -5,17 +5,25 @@ import BackButton from "../components/BackButton";
 import Container from "../components/Container";
 import Hoverable from "../components/Hoverable";
 import Loading from "../components/Loading";
+import NotFound from "../components/NotFound";
+
+import { readAllPosts } from "../services/post";
 
 export default function Blog() {
   const [data, setData] = useState(null);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/v1/post`);
-      setData(await res.json());
+      try {
+        setData(await readAllPosts());
+      } catch {
+        setNotFound(true);
+      }
     })();
   }, []);
 
+  if (notFound) return <NotFound />;
   if (!data) return <Loading />;
 
   return (
