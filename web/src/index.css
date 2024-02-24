@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 * {
-  overscroll-behavior: none;
+    overscroll-behavior: none;
 }

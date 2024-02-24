@@ -10,37 +10,41 @@ import NotFound from "../components/NotFound";
 import { readPost, readPostImage } from "../services/post";
 
 export default function Post() {
-  const { id } = useParams();
-  const [data, setData] = useState(null);
-  const [notFound, setNotFound] = useState(false);
+    const { id } = useParams();
+    const [data, setData] = useState(null);
+    const [notFound, setNotFound] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setData(await readPost(id));
-      } catch {
-        setNotFound(true);
-      }
-    })();
-  }, [id]);
+    useEffect(() => {
+        (async () => {
+            try {
+                setData(await readPost(id));
+            } catch {
+                setNotFound(true);
+            }
+        })();
+    }, [id]);
 
-  if (notFound) return <NotFound />;
-  if (!data) return <Loading />;
+    if (notFound) return <NotFound />;
+    if (!data) return <Loading />;
 
-  return (
-    <Container>
-      <BackButton href="/blog" text="Blog" />
-      <div className="mt-10 text-3xl font-bold">{data.title}</div>
-      <div className="mt-4 text-xs text-neutral-400">
-        {format(new Date(data.date), "PPP")}
-      </div>
-      <img src={readPostImage(id)} alt={data.title} className="w-full mt-6" />
-      <div
-        className="text-[15px] mt-8"
-        dangerouslySetInnerHTML={{
-          __html: data.content,
-        }}
-      />
-    </Container>
-  );
+    return (
+        <Container>
+            <BackButton href="/blog" text="Blog" />
+            <div className="mt-10 text-3xl font-bold">{data.title}</div>
+            <div className="mt-4 text-xs text-neutral-400">
+                {format(new Date(data.date), "PPP")}
+            </div>
+            <img
+                src={readPostImage(id)}
+                alt={data.title}
+                className="w-full mt-6"
+            />
+            <div
+                className="text-[15px] mt-8"
+                dangerouslySetInnerHTML={{
+                    __html: data.content,
+                }}
+            />
+        </Container>
+    );
 }
