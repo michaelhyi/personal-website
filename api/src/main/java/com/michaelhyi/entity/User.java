@@ -26,7 +26,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "\"user\"")
 public class User implements UserDetails {
     @Id
-    @Column(unique = true, updatable = false)
+    @Column(
+        nullable = false,
+        unique = true,
+        updatable = false
+    )
     private String email;
 
     @Override

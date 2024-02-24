@@ -36,18 +36,14 @@ public class PostService {
     }
 
     public void createPostImage(String id, MultipartFile file) {
+        if (readPostImage(id) != null) {
+            s3Service.deleteObject(id);
+        }
+
         try {
-            if (readPostImage(id) != null) {
-                s3Service.deleteObject(id);
-            }
-        } catch (PostNotFoundException e) {
-            throw new PostNotFoundException();
-        } catch (S3Exception e) {
-            try {
-                s3Service.putObject(id, file.getBytes());
-            } catch (IOException ex) {
-                throw new S3Exception();
-            }
+            s3Service.putObject(id, file.getBytes());
+        } catch (IOException e) {
+            throw new S3Exception();
         }
     }
 
@@ -63,7 +59,7 @@ public class PostService {
         try {
             return s3Service.getObject(id);
         } catch (NoSuchKeyException e) {
-            throw new S3Exception();
+            return null;
         }
     }
 
