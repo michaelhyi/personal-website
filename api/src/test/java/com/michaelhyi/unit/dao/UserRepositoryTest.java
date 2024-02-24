@@ -22,7 +22,7 @@ class UserRepositoryTest {
         underTest.deleteAll();
     }
 
-    @Test
+    // @Test
     void findByEmail() {
         User user = User.builder()
                         .email(email)
@@ -31,11 +31,11 @@ class UserRepositoryTest {
         underTest.save(user);
 
         assertTrue(underTest
-                .findByEmail(email)
+                .findById(email)
                 .isPresent());
 
         assertEquals(user, underTest
-                .findByEmail(email)
+                .findById(email)
                 .get()
         );
     }

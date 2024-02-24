@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,10 +26,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "\"user\"")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
-    @Column(updatable = false)
-    private Long id;
-
     @Column(unique = true, updatable = false)
     private String email;
 

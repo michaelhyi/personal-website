@@ -3,7 +3,6 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
@@ -75,60 +74,52 @@ export default function Post() {
     [content]
   );
 
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      id: "",
-    },
-  });
+  const handleClick = useCallback(async () => {
+    setSubmitting(true);
 
-  const handleClick = useCallback(
-    async (data) => {
-      setSubmitting(true);
+    const text = editor?.getHTML();
 
-      const text = editor?.getHTML();
-
-      try {
-        validateForm(text, image, showImage);
-      } catch (e) {
-        toast.custom(({ visible }) => (
-          <Toast visible={visible} message={e.message} success={false} />
-        ));
-        setSubmitting(false);
-        return;
-      }
-
-      try {
-        if (params.get("id")) {
-          await updatePost(params.get("id"), text);
-        } else {
-          await createPost(data.id, text);
-        }
-
-        if (image) {
-          const formData = new FormData();
-          formData.append("file", image);
-          await createPostImage(params.get("id") ?? data.id, formData);
-        }
-
-        toast.custom(({ visible }) => (
-          <Toast
-            visible={visible}
-            message={`Post successfully ${
-              params.get("id") ? "updated" : "published"
-            }!`}
-            success
-          />
-        ));
-      } catch (e) {
-        toast.custom(({ visible }) => (
-          <Toast visible={visible} message={e.response.data} success={false} />
-        ));
-      }
-
+    try {
+      validateForm(text, image, showImage);
+    } catch (e) {
+      toast.custom(({ visible }) => (
+        <Toast visible={visible} message={e.message} success={false} />
+      ));
       setSubmitting(false);
-    },
-    [setSubmitting, params, editor, image, showImage]
-  );
+      return;
+    }
+
+    try {
+      let postId;
+      if (params.get("id")) {
+        await updatePost(params.get("id"), text);
+      } else {
+        postId = await createPost(text);
+      }
+
+      if (image) {
+        const formData = new FormData();
+        formData.append("file", image);
+        await createPostImage(params.get("id") ?? postId, formData);
+      }
+
+      toast.custom(({ visible }) => (
+        <Toast
+          visible={visible}
+          message={`Post successfully ${
+            params.get("id") ? "updated" : "published"
+          }!`}
+          success
+        />
+      ));
+    } catch (e) {
+      toast.custom(({ visible }) => (
+        <Toast visible={visible} message={e.response.data} success={false} />
+      ));
+    }
+
+    setSubmitting(false);
+  }, [setSubmitting, params, editor, image, showImage]);
 
   useEffect(() => {
     (async () => {
@@ -165,18 +156,6 @@ export default function Post() {
   return (
     <Container>
       <BackButton href="/blog" text="Blog" />
-      {params.get("id") ? null : (
-        <div className="flex flex-col mt-10">
-          <label htmlFor="id" className="font-normal text-sm">
-            Post ID
-          </label>
-          <input
-            {...register("id")}
-            disabled={submitting}
-            className="focus:outline-none mt-2 bg-neutral-800 rounded-md shadow-sm mb-5 w-72 px-2 py-2 text-sm text-neutral-200"
-          />
-        </div>
-      )}
       <Editor editor={editor} disabled={submitting} />
       <div className="mt-4" />
       <Dropzone
@@ -191,7 +170,7 @@ export default function Post() {
       />
       <button
         type="submit"
-        onClick={(e) => handleSubmit(handleClick)(e)}
+        onClick={handleClick}
         className="mt-12
                      ml-auto
                      text-sm

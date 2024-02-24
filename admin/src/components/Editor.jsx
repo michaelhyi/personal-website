@@ -17,7 +17,7 @@ export default function Editor({ editor, disabled }) {
   ];
 
   return (
-    <div className="mt-4 bg-neutral-800 rounded-md shadow-sm">
+    <div className="mt-8 bg-neutral-800 rounded-md shadow-sm">
       <div className="flex gap-2 mx-[1.5vw] my-5">
         {controls.map(({ id, onClick, icon: Icon }) => (
           <Hoverable key={id}>

@@ -70,6 +70,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i personal-website-api-keypair.pem ec2-user@${SSH_HOST} '
             sudo docker stop personal-website-api || true
             sudo docker rm personal-website-api || true
+            sudo docker rmi -f $(sudo docker image ls -a -q)
             sudo docker pull michaelyi/personal-website-api:${{ env.API_VERSION }}
             sudo docker run --name personal-website-api -d -p 8080:8080 \
               -e AWS_S3_BUCKET=personal-website-api-bucket-prod \

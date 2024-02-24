@@ -2,7 +2,6 @@ package com.michaelhyi.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,27 +23,16 @@ public class PostService {
     private final S3Service s3Service;
 
     public String createPost(PostRequest req) {
-        PostDestructuredRequest postDestructuredRequest
-                = destructureRequest(req);
-        String title = postDestructuredRequest.title();
-        String content = postDestructuredRequest.content();
+        Post post = new Post(req);
 
-        Optional<Post> post = repository.findById(req.id());
-
-        if (post.isPresent()) {
+        if (repository.findById(post.getId()).isPresent()) {
             throw new IllegalArgumentException(
                     "A post with the same title already exists."
             );
         }
 
-        Post newPost = Post.builder()
-                            .id(req.id())
-                            .title(title)
-                            .content(content)
-                            .build();
-
-        repository.saveAndFlush(newPost);
-        return newPost.getId();
+        repository.saveAndFlush(post);
+        return post.getId();
     }
 
     public void createPostImage(String id, MultipartFile file) {
@@ -86,56 +74,15 @@ public class PostService {
 
     public void updatePost(String id, PostRequest req) {
         Post post = readPost(id);
+        Post updatedPost = new Post(req);
 
-        PostDestructuredRequest postDestructuredRequest
-                = destructureRequest(req);
-        String title = postDestructuredRequest.title();
-        String content = postDestructuredRequest.content();
-
-        post.setTitle(title);
-        post.setContent(content);
-
+        post.setContent(updatedPost.getContent());
         repository.save(post);
     }
 
     public void deletePost(String id) {
         readPost(id);
-
         s3Service.deleteObject(id);
         repository.deleteById(id);
-    }
-
-    private PostDestructuredRequest destructureRequest(PostRequest req) {
-        if (req.text() == null
-                || req.text().isBlank()
-                || req.text().isEmpty()) {
-            throw new IllegalArgumentException("Fields cannot be blank.");
-        }
-
-        String text = req.text();
-        int titleIndex = text.indexOf("</h1>");
-
-        if (titleIndex == -1) {
-            throw new IllegalArgumentException("Title cannot be blank.");
-        }
-
-        String title = text.substring(4, titleIndex);
-        String content = text.substring(titleIndex + 5);
-
-        if (title.isBlank() || title.isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be blank.");
-        }
-
-        if (content.isBlank() || content.isEmpty()) {
-            throw new IllegalArgumentException("Content cannot be blank.");
-        }
-
-        return new PostDestructuredRequest(
-                title.replaceAll("<[^>]*>", ""),
-                content
-        );
-    }
-
-    private record PostDestructuredRequest(String title, String content) {
     }
 }

@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const createPost = async (id, text) => {
+export const createPost = async (text) => {
   const { data } = await axios.post(
     `${process.env.REACT_APP_API_URL}/v1/post`,
-    { id, text },
+    { text },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

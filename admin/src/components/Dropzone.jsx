@@ -55,7 +55,7 @@ export default function Dropzone({
           <div className="flex gap-2 mt-4">
             <img
               alt="post"
-              className="w-[200px] h-[150px]"
+              className="h-[150px]"
               src={
                 !image && id ? readPostImageUrl(id) : URL.createObjectURL(image)
               }
