@@ -22,6 +22,7 @@ export default function Editor({ editor, disabled }) {
         {controls.map(({ id, onClick, icon: Icon }) => (
           <Hoverable key={id}>
             <button
+              label="rtf control"
               className={`duration-500 ${
                 editor?.isActive(id) ? "text-white" : "text-neutral-500"
               }`}
