@@ -21,7 +21,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 public class S3Service {
     @Value("${aws.s3.bucket}")
     private String bucket;
-
     private final S3Client client;
 
     public void putObject(String key, byte[] file) {

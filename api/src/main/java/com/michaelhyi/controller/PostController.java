@@ -38,7 +38,8 @@ public class PostController {
     )
     public void createPostImage(
             @PathVariable("id") String id,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file
+    ) {
         service.createPostImage(id, file);
     }
 
@@ -63,7 +64,8 @@ public class PostController {
     @PutMapping("{id}")
     public ResponseEntity<Void> updatePost(
             @PathVariable("id") String id,
-            @RequestBody PostRequest req) {
+            @RequestBody PostRequest req
+    ) {
         service.updatePost(id, req);
         return ResponseEntity.ok().build();
     }

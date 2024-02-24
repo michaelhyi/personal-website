@@ -20,7 +20,7 @@ public class AuthService {
     private final List<String> whitelistedEmails;
 
     public String login(String email) {
-        Optional<User> user = repository.findByEmail(email);
+        Optional<User> user = repository.findById(email);
 
         if (user.isPresent()) {
             return jwtService.generateToken(user.get());
@@ -44,14 +44,13 @@ public class AuthService {
                            .build();
 
         repository.save(newUser);
-
         return jwtService.generateToken(newUser);
     }
 
     public void validateToken(String token) {
         String email = jwtService.extractUsername(token);
         User user = repository
-                .findByEmail(email)
+                .findById(email)
                 .orElseThrow(UserNotFoundException::new);
 
         if (!jwtService.isTokenValid(token, user)) {

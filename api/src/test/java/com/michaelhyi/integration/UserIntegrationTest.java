@@ -64,6 +64,6 @@ class UserIntegrationTest {
     
     User actual = mapper.readValue(response, User.class);
 
-    assertEquals(expected.getId(), actual.getId());
+    assertEquals(expected.getEmail(), actual.getEmail());
   }
 }

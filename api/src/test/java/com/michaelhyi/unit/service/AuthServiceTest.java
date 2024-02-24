@@ -44,10 +44,10 @@ class AuthServiceTest {
                         .email(email)
                         .build();
 
-        when(repository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(repository.findById(email)).thenReturn(Optional.of(user));
 
         underTest.login(email);
-        verify(repository).findByEmail(email);
+        verify(repository).findById(email);
         verify(jwtService).generateToken(user);
         verifyNoMoreInteractions(repository);
         verifyNoMoreInteractions(jwtService);
@@ -56,7 +56,7 @@ class AuthServiceTest {
     @Test
     void willThrowAuthenticateWhenUnauthorizedUser() {
         assertThrows(UnauthorizedUserException.class, () -> underTest.login("unauthorized@mail.com"));
-        verify(repository).findByEmail("unauthorized@mail.com");
+        verify(repository).findById("unauthorized@mail.com");
         verifyNoMoreInteractions(repository);
         verifyNoInteractions(jwtService);
     }
@@ -65,7 +65,7 @@ class AuthServiceTest {
     void authenticate() {
         underTest.login("test@mail.com");
 
-        verify(repository).findByEmail(email);
+        verify(repository).findById(email);
         verify(repository).save(any());
         verify(jwtService).generateToken(any());
     }
@@ -73,11 +73,11 @@ class AuthServiceTest {
     @Test
     void willThrowValidateTokenWhenUserNotFound() {
         when(jwtService.extractUsername("token")).thenReturn(email);
-        when(repository.findByEmail(email)).thenReturn(Optional.empty());
+        when(repository.findById(email)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> underTest.validateToken("token"));
         verify(jwtService).extractUsername("token");
-        verify(repository).findByEmail(email);
+        verify(repository).findById(email);
         verifyNoMoreInteractions(jwtService);
     }
 
@@ -88,12 +88,12 @@ class AuthServiceTest {
                         .build();
 
         when(jwtService.extractUsername("token")).thenReturn(email);
-        when(repository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(repository.findById(email)).thenReturn(Optional.of(user));
 
         underTest.validateToken("token");
 
         verify(jwtService).extractUsername("token");
-        verify(repository).findByEmail(email);
+        verify(repository).findById(email);
         verify(jwtService).isTokenValid("token", user);
     }
 }

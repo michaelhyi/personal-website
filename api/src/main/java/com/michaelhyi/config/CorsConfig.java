@@ -12,28 +12,29 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class CorsConfig {
-    @Value("#{'${security.cors.allowed-origins}'.split(',')}")
+    @Value("${security.cors.allowed-origins}")
     private List<String> allowedOrigins;
 
     private static final List<String> ALLOWED_METHODS =
-        Arrays.asList("GET,POST,PUT,DELETE,OPTIONS".split(","));
+        Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
     private static final List<String> ALLOWED_HEADERS =
-        Arrays.asList("Authorization,Content-Type".split(","));
+        Arrays.asList("Authorization", "Content-Type");
 
     private static final List<String> EXPOSED_HEADERS =
-        Arrays.asList("Authorization,Content-Type".split(","));
+        Arrays.asList("Authorization", "Content-Type");
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(allowedOrigins);
-        configuration.setAllowedMethods(ALLOWED_METHODS);
-        configuration.setAllowedHeaders(ALLOWED_HEADERS);
-        configuration.setExposedHeaders(EXPOSED_HEADERS);
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(allowedOrigins);
+        config.setAllowedMethods(ALLOWED_METHODS);
+        config.setAllowedHeaders(ALLOWED_HEADERS);
+        config.setExposedHeaders(EXPOSED_HEADERS);
+
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }

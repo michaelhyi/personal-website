@@ -25,22 +25,22 @@ public class ApplicationConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration
+            AuthenticationConfiguration config
     ) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+        return config.getAuthenticationManager();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider =
+        DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-        return daoAuthenticationProvider;
+        provider.setUserDetailsService(userDetailsService());
+        return provider;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByEmail(username)
+        return username -> repository.findById(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found.")
                 );
