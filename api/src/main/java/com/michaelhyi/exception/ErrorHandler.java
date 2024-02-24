@@ -9,38 +9,38 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ErrorHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleException(
-            IllegalArgumentException e
+        IllegalArgumentException e
     ) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<String> handleException(
-            PostNotFoundException e
+        PostNotFoundException e
     ) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleException(
-            S3Exception e
+        S3Exception e
     ) {
         return new ResponseEntity<>(
-                e.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR
+            e.getMessage(),
+            HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 
     @ExceptionHandler(UnauthorizedUserException.class)
     public ResponseEntity<String> handleException(
-            UnauthorizedUserException e
+        UnauthorizedUserException e
     ) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleException(
-            UserNotFoundException e
+        UserNotFoundException e
     ) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }

@@ -16,10 +16,10 @@ public class CorsConfig {
     private List<String> allowedOrigins;
 
     private static final List<String> ALLOWED_METHODS =
-        Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS");
+            Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
     private static final List<String> ALLOWED_AND_EXPOSED_HEADERS =
-        Arrays.asList("Authorization", "Content-Type");
+            Arrays.asList("Authorization", "Content-Type");
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

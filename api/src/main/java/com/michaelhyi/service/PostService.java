@@ -27,7 +27,7 @@ public class PostService {
 
         if (repository.findById(post.getId()).isPresent()) {
             throw new IllegalArgumentException(
-                    "A post with the same title already exists."
+                "A post with the same title already exists."
             );
         }
 

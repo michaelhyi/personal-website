@@ -12,71 +12,71 @@ import Toast from "../components/Toast";
 import { login, validateToken } from "../services/auth";
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
-  const handleLogin = useGoogleLogin({
-    onSuccess: async ({ token }) => {
-      const { data } = await axios(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-          headers: { Authorization: `Bearer ${token}` },
+    const handleLogin = useGoogleLogin({
+        onSuccess: async ({ token }) => {
+            const { data } = await axios(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                },
+            );
+
+            localStorage.setItem("token", await login(data.email));
+            navigate("/blog");
         },
-      );
+        onError: (error) => {
+            toast.custom(({ visible }) => (
+                <Toast
+                    visible={visible}
+                    message={error.error.message}
+                    success={false}
+                />
+            ));
+        },
+    });
 
-      localStorage.setItem("token", await login(data.email));
-      navigate("/blog");
-    },
-    onError: (error) => {
-      toast.custom(({ visible }) => (
-        <Toast
-          visible={visible}
-          message={error.error.message}
-          success={false}
-        />
-      ));
-    },
-  });
+    useEffect(() => {
+        (async () => {
+            const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    (async () => {
-      const token = localStorage.getItem("token");
+            if (!token) {
+                setLoading(false);
+            } else {
+                try {
+                    await validateToken(token);
+                    navigate("/blog");
+                } catch {
+                    localStorage.removeItem("token");
+                    setLoading(false);
+                }
+            }
+        })();
+    }, [navigate]);
 
-      if (!token) {
-        setLoading(false);
-      } else {
-        try {
-          await validateToken(token);
-          navigate("/blog");
-        } catch {
-          localStorage.removeItem("token");
-          setLoading(false);
-        }
-      }
-    })();
-  }, [navigate]);
+    if (loading) return <Loading />;
 
-  if (loading) return <Loading />;
-
-  return (
-    <Container absoluteFooter>
-      <Center>
-        <div className="flex flex-col items-center">
-          <img
-            src="/michael.png"
-            alt="michael"
-            className="h-[100px] w-[100px] rounded-full"
-          />
-          <div className="mt-4 text-2xl font-medium">Michael Yi</div>
-          <div className="mt-1 text-xs font-light text-neutral-400">
-            Personal Website Admin
-          </div>
-          <Hoverable>
-            <button
-              type="button"
-              label="google login button"
-              onClick={handleLogin}
-              className="flex 
+    return (
+        <Container absoluteFooter>
+            <Center>
+                <div className="flex flex-col items-center">
+                    <img
+                        src="/michael.png"
+                        alt="michael"
+                        className="h-[100px] w-[100px] rounded-full"
+                    />
+                    <div className="mt-4 text-2xl font-medium">Michael Yi</div>
+                    <div className="mt-1 text-xs font-light text-neutral-400">
+                        Personal Website Admin
+                    </div>
+                    <Hoverable>
+                        <button
+                            type="button"
+                            label="google login button"
+                            onClick={handleLogin}
+                            className="flex 
                          bg-neutral-800
                          items-center
                          focus:outline-none
@@ -88,13 +88,13 @@ export default function Home() {
                          gap-3
                          px-6 
                          py-2"
-            >
-              <FcGoogle />
-            </button>
-          </Hoverable>
-        </div>
-      </Center>
-      <Toaster position="top-center" />
-    </Container>
-  );
+                        >
+                            <FcGoogle />
+                        </button>
+                    </Hoverable>
+                </div>
+            </Center>
+            <Toaster position="top-center" />
+        </Container>
+    );
 }

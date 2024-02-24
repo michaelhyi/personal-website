@@ -10,34 +10,37 @@ import NotFound from "../components/NotFound";
 import { readAllPosts } from "../services/post";
 
 export default function Blog() {
-  const [data, setData] = useState(null);
-  const [notFound, setNotFound] = useState(false);
+    const [data, setData] = useState(null);
+    const [notFound, setNotFound] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setData(await readAllPosts());
-      } catch {
-        setNotFound(true);
-      }
-    })();
-  }, []);
+    useEffect(() => {
+        (async () => {
+            try {
+                setData(await readAllPosts());
+            } catch {
+                setNotFound(true);
+            }
+        })();
+    }, []);
 
-  if (notFound) return <NotFound />;
-  if (!data) return <Loading />;
+    if (notFound) return <NotFound />;
+    if (!data) return <Loading />;
 
-  return (
-    <Container absoluteFooter>
-      <BackButton href="/" text="Home" />
-      <div className="mt-10 flex flex-col gap-2">
-        {data.map((post) => (
-          <Hoverable key={post.id}>
-            <a className="flex text-sm font-medium" href={`/blog/${post.id}`}>
-              {post.title} <FiArrowUpRight />
-            </a>
-          </Hoverable>
-        ))}
-      </div>
-    </Container>
-  );
+    return (
+        <Container absoluteFooter>
+            <BackButton href="/" text="Home" />
+            <div className="mt-10 flex flex-col gap-2">
+                {data.map((post) => (
+                    <Hoverable key={post.id}>
+                        <a
+                            className="flex text-sm font-medium"
+                            href={`/blog/${post.id}`}
+                        >
+                            {post.title} <FiArrowUpRight />
+                        </a>
+                    </Hoverable>
+                ))}
+            </div>
+        </Container>
+    );
 }

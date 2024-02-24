@@ -27,9 +27,8 @@ public class S3Config {
         return S3Client
                 .builder()
                 .credentialsProvider(
-                        StaticCredentialsProvider
-                                .create(credentials)
-                )
+                    StaticCredentialsProvider
+                        .create(credentials))
                 .region(Region.of(AWS_REGION))
                 .build();
     }

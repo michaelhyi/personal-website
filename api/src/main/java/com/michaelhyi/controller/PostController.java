@@ -33,12 +33,12 @@ public class PostController {
     }
 
     @PostMapping(
-            value = "{id}/image",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+        value = "{id}/image",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public void createPostImage(
-            @PathVariable("id") String id,
-            @RequestParam("file") MultipartFile file
+        @PathVariable("id") String id,
+        @RequestParam("file") MultipartFile file
     ) {
         service.createPostImage(id, file);
     }
@@ -49,8 +49,8 @@ public class PostController {
     }
 
     @GetMapping(
-            value = "{id}/image",
-            produces = MediaType.IMAGE_JPEG_VALUE
+        value = "{id}/image",
+        produces = MediaType.IMAGE_JPEG_VALUE
     )
     public ResponseEntity<byte[]> readPostImage(@PathVariable("id") String id) {
         return ResponseEntity.ok(service.readPostImage(id));
@@ -63,8 +63,8 @@ public class PostController {
 
     @PutMapping("{id}")
     public ResponseEntity<Void> updatePost(
-            @PathVariable("id") String id,
-            @RequestBody PostRequest req
+        @PathVariable("id") String id,
+        @RequestBody PostRequest req
     ) {
         service.updatePost(id, req);
         return ResponseEntity.ok().build();
