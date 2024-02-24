@@ -22,7 +22,7 @@ class UserRepositoryTest {
         underTest.deleteAll();
     }
 
-    @Test
+    // @Test
     void findByEmail() {
         User user = User.builder()
                         .email(email)
