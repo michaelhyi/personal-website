@@ -42,6 +42,7 @@ export default function ViewPost() {
             />
             <div
                 className="text-[15px] mt-8"
+                // eslint-disable-next-line react/no-danger -- html data is sanitized
                 dangerouslySetInnerHTML={{
                     __html: sanitize(data.content),
                 }}
