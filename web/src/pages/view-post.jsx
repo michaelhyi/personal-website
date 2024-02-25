@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { sanitize } from "dompurify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -9,7 +10,7 @@ import NotFound from "../components/NotFound";
 
 import { readPost, readPostImage } from "../services/post";
 
-export default function Post() {
+export default function ViewPost() {
     const { id } = useParams();
     const [data, setData] = useState(null);
     const [notFound, setNotFound] = useState(false);
@@ -41,8 +42,9 @@ export default function Post() {
             />
             <div
                 className="text-[15px] mt-8"
+                // eslint-disable-next-line react/no-danger -- html data is sanitized
                 dangerouslySetInnerHTML={{
-                    __html: data.content,
+                    __html: sanitize(data.content),
                 }}
             />
         </Container>
