@@ -1,96 +1,47 @@
-import Document from "@tiptap/extension-document";
-import Placeholder from "@tiptap/extension-placeholder";
-import { useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import AuthorizedRoute from "../components/AuthorizedRoute";
 import BackButton from "../components/BackButton";
-import Center from "../components/Center";
 import Container from "../components/Container";
 import Dropzone from "../components/Dropzone";
 import Editor from "../components/Editor";
 import Loading from "../components/Loading";
+import NotFound from "../components/NotFound";
 import Spinner from "../components/Spinner";
 import Toast from "../components/Toast";
+import useEditor from "../hooks/useEditor";
 import {
     createPost,
     createPostImage,
     readPost,
     updatePost,
 } from "../services/post";
-
-const CustomDocument = Document.extend({
-    content: "heading block*",
-});
-
-const validateForm = (text, image, showImage) => {
-    const titleIndex = text.search("</h1>");
-    const title = text.substring(4, titleIndex);
-    const content = text.substring(titleIndex + 5);
-
-    if (!title || title.length === 0) throw new Error("A title is required.");
-
-    if (!content || content.length === 0)
-        throw new Error("Post content is required.");
-
-    if (!image && !showImage) throw new Error("An image is required.");
-};
+import validateForm from "../utils/validateForm";
 
 export default function Post() {
-    const [params] = useSearchParams();
-    const [notFound, setNotFound] = useState(false);
-    const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState(null);
-    const [content, setContent] = useState(null);
     const [image, setImage] = useState(null);
+    const [content, setContent] = useState(null);
     const [showImage, setShowImage] = useState(null);
     const [submitting, setSubmitting] = useState(false);
-    const editor = useEditor(
-        {
-            content,
-            editorProps: {
-                attributes: {
-                    class: "prose dark:prose-invert prose-sm mx-[1.5vw] my-5 focus:outline-none",
-                },
-            },
-            extensions: [
-                CustomDocument,
-                Placeholder.configure({
-                    placeholder: ({ node }) => {
-                        if (node.type.name === "heading") {
-                            return "Enter your title here...";
-                        }
 
-                        return "Start writing here...";
-                    },
-                    emptyNodeClass:
-                        "cursor-text before:content-[attr(data-placeholder)] before:absolute before:text-mauve-11 before:opacity-50 before-pointer-events-none",
-                }),
-                StarterKit.configure({ document: false }),
-            ],
-        },
-        [content],
-    );
+    const [loading, setLoading] = useState(true);
+    const [notFound, setNotFound] = useState(false);
 
-    const handleClick = useCallback(async () => {
+    const editor = useEditor(content);
+    const [params] = useSearchParams();
+
+    const handleSubmit = useCallback(async () => {
         setSubmitting(true);
 
-        const text = editor?.getHTML();
-
         try {
-            validateForm(text, image, showImage);
-        } catch (e) {
-            toast.custom(({ visible }) => (
-                <Toast visible={visible} message={e.message} success={false} />
-            ));
-            setSubmitting(false);
-            return;
-        }
-
-        try {
+            const text = editor.getHTML();
             let postId;
-            if (params.get("id")) {
+
+            validateForm(text, image, showImage);
+
+            if (params.get("mode") === "edit") {
                 await updatePost(params.get("id"), text);
             } else {
                 postId = await createPost(text);
@@ -104,18 +55,20 @@ export default function Post() {
 
             toast.custom(({ visible }) => (
                 <Toast
+                    success
                     visible={visible}
                     message={`Post successfully ${
-                        params.get("id") ? "updated" : "published"
+                        params.get("mode") === "create"
+                            ? "published"
+                            : "updated"
                     }!`}
-                    success
                 />
             ));
         } catch (e) {
             toast.custom(({ visible }) => (
                 <Toast
                     visible={visible}
-                    message={e.response.data}
+                    message={e.response ? e.response.data : e.message}
                     success={false}
                 />
             ));
@@ -125,60 +78,47 @@ export default function Post() {
     }, [setSubmitting, params, editor, image, showImage]);
 
     useEffect(() => {
-        (async () => {
-            if (params.get("id")) {
+        setShowImage(params.get("mode") === "edit");
+
+        if (params.get("mode") === "edit") {
+            (async () => {
                 setLoading(true);
-                setShowImage(true);
-                try {
-                    const post = await readPost(params.get("id")).catch(
-                        () => {},
-                    );
-                    setTitle(post.title);
-                    setContent(`<h1>${post.title}</h1>${post.content}`);
-                    setLoading(false);
-                } catch {
-                    setNotFound(true);
-                }
-            } else {
-                setLoading(false);
-                setShowImage(false);
-            }
-        })();
-    }, [params, editor]);
 
-    if (notFound) {
-        return (
-            <Container absoluteFooter>
-                <Center>
-                    <div className="text-[10px] text-neutral-300">
-                        Not Found
-                    </div>
-                </Center>
-            </Container>
-        );
-    }
+                const post = await readPost(params.get("id")).catch(() =>
+                    setNotFound(true),
+                );
 
+                setTitle(post.title);
+                setContent(`<h1>${post.title}</h1>${post.content}`);
+            })();
+        }
+
+        setLoading(false);
+    }, [params]);
+
+    if (notFound) return <NotFound />;
     if (loading) return <Loading />;
 
     return (
-        <Container>
-            <BackButton href="/blog" text="Blog" />
-            <Editor editor={editor} disabled={submitting} />
-            <div className="mt-4" />
-            <Dropzone
-                id={params.get("id")}
-                showImage={showImage}
-                setShowImage={setShowImage}
-                title={title}
-                submitting={submitting}
-                setSubmitting={setSubmitting}
-                image={image}
-                setImage={setImage}
-            />
-            <button
-                type="submit"
-                onClick={handleClick}
-                className="mt-12
+        <AuthorizedRoute>
+            <Container>
+                <BackButton href="/blog" text="Blog" />
+                <Editor editor={editor} disabled={submitting} />
+                <div className="mt-4" />
+                <Dropzone
+                    id={params.get("id")}
+                    showImage={showImage}
+                    setShowImage={setShowImage}
+                    title={title}
+                    submitting={submitting}
+                    setSubmitting={setSubmitting}
+                    image={image}
+                    setImage={setImage}
+                />
+                <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    className="mt-12
                      ml-auto
                      text-sm
                      flex
@@ -193,10 +133,11 @@ export default function Post() {
                      shadow-sm
                      duration-500 
                      hover:opacity-50"
-            >
-                {submitting ? <Spinner /> : "Submit"}
-            </button>
-            <Toaster position="bottom-center" />
-        </Container>
+                >
+                    {submitting ? <Spinner /> : "Submit"}
+                </button>
+                <Toaster position="bottom-center" />
+            </Container>
+        </AuthorizedRoute>
     );
 }
