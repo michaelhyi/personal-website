@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineClose, AiOutlineCloudDownload } from "react-icons/ai";
-import { readPostImageUrl } from "../services/post";
+import { readPostImage } from "../services/post";
 
 export default function Dropzone({
     id,
@@ -61,7 +61,7 @@ export default function Dropzone({
                             className="h-[150px]"
                             src={
                                 !image && id
-                                    ? readPostImageUrl(id)
+                                    ? readPostImage(id)
                                     : URL.createObjectURL(image)
                             }
                         />

@@ -22,6 +22,6 @@ module.exports = {
             },
         },
     },
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line global-require -- must use require()
     plugins: [require("@tailwindcss/typography")],
 };

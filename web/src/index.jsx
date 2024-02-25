@@ -10,7 +10,7 @@ import Blog from "./pages/blog";
 import Home from "./pages/home";
 import Lauren from "./pages/lauren";
 import Portfolio from "./pages/portfolio";
-import Post from "./pages/post";
+import ViewPost from "./pages/view-post";
 
 const router = createBrowserRouter([
     {
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/blog/:id",
-        element: <Post />,
+        element: <ViewPost />,
     },
 ]);
 

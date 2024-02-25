@@ -34,7 +34,7 @@ export async function readPost(id) {
     return data;
 }
 
-export function readPostImageUrl(id) {
+export function readPostImage(id) {
     return `${process.env.REACT_APP_API_URL}/v1/post/${id}/image`;
 }
 
