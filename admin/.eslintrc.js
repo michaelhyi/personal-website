@@ -25,4 +25,5 @@ module.exports = {
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off",
     },
+    plugins: ["prettier"],
 };
