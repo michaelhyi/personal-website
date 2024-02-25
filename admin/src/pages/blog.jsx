@@ -21,8 +21,7 @@ export default function Blog() {
     const toggleMenu = useCallback(
         (index) => {
             setMenuOpen(
-                menuOpen &&
-                    menuOpen.map((v, i) => (i === index ? !v : false)),
+                menuOpen && menuOpen.map((v, i) => (i === index ? !v : false)),
             );
         },
         [setMenuOpen, menuOpen],
