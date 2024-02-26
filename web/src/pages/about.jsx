@@ -11,11 +11,12 @@ export default function About() {
                     <BackButton href="/" text="Home" />
                     <div>
                         Michael Yi is a software engineer based in Atlanta, GA.
-                        He&apos;s currently studying computer science at Georgia
-                        Tech with concentrations in Artificial Intelligence and
-                        Information Internetworks. He&apos;s an incoming intern
-                        at T-Mobile; previously, he interned at Ardent Labs and
-                        MegaEvolution.
+                        He&apos;s an incoming Software Engineer Intern at
+                        T-Mobile for Summer 2024; previously, he interned at
+                        Ardent Labs and MegaEvolution. He&apos;s currently
+                        studying Computer Science at Georgia Tech with
+                        concentrations in Artificial Intelligence and
+                        Information Internetworks.
                     </div>
                     <div>
                         Michael loves building. When he&apos;s not creating
