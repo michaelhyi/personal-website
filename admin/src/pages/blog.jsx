@@ -84,13 +84,11 @@ export default function Blog() {
                         </div>
                     ))}
                 </div>
-                {modalOpen && id ? (
-                    <DeleteModal
-                        id={id}
-                        modalOpen={modalOpen}
-                        handleToggleModal={toggleModal}
-                    />
-                ) : null}
+                <DeleteModal
+                    id={id}
+                    modalOpen={modalOpen}
+                    handleToggleModal={toggleModal}
+                />
             </Container>
         </AuthorizedRoute>
     );
