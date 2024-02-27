@@ -26,7 +26,7 @@ export async function createPostImage(id, formData) {
             headers: {
                 ...authConfig().headers,
                 "Content-Type": "multipart/form-data",
-            }
+            },
         },
     );
 }
