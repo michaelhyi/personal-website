@@ -7,18 +7,17 @@ import Container from "../components/Container";
 import Hoverable from "../components/Hoverable";
 import Toast from "../components/Toast";
 import UnauthorizedRoute from "../components/UnauthorizedRoute";
-import { extractUsernameFromGoogleToken, login } from "../services/auth";
+import { login } from "../services/auth";
 
 export default function Home() {
     const navigate = useNavigate();
 
     const handleLogin = useGoogleLogin({
-        onSuccess: ({ access_token: token }) => {
+        // eslint-disable-next-line camelcase -- google api uses snake_case
+        onSuccess: ({ access_token }) => {
             (async () => {
                 try {
-                    const username =
-                        await extractUsernameFromGoogleToken(token);
-                    localStorage.setItem("token", await login(username));
+                    await login(access_token);
                     navigate("/blog");
                 } catch (e) {
                     toast.custom(({ visible }) => (
