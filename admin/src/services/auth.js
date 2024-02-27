@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function extractUsernameFromGoogleToken(token) {
+async function extractUsernameFromGoogleToken(token) {
     const { data } = await axios(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         {
@@ -11,12 +11,14 @@ export async function extractUsernameFromGoogleToken(token) {
     return data.email;
 }
 
-export async function login(email) {
-    const { data } = await axios.post(
+export async function login(googleToken) {
+    const email = await extractUsernameFromGoogleToken(googleToken);
+
+    const { data: jwt } = await axios.post(
         `${process.env.REACT_APP_API_URL}/v1/auth/${email}`,
     );
 
-    return data;
+    localStorage.setItem("token", jwt);
 }
 
 export async function validateToken(token) {
