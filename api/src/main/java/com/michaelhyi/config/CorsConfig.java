@@ -19,7 +19,11 @@ public class CorsConfig {
             Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
     private static final List<String> ALLOWED_AND_EXPOSED_HEADERS =
-            Arrays.asList("Authorization", "Content-Type");
+            Arrays.asList("Authorization",
+                          "Cache-Control",
+                          "Content-Type",
+                          "Pragma",
+                          "Expires");
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

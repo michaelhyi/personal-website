@@ -1,7 +1,8 @@
-import axios from "axios";
+import fetch from "axios";
+import axios from "../lib/axios";
 
 async function extractUsernameFromGoogleToken(token) {
-    const { data } = await axios(
+    const { data } = await fetch(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         {
             headers: { Authorization: `Bearer ${token}` },
