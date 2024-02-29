@@ -39,10 +39,7 @@ public class AuthService {
             throw new UnauthorizedUserException();
         }
 
-        User newUser = User.builder()
-                           .email(email)
-                           .build();
-
+        User newUser = new User(email);
         repository.save(newUser);
         return jwtService.generateToken(newUser);
     }

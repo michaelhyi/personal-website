@@ -1,24 +1,19 @@
 package com.michaelhyi.entity;
 
 import java.util.Date;
-
 import org.hibernate.annotations.CreationTimestamp;
-
 import com.michaelhyi.dto.PostRequest;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class Post {
     @Id
