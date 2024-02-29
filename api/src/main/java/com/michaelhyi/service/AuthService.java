@@ -2,7 +2,6 @@ package com.michaelhyi.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import com.michaelhyi.dao.UserRepository;
 import com.michaelhyi.entity.User;
