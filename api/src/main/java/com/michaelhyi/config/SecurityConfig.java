@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.michaelhyi.Jwt.JwtAuthenticationFilter;
+import com.michaelhyi.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 
 @Configuration

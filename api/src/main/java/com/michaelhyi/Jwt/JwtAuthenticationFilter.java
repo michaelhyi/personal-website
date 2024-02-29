@@ -1,4 +1,4 @@
-package com.michaelhyi.Jwt;
+package com.michaelhyi.jwt;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.michaelhyi.Jwt;
+package com.michaelhyi.jwt;
 
 import java.security.Key;
 import java.util.Date;
