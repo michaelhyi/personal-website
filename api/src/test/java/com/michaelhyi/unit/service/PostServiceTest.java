@@ -170,7 +170,7 @@
 //         verify(repository).findAll(Sort.by(Sort.Direction.DESC, "date"));
 //     }
 
-//     @Test
+//     // @Test
 //     void willThrowUpdatePostWhenPostDoesNotExist() {
 //         given(repository.findById("id")).willReturn(Optional.empty());
 
