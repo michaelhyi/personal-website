@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +82,6 @@ class AuthIT {
         assertEquals(expected.getEmail(), jwtService.extractUsername(res));
     }
 
-    //TODO: test expired token?
     @Test
     void validateToken() throws Exception {
         User user = new User("test@mail.com"); 
@@ -109,8 +107,21 @@ class AuthIT {
 
         assertEquals("Unauthorized.", error);
 
+        final String expiredToken = "eyJhbGciOiJIUzI1NiJ9"
+                + ".eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzA5MzI0OTUxLCJleHAiOjE3MDkzMjQ5NTF9"
+                + ".0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM";
+
+        error = mvc.perform(get("/v1/auth/validate-token/" + expiredToken))
+            .andExpect(status().isUnauthorized())
+            .andReturn()
+            .getResolvedException()
+            .getMessage();
+
+        assertEquals("Unauthorized.", error);
+
         mvc.perform(get("/v1/auth/validate-token/" + token))
             .andExpect(status().isOk());
+        
     }
 
     private String generateUnauthorizedToken(UserDetails details) {
