@@ -42,7 +42,32 @@ class PostServiceTest {
         underTest = new PostService(repository, s3Service);
     }
     
-    //TODO: test post constructor
+    @Test
+    void willThrowPostConstructorWhenBadRequest() {
+        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest(null)));
+        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("")));
+        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("no-title")));
+        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1></h1>")));
+        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1>no-content></h1>")));
+
+        PostRequest req = new PostRequest("<h1>title</h1>content");
+        Post newPost = new Post(req);
+        assertEquals(post.getId(), newPost.getId());
+        assertEquals(post.getTitle(), newPost.getTitle());
+        assertEquals(post.getContent(), newPost.getContent());
+
+        req = new PostRequest("<h1>Oldboy (2003)</h1><p>content</p>");
+        newPost = new Post(req);
+        assertEquals("oldboy", newPost.getId());
+        assertEquals("Oldboy (2003)", newPost.getTitle());
+        assertEquals("<p>content</p>", newPost.getContent());
+
+        req = new PostRequest("<h1>It's Such A Beautiful Day (2012)</h1>Don Hertzfeldt");
+        newPost = new Post(req);
+        assertEquals("its-such-a-beautiful-day", newPost.getId());
+        assertEquals("It's Such A Beautiful Day (2012)", newPost.getTitle());
+        assertEquals("Don Hertzfeldt", newPost.getContent());
+    }
 
     @Test
     void willThrowCreatePostWhenAlreadyExists() {
