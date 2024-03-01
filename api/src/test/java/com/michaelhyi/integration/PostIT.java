@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,11 +28,17 @@ class PostIT {
     @Autowired
     private PostRepository repository;
 
+    @BeforeEach
+    void setUp() {
+        repository.deleteAll();
+    }
+
     @AfterEach
     void tearDown() {
         repository.deleteAll();
     }
 
+    //TODO: complete
     @Test
     void createPost() throws Exception {
         String token = mvc.perform(post("/v1/auth/test@mail.com")
@@ -77,5 +84,19 @@ class PostIT {
             .andReturn().getResolvedException().getMessage();
 
         assertEquals(error, "A post with the same title already exists.");
+    }
+
+    //TODO: check if no such key
+    //TODO: works otherwise
+    @Test
+    void createPostImage() throws Exception {
+        String error = mvc.perform(post("/v1/post/does-not-exist/image")
+                                    .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+                        .andExpect(status().isNotFound())
+                        .andReturn()
+                        .getResolvedException()
+                        .getMessage();
+
+        assertEquals("Post not found.", error);
     }
 }

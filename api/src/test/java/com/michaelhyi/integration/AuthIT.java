@@ -88,6 +88,7 @@ class AuthIT {
         assertEquals(expected.getEmail(), jwtService.extractUsername(res));
     }
 
+    //TODO: test expired token?
     @Test
     void validateToken() throws Exception {
         User user = new User("test@mail.com"); 
