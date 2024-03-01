@@ -72,7 +72,8 @@ public class Post {
                                 .replace(" ", "-")
                                 .replaceAll("[^a-z\\-]", "");
 
-        id = newId.substring(0, newId.length() - 1);
+        id = newId.charAt(newId.length() - 1) == '-'
+                ? newId.substring(0, newId.length() - 1) : newId;
         title = newTitle.replaceAll("<[^>]*>", "");
         content = newContent;
     }

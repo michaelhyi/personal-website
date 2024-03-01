@@ -44,11 +44,6 @@ class AuthIT {
         repository.deleteAll();
     } 
     
-    @AfterEach
-    void tearDown() {
-        repository.deleteAll();
-    }
-
     @Test
     void login() throws Exception {
         User alreadyExists = new User("alreadyexists@mail.com");
