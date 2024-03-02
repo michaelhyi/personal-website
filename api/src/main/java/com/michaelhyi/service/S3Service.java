@@ -1,12 +1,9 @@
 package com.michaelhyi.service;
 
 import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.michaelhyi.exception.S3Exception;
-
+import com.michaelhyi.exception.S3ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -46,7 +43,7 @@ public class S3Service {
         try {
             return res.readAllBytes();
         } catch (IOException e) {
-            throw new S3Exception();
+            throw new S3ObjectNotFoundException();
         }
     }
 
