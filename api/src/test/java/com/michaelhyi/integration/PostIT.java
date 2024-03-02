@@ -3,6 +3,7 @@ package com.michaelhyi.integration;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -49,9 +50,8 @@ class PostIT {
         repository.deleteAll();
         writer = mapper.writer().withDefaultPrettyPrinter();
         s3Service.deleteObject("title");
+        s3Service.deleteObject("oldboy");
     }
-
-    //TODO: test post constructor
 
     @Test
     void createPost() throws Exception {
@@ -114,7 +114,7 @@ class PostIT {
                             .getResponse()
                             .getContentAsString();
 
-        MockMultipartFile file = new MockMultipartFile("file", new byte[0]);
+        MockMultipartFile file = new MockMultipartFile("file", "Hello World!".getBytes());
 
         String error = mvc.perform(multipart("/v1/post/does-not-exist/image")
                                     .file(file)
@@ -207,8 +207,7 @@ class PostIT {
         assertEquals("<p>In Park Chan-wook's masterpiece...</p>", actual.getContent());
     }
 
-    //TODO: complete
-    // @Test
+    @Test
     void readPostImage() throws Exception {
         String token = mvc.perform(post("/v1/auth/test@mail.com")
                             .accept(MediaType.APPLICATION_JSON))
@@ -236,11 +235,24 @@ class PostIT {
                         .getContentAsString();
         
         String res = mvc.perform(get("/v1/post/oldboy/image"))
-                            .andExpect(status().isNotFound())
+                            .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()
                             .getContentAsString();
-        assertEquals("null", res);
+        assertTrue(res.isEmpty());
+
+        MockMultipartFile file = new MockMultipartFile("file", "Hello World!".getBytes());
+        mvc.perform(multipart("/v1/post/" + id + "/image")
+                        .file(file)
+                        .header("Authorization", "Bearer " + token))
+            .andExpect(status().isOk());
+        
+        byte[] image = mvc.perform(get("/v1/post/oldboy/image"))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsByteArray();
+        assertArrayEquals(file.getBytes(), image);
     }
 
     @Test

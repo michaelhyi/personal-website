@@ -113,14 +113,14 @@ class PostServiceTest {
     void willUpdateS3ObjectDuringCreatePostImageWhenImageAlreadyExists() {
         when(repository.findById("title"))
             .thenReturn(Optional.of(post));
-        when(s3Service.getObject("title")).thenReturn(new byte[0]);
+        when(s3Service.getObject("title")).thenReturn("Hello World!".getBytes());
 
-        underTest.createPostImage("title", new MockMultipartFile("file", new byte[0]));
+        underTest.createPostImage("title", new MockMultipartFile("file", "New Hello World!".getBytes()));
 
         verify(repository).findById("title");
         verify(s3Service).getObject("title");
         verify(s3Service).deleteObject("title");
-        verify(s3Service).putObject("title", new byte[0]); 
+        verify(s3Service).putObject("title", "New Hello World!".getBytes()); 
     }
 
     @Test
@@ -129,12 +129,12 @@ class PostServiceTest {
             .thenReturn(Optional.of(post));
         when(s3Service.getObject("title")).thenThrow(NoSuchKeyException.class);
 
-        underTest.createPostImage("title", new MockMultipartFile("file", new byte[0]));
+        underTest.createPostImage("title", new MockMultipartFile("file", "Hello World!".getBytes()));
 
         verify(repository).findById("title");
         verify(s3Service).getObject("title");
         verify(s3Service, never()).deleteObject("title");
-        verify(s3Service).putObject(any(), eq(new byte[0]));
+        verify(s3Service).putObject(any(), eq("Hello World!".getBytes()));
     }
 
     @Test
@@ -179,7 +179,7 @@ class PostServiceTest {
 
     @Test
     void readPostImage() {
-        byte[] expected = new byte[0];
+        byte[] expected = "Hello World!".getBytes();
 
         when(repository.findById("title")).thenReturn(Optional.of(post));
         when(s3Service.getObject("title")).thenReturn(expected);
