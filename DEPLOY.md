@@ -1,11 +1,11 @@
 ## Deployment
 
-# PostgreSQL Production Server
+# MySQL Server
 
 1. [Launch a new EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/home?region=us-east-2#LaunchInstances:).
 2. Make sure that the OS is set to `Amazon Linux 2023 AMI`. Architecture should be set to `64-bit (x86)`.
 3. Click `Create new key pair`. Make sure that `Key pair type` is set to `RSA` and the `Private key file format` is set to `.pem`.
-4. Under `Network settings`, set the `VPC` to the default VPC. Set the `Subnet` to `us-east-2a`. Under `Inbound Security Group Rules`, make sure that ports `5432` is open to all sources and `22` is set to your IP address only.
+4. Under `Network settings`, set the `VPC` to the default VPC. Set the `Subnet` to `us-east-2a`. Under `Inbound Security Group Rules`, make sure that ports `3306` is open to all sources and `22` is set to your IP address only.
 5. Only on your first time using the keypair, run the following command.
 
 ```shell
@@ -18,61 +18,40 @@ chmod 400 /path/to/keypair
 ssh -i /path/to/keypair ec2-user@<EC2 Instace IP Address>
 ```
 
-7. Update Amazon Linux 2023 packages.
+7. Install MySQL.
 
 ```shell
 sudo dnf update
-```
-
-8. Install PostgreSQL.
-
-```shell
 sudo dnf install postgresql15.x86_64 postgresql15-server -y
+sudo wget https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm 
+sudo dnf install mysql80-community-release-el9-1.noarch.rpm -y
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
+sudo dnf install mysql-community-server -y
+sudo systemctl start mysqld
+sudo grep 'temporary password' /var/log/mysqld.log
 ```
 
-9. Initialize a PostgreSQL database. Then, start and enable the Postgres service.
+8. Use the temporary password output to login to MySQL. Subsequently, update the root password.
 
 ```shell
-sudo postgresql-setup --initdb
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-sudo systemctl status postgresql
+mysql -u root -p
+ALTER USER 'root'@'localhost' IDENTIFIED BY '<NEW PASSWORD>'; 
 ```
 
-10. Backup and edit your config file.
+9. Create a new user, database, and grant privileges to the user.
+
 ```shell
-sudo cp /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.bck
-sudo vi /var/lib/pgsql/data/postgresql.conf
+CREATE USER '<USERNAME>'@'%' IDENTIFIED BY '<PASSWORD>';
+CREATE DATABASE personal_website_api_db_prod;
+GRANT ALL PRIVILEGES ON personal_website_api_db_prod.* TO '<USERNAME>'@'%';
+FLUSH PRIVILEGES;
 ```
 
-11. Update the line that configures `listen_addresses`.
-```
-listen_addresses = '*'
-```
+10. Initialize the database with tables.
 
-12. Backup and edit the authentication config file.
 ```shell
-sudo cp /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bck
-sudo vi /var/lib/pgsql/data/pg_hba.conf
-```
-
-13. Update allowed connections.
-```
-host     all     all     0.0.0.0/0     md5
-```
-
-14. Restart the Postgres service.
-```shell
-sudo systemctl restart postgresql
-```
-
-15. Create a user + database.
-```shell
-sudo -i -u postgres psql
-
-CREATE USER <username> WITH PASSWORD '<password>';
-CREATE DATABASE personal_website_api_db;
-ALTER DATABASE personal_website_api_db OWNER TO <username>;
+USE personal_website_api_db_prod;
+# copy the code from V1__Initial_Setup.sql in ./api/main/resources/db/migrations
 ```
 
 Repeat the above steps to create a test database server for running integration tests.

@@ -4,7 +4,7 @@
 
 - Node
 - Maven
-- PostgreSQL
+- MySQL 
 
 1. Clone the repository and navigate to the project.
 
@@ -40,13 +40,13 @@ cp example.properties ../../test/resources/application-it.properties
 
 - Set `security.jwt.secret-key` equal to your generated secret key in both files.
 
-> Using the instructions [here](https://github.com/michaelhyi/personal-website/blob/prod/DEPLOY.md) on how to create a Postgres database server using AWS EC2 instances, create a test Postgres server. 
+> Using the instructions [here](https://github.com/michaelhyi/personal-website/blob/prod/DEPLOY.md) on how to create a MySQL database server using AWS EC2 instances, create a test MySQL server. 
 - Update `spring.datasource.url`, `spring.datasource.username`, and `spring.datasource.password` to reflect the configuration to your test server.
-- Add the following property to `application-it.properties`: `spring.datasource.driver-class-name=org.postgresql.Driver`.
+- Add the following property to `application-it.properties`: `spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver`.
 
-4. Create a new PostgreSQL database. 
+4. Create a new MySQL database. 
 
-> Create a new database called `personal_website_api_db`. Make sure that your Postgres master username and password are both set to `postgres`.
+> Create a new database called `personal_website_api_db`. Make sure that your Postgres master username and password are both set to `root`.
 
 5. Create an AWS S3 bucket.
 

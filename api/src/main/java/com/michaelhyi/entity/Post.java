@@ -22,21 +22,19 @@ public class Post {
     @Setter(AccessLevel.NONE)
     @Column(
         nullable = false,
-        unique = true,
-        updatable = false
+        unique = true
     )
     private String id;
 
     @CreationTimestamp
     @Setter(AccessLevel.NONE)
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private Date date;
 
     @Setter(AccessLevel.NONE)
     @Column(
         nullable = false,
-        unique = true,
-        updatable = false
+        unique = true
     )
     private String title;
 
