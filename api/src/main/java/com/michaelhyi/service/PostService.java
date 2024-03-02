@@ -11,7 +11,8 @@ import com.michaelhyi.dao.PostRepository;
 import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.exception.PostNotFoundException;
-import com.michaelhyi.exception.S3Exception;
+import com.michaelhyi.exception.S3ObjectNotFoundException;
+import com.michaelhyi.exception.S3ServiceException;
 
 import lombok.AllArgsConstructor;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
@@ -36,14 +37,17 @@ public class PostService {
     }
 
     public void createPostImage(String id, MultipartFile file) {
-        if (readPostImage(id) != null) {
+        try {
+            readPostImage(id);
             s3Service.deleteObject(id);
+        } catch (S3ObjectNotFoundException e) {
+
         }
 
         try {
             s3Service.putObject(id, file.getBytes());
         } catch (IOException e) {
-            throw new S3Exception();
+            throw new S3ServiceException();
         }
     }
 
@@ -58,8 +62,8 @@ public class PostService {
 
         try {
             return s3Service.getObject(id);
-        } catch (NoSuchKeyException e) {
-            return null;
+        } catch (NoSuchKeyException | S3ObjectNotFoundException e) {
+            throw new S3ObjectNotFoundException();
         }
     }
 

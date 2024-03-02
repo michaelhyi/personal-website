@@ -22,6 +22,7 @@ import com.michaelhyi.dao.PostRepository;
 import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.exception.PostNotFoundException;
+import com.michaelhyi.exception.S3ObjectNotFoundException;
 import com.michaelhyi.service.PostService;
 import com.michaelhyi.service.S3Service;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
@@ -167,14 +168,13 @@ class PostServiceTest {
     }
 
     @Test
-    void willReturnNullDuringReadPostImageWhenS3KeyNotFound() {
+    void willThrowReadPostImageWhenS3KeyNotFound() {
         when(repository.findById("title")).thenReturn(Optional.of(post));
         when(s3Service.getObject("title")).thenThrow(NoSuchKeyException.class);
 
-        byte[] actual = underTest.readPostImage("title");
+        assertThrows(S3ObjectNotFoundException.class, () -> underTest.readPostImage("title"));
         verify(repository).findById("title");
         verify(s3Service).getObject("title");
-        assertEquals(null, actual);
     }
 
     @Test

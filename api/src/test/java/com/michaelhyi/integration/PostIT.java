@@ -239,12 +239,12 @@ class PostIT {
                         .getResponse()
                         .getContentAsString();
         
-        String res = mvc.perform(get("/v1/post/oldboy/image"))
-                            .andExpect(status().isOk())
-                            .andReturn()
-                            .getResponse()
-                            .getContentAsString();
-        assertTrue(res.isEmpty());
+        error = mvc.perform(get("/v1/post/oldboy/image"))
+                    .andExpect(status().isNotFound())
+                    .andReturn()
+                    .getResolvedException()
+                    .getMessage();
+        assertEquals("S3 object not found.", error);
 
         MockMultipartFile file = new MockMultipartFile("file", "Hello World!".getBytes());
         mvc.perform(multipart("/v1/post/" + id + "/image")

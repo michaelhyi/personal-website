@@ -21,13 +21,23 @@ public class ErrorHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(S3ServiceException.class)
     public ResponseEntity<String> handleException(
-        S3Exception e
+        S3ServiceException e
     ) {
         return new ResponseEntity<>(
             e.getMessage(),
             HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @ExceptionHandler(S3ObjectNotFoundException.class)
+    public ResponseEntity<String> handleException(
+        S3ObjectNotFoundException e
+    ) {
+        return new ResponseEntity<>(
+            e.getMessage(),
+            HttpStatus.NOT_FOUND
         );
     }
 
