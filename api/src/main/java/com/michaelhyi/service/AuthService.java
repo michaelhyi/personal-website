@@ -2,14 +2,12 @@ package com.michaelhyi.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
 import com.michaelhyi.dao.UserRepository;
 import com.michaelhyi.entity.User;
 import com.michaelhyi.exception.UnauthorizedUserException;
 import com.michaelhyi.exception.UserNotFoundException;
-
+import com.michaelhyi.jwt.JwtService;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -39,10 +37,7 @@ public class AuthService {
             throw new UnauthorizedUserException();
         }
 
-        User newUser = User.builder()
-                           .email(email)
-                           .build();
-
+        User newUser = new User(email);
         repository.save(newUser);
         return jwtService.generateToken(newUser);
     }
