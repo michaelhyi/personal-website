@@ -15,7 +15,8 @@ export async function login(googleToken) {
     const email = await extractUsernameFromGoogleToken(googleToken);
 
     const { data: jwt } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/v1/auth/${email}`,
+        `${process.env.REACT_APP_API_URL}/v1/auth/login`,
+        {email}
     );
 
     localStorage.setItem("token", jwt);

@@ -4,9 +4,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.michaelhyi.dto.LoginRequest;
 import com.michaelhyi.service.AuthService;
 
 import lombok.AllArgsConstructor;
@@ -17,9 +18,9 @@ import lombok.AllArgsConstructor;
 public class AuthController {
     private final AuthService service;
 
-    @PostMapping("{email}")
-    public ResponseEntity<String> login(@PathVariable("email") String email) {
-        return ResponseEntity.ok(service.login(email));
+    @PostMapping("login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
+        return ResponseEntity.ok(service.login(req.email()));
     }
 
     @GetMapping("validate-token/{token}")

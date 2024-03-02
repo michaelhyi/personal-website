@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelhyi.dao.PostRepository;
+import com.michaelhyi.dto.LoginRequest;
 import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.service.S3Service;
@@ -55,8 +56,9 @@ class PostIT {
 
     @Test
     void createPost() throws Exception {
-        String token = mvc.perform(post("/v1/auth/test@mail.com")
-                                    .accept(MediaType.APPLICATION_JSON))
+        String token = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
                             .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()
@@ -107,8 +109,9 @@ class PostIT {
 
     @Test
     void createPostImage() throws Exception {
-        String token = mvc.perform(post("/v1/auth/test@mail.com")
-                                    .accept(MediaType.APPLICATION_JSON))
+        String token = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
                             .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()
@@ -169,8 +172,9 @@ class PostIT {
 
     @Test
     void readPost() throws Exception {
-        String token = mvc.perform(post("/v1/auth/test@mail.com")
-                            .accept(MediaType.APPLICATION_JSON))
+        String token = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
                             .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()
@@ -209,8 +213,9 @@ class PostIT {
 
     @Test
     void readPostImage() throws Exception {
-        String token = mvc.perform(post("/v1/auth/test@mail.com")
-                            .accept(MediaType.APPLICATION_JSON))
+        String token = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
                             .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()
@@ -257,8 +262,9 @@ class PostIT {
 
     @Test
     void readAllPosts() throws Exception {
-        String token = mvc.perform(post("/v1/auth/test@mail.com")
-                            .accept(MediaType.APPLICATION_JSON))
+        String token = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
                             .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()
@@ -316,8 +322,9 @@ class PostIT {
 
     @Test
     void updatePost() throws Exception {
-        String token = mvc.perform(post("/v1/auth/test@mail.com")
-                            .accept(MediaType.APPLICATION_JSON))
+        String token = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
                             .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()
@@ -369,8 +376,9 @@ class PostIT {
 
     @Test
     void deletePost() throws Exception {
-        String token = mvc.perform(post("/v1/auth/test@mail.com")
-                                    .accept(MediaType.APPLICATION_JSON))
+        String token = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
                             .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()

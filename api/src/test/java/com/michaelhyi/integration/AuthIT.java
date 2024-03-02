@@ -17,7 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelhyi.dao.UserRepository;
+import com.michaelhyi.dto.LoginRequest;
 import com.michaelhyi.entity.User;
 import com.michaelhyi.jwt.JwtService;
 import io.jsonwebtoken.Jwts;
@@ -38,9 +41,14 @@ class AuthIT {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private ObjectMapper mapper;
+    private ObjectWriter writer;
+
     @BeforeEach
     void setUp() {
         repository.deleteAll();
+        writer = mapper.writer().withDefaultPrettyPrinter();
     } 
     
     @Test
@@ -48,8 +56,9 @@ class AuthIT {
         User alreadyExists = new User("alreadyexists@mail.com");
         repository.save(alreadyExists);
 
-        String res = mvc.perform(post("/v1/auth/alreadyexists@mail.com")
-                                    .accept(MediaType.APPLICATION_JSON))
+        String res = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("alreadyexists@mail.com"))))
                         .andExpect(status().isOk())
                         .andReturn()
                         .getResponse()
@@ -58,8 +67,9 @@ class AuthIT {
         assertTrue(jwtService.isTokenValid(res, alreadyExists));
         assertEquals(alreadyExists.getEmail(), jwtService.extractUsername(res));
 
-        String error = mvc.perform(post("/v1/auth/unauthorized@mail.com")
-                            .contentType(MediaType.APPLICATION_JSON))
+        String error = mvc.perform(post("/v1/auth/login")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(writer.writeValueAsString(new LoginRequest("unauthorized@mail.com"))))
                             .andExpect(status().isUnauthorized())
                             .andReturn()
                             .getResolvedException()
@@ -67,8 +77,9 @@ class AuthIT {
         
         assertEquals("Unauthorized.", error);
 
-        res = mvc.perform(post("/v1/auth/test@mail.com")
-                            .accept(MediaType.APPLICATION_JSON))
+        res = mvc.perform(post("/v1/auth/login")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
                     .andExpect(status().isOk())
                     .andReturn()
                     .getResponse()
