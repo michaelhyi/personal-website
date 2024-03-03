@@ -55,6 +55,113 @@ class PostIT {
     }
 
     @Test
+    void postConstructor() throws Exception {
+        String token = mvc.perform(post("/v1/auth/login")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
+                            .andExpect(status().isOk())
+                            .andReturn()
+                            .getResponse()
+                            .getContentAsString();
+
+        PostRequest req = new PostRequest(null);
+        String error = mvc.perform(post("/v1/post")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(req))
+                                    .header("Authorization", "Bearer " + token))
+                            .andExpect(status().isBadRequest())
+                            .andReturn()
+                            .getResolvedException()
+                            .getMessage();
+        assertEquals("Fields cannot be blank.", error); 
+
+        req = new PostRequest("");
+        error = mvc.perform(post("/v1/post")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(req))
+                                    .header("Authorization", "Bearer " + token))
+                            .andExpect(status().isBadRequest())
+                            .andReturn()
+                            .getResolvedException()
+                            .getMessage();
+        assertEquals("Fields cannot be blank.", error); 
+
+        req = new PostRequest("no-title");
+        error = mvc.perform(post("/v1/post")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(req))
+                                    .header("Authorization", "Bearer " + token))
+                            .andExpect(status().isBadRequest())
+                            .andReturn()
+                            .getResolvedException()
+                            .getMessage();
+        assertEquals("Title cannot be blank.", error); 
+
+        req = new PostRequest("<h1></h1>");
+        error = mvc.perform(post("/v1/post")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(req))
+                                    .header("Authorization", "Bearer " + token))
+                            .andExpect(status().isBadRequest())
+                            .andReturn()
+                            .getResolvedException()
+                            .getMessage();
+        assertEquals("Title cannot be blank.", error); 
+
+        req = new PostRequest("<h1>no-content</h1>");
+        error = mvc.perform(post("/v1/post")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(req))
+                                    .header("Authorization", "Bearer " + token))
+                            .andExpect(status().isBadRequest())
+                            .andReturn()
+                            .getResolvedException()
+                            .getMessage();
+        assertEquals("Content cannot be blank.", error); 
+
+        req = new PostRequest("<h1>bad-title</h1><p>insert content</p>");
+        error = mvc.perform(post("/v1/post")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(req))
+                                    .header("Authorization", "Bearer " + token))
+                            .andExpect(status().isBadRequest())
+                            .andReturn()
+                            .getResolvedException()
+                            .getMessage();
+        assertEquals("Title must contain a year in parentheses.", error); 
+
+        req = new PostRequest("<h1>title(1994)</h1><p>insert content</p>");
+        error = mvc.perform(post("/v1/post")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(req))
+                                    .header("Authorization", "Bearer " + token))
+                            .andExpect(status().isBadRequest())
+                            .andReturn()
+                            .getResolvedException()
+                            .getMessage();
+        assertEquals("Year must be preceded by a space.", error); 
+
+        req = new PostRequest("<h1>Oldboy (2003)</h1><p>content</p>");
+        String id = mvc.perform(post("/v1/post")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(writer.writeValueAsString(req))
+                                    .header("Authorization", "Bearer " + token))
+                        .andExpect(status().isOk())
+                        .andReturn()
+                        .getResponse()
+                        .getContentAsString();
+        String res = mvc.perform(get("/v1/post/" + id))
+                        .andExpect(status().isOk())
+                        .andReturn()
+                        .getResponse()
+                        .getContentAsString();
+        Post actual = mapper.readValue(res, Post.class); 
+        assertEquals(id, actual.getId());
+        assertEquals("Oldboy (2003)", actual.getTitle());
+        assertEquals("<p>content</p>", actual.getContent());
+    }
+
+    @Test
     void createPost() throws Exception {
         String token = mvc.perform(post("/v1/auth/login")
                                     .contentType(MediaType.APPLICATION_JSON)
