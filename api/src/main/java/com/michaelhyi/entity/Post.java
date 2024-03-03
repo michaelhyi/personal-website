@@ -66,6 +66,25 @@ public class Post {
             throw new IllegalArgumentException("Content cannot be blank.");
         }
 
+        boolean containsYear = newTitle.contains("(")
+                                && newTitle.contains(")")
+                                && newTitle.indexOf(")")
+                                    - newTitle.indexOf("(") == 5;
+
+        if (!containsYear) {
+            throw new IllegalArgumentException(
+                "Title must contain a year in parentheses.");
+        }
+
+        if (newTitle.contains("(")
+            && !newTitle.substring(
+                    newTitle.indexOf("(") - 1,
+                    newTitle.indexOf("(")
+                ).equals(" ")) {
+            throw new IllegalArgumentException(
+                "Year must be preceded by a space.");
+        }
+
         String newId = newTitle.toLowerCase()
                                 .replace(" ", "-")
                                 .replaceAll("[^a-z\\-]", "");

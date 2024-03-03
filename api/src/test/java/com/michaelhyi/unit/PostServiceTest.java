@@ -49,12 +49,14 @@ class PostServiceTest {
         assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("")));
         assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("no-title")));
         assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1></h1>")));
-        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1>no-content></h1>")));
+        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1>no-content</h1>")));
+        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1>bad-title</h1><p>insert content</p>")));
+        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1>title(1994)</h1><p>insert content</p>")));
 
-        PostRequest req = new PostRequest("<h1>title</h1>content");
+        PostRequest req = new PostRequest("<h1>title (1994)</h1>content");
         Post newPost = new Post(req);
         assertEquals(post.getId(), newPost.getId());
-        assertEquals(post.getTitle(), newPost.getTitle());
+        assertEquals("title (1994)", newPost.getTitle());
         assertEquals(post.getContent(), newPost.getContent());
 
         req = new PostRequest("<h1>Oldboy (2003)</h1><p>content</p>");
@@ -75,7 +77,7 @@ class PostServiceTest {
         when(repository.findById("title")).thenReturn(Optional.of(post));
 
         assertThrows(IllegalArgumentException.class, () ->
-                underTest.createPost(new PostRequest("<h1>title</h1><p>content</p>")));
+                underTest.createPost(new PostRequest("<h1>title (1994)</h1><p>content</p>")));
         verify(repository).findById("title");
         verifyNoMoreInteractions(repository);
     }
@@ -85,7 +87,7 @@ class PostServiceTest {
         when(repository.findById(post.getId())).thenReturn(Optional.empty());
 
         underTest.createPost(
-                new PostRequest("<h1>title</h1>content")
+                new PostRequest("<h1>title (1994)</h1>content")
         );
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
@@ -95,7 +97,7 @@ class PostServiceTest {
 
         Post capturedPost = postArgumentCaptor.getValue();
         assertEquals(post.getId(), capturedPost.getId());
-        assertEquals(post.getTitle(), capturedPost.getTitle());
+        assertEquals("title (1994)", capturedPost.getTitle());
         assertEquals(post.getContent(), capturedPost.getContent());
     }
 
@@ -202,7 +204,7 @@ class PostServiceTest {
         when(repository.findById("title")).thenReturn(Optional.empty());
 
         assertThrows(PostNotFoundException.class, 
-                        () -> underTest.updatePost("title", new PostRequest("<h1>title</h1>content"))
+                        () -> underTest.updatePost("title", new PostRequest("<h1>title (1994)</h1>content"))
                     );
 
         verify(repository).findById("title");
@@ -213,7 +215,7 @@ class PostServiceTest {
     void updatePost() {
         when(repository.findById("title")).thenReturn(Optional.of(post));
 
-        underTest.updatePost("title", new PostRequest("<h1>title</h1>content"));
+        underTest.updatePost("title", new PostRequest("<h1>title (1994)</h1>content"));
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
