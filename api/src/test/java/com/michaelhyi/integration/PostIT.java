@@ -64,7 +64,7 @@ class PostIT {
                             .getResponse()
                             .getContentAsString();
 
-        PostRequest req = new PostRequest("<h1>Already Exists</h1>content");
+        PostRequest req = new PostRequest("<h1>Already Exists (1994)</h1>content");
 
         mvc.perform(post("/v1/post")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +83,7 @@ class PostIT {
 
         assertEquals(error, "A post with the same title already exists.");
 
-        req = new PostRequest("<h1>Title</h1>Content");
+        req = new PostRequest("<h1>Title (1994)</h1>Content");
 
         String id = mvc.perform(post("/v1/post")
                                     .contentType(MediaType.APPLICATION_JSON)
@@ -103,7 +103,7 @@ class PostIT {
         Post actual = mapper.readValue(res, Post.class); 
 
         assertEquals(id, actual.getId());
-        assertEquals("Title", actual.getTitle());
+        assertEquals("Title (1994)", actual.getTitle());
         assertEquals("Content", actual.getContent());
     }
 
@@ -129,7 +129,7 @@ class PostIT {
 
         assertEquals("Post not found.", error);
 
-        PostRequest req = new PostRequest("<h1>Title</h1>Content");
+        PostRequest req = new PostRequest("<h1>Title (1994)</h1>Content");
         String id = mvc.perform(post("/v1/post")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(writer.writeValueAsString(req))
@@ -270,7 +270,7 @@ class PostIT {
                             .getResponse()
                             .getContentAsString();
 
-        PostRequest req = new PostRequest("<h1>Title</h1>Content");
+        PostRequest req = new PostRequest("<h1>Title (1994)</h1>Content");
         mvc.perform(post("/v1/post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(req))
@@ -316,7 +316,7 @@ class PostIT {
         assertEquals("<p>In Park Chan-wook's masterpiece...</p>", actual.get(1).getContent());
 
         assertEquals("title", actual.get(2).getId());
-        assertEquals("Title", actual.get(2).getTitle());
+        assertEquals("Title (1994)", actual.get(2).getTitle());
         assertEquals("Content", actual.get(2).getContent());
     }
 
