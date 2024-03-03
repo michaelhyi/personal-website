@@ -46,7 +46,7 @@ cp example.properties ../../test/resources/application-it.properties
 
 4. Create a new MySQL database. 
 
-> Create a new database called `personal_website_api_db`. Make sure that your Postgres master username and password are both set to `root`.
+> Create a new database called `personal_website_api_db`. Make sure that your MySQL master username and password are both set to `root`.
 
 5. Create an AWS S3 bucket.
 

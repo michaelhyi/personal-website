@@ -21,8 +21,6 @@ ssh -i /path/to/keypair ec2-user@<EC2 Instace IP Address>
 7. Install MySQL.
 
 ```shell
-sudo dnf update
-sudo dnf install postgresql15.x86_64 postgresql15-server -y
 sudo wget https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm 
 sudo dnf install mysql80-community-release-el9-1.noarch.rpm -y
 sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
@@ -155,9 +153,9 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 > Set `API_AWS_SECRET_KEY` to your AWS Secret Key.
 > Set `API_SECURITY_CORS_ALLOWED_ORIGINS` to a comma separated list of CORS allowed origins.
 > Set `API_SECURITY_JWT_SECRET_KEY` to your JWT signing key.
-> Set `API_SPRING_DATASOURCE_PASSWORD` to the Postgres user password. 
+> Set `API_SPRING_DATASOURCE_PASSWORD` to the MySQL user password. 
 > Set `API_SPRING_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Postges server.
-> Set `API_SPRING_DATASOURCE_USERNAME` to the Postgres user username.
+> Set `API_SPRING_DATASOURCE_USERNAME` to the MySQL user username.
 > Set `API_SPRING_TEST_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under  `Public IPv4 DNS` for your EC2 instance that hosts your Postges test server. 
 > Set `DOCKERHUB_TOKEN` to your Docker Hub token.
 > Set `SSH_HOST` to the IP address of the EC2 instance hosting the Spring Boot app.
