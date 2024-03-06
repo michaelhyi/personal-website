@@ -1,7 +1,5 @@
-### Summary
+## Summary
 
-### Changelog
+## Changelog
 
-### Test Plan
-
-###### How did you test your changes?
+## Test Plan
