@@ -26,7 +26,7 @@ render(
             <RouterProvider router={router} />
         </GoogleOAuthProvider>
     </React.StrictMode>,
-    document.getElementById("root")
+    document.getElementById("root"),
 );
 
 reportWebVitals();

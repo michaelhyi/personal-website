@@ -44,7 +44,7 @@ render(
     <React.StrictMode>
         <RouterProvider router={router} />
     </React.StrictMode>,
-    document.getElementById("root")
+    document.getElementById("root"),
 );
 
 reportWebVitals();
