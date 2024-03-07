@@ -3,14 +3,15 @@ package com.michaelhyi.integration;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.io.IOException;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import com.michaelhyi.dto.LoginRequest;
 import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.service.S3Service;
+import redis.embedded.RedisServer;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -45,6 +47,7 @@ class PostIT {
     @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
+    private RedisServer redisServer;
 
     @BeforeEach
     void setUp() {
@@ -52,6 +55,20 @@ class PostIT {
         writer = mapper.writer().withDefaultPrettyPrinter();
         s3Service.deleteObject("title");
         s3Service.deleteObject("oldboy");
+
+        try {
+            redisServer = new RedisServer(6370);
+            redisServer.start();
+        } catch (IOException e) {
+        }
+    }
+
+    @AfterEach
+    void tearDown() {
+        try {
+            redisServer.stop();
+        } catch (IOException e) {
+        }
     }
 
     @Test
@@ -474,7 +491,7 @@ class PostIT {
                         .andReturn()
                         .getResponse()
                         .getContentAsString();
-
+        
         Post actual = mapper.readValue(res, Post.class);
         assertEquals(id, actual.getId());
         assertEquals("Oldboy (2003)", actual.getTitle());

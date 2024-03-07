@@ -68,11 +68,11 @@ public class PostController {
 
     @PutMapping("{id}")
     @CachePut(cacheNames = {"readAllPosts", "readPost"}, key = "#id")
-    public void updatePost(
+    public Post updatePost(
         @PathVariable("id") String id,
         @RequestBody PostRequest req
     ) {
-        service.updatePost(id, req);
+        return service.updatePost(id, req);
     }
 
     @DeleteMapping("{id}")

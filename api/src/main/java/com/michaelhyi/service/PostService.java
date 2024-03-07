@@ -72,12 +72,13 @@ public class PostService {
                 .findAll(Sort.by(Sort.Direction.DESC, "date"));
     }
 
-    public void updatePost(String id, PostRequest req) {
+    public Post updatePost(String id, PostRequest req) {
         Post post = readPost(id);
         Post updatedPost = new Post(req);
 
         post.setContent(updatedPost.getContent());
         repository.save(post);
+        return post;
     }
 
     public void deletePost(String id) {
