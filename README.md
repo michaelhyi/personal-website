@@ -19,6 +19,7 @@ This repository contains the source code to my personal website and film blog. I
 - [JavaScript](https://www.javascript.com/)
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [MySQL](https://www.mysql.com/)
+- [Redis](https://redis.io/)
 - [React](https://react.dev/)
 - [AWS EC2, S3](https://aws.amazon.com/)
 - [Docker](https://www.docker.com/)

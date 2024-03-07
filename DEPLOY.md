@@ -5,7 +5,7 @@
 1. [Launch a new EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/home?region=us-east-2#LaunchInstances:).
 2. Make sure that the OS is set to `Amazon Linux 2023 AMI`. Architecture should be set to `64-bit (x86)`.
 3. Click `Create new key pair`. Make sure that `Key pair type` is set to `RSA` and the `Private key file format` is set to `.pem`.
-4. Under `Network settings`, set the `VPC` to the default VPC. Set the `Subnet` to `us-east-2a`. Under `Inbound Security Group Rules`, make sure that ports `3306` is open to all sources and `22` is set to your IP address only.
+4. Under `Network settings`, set the `VPC` to the default VPC. Set the `Subnet` to `us-east-2a`. Under `Inbound Security Group Rules`, make sure that ports `3306` and `6379` are open to all sources and `22` is set to your IP address only.
 5. Only on your first time using the keypair, run the following command.
 
 ```shell
@@ -53,6 +53,44 @@ USE personal_website_api_db_prod;
 ```
 
 Repeat the above steps to create a test database server for running integration tests.
+
+# Redis Server
+
+1. Connect to the same EC2 instance.
+
+```shell
+ssh -i /path/to/keypair ec2-user@<EC2 Instace IP Address>
+``` 
+
+2. Install Redis.
+
+```shell
+sudo dnf install -y redis6
+sudo systemctl start redis6
+sudo systemctl enable redis6
+```
+
+3. Generate a new Redis password.
+
+```shell
+openssl rand -base64 512
+```
+
+4. Edit the Redis config file.
+
+```shell
+cd /etc
+sudo vi redis6
+```
+
+5. Select redis6.conf.
+6. Find `# requirepass foobared`, remove the `#`, and replace `foobared` with the generated password from Step 3.
+7. Find `bind 127.0.0.1 -::1`, and comment it out.
+8. Restart the Redis service.
+
+```shell
+sudo systemctl restart redis6
+```
 
 # Spring Boot API Deployment 
 
@@ -153,10 +191,12 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 > Set `API_AWS_SECRET_KEY` to your AWS Secret Key.
 > Set `API_SECURITY_CORS_ALLOWED_ORIGINS` to a comma separated list of CORS allowed origins.
 > Set `API_SECURITY_JWT_SECRET_KEY` to your JWT signing key.
+> Set `API_SPRING_CACHE_HOST` to the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Redis server.
 > Set `API_SPRING_DATASOURCE_PASSWORD` to the MySQL user password. 
-> Set `API_SPRING_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Postges server.
+> Set `API_SPRING_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your MySQL server.
 > Set `API_SPRING_DATASOURCE_USERNAME` to the MySQL user username.
-> Set `API_SPRING_TEST_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under  `Public IPv4 DNS` for your EC2 instance that hosts your Postges test server. 
+> Set `API_SPRING_DATA_REDIS_PASSWORD` to the Redis server authentication password. 
+> Set `API_SPRING_TEST_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your MySQL test server. 
 > Set `DOCKERHUB_TOKEN` to your Docker Hub token.
 > Set `SSH_HOST` to the IP address of the EC2 instance hosting the Spring Boot app.
 > Set `SSH_PRIVATE_KEY` to the content in the keypair that authorizes SSH connections to the EC2 instance hosting the Spring Boot app.

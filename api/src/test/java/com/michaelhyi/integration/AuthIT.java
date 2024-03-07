@@ -50,7 +50,7 @@ class AuthIT {
         repository.deleteAll();
         writer = mapper.writer().withDefaultPrettyPrinter();
     } 
-    
+
     @Test
     void login() throws Exception {
         User alreadyExists = new User("alreadyexists@mail.com");

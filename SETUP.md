@@ -5,6 +5,7 @@
 - Node
 - Maven
 - MySQL 
+- Redis 
 
 1. Clone the repository and navigate to the project.
 
@@ -21,13 +22,31 @@ sh install-deps.sh
 
 > Alternatively, you can run `sh clean-install-deps.sh` to verify npm cache and clean the apps prior to installing dependencies.
 
-3. Create properties files for Spring Boot.
+3. In `api/src/main/resources`, create a file named `application.properties`. In `api/src/test/resources`, create a file named `application-it.resources`. Copy the following into both files:
 
 ```shell
-cd api/src/main/resources
-cp example.properties application.properties
-cp example.properties ../../test/resources/application-it.properties
+auth.whitelisted-emails=
+
+aws.access-key=
+aws.secret-key=
+aws.s3.bucket=personal-website-api-bucket-dev
+
+security.cors.allowed-origins=http://localhost:3000,http://localhost:3001
+security.jwt.secret-key=
+
+spring.application.name=personal-website-api
+
+spring.datasource.url=jdbc:mysql://localhost:3306/personal_website_api_db
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.hibernate.ddl-auto=update
+
+spring.cache.type=redis
+spring.cache.redis.time-to-live=60000
+spring.data.redis.host=localhost
+spring.data.redis.port=6379
 ```
+
 - In `application.properties`, set `auth.whitelisted-emails` equal to all authorized emails to the admin platform. Separate emails with commas. In `application-it.properties`, set `auth.whitelisted-emails` equal to `test@mail.com`.
 
 > To generate AWS secret keys, log in to your [AWS console](https://aws.amazon.com/). Click on your username, and click `Security credentials` on the dropdown menu. Scroll down to `Access keys`, and click `Create access key`.

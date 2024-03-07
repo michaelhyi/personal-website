@@ -3,7 +3,6 @@ package com.michaelhyi.integration;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -463,19 +462,28 @@ class PostIT {
         
         req = new PostRequest("<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>");
 
-        mvc.perform(put("/v1/post/" + id)
+        String res = mvc.perform(put("/v1/post/" + id)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(writer.writeValueAsString(req))
                                     .header("Authorization", "Bearer " + token))
-            .andExpect(status().isOk());
-        
-        String res = mvc.perform(get("/v1/post/" + id))
                         .andExpect(status().isOk())
                         .andReturn()
                         .getResponse()
                         .getContentAsString();
-
+        
         Post actual = mapper.readValue(res, Post.class);
+
+        assertEquals(id, actual.getId());
+        assertEquals("Oldboy (2003)", actual.getTitle());
+        assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
+        
+        res = mvc.perform(get("/v1/post/" + id))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+        
+        actual = mapper.readValue(res, Post.class);
         assertEquals(id, actual.getId());
         assertEquals("Oldboy (2003)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
