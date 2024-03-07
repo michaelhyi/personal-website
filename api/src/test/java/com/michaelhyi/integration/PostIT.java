@@ -9,9 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.io.IOException;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,6 @@ import com.michaelhyi.dto.LoginRequest;
 import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.service.S3Service;
-import redis.embedded.RedisServer;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,7 +44,6 @@ class PostIT {
     @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
-    private RedisServer redisServer;
 
     @BeforeEach
     void setUp() {
@@ -55,20 +51,6 @@ class PostIT {
         writer = mapper.writer().withDefaultPrettyPrinter();
         s3Service.deleteObject("title");
         s3Service.deleteObject("oldboy");
-
-        try {
-            redisServer = new RedisServer(6370);
-            redisServer.start();
-        } catch (IOException e) {
-        }
-    }
-
-    @AfterEach
-    void tearDown() {
-        try {
-            redisServer.stop();
-        } catch (IOException e) {
-        }
     }
 
     @Test
@@ -480,19 +462,28 @@ class PostIT {
         
         req = new PostRequest("<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>");
 
-        mvc.perform(put("/v1/post/" + id)
+        String res = mvc.perform(put("/v1/post/" + id)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(writer.writeValueAsString(req))
                                     .header("Authorization", "Bearer " + token))
-            .andExpect(status().isOk());
-        
-        String res = mvc.perform(get("/v1/post/" + id))
                         .andExpect(status().isOk())
                         .andReturn()
                         .getResponse()
                         .getContentAsString();
         
         Post actual = mapper.readValue(res, Post.class);
+
+        assertEquals(id, actual.getId());
+        assertEquals("Oldboy (2003)", actual.getTitle());
+        assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
+        
+        res = mvc.perform(get("/v1/post/" + id))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+        
+        actual = mapper.readValue(res, Post.class);
         assertEquals(id, actual.getId());
         assertEquals("Oldboy (2003)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());

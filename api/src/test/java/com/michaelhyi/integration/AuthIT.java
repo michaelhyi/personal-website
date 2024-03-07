@@ -5,11 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import redis.embedded.RedisServer;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,28 +44,13 @@ class AuthIT {
     @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
-    private RedisServer redisServer;
 
     @BeforeEach
     void setUp() {
         repository.deleteAll();
         writer = mapper.writer().withDefaultPrettyPrinter();
-
-        try { 
-            redisServer = new RedisServer(6370);
-            redisServer.start();
-        } catch (IOException e) {
-        }
     } 
 
-    @AfterEach
-    void tearDown() {
-        try {
-            redisServer.stop();
-        } catch (IOException e) {
-        }
-    }
-    
     @Test
     void login() throws Exception {
         User alreadyExists = new User("alreadyexists@mail.com");
