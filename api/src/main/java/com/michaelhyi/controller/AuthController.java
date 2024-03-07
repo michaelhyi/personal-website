@@ -1,6 +1,6 @@
 package com.michaelhyi.controller;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,15 +19,13 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
-        return ResponseEntity.ok(service.login(req.email()));
+    @Cacheable(value = "login", key = "#req.email()")
+    public String login(@RequestBody LoginRequest req) {
+        return service.login(req.email());
     }
 
     @GetMapping("validate-token/{token}")
-    public ResponseEntity<Void> validateToken(
-        @PathVariable("token") String token
-    ) {
+    public void validateToken(@PathVariable("token") String token) {
         service.validateToken(token);
-        return ResponseEntity.ok().build();
     }
 }

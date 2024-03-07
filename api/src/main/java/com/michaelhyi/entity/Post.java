@@ -1,5 +1,6 @@
 package com.michaelhyi.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import com.michaelhyi.dto.PostRequest;
@@ -17,7 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Post implements Serializable {
     @Id
     @Setter(AccessLevel.NONE)
     @Column(

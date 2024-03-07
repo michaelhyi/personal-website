@@ -1,9 +1,10 @@
 package com.michaelhyi.controller;
 
 import java.util.List;
-
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +29,9 @@ public class PostController {
     private final PostService service;
 
     @PostMapping
-    public ResponseEntity<String> createPost(@RequestBody PostRequest req) {
-        return ResponseEntity.ok(service.createPost(req));
+    @CacheEvict(cacheNames = "readAllPosts", allEntries = true)
+    public String createPost(@RequestBody PostRequest req) {
+        return service.createPost(req);
     }
 
     @PostMapping(
@@ -44,35 +46,38 @@ public class PostController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Post> readPost(@PathVariable("id") String id) {
-        return ResponseEntity.ok(service.readPost(id));
+    @Cacheable(value = "readPost", key = "#id")
+    public Post readPost(@PathVariable("id") String id) {
+        return service.readPost(id);
     }
 
     @GetMapping(
         value = "{id}/image",
         produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public ResponseEntity<byte[]> readPostImage(@PathVariable("id") String id) {
-        return ResponseEntity.ok(service.readPostImage(id));
+    @Cacheable(value = "readPostImage", key = "#id")
+    public byte[] readPostImage(@PathVariable("id") String id) {
+        return service.readPostImage(id);
     }
 
     @GetMapping
-    public ResponseEntity<List<Post>> readAllPosts() {
-        return ResponseEntity.ok(service.readAllPosts());
+    @Cacheable(value = "readAllPosts")
+    public List<Post> readAllPosts() {
+        return service.readAllPosts();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updatePost(
+    @CachePut(cacheNames = {"readAllPosts", "readPost"}, key = "#id")
+    public void updatePost(
         @PathVariable("id") String id,
         @RequestBody PostRequest req
     ) {
         service.updatePost(id, req);
-        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable("id") String id) {
+    @CacheEvict(cacheNames = {"readAllPosts", "readPost"}, allEntries = true)
+    public void deletePost(@PathVariable("id") String id) {
         service.deletePost(id);
-        return ResponseEntity.ok().build();
     }
 }
