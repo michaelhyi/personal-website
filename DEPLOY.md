@@ -191,10 +191,12 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 > Set `API_AWS_SECRET_KEY` to your AWS Secret Key.
 > Set `API_SECURITY_CORS_ALLOWED_ORIGINS` to a comma separated list of CORS allowed origins.
 > Set `API_SECURITY_JWT_SECRET_KEY` to your JWT signing key.
+> Set `API_SPRING_CACHE_HOST` to the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Redis server.
 > Set `API_SPRING_DATASOURCE_PASSWORD` to the MySQL user password. 
-> Set `API_SPRING_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Postges server.
+> Set `API_SPRING_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your MySQL server.
 > Set `API_SPRING_DATASOURCE_USERNAME` to the MySQL user username.
-> Set `API_SPRING_TEST_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under  `Public IPv4 DNS` for your EC2 instance that hosts your Postges test server. 
+> Set `API_SPRING_DATA_REDIS_PASSWORD` to the Redis server authentication password. 
+> Set `API_SPRING_TEST_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your MySQL test server. 
 > Set `DOCKERHUB_TOKEN` to your Docker Hub token.
 > Set `SSH_HOST` to the IP address of the EC2 instance hosting the Spring Boot app.
 > Set `SSH_PRIVATE_KEY` to the content in the keypair that authorizes SSH connections to the EC2 instance hosting the Spring Boot app.
