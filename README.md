@@ -27,6 +27,15 @@ This repository contains the source code to my personal website and film blog. I
 - [JUnit](https://junit.org/junit5/)
 - [TailwindCSS](https://tailwindcss.com/)
 
+## Screenshots
+
+| | |
+| - | - |
+|![](.github/images/home.png) | ![](.github/images/portfolio.png) <tr></tr> |
+|![](.github/images/view-post.png) | ![](.github/images/auth.png) <tr></tr> |
+|![](.github/images/create-post.png) | ![](.github/images/delete-post.png) <tr></tr> |
+|![](.github/images/edit-post-1.png) | ![](.github/images/edit-post-2.png) <tr></tr> |
+
 ## Project Stats
 
 ![Alt](https://repobeats.axiom.co/api/embed/0d0e559984591c9b57adbc13a96171939ad77a0f.svg "Repobeats analytics image")
