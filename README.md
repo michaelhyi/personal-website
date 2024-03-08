@@ -27,10 +27,12 @@ This repository contains the source code to my personal website and film blog. I
 - [JUnit](https://junit.org/junit5/)
 - [TailwindCSS](https://tailwindcss.com/)
 
-## Screenshots of Admin Platform
+## Screenshots
 
 | | |
 | - | - |
+|![](.github/images/home.png) | ![](.github/images/portfolio.png) |
+|![](.github/images/view-post.png) | ![](.github/images/auth.png) |
 |![](.github/images/create-post.png) | ![](.github/images/delete-post.png) |
 |![](.github/images/edit-post-1.png) | ![](.github/images/edit-post-2.png) |
 
