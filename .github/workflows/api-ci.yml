@@ -28,7 +28,7 @@ jobs:
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./api/src/main/resources/application.properties
           echo "spring.jpa.hibernate.ddl-auto=update" >> ./api/src/main/resources/application.properties
           echo "spring.cache.type=redis" >> ./api/src/main/resources/application.properties
-          echo "spring.cache.redis.time-to-live=60000" >> ./api/src/main/resources/application.properties
+          echo "spring.cache.redis.time-to-live=900000" >> ./api/src/main/resources/application.properties
           echo "spring.data.redis.host=${{ secrets.API_SPRING_CACHE_HOST }}" >> ./api/src/main/resources/application.properties
           echo "spring.data.redis.port=6379" >> ./api/src/main/resources/application.properties
           echo "spring.data.redis.password=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }}" >> ./api/src/main/resources/application.properties
