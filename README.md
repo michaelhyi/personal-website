@@ -29,12 +29,10 @@ This repository contains the source code to my personal website and film blog. I
 
 ## Screenshots of Admin Platform
 
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-    <img src=".github/images/create-post.png"/>
-    <img src=".github/images/edit-post-1.png"/>
-    <img src=".github/images/edit-post-2.png"/>
-    <img src=".github/images/delete-post.png"/>
-</div>
+| | |
+| - | - |
+|![](.github/images/create-post.png) | ![](.github/images/delete-post.png) |
+|![](.github/images/edit-post-1.png) | ![](.github/images/edit-post-2.png) |
 
 ## Project Stats
 
