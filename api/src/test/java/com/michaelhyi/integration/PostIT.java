@@ -10,11 +10,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
@@ -42,6 +44,9 @@ class PostIT {
     private S3Service s3Service;
 
     @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
@@ -52,6 +57,13 @@ class PostIT {
         s3Service.deleteObject("title");
         s3Service.deleteObject("oldboy");
     }
+
+    @AfterEach
+    void tearDown() {
+        cacheManager.getCacheNames()
+                    .parallelStream()
+                    .forEach(n -> cacheManager.getCache(n).clear());
+    } 
 
     @Test
     void postConstructor() throws Exception {

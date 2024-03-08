@@ -92,6 +92,8 @@ sudo vi redis6
 sudo systemctl restart redis6
 ```
 
+Repeat the steps above to create a test Redis server for running tests. However, skip Step 6 and be sure to set `protected-mode yes` to `protected-mode no` in `redis6.conf`. 
+
 # Spring Boot API Deployment 
 
 1. [Launch a new EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/home?region=us-east-2#LaunchInstances:).

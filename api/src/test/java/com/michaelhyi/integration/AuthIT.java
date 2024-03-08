@@ -8,11 +8,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.TestPropertySource;
@@ -42,6 +44,9 @@ class AuthIT {
     private JwtService jwtService;
 
     @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
@@ -49,6 +54,13 @@ class AuthIT {
     void setUp() {
         repository.deleteAll();
         writer = mapper.writer().withDefaultPrettyPrinter();
+    } 
+
+    @AfterEach
+    void tearDown() {
+        cacheManager.getCacheNames()
+                    .parallelStream()
+                    .forEach(n -> cacheManager.getCache(n).clear());
     } 
 
     @Test
