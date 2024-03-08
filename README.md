@@ -9,7 +9,7 @@
 
 <hr/>
 
-## Intro
+## About 
 
 This repository contains the source code to my personal website and film blog. It is a showcase of all my software engineering experience, portfolio, and resume as well as my passion for cinema.
 
