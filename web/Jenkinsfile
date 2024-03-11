@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'agent'
-    }
+    agent any 
 
     environment {
         VERSION = '5.0.0'
