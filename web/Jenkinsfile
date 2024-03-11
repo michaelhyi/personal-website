@@ -9,6 +9,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 sh 'cd web'
+                sh 'ls'
                 sh 'sudo docker build .'
             }
         }
