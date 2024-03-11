@@ -1,0 +1,28 @@
+pipeline {
+    agent {
+        label 'agent'
+    }
+
+    environment {
+        VERSION = '5.0.0'
+    }
+    
+    stages {
+        stage('Build & Test') {
+            steps {
+                sh 'sudo docker build .'
+            }
+        }
+        
+        stage('Deploy') {
+            when {
+                branch 'prod'
+            }
+
+            steps {
+                sh 'sudo docker build . -t michaelyi/personal-website-web:${VERSION}'
+                sh 'sudo docker push michaelyi/personal-website-web:${VERSION}'
+            }
+        }
+    }
+}
