@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Build & Test') {
             steps {
+                sh 'cd web'
                 sh 'sudo docker build .'
             }
         }
@@ -18,6 +19,7 @@ pipeline {
             }
 
             steps {
+                sh 'cd web'
                 sh 'sudo docker build . -t michaelyi/personal-website-web:${VERSION}'
                 sh 'sudo docker push michaelyi/personal-website-web:${VERSION}'
             }
