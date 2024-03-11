@@ -10,13 +10,10 @@ export default function About() {
                 <div className="flex flex-col text-left text-[13px] gap-4 sm:w-[360px] md:w-[576px]">
                     <BackButton href="/" text="Home" />
                     <div>
-                        Michael Yi is a software engineer based in Atlanta, GA.
-                        He&apos;s an incoming Software Engineer Intern at
-                        T-Mobile for Summer 2024; previously, he interned at
-                        Ardent Labs and MegaEvolution. He&apos;s currently
-                        studying Computer Science at Georgia Tech with
-                        concentrations in Artificial Intelligence and
-                        Information Internetworks.
+                        Michael Yi is a software engineer and an incoming intern
+                        at T-Mobile. He&apos;s currently studying Computer
+                        Science at Georgia Tech and previously interned at
+                        Ardent Labs and MegaEvolution.
                     </div>
                     <div>
                         Michael loves building. When he&apos;s not creating
