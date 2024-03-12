@@ -16,15 +16,17 @@ This repository contains the source code to my personal website and film blog. I
 ## Tech Stack
 
 - [Java](https://www.java.com/en/)
-- [JavaScript](https://www.javascript.com/)
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [MySQL](https://www.mysql.com/)
 - [Redis](https://redis.io/)
-- [React](https://react.dev/)
 - [AWS EC2, S3](https://aws.amazon.com/)
 - [Docker](https://www.docker.com/)
-- [Nginx](https://www.nginx.com/)
 - [JUnit](https://junit.org/junit5/)
+- [Mockito](https://site.mockito.org/)
+- [Testcontainers](https://testcontainers.com/)
+- [Nginx](https://www.nginx.com/)
+- [JavaScript](https://www.javascript.com/)
+- [React](https://react.dev/)
 - [TailwindCSS](https://tailwindcss.com/)
 
 ## Screenshots

@@ -2,13 +2,16 @@ package com.michaelhyi.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +20,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.MySQLContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelhyi.dao.UserRepository;
@@ -30,10 +37,24 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-@SpringBootTest
 @AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource("classpath:application-it.properties")
 class AuthIT {
+    private static final int REDIS_PORT = 6379;
+    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0.36");
+    static GenericContainer<?> redis = new GenericContainer<>("redis:6.2.14")
+                                            .withExposedPorts(REDIS_PORT);
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysql::getJdbcUrl);
+        registry.add("spring.datasource.username", mysql::getUsername);
+        registry.add("spring.datasource.password", mysql::getPassword);
+        registry.add("spring.data.redis.host", redis::getHost);
+        registry.add("spring.data.redis.port", () -> String.valueOf(redis.getMappedPort(REDIS_PORT))); 
+    }
+
     @Autowired
     private MockMvc mvc;
 
@@ -50,6 +71,12 @@ class AuthIT {
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
+    @BeforeAll
+    static void beforeAll() {
+        mysql.start();
+        redis.start();
+    }
+
     @BeforeEach
     void setUp() {
         repository.deleteAll();
@@ -61,7 +88,13 @@ class AuthIT {
         cacheManager.getCacheNames()
                     .parallelStream()
                     .forEach(n -> cacheManager.getCache(n).clear());
-    } 
+    }
+
+    @AfterAll
+    static void afterAll() {
+        mysql.stop();
+        redis.stop();
+    }
 
     @Test
     void login() throws Exception {
