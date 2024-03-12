@@ -47,15 +47,10 @@ jobs:
           echo "security.cors.allowed-origins=*" >> ./api/src/test/resources/application-it.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./api/src/test/resources/application-it.properties
           echo "spring.application.name=personal-website-api" >> ./api/src/test/resources/application-it.properties
-          echo "spring.datasource.url=${{ secrets.API_SPRING_TEST_DATASOURCE_URL }}" >> ./api/src/test/resources/application-it.properties
-          echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./api/src/test/resources/application-it.properties
-          echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./api/src/test/resources/application-it.properties
           echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./api/src/test/resources/application-it.properties
-          echo "spring.jpa.hibernate.ddl-auto=create-drop" >> ./api/src/test/resources/application-it.properties
+          echo "spring.jpa.hibernate.ddl-auto=create" >> ./api/src/test/resources/application-it.properties
           echo "spring.cache.type=redis" >> ./api/src/test/resources/application-it.properties
           echo "spring.cache.redis.time-to-live=900000" >> ./api/src/test/resources/application-it.properties
-          echo "spring.data.redis.host=${{ secrets.API_TEST_SPRING_CACHE_HOST }}" >> ./api/src/test/resources/application-it.properties
-          echo "spring.data.redis.port=6379" >> ./api/src/test/resources/application-it.properties
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
