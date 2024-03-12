@@ -41,9 +41,10 @@ import com.michaelhyi.service.S3Service;
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource("classpath:application-it.properties")
 class PostIT {
+    private static final int REDIS_PORT = 6379;
     static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0.36");
     static GenericContainer<?> redis = new GenericContainer<>("redis:6.2.14")
-                                            .withExposedPorts(6379);
+                                            .withExposedPorts(REDIS_PORT);
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -51,7 +52,7 @@ class PostIT {
         registry.add("spring.datasource.username", mysql::getUsername);
         registry.add("spring.datasource.password", mysql::getPassword);
         registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", () -> String.valueOf(6379)); 
+        registry.add("spring.data.redis.port", () -> String.valueOf(redis.getMappedPort(REDIS_PORT))); 
     }
 
     @Autowired
