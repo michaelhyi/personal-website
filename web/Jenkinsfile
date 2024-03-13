@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    environment {
+        VERSION = '5.0.0'
+    }
+    
+    stages {
+        stage('Build') {
+            steps {
+                dir ('web') {
+                    sh 'npm ci'
+                    sh 'npm run build'
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                dir ('web') {
+                    // sh 'npm test'
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            when {
+                branch 'prod'
+            }
+
+            steps {
+                dir('web') {
+                    sh 'docker build . -t michaelyi/personal-website-web:${VERSION}'
+                    sh 'docker push michaelyi/personal-website-web:${VERSION}'
+                }
+            }
+        }
+    }
+}
