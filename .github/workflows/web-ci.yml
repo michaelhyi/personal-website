@@ -12,7 +12,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
 
-      - name: Build & Test Admin Platform 
+      - name: Build & Test Web Platform 
         working-directory: ./web
-        run: docker build .
+        run: |
+          npm ci
+          npm run build
