@@ -4,6 +4,9 @@ pipeline {
     environment {
         VERSION = '5.0.0'
     }
+
+    tools {nodejs "node"}
+
     
     stages {
         stage('Build') {
