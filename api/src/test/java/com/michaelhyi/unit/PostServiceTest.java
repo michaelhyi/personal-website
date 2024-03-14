@@ -42,7 +42,7 @@ class PostServiceTest {
     void setUp() {
         underTest = new PostService(repository, s3Service);
     }
-    
+
     @Test
     void willThrowPostConstructorWhenBadRequest() {
         assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest(null)));
