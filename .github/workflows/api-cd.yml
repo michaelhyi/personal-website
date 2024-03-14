@@ -44,6 +44,7 @@ jobs:
 
       - name: Create application-it.properties
         run: |
+          mkdir ./api/src/test/resources
           touch ./api/src/test/resources/application-it.properties
           echo "auth.whitelisted-emails=test@mail.com" >> ./api/src/test/resources/application-it.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./api/src/test/resources/application-it.properties
