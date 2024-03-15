@@ -14,15 +14,7 @@ git clone https://github.com/michaelhyi/personal-website.git
 cd personal-website
 ```
 
-2. Install all dependencies.
-
-```shell
-sh install-deps.sh
-```
-
-> Alternatively, you can run `sh clean-install-deps.sh` to verify npm cache and clean the apps prior to installing dependencies.
-
-3. In `api/src/main/resources`, create a file named `application.properties`. In `api/src/test/resources`, create a file named `application-it.resources`. Copy the following into both files:
+2. In `api/src/main/resources`, create a file named `application.properties`. In `api/src/test/resources`, create a file named `application-it.resources`. Copy the following into both files:
 
 ```shell
 auth.whitelisted-emails=
@@ -42,7 +34,7 @@ spring.datasource.password=root
 spring.jpa.hibernate.ddl-auto=update
 
 spring.cache.type=redis
-spring.cache.redis.time-to-live=60000
+spring.cache.redis.time-to-live=900000
 spring.data.redis.host=localhost
 spring.data.redis.port=6379
 ```
@@ -63,20 +55,22 @@ spring.data.redis.port=6379
 - Update `spring.datasource.url`, `spring.datasource.username`, and `spring.datasource.password` to reflect the configuration to your test server.
 - Add the following property to `application-it.properties`: `spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver`.
 
-4. Create a new MySQL database. 
+3. Create a new MySQL database. 
 
 > Create a new database called `personal_website_api_db`. Make sure that your MySQL master username and password are both set to `root`.
 
-5. Create an AWS S3 bucket.
+4. Create an AWS S3 bucket.
 
 > Go to your [AWS S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-east-2#). Create two buckets named `personal-website-api-bucket-dev` and `personal-website-api-bucket-test`. Make sure that you are using region `us-east-2`.
 
-6. Run the projects.
+5. Install dependencies and run the projects.
 
+> Alternatively, you can run `sh clean-setup.sh` to verify npm cache and clean the apps prior to installing dependencies.
 > Open three terminal instances. Follow the below code blocks to run each app.
 
 ```shell
 cd admin
+npm i
 npm start
 ```
 
@@ -87,17 +81,18 @@ mvn spring-boot:run
 
 ```shell
 cd web
+npm i
 npm start
 ```
 
-7. Fix linting errors using Prettier and ESLint.
+6. Fix linting errors using Prettier and ESLint.
 
 ```shell
 # cd admin or web
 npm run lint:fix
 ```
 
-8. Run unit/integration tests on and build a production bundle for your Spring Boot application.
+7. Run unit/integration tests on and build a production bundle for your Spring Boot application.
 ```shell
 cd api
 mvn -ntp verify
