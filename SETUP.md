@@ -65,7 +65,7 @@ spring.data.redis.port=6379
 
 5. Install dependencies and run the projects.
 
-> Alternatively, you can run `sh clean-install-deps.sh` to verify npm cache and clean the apps prior to installing dependencies.
+> Alternatively, you can run `sh clean-setup.sh` to verify npm cache and clean the apps prior to installing dependencies.
 > Open three terminal instances. Follow the below code blocks to run each app.
 
 ```shell
