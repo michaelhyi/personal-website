@@ -1,12 +1,5 @@
 import axios from "axios";
-
-function authConfig() {
-    return {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-    };
-}
+import authConfig from "./authConfig";
 
 export async function createPost(text) {
     const { data } = await axios.post(

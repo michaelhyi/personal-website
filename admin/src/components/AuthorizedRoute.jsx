@@ -9,18 +9,12 @@ export default function AuthorizedRoute({ children }) {
 
     useEffect(() => {
         (async () => {
-            const token = localStorage.getItem("token");
-
-            if (!token) {
+            try {
+                await validateToken();
+                setLoading(false);
+            } catch {
+                localStorage.removeItem("token");
                 navigate("/");
-            } else {
-                try {
-                    await validateToken(token);
-                    setLoading(false);
-                } catch {
-                    localStorage.removeItem("token");
-                    navigate("/");
-                }
             }
         })();
     }, [navigate]);

@@ -1,4 +1,5 @@
 import axios from "axios";
+import authConfig from "./authConfig";
 
 async function extractUsernameFromGoogleToken(token) {
     const { data } = await axios(
@@ -22,8 +23,9 @@ export async function login(googleToken) {
     localStorage.setItem("token", jwt);
 }
 
-export async function validateToken(token) {
+export async function validateToken() {
     await axios(
-        `${process.env.REACT_APP_API_URL}/v1/auth/validate-token/${token}`,
+        `${process.env.REACT_APP_API_URL}/v1/auth/validate-token`,
+        authConfig(),
     );
 }
