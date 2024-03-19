@@ -14,7 +14,7 @@ git clone https://github.com/michaelhyi/personal-website.git
 cd personal-website
 ```
 
-2. In `api/src/main/resources`, create a file named `application.properties`. In `api/src/test/resources`, create a file named `application-it.resources`. Copy the following into both files:
+2. In `backend/src/main/resources`, create a file named `application.properties`. In `backend/src/test/resources`, create a file named `application-it.resources`. Copy the following into both files:
 
 ```shell
 auth.whitelisted-emails=
@@ -69,18 +69,18 @@ spring.data.redis.port=6379
 > Open three terminal instances. Follow the below code blocks to run each app.
 
 ```shell
-cd admin
+cd frontend/admin 
 npm i
 npm start
 ```
 
 ```shell
-cd api
+cd backend 
 mvn spring-boot:run
 ```
 
 ```shell
-cd web
+cd frontend/web 
 npm i
 npm start
 ```
@@ -88,12 +88,12 @@ npm start
 6. Fix linting errors using Prettier and ESLint.
 
 ```shell
-# cd admin or web
+# cd frontend/admin or frontend/web
 npm run lint:fix
 ```
 
 7. Run unit/integration tests on and build a production bundle for your Spring Boot application.
 ```shell
-cd api
+cd backend 
 mvn -ntp verify
 ```

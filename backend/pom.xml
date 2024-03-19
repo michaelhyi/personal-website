@@ -4,24 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>api</name>
-    <description>REST API for Personal Website Blog</description>
-    <url>https://www.michael-yi.com</url>
-
     <groupId>com.michaelhyi</groupId>
     <artifactId>api</artifactId>
     <version>1.2.0</version>
     <packaging>jar</packaging>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
     <properties>
-		<java.version>17</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <jwt.version>0.11.5</jwt.version>
@@ -50,12 +46,12 @@
             <version>3.1.2</version>
         </dependency>
 
-	    <dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		    <version>1.18.30</version>
-		    <scope>provided</scope>
-	    </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- aws -->
 
@@ -64,7 +60,7 @@
             <artifactId>s3</artifactId>
             <version>2.20.26</version>
         </dependency>
-        
+
         <!-- security -->
 
         <dependency>
@@ -136,10 +132,10 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin> 
+            </plugin>
 
             <!-- unit testing -->
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

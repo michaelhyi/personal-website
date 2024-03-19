@@ -17,7 +17,7 @@ jobs:
           node-version: '18.x'
 
       - name: Build & Test Admin Platform 
-        working-directory: ./admin
+        working-directory: ./frontend/admin
         run: |
           npm ci
           npm run build

@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build, Test, Deploy Admin Platform 
-        working-directory: ./admin
+        working-directory: ./frontend/admin
         run: |
           npm ci
           npm run build
