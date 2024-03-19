@@ -146,7 +146,8 @@ class AuthIT {
         String token = jwtService.generateToken(user);
 
         String error = mvc.perform(get("/v1/auth/validate-token")
-                        .header("Authorization", "Bearer " + token))
+                        .header("Authorization", "Bearer " + token)
+                        .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
@@ -159,7 +160,8 @@ class AuthIT {
         String unauthorizedToken = generateUnauthorizedToken(user);
 
         error = mvc.perform(get("/v1/auth/validate-token")
-                        .header("Authorization", "Bearer " + unauthorizedToken))
+                        .header("Authorization", "Bearer " + unauthorizedToken)
+                        .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -172,7 +174,8 @@ class AuthIT {
                 + ".0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM";
 
         error = mvc.perform(get("/v1/auth/validate-token")
-                        .header("Authorization", "Bearer " + expiredToken))
+                        .header("Authorization", "Bearer " + expiredToken)
+                        .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
