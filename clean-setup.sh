@@ -2,13 +2,13 @@
 
 npm cache verify 
 
-cd admin
+cd frontend/admin
 rm -rf build coverage node_modules
 npm i
 
-cd ../api
+cd ../backend
 mvn clean
 
-cd ../web 
+cd ../frontend/web
 rm -rf build coverage node_modules
 npm i

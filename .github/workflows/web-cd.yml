@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build, Test, Deploy Web Platform
-        working-directory: ./web
+        working-directory: ./frontend/web
         run: |
           npm ci
           npm run build
