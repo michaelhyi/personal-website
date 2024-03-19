@@ -1,8 +1,5 @@
 package com.michaelhyi.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import org.hibernate.annotations.CreationTimestamp;
 import com.michaelhyi.dto.PostRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -22,8 +23,8 @@ public class Post implements Serializable {
     @Id
     @Setter(AccessLevel.NONE)
     @Column(
-        nullable = false,
-        unique = true
+            nullable = false,
+            unique = true
     )
     private String id;
 
@@ -34,8 +35,8 @@ public class Post implements Serializable {
 
     @Setter(AccessLevel.NONE)
     @Column(
-        nullable = false,
-        unique = true
+            nullable = false,
+            unique = true
     )
     private String title;
 
@@ -44,8 +45,8 @@ public class Post implements Serializable {
 
     public Post(PostRequest req) {
         if (req.text() == null
-            || req.text().isBlank()
-            || req.text().isEmpty()) {
+                || req.text().isBlank()
+                || req.text().isEmpty()) {
             throw new IllegalArgumentException("Fields cannot be blank.");
         }
 
@@ -68,27 +69,27 @@ public class Post implements Serializable {
         }
 
         boolean containsYear = newTitle.contains("(")
-                                && newTitle.contains(")")
-                                && newTitle.indexOf(")")
-                                    - newTitle.indexOf("(") == 5;
+                && newTitle.contains(")")
+                && newTitle.indexOf(")")
+                - newTitle.indexOf("(") == 5;
 
         if (!containsYear) {
             throw new IllegalArgumentException(
-                "Title must contain a year in parentheses.");
+                    "Title must contain a year in parentheses.");
         }
 
         if (newTitle.contains("(")
-            && !newTitle.substring(
-                    newTitle.indexOf("(") - 1,
-                    newTitle.indexOf("(")
-                ).equals(" ")) {
+                && !newTitle.substring(
+                newTitle.indexOf("(") - 1,
+                newTitle.indexOf("(")
+        ).equals(" ")) {
             throw new IllegalArgumentException(
-                "Year must be preceded by a space.");
+                    "Year must be preceded by a space.");
         }
 
         String newId = newTitle.toLowerCase()
-                                .replace(" ", "-")
-                                .replaceAll("[^a-z\\-]", "");
+                .replace(" ", "-")
+                .replaceAll("[^a-z\\-]", "");
 
         id = newId.charAt(newId.length() - 1) == '-'
                 ? newId.substring(0, newId.length() - 1) : newId;

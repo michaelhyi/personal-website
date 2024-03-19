@@ -1,15 +1,12 @@
 package com.michaelhyi.unit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import java.util.Date;
-import java.util.Optional;
+import com.michaelhyi.dao.PostRepository;
+import com.michaelhyi.dto.PostRequest;
+import com.michaelhyi.entity.Post;
+import com.michaelhyi.exception.PostNotFoundException;
+import com.michaelhyi.exception.S3ObjectNotFoundException;
+import com.michaelhyi.service.PostService;
+import com.michaelhyi.service.S3Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,14 +15,19 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockMultipartFile;
-import com.michaelhyi.dao.PostRepository;
-import com.michaelhyi.dto.PostRequest;
-import com.michaelhyi.entity.Post;
-import com.michaelhyi.exception.PostNotFoundException;
-import com.michaelhyi.exception.S3ObjectNotFoundException;
-import com.michaelhyi.service.PostService;
-import com.michaelhyi.service.S3Service;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
+
+import java.util.Date;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -115,7 +117,7 @@ class PostServiceTest {
     @Test
     void willUpdateS3ObjectDuringCreatePostImageWhenImageAlreadyExists() {
         when(repository.findById("title"))
-            .thenReturn(Optional.of(post));
+                .thenReturn(Optional.of(post));
         when(s3Service.getObject("title")).thenReturn("Hello World!".getBytes());
 
         underTest.createPostImage("title", new MockMultipartFile("file", "New Hello World!".getBytes()));
@@ -123,13 +125,13 @@ class PostServiceTest {
         verify(repository).findById("title");
         verify(s3Service).getObject("title");
         verify(s3Service).deleteObject("title");
-        verify(s3Service).putObject("title", "New Hello World!".getBytes()); 
+        verify(s3Service).putObject("title", "New Hello World!".getBytes());
     }
 
     @Test
     void createPostImage() {
         when(repository.findById("title"))
-            .thenReturn(Optional.of(post));
+                .thenReturn(Optional.of(post));
         when(s3Service.getObject("title")).thenThrow(NoSuchKeyException.class);
 
         underTest.createPostImage("title", new MockMultipartFile("file", "Hello World!".getBytes()));
@@ -203,9 +205,9 @@ class PostServiceTest {
     void willThrowUpdatePostWhenPostNotFound() {
         when(repository.findById("title")).thenReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, 
-                        () -> underTest.updatePost("title", new PostRequest("<h1>title (1994)</h1>content"))
-                    );
+        assertThrows(PostNotFoundException.class,
+                () -> underTest.updatePost("title", new PostRequest("<h1>title (1994)</h1>content"))
+        );
 
         verify(repository).findById("title");
         verifyNoMoreInteractions(repository);

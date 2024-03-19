@@ -1,7 +1,7 @@
 package com.michaelhyi.config;
 
-import java.util.List;
-
+import com.michaelhyi.dao.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.michaelhyi.dao.UserRepository;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -42,7 +40,7 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return username -> repository.findById(username)
                 .orElseThrow(() ->
-                    new UsernameNotFoundException("User not found.")
+                        new UsernameNotFoundException("User not found.")
                 );
     }
 
