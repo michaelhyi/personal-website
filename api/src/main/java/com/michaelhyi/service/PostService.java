@@ -1,21 +1,19 @@
 package com.michaelhyi.service;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.michaelhyi.dao.PostRepository;
 import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.exception.PostNotFoundException;
 import com.michaelhyi.exception.S3ObjectNotFoundException;
 import com.michaelhyi.exception.S3ServiceException;
-
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +26,7 @@ public class PostService {
 
         if (repository.findById(post.getId()).isPresent()) {
             throw new IllegalArgumentException(
-                "A post with the same title already exists."
+                    "A post with the same title already exists."
             );
         }
 

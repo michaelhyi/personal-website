@@ -1,6 +1,9 @@
 package com.michaelhyi.controller;
 
-import java.util.List;
+import com.michaelhyi.dto.PostRequest;
+import com.michaelhyi.entity.Post;
+import com.michaelhyi.service.PostService;
+import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,11 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.michaelhyi.dto.PostRequest;
-import com.michaelhyi.entity.Post;
-import com.michaelhyi.service.PostService;
-
-import lombok.AllArgsConstructor;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -35,12 +34,12 @@ public class PostController {
     }
 
     @PostMapping(
-        value = "{id}/image",
-        consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+            value = "{id}/image",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public void createPostImage(
-        @PathVariable("id") String id,
-        @RequestParam("file") MultipartFile file
+            @PathVariable("id") String id,
+            @RequestParam("file") MultipartFile file
     ) {
         service.createPostImage(id, file);
     }
@@ -52,8 +51,8 @@ public class PostController {
     }
 
     @GetMapping(
-        value = "{id}/image",
-        produces = MediaType.IMAGE_JPEG_VALUE
+            value = "{id}/image",
+            produces = MediaType.IMAGE_JPEG_VALUE
     )
     @Cacheable(value = "readPostImage", key = "#id")
     public byte[] readPostImage(@PathVariable("id") String id) {
@@ -69,8 +68,8 @@ public class PostController {
     @PutMapping("{id}")
     @CachePut(cacheNames = {"readAllPosts", "readPost"}, key = "#id")
     public Post updatePost(
-        @PathVariable("id") String id,
-        @RequestBody PostRequest req
+            @PathVariable("id") String id,
+            @RequestBody PostRequest req
     ) {
         return service.updatePost(id, req);
     }
