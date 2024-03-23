@@ -33,10 +33,10 @@ This repository contains the source code to my personal website and film blog. I
 
 | | |
 | - | - |
-|![](.github/images/home.png) | ![](.github/images/portfolio.png) <tr></tr> |
-|![](.github/images/view-post.png) | ![](.github/images/auth.png) <tr></tr> |
-|![](.github/images/create-post.png) | ![](.github/images/delete-post.png) <tr></tr> |
-|![](.github/images/edit-post-1.png) | ![](.github/images/edit-post-2.png) <tr></tr> |
+|![](.github/assets/home.png) | ![](.github/assets/portfolio.png) <tr></tr> |
+|![](.github/assets/view-post.png) | ![](.github/assets/auth.png) <tr></tr> |
+|![](.github/assets/create-post.png) | ![](.github/assets/delete-post.png) <tr></tr> |
+|![](.github/assets/edit-post-1.png) | ![](.github/assets/edit-post-2.png) <tr></tr> |
 
 ## Project Stats
 
