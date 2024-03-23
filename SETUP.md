@@ -91,9 +91,3 @@ npm start
 # cd frontend/admin or frontend/web
 npm run lint:fix
 ```
-
-7. Run unit/integration tests on and build a production bundle for your Spring Boot application.
-```shell
-cd backend 
-mvn -ntp verify
-```
