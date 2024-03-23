@@ -72,7 +72,9 @@ jobs:
         working-directory: ./backend
         run: |
           mvn -ntp clean verify
+          docker build . -t michaelyi/personal-website-api:latest
           docker build . -t michaelyi/personal-website-api:${{ env.VERSION }}
+          docker push michaelyi/personal-website-api:latest
           docker push michaelyi/personal-website-api:${{ env.VERSION }}
 
       - name: Deploy on EC2 Instance
@@ -86,10 +88,10 @@ jobs:
             sudo docker stop personal-website-api || true
             sudo docker rm personal-website-api || true
             sudo docker rmi -f $(sudo docker image ls -a -q)
-            sudo docker pull michaelyi/personal-website-api:${{ env.VERSION }}
+            sudo docker pull michaelyi/personal-website-api:latest
             sudo docker run --name personal-website-api -d -p 8080:8080 \
               -e AWS_S3_BUCKET=personal-website-api-bucket-prod \
               -e SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
               -e SPRING_JPA_HIBERNATE_DDL_AUTO=validate \
-              michaelyi/personal-website-api:${{ env.VERSION }}
+              michaelyi/personal-website-api:latest
             '
