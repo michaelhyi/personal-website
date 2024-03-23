@@ -31,5 +31,7 @@ jobs:
         run: |
           npm ci
           npm run build
+          docker build . -t michaelyi/personal-website-admin:latest
           docker build . -t michaelyi/personal-website-admin:${{ env.VERSION }}
+          docker push michaelyi/personal-website-admin:latest
           docker push michaelyi/personal-website-admin:${{ env.VERSION }}
