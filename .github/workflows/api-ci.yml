@@ -32,7 +32,7 @@ jobs:
           echo "spring.datasource.url=${{ secrets.API_SPRING_DATASOURCE_URL }}" >> ./application.properties
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./application.properties
-          echo "spring.jpa.hibernate.ddl-auto=update" >> ./application.properties
+          echo "spring.jpa.hibernate.ddl-auto=validate" >> ./application.properties
           echo "spring.cache.type=redis" >> ./application.properties
           echo "spring.cache.redis.time-to-live=900000" >> ./application.properties
           echo "spring.data.redis.host=${{ secrets.API_SPRING_CACHE_HOST }}" >> ./application.properties
