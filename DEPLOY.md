@@ -184,7 +184,7 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 
 # Setting Github Secrets
 
-1. Prior to merging PR's to the `prod` branch, go through each file ending in `-cd.yml` in `./github/workflows`. Set `jobs.deploy.env.VERSION` to the version of the corresponding app.
+1. Prior to merging PR's to the `prod` branch, go through each file ending in `-cd.yml` in `.github/workflows`. Set `jobs.deploy.env.VERSION` to the version of the corresponding app.
 2. Navigate to the [GitHub repository](https://github.com/michaelhyi/personal-website), click `Settings`. Under `Security`, click `Secrets and variables` and `Actions`.
 3. Set all secrets.
 
