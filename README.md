@@ -16,7 +16,7 @@ This repository contains the source code to my personal website and film blog. I
 ## Tech Stack
 
 - [Java](https://www.java.com/en/)
-- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring](https://spring.io/)
 - [MySQL](https://www.mysql.com/)
 - [Redis](https://redis.io/)
 - [Docker](https://www.docker.com/)
