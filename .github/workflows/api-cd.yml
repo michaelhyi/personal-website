@@ -33,7 +33,7 @@ jobs:
           echo "security.cors.allowed-origins=${{ secrets.API_SECURITY_CORS_ALLOWED_ORIGINS }}" >> ./application.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application.properties
           echo "spring.application.name=personal-website-api" >> ./application.properties
-          echo "spring.datasource.url=${{ secrets.API_SPRING_TEST_DATASOURCE_URL }}" >> ./application.properties
+          echo "spring.datasource.url=${{ secrets.API_SPRING_DATASOURCE_URL }}" >> ./application.properties
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./application.properties
           echo "spring.jpa.hibernate.ddl-auto=update" >> ./application.properties
@@ -92,7 +92,6 @@ jobs:
             sudo docker pull michaelyi/personal-website-api:latest
             sudo docker run --name personal-website-api -d -p 8080:8080 \
               -e AWS_S3_BUCKET=personal-website-api-bucket-prod \
-              -e SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
               -e SPRING_JPA_HIBERNATE_DDL_AUTO=validate \
               michaelyi/personal-website-api:latest
             '
