@@ -1,7 +1,6 @@
 package com.michaelhyi.service;
 
 import com.michaelhyi.exception.S3ObjectNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.ResponseInputStream;
@@ -13,48 +12,71 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class S3Service {
     @Value("${aws.s3.bucket}")
     private String bucket;
     private final S3Client client;
+    private Map<String, byte[]> fakeBucket;
+
+    public S3Service(S3Client client) {
+        this.client = client;
+        fakeBucket = new HashMap<>();
+    }
 
     public void putObject(String key, byte[] file) {
-        PutObjectRequest putObjectRequest = PutObjectRequest
-                .builder()
-                .bucket(bucket)
-                .key(key)
-                .build();
+        if (!bucket.equals("test")) {
+            PutObjectRequest putObjectRequest = PutObjectRequest
+                    .builder()
+                    .bucket(bucket)
+                    .key(key)
+                    .build();
 
-        client.putObject(putObjectRequest, RequestBody.fromBytes(file));
+            client.putObject(putObjectRequest, RequestBody.fromBytes(file));
+        } else {
+            fakeBucket.put(key, file);
+        }
     }
 
     public byte[] getObject(String key) {
-        GetObjectRequest getObjectRequest = GetObjectRequest
-                .builder()
-                .bucket(bucket)
-                .key(key)
-                .build();
+        if (!bucket.equals("test")) {
+            GetObjectRequest getObjectRequest = GetObjectRequest
+                    .builder()
+                    .bucket(bucket)
+                    .key(key)
+                    .build();
 
-        ResponseInputStream<GetObjectResponse> res =
-                client.getObject(getObjectRequest);
+            ResponseInputStream<GetObjectResponse> res =
+                    client.getObject(getObjectRequest);
 
-        try {
-            return res.readAllBytes();
-        } catch (IOException e) {
-            throw new S3ObjectNotFoundException();
+            try {
+                return res.readAllBytes();
+            } catch (IOException e) {
+                throw new S3ObjectNotFoundException();
+            }
+        } else {
+            if (!fakeBucket.containsKey(key)) {
+                throw new S3ObjectNotFoundException();
+            }
+
+            return fakeBucket.get(key);
         }
     }
 
     public void deleteObject(String key) {
-        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest
-                .builder()
-                .bucket(bucket)
-                .key(key)
-                .build();
+        if (!bucket.equals("test")) {
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest
+                    .builder()
+                    .bucket(bucket)
+                    .key(key)
+                    .build();
 
-        client.deleteObject(deleteObjectRequest);
+            client.deleteObject(deleteObjectRequest);
+        } else {
+            fakeBucket.remove(key);
+        }
     }
 }

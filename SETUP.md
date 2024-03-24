@@ -14,7 +14,7 @@ git clone https://github.com/michaelhyi/personal-website.git
 cd personal-website
 ```
 
-2. In `backend/src/main/resources`, create a file named `application.properties`. In `backend/src/test/resources`, create a file named `application-it.resources`. Copy the following into both files:
+2. In `backend/src/main/resources`, create a file named `application.properties`. Copy the following into the file:
 
 ```shell
 auth.whitelisted-emails=
