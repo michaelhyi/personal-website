@@ -13,7 +13,18 @@ export default function Lauren() {
                         height={250}
                         alt="mimi and lala"
                     />
-                    <div className="text-sm font-light">soon...</div>
+                    <div className="text-sm font-light">
+                        Happy Birthday Baby!! I hope you had the best birthday
+                        ever. I love you!!
+                    </div>
+                    <a
+                        href="https://drive.google.com/drive/folders/1bamXZUe1D-zf6JBgkrGaT1Td3rzLJaCa?usp=sharing"
+                        className="underline"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        Link...
+                    </a>
                 </div>
             </Center>
         </Container>
