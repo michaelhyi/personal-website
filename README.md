@@ -20,7 +20,6 @@ This repository contains the source code to my personal website and film blog. I
 - [MySQL](https://www.mysql.com/)
 - [Redis](https://redis.io/)
 - [Docker](https://www.docker.com/)
-- [Kubernetes](https://kubernetes.io/)
 - [AWS EC2, S3](https://aws.amazon.com/)
 - [JUnit](https://junit.org/junit5/)
 - [Mockito](https://site.mockito.org/)

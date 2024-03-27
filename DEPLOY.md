@@ -68,8 +68,6 @@ sudo vi redis6
 sudo systemctl restart redis6
 ```
 
-Repeat the steps above to create a test Redis server for running tests. However, skip Step 6 and be sure to set `protected-mode yes` to `protected-mode no` in `redis6.conf`. 
-
 # Spring Boot API Deployment 
 
 1. Only on your first time using the keypair, run the following command.
@@ -118,7 +116,7 @@ enabled=1
 6. Update your Nginx configuration file.
 
 ```shell
-vi /etc/nginx/conf.d/default.conf
+sudo vi /etc/nginx/conf.d/default.conf
 >> Add this
 upstream server {
   server 127.0.0.1:8080;
@@ -141,7 +139,6 @@ ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
  }
 }
 <<
-sudo service nginx start
 ```
 
 7. Generate SSL certificates using OpenSSl.
@@ -150,6 +147,7 @@ sudo service nginx start
 sudo mkdir /etc/ssl/private
 sudo chmod 700 /etc/ssl/private
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+sudo service nginx start
 ```
 
 8. Create a CNAME record in Cloudflare. Set the `name` equal to your subdomain, and the `target` equal to the address listed under `Public IPv4 DNS` for your EC2 instance.
