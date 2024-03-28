@@ -53,7 +53,6 @@ openssl rand -base64 512
 3. Edit the Redis config file.
 
 ```shell
-cd /etc
 sudo vi /etc/redis6
 ```
 
@@ -88,7 +87,7 @@ sudo docker login -u michaelyi -p <Docker Hub Token>
 
 3. Install, configure, and start Nginx.
 ```shell
-sudo yum install nginx
+sudo yum install -y nginx
 sudo vi /etc/yum.repos.d/nginx.repo
 ```
 
