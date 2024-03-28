@@ -24,15 +24,15 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '<NEW PASSWORD>';
 
 ```shell
 CREATE USER '<USERNAME>'@'%' IDENTIFIED BY '<PASSWORD>';
-CREATE DATABASE personal_website_api_db_prod;
-GRANT ALL PRIVILEGES ON personal_website_api_db_prod.* TO '<USERNAME>'@'%';
+CREATE DATABASE personal_website_api;
+GRANT ALL PRIVILEGES ON personal_website_api.* TO '<USERNAME>'@'%';
 FLUSH PRIVILEGES;
 ```
 
 4. Initialize the database with tables.
 
 ```shell
-USE personal_website_api_db_prod;
+USE personal_website_api;
 # copy the code from V1__Initial_Setup.sql in ./api/main/resources/db/migrations
 ```
 
@@ -42,8 +42,6 @@ USE personal_website_api_db_prod;
 
 ```shell
 sudo dnf install -y redis6
-sudo systemctl start redis6
-sudo systemctl enable redis6
 ```
 
 2. Generate a new Redis password.
@@ -56,16 +54,17 @@ openssl rand -base64 512
 
 ```shell
 cd /etc
-sudo vi redis6
+sudo vi /etc/redis6
 ```
 
 4. Select redis6.conf.
 5. Find `# requirepass foobared`, remove the `#`, and replace `foobared` with the generated password from Step 3.
 6. Find `bind 127.0.0.1 -::1`, and comment it out.
-7. Restart the Redis service.
+7. Start the Redis service.
 
 ```shell
-sudo systemctl restart redis6
+sudo systemctl start redis6
+sudo systemctl enable redis6
 ```
 
 # Spring Boot API Deployment 
