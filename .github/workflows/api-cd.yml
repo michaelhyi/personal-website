@@ -37,6 +37,8 @@ jobs:
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./application.properties
           echo "spring.jpa.hibernate.ddl-auto=validate" >> ./application.properties
+          echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./application.properties
+          echo "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect" >> ./application.properties
           echo "spring.cache.type=redis" >> ./application.properties
           echo "spring.cache.redis.time-to-live=900000" >> ./application.properties
           echo "spring.data.redis.host=localhost" >> ./application.properties
