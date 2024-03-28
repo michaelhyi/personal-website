@@ -42,8 +42,6 @@ USE personal_website_api;
 
 ```shell
 sudo dnf install -y redis6
-sudo systemctl start redis6
-sudo systemctl enable redis6
 ```
 
 2. Generate a new Redis password.
@@ -62,10 +60,11 @@ sudo vi redis6
 4. Select redis6.conf.
 5. Find `# requirepass foobared`, remove the `#`, and replace `foobared` with the generated password from Step 3.
 6. Find `bind 127.0.0.1 -::1`, and comment it out.
-7. Restart the Redis service.
+7. Start the Redis service.
 
 ```shell
-sudo systemctl restart redis6
+sudo systemctl start redis6
+sudo systemctl enable redis6
 ```
 
 # Spring Boot API Deployment 
