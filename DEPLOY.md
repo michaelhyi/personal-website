@@ -54,7 +54,7 @@ openssl rand -base64 512
 
 ```shell
 cd /etc
-sudo vi redis6
+sudo vi /etc/redis6
 ```
 
 4. Select redis6.conf.
