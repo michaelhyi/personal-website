@@ -70,25 +70,13 @@ sudo systemctl restart redis6
 
 # Spring Boot API Deployment 
 
-1. Only on your first time using the keypair, run the following command.
-
-```shell
-chmod 400 /path/to/keypair
-```
-
-2. Connect to the EC2 instance.
-
-```shell
-ssh -i /path/to/keypair ec2-user@<EC2 Instace IP Address>
-```
-
-3. Install Docker and start the Docker service.
+1. Install Docker and start the Docker service.
 ```shell
 sudo yum install -y docker
 sudo service docker start
 ```
 
-4. Login to Docker Hub.
+2. Login to Docker Hub.
 
 > Navigate to [Docker Hub](https://hub.docker.com/).
 > Click on your profile picture and click `My Account`.
@@ -99,25 +87,28 @@ sudo service docker start
 sudo docker login -u michaelyi -p <Docker Hub Token>
 ```
 
-5. Install, configure, and start Nginx.
+3. Install, configure, and start Nginx.
 ```shell
-sudo yum update
 sudo yum install nginx
 sudo vi /etc/yum.repos.d/nginx.repo
->> Add this
+```
+
+4. Paste the following code.
+```
 [nginx]
 name=nginx repo
 baseurl=https://nginx.org/packages/mainline/<OS>/<OSRELEASE>/$basearch/
 gpgcheck=0
 enabled=1 
-<<
 ```
 
-6. Update your Nginx configuration file.
-
+5. Update your Nginx configuration file.
 ```shell
 sudo vi /etc/nginx/conf.d/default.conf
->> Add this
+```
+
+6. Paste the following code.
+```
 upstream server {
   server 127.0.0.1:8080;
 }
@@ -138,11 +129,9 @@ ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
   proxy_read_timeout 600s;
  }
 }
-<<
 ```
 
 7. Generate SSL certificates using OpenSSl.
-
 ```shell
 sudo mkdir /etc/ssl/private
 sudo chmod 700 /etc/ssl/private
@@ -161,9 +150,8 @@ sudo service nginx start
 > Set `API_AUTH_WHITELISTED_EMAILS` to a comma separated list of authorized emails for the admin platform.
 > Set `API_AWS_ACCESS_KEY` to your AWS Access Key.
 > Set `API_AWS_SECRET_KEY` to your AWS Secret Key.
-> Set `API_SECURITY_CORS_ALLOWED_ORIGINS` to a comma separated list of CORS allowed origins.
 > Set `API_SECURITY_JWT_SECRET_KEY` to your JWT signing key.
-> Set `API_SPRING_CACHE_HOST` to the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Redis server.
+> Set `API_SPRING_DATA_REDIS_HOST` to the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Redis server.
 > Set `API_SPRING_DATASOURCE_PASSWORD` to the MySQL user password. 
 > Set `API_SPRING_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your MySQL server.
 > Set `API_SPRING_DATASOURCE_USERNAME` to the MySQL user username.

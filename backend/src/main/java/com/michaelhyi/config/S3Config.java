@@ -26,7 +26,7 @@ public class S3Config {
                 .credentialsProvider(
                         StaticCredentialsProvider
                                 .create(credentials))
-                .region(Region.of("us-east-2"))
+                .region(Region.of("us-west-2"))
                 .build();
     }
 }
