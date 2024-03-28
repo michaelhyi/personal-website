@@ -24,15 +24,15 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '<NEW PASSWORD>';
 
 ```shell
 CREATE USER '<USERNAME>'@'%' IDENTIFIED BY '<PASSWORD>';
-CREATE DATABASE personal_website_api_db_prod;
-GRANT ALL PRIVILEGES ON personal_website_api_db_prod.* TO '<USERNAME>'@'%';
+CREATE DATABASE personal_website_api;
+GRANT ALL PRIVILEGES ON personal_website_api.* TO '<USERNAME>'@'%';
 FLUSH PRIVILEGES;
 ```
 
 4. Initialize the database with tables.
 
 ```shell
-USE personal_website_api_db_prod;
+USE personal_website_api;
 # copy the code from V1__Initial_Setup.sql in ./api/main/resources/db/migrations
 ```
 
