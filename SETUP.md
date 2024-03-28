@@ -61,7 +61,7 @@ spring.data.redis.port=6379
 
 4. Create an AWS S3 bucket.
 
-> Go to your [AWS S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-east-2#). Create two buckets named `personal-website-api-bucket-dev` and `personal-website-api-bucket-test`. Make sure that you are using region `us-east-2`.
+> Go to your [AWS S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-west-2#). Create two buckets named `personal-website-api-bucket-dev` and `personal-website-api-bucket-test`. Make sure that you are using region `us-west-2`.
 
 5. Install dependencies and run the projects.
 
