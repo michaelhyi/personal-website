@@ -39,7 +39,6 @@ public class PostService {
             readPostImage(id);
             s3Service.deleteObject(id);
         } catch (S3ObjectNotFoundException e) {
-
         }
 
         try {
