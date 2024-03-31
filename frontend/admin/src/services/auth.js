@@ -16,7 +16,7 @@ export async function login(googleToken) {
     const email = await extractUsernameFromGoogleToken(googleToken);
 
     const { data: jwt } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/v1/auth/login`,
+        `${process.env.REACT_APP_API_URL}/auth/login`,
         { email },
     );
 
@@ -25,7 +25,7 @@ export async function login(googleToken) {
 
 export async function validateToken() {
     await axios(
-        `${process.env.REACT_APP_API_URL}/v1/auth/validate-token`,
+        `${process.env.REACT_APP_API_URL}/auth/validate-token`,
         authConfig(),
     );
 }
