@@ -25,9 +25,7 @@ export async function createPostImage(id, formData) {
 }
 
 export async function readPost(id) {
-    const { data } = await axios(
-        `${process.env.REACT_APP_API_URL}/post/${id}`,
-    );
+    const { data } = await axios(`${process.env.REACT_APP_API_URL}/post/${id}`);
     return data;
 }
 
