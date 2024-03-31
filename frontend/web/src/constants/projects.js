@@ -4,7 +4,14 @@ import HEALTHRELAY from "../assets/projects/healthrelay.png";
 import RETINAOCT from "../assets/projects/retinaoct.png";
 import SHINE from "../assets/projects/shine.png";
 
-const PROJECTS = [
+export default [
+    {
+        name: "Film Blog",
+        date: "Aug 2023 - Present",
+        description: "A showcase of my passion for cinema.",
+        tech: "Java, Spring, MySQL, Redis, Docker, AWS, JUnit, React, Tailwind",
+        href: "/blog",
+    },
     {
         name: "ScribeAI",
         date: "Oct 2023",
@@ -82,5 +89,3 @@ const PROJECTS = [
         href: "https://github.com/michaelhyi/leafx",
     },
 ];
-
-export default PROJECTS;
