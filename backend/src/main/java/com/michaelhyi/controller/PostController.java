@@ -1,19 +1,16 @@
 package com.michaelhyi.controller;
 
-import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,19 +26,11 @@ public class PostController {
 
     @PostMapping
     @CacheEvict(cacheNames = "readAllPosts", allEntries = true)
-    public String createPost(@RequestBody PostRequest req) {
-        return service.createPost(req);
-    }
-
-    @PostMapping(
-            value = "{id}/image",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
-    public void createPostImage(
-            @PathVariable("id") String id,
-            @RequestParam("file") MultipartFile file
+    public String createPost(
+            @RequestParam("text") String text,
+            @RequestParam("image") MultipartFile image
     ) {
-        service.createPostImage(id, file);
+        return service.createPost(text, image);
     }
 
     @GetMapping("{id}")
@@ -50,10 +39,7 @@ public class PostController {
         return service.readPost(id);
     }
 
-    @GetMapping(
-            value = "{id}/image",
-            produces = MediaType.IMAGE_JPEG_VALUE
-    )
+    @GetMapping("{id}/image")
     @Cacheable(value = "readPostImage", key = "#id")
     public byte[] readPostImage(@PathVariable("id") String id) {
         return service.readPostImage(id);
@@ -67,15 +53,17 @@ public class PostController {
 
     @PutMapping("{id}")
     @CachePut(cacheNames = {"readAllPosts", "readPost"}, key = "#id")
+    @CacheEvict(cacheNames = "readPostImage", key = "#id", condition = "#image != null")
     public Post updatePost(
             @PathVariable("id") String id,
-            @RequestBody PostRequest req
+            @RequestParam("text") String text,
+            @RequestParam(value = "image", required = false) MultipartFile image
     ) {
-        return service.updatePost(id, req);
+        return service.updatePost(id, text, image);
     }
 
     @DeleteMapping("{id}")
-    @CacheEvict(cacheNames = {"readAllPosts", "readPost"}, allEntries = true)
+    @CacheEvict(cacheNames = "readAllPosts", allEntries = true)
     public void deletePost(@PathVariable("id") String id) {
         service.deletePost(id);
     }

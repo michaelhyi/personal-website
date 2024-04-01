@@ -1,11 +1,9 @@
 package com.michaelhyi.service;
 
 import com.michaelhyi.dao.PostRepository;
-import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.exception.PostNotFoundException;
 import com.michaelhyi.exception.S3ObjectNotFoundException;
-import com.michaelhyi.exception.S3ServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -21,8 +20,8 @@ public class PostService {
     private final PostRepository repository;
     private final S3Service s3Service;
 
-    public String createPost(PostRequest req) {
-        Post post = new Post(req);
+    public String createPost(String text, MultipartFile image) {
+        Post post = new Post(text);
 
         if (repository.findById(post.getId()).isPresent()) {
             throw new IllegalArgumentException(
@@ -30,22 +29,20 @@ public class PostService {
             );
         }
 
+        if (image == null) {
+            throw new IllegalArgumentException("An image is required.");
+        }
+
         repository.saveAndFlush(post);
-        return post.getId();
-    }
-
-    public void createPostImage(String id, MultipartFile file) {
-        try {
-            readPostImage(id);
-            s3Service.deleteObject(id);
-        } catch (S3ObjectNotFoundException e) {
-        }
+        String id = post.getId();
 
         try {
-            s3Service.putObject(id, file.getBytes());
+            s3Service.putObject(id, image.getBytes());
         } catch (IOException e) {
-            throw new S3ServiceException();
+            throw new IllegalArgumentException("Image could not be read.");
         }
+
+        return id;
     }
 
     public Post readPost(String id) {
@@ -69,12 +66,27 @@ public class PostService {
                 .findAll(Sort.by(Sort.Direction.DESC, "date"));
     }
 
-    public Post updatePost(String id, PostRequest req) {
+    public Post updatePost(String id, String text, MultipartFile image) {
         Post post = readPost(id);
-        Post updatedPost = new Post(req);
+        Post updatedPost = new Post(text);
 
         post.setContent(updatedPost.getContent());
         repository.save(post);
+
+        byte[] currentImage = readPostImage(id);
+        byte[] newImage;
+
+        try {
+            newImage = image.getBytes();
+        } catch (NullPointerException | IOException e) {
+            newImage = null;
+        }
+
+        if (newImage != null && !Arrays.equals(currentImage, newImage)) {
+            s3Service.deleteObject(id);
+            s3Service.putObject(id, newImage);
+        }
+
         return post;
     }
 
