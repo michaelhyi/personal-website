@@ -1,19 +1,9 @@
 import axios from "axios";
 import authConfig from "./authConfig";
 
-export async function createPost(text) {
+export async function createPost(formData) {
     const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/post`,
-        { text },
-        authConfig(),
-    );
-
-    return data;
-}
-
-export async function createPostImage(id, formData) {
-    await axios.post(
-        `${process.env.REACT_APP_API_URL}/post/${id}/image`,
         formData,
         {
             headers: {
@@ -22,6 +12,8 @@ export async function createPostImage(id, formData) {
             },
         },
     );
+
+    return data;
 }
 
 export async function readPost(id) {
@@ -38,12 +30,13 @@ export async function readAllPosts() {
     return data;
 }
 
-export async function updatePost(id, text) {
-    await axios.put(
-        `${process.env.REACT_APP_API_URL}/post/${id}`,
-        { text },
-        authConfig(),
-    );
+export async function updatePost(id, formData) {
+    await axios.put(`${process.env.REACT_APP_API_URL}/post/${id}`, formData, {
+        headers: {
+            ...authConfig().headers,
+            "Content-Type": "multipart/form-data",
+        },
+    });
 }
 
 export async function deletePost(id) {

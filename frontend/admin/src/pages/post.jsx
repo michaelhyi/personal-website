@@ -11,12 +11,7 @@ import NotFound from "../components/NotFound";
 import Spinner from "../components/Spinner";
 import Toast from "../components/Toast";
 import useEditor from "../hooks/useEditor";
-import {
-    createPost,
-    createPostImage,
-    readPost,
-    updatePost,
-} from "../services/post";
+import { createPost, readPost, updatePost } from "../services/post";
 import validateForm from "../utils/validateForm";
 
 export default function Post() {
@@ -37,20 +32,16 @@ export default function Post() {
 
         try {
             const text = editor.getHTML();
-            let postId;
-
             validateForm(text, image, showImage);
 
-            if (params.get("mode") === "edit") {
-                await updatePost(params.get("id"), text);
-            } else {
-                postId = await createPost(text);
-            }
+            const formData = new FormData();
+            formData.append("text", text);
+            formData.append("image", image || null);
 
-            if (image) {
-                const formData = new FormData();
-                formData.append("file", image);
-                await createPostImage(params.get("id") ?? postId, formData);
+            if (params.get("mode") === "edit") {
+                await updatePost(params.get("id"), formData);
+            } else {
+                await createPost(formData);
             }
 
             toast.custom(({ visible }) => (

@@ -1,14 +1,11 @@
 package com.michaelhyi.entity;
 
-import com.michaelhyi.dto.PostRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
@@ -16,12 +13,10 @@ import java.util.Date;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post implements Serializable {
     @Id
-    @Setter(AccessLevel.NONE)
     @Column(
             nullable = false,
             unique = true
@@ -29,11 +24,9 @@ public class Post implements Serializable {
     private String id;
 
     @CreationTimestamp
-    @Setter(AccessLevel.NONE)
     @Column(nullable = false)
     private Date date;
 
-    @Setter(AccessLevel.NONE)
     @Column(
             nullable = false,
             unique = true
@@ -43,14 +36,13 @@ public class Post implements Serializable {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    public Post(PostRequest req) {
-        if (req.text() == null
-                || req.text().isBlank()
-                || req.text().isEmpty()) {
+    public Post(String text) {
+        if (text == null
+                || text.isBlank()
+                || text.isEmpty()) {
             throw new IllegalArgumentException("Fields cannot be blank.");
         }
 
-        String text = req.text();
         int titleIndex = text.indexOf("</h1>");
 
         if (titleIndex == -1) {
@@ -95,5 +87,9 @@ public class Post implements Serializable {
                 ? newId.substring(0, newId.length() - 1) : newId;
         title = newTitle.replaceAll("<[^>]*>", "");
         content = newContent;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
