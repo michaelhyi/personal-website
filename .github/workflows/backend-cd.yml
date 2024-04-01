@@ -61,12 +61,14 @@ jobs:
           echo "spring.cache.type=redis" >> ./application-it.properties
           echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
 
-      - name: Deploy
-        working-directory: ./backend
+      - name: Login to Docker
         uses: docker/login-action@v3
         with:
           username: michaelyi
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Deploy
+        working-directory: ./backend
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
