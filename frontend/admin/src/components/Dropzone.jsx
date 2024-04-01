@@ -39,8 +39,8 @@ export default function Dropzone({
     });
 
     return (
-        <div className="flex flex-col mt-2">
-            <div
+        <section className="flex flex-col mt-2">
+            <section
                 {...getRootProps({ className: "dropzone" })}
                 className="flex flex-col items-center justify-center border-[1px] border-neutral-600 border-dashed cursor-pointer duration-500 hover:opacity-50 rounded-lg shadow-lg h-64"
             >
@@ -49,12 +49,12 @@ export default function Dropzone({
                     disabled={submitting}
                 />
                 <AiOutlineCloudDownload size={48} />
-                <div className="text-xs text-neutral-300">
+                <p className="text-xs text-neutral-300">
                     Drag & drop an image here, or click to select an image.
-                </div>
-            </div>
+                </p>
+            </section>
             {showImage && (image !== null || id !== null) ? (
-                <div>
+                <>
                     <div className="flex gap-2 mt-4">
                         <img
                             alt="post"
@@ -71,11 +71,11 @@ export default function Dropzone({
                             className="cursor-pointer duration-500 hover:opacity-50"
                         />
                     </div>
-                    <div className="text-xs mt-2">
+                    <p className="text-xs mt-2">
                         {!image ? `${title}.jpg` : image.name}
-                    </div>
-                </div>
+                    </p>
+                </>
             ) : null}
-        </div>
+        </section>
     );
 }

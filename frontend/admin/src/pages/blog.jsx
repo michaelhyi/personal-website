@@ -55,7 +55,7 @@ export default function Blog() {
         <AuthorizedRoute>
             <Container absoluteFooter>
                 <BlogHeader />
-                <div className="mt-8 flex flex-col gap-2">
+                <section className="mt-8 flex flex-col gap-2">
                     {data.map((post, index) => (
                         <div key={post.id} className="flex justify-between">
                             <Hoverable>
@@ -66,7 +66,7 @@ export default function Blog() {
                                     {post.title} <FiArrowUpRight />
                                 </a>
                             </Hoverable>
-                            <div className="relative">
+                            <section className="relative">
                                 <Hoverable>
                                     <IoEllipsisHorizontal
                                         onClick={() => {
@@ -80,10 +80,10 @@ export default function Blog() {
                                         handleToggleModal={toggleModal}
                                     />
                                 ) : null}
-                            </div>
+                            </section>
                         </div>
                     ))}
-                </div>
+                </section>
                 <DeleteModal
                     id={id}
                     modalOpen={modalOpen}

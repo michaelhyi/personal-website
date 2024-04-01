@@ -6,9 +6,7 @@ export default function Loading() {
     return (
         <Container absoluteFooter>
             <Center>
-                <div className="text-neutral-300">
-                    <Spinner />
-                </div>
+                <Spinner />
             </Center>
         </Container>
     );

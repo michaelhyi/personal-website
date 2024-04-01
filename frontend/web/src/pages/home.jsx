@@ -24,26 +24,24 @@ const LINKS = [
 export default function Home() {
     return (
         <Container absoluteFooter>
-            <Center>
-                <div className="flex flex-col items-center">
-                    <img
-                        src="/michael.png"
-                        alt="michael"
-                        className="h-[100px] w-[100px] rounded-full"
-                    />
-                    <div className="mt-4 text-2xl font-medium">Michael Yi</div>
-                    <div className="mt-1 text-xs font-light text-neutral-400">
-                        Software Engineer
-                    </div>
-                    <div className="flex mt-2 text-[10px]">
-                        {LINKS.map((v, i) => (
-                            <Hoverable key={v.name}>
-                                {i !== 0 && <>&nbsp;&nbsp;&#183;&nbsp;&nbsp;</>}
-                                <a href={v.href}>{v.name}</a>
-                            </Hoverable>
-                        ))}
-                    </div>
-                </div>
+            <Center className="flex flex-col items-center">
+                <img
+                    src="/michael.png"
+                    alt="michael"
+                    className="h-[100px] w-[100px] rounded-full"
+                />
+                <h2 className="mt-4 text-2xl font-medium">Michael Yi</h2>
+                <p className="mt-1 text-xs font-light text-neutral-400">
+                    Software Engineer
+                </p>
+                <section className="flex mt-2 text-[10px]">
+                    {LINKS.map((v, i) => (
+                        <Hoverable key={v.name}>
+                            {i !== 0 && <>&nbsp;&nbsp;&#183;&nbsp;&nbsp;</>}
+                            <a href={v.href}>{v.name}</a>
+                        </Hoverable>
+                    ))}
+                </section>
             </Center>
         </Container>
     );

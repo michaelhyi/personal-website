@@ -35,25 +35,22 @@ export default function Home() {
     return (
         <UnauthorizedRoute>
             <Container absoluteFooter>
-                <Center>
-                    <div className="flex flex-col items-center">
-                        <img
-                            src="/michael.png"
-                            alt="michael"
-                            className="h-[100px] w-[100px] rounded-full"
-                        />
-                        <div className="mt-4 text-2xl font-medium">
-                            Michael Yi
-                        </div>
-                        <div className="mt-1 text-xs font-light text-neutral-400">
-                            Personal Website Admin
-                        </div>
-                        <Hoverable>
-                            <button
-                                type="button"
-                                label="google login button"
-                                onClick={handleLogin}
-                                className="flex 
+                <Center className="flex flex-col items-center">
+                    <img
+                        src="/michael.png"
+                        alt="michael"
+                        className="h-[100px] w-[100px] rounded-full"
+                    />
+                    <h2 className="mt-4 text-2xl font-medium">Michael Yi</h2>
+                    <p className="mt-1 text-xs font-light text-neutral-400">
+                        Personal Website Admin
+                    </p>
+                    <Hoverable>
+                        <button
+                            type="button"
+                            label="google login button"
+                            onClick={handleLogin}
+                            className="flex 
                          bg-neutral-800
                          items-center
                          focus:outline-none
@@ -65,11 +62,10 @@ export default function Home() {
                          gap-3
                          px-6 
                          py-2"
-                            >
-                                <FcGoogle />
-                            </button>
-                        </Hoverable>
-                    </div>
+                        >
+                            <FcGoogle />
+                        </button>
+                    </Hoverable>
                 </Center>
                 <Toaster position="top-center" />
             </Container>

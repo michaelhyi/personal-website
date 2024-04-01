@@ -1,9 +1,10 @@
 export default function Hoverable({ children, className }) {
     return (
-        <div
+        <button
+            type="button"
             className={`${className} cursor-pointer duration-300 hover:opacity-50`}
         >
             {children}
-        </div>
+        </button>
     );
 }
