@@ -224,6 +224,11 @@ class PostIT {
 
         assertEquals(error, "A post with the same title already exists.");
 
+        mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text))
+                .andExpect(status().isForbidden());
+
         text = "<h1>Title (1994)</h1>Content";
 
         String id = mvc.perform(multipart("/v1/post")
@@ -406,6 +411,10 @@ class PostIT {
                 .getContentAsString();
 
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
+        mvc.perform(multipart(HttpMethod.PUT, "/v1/post/oldboy")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text))
+                .andExpect(status().isForbidden());
 
         String error = mvc.perform(multipart(HttpMethod.PUT, "/v1/post/oldboy")
                         .file(new MockMultipartFile("image", "Hello World!".getBytes()))
@@ -497,6 +506,9 @@ class PostIT {
                 .getContentAsString();
 
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
+
+        mvc.perform(delete("/v1/post/oldboy"))
+                .andExpect(status().isForbidden());
 
         String error = mvc.perform(delete("/v1/post/oldboy")
                         .header("Authorization", "Bearer " + token))
