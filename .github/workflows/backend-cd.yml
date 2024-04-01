@@ -1,4 +1,4 @@
-name: api-cd
+name: backend-cd
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
       contents: read
       packages: write
     env:
-      VERSION: 1.2.0
+      VERSION: 1.2.1
 
     steps:
       - uses: actions/checkout@v3
@@ -61,26 +61,21 @@ jobs:
           echo "spring.cache.type=redis" >> ./application-it.properties
           echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
 
-      - name: Login to Docker Hub
+      - name: Deploy
+        working-directory: ./backend
         uses: docker/login-action@v3
         with:
           username: michaelyi
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build, Test, Deploy API
-        working-directory: ./backend
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           mvn -ntp clean verify
           docker build . -t michaelyi/personal-website-api:latest
           docker build . -t michaelyi/personal-website-api:${{ env.VERSION }}
           docker push michaelyi/personal-website-api:latest
           docker push michaelyi/personal-website-api:${{ env.VERSION }}
-
-      - name: Deploy on EC2 Instance
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
           echo "$SSH_PRIVATE_KEY" > personal-website-api-kp.pem
           chmod 400 personal-website-api-kp.pem
           ssh -o StrictHostKeyChecking=no -i personal-website-api-kp.pem ec2-user@${SSH_HOST} '

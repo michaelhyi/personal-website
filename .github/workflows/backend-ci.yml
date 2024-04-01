@@ -1,4 +1,4 @@
-name: api-ci
+name: backend-ci
 
 on:
   pull_request:
@@ -57,6 +57,6 @@ jobs:
           echo "spring.cache.type=redis" >> ./application-it.properties
           echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
 
-      - name: Build & Test API
+      - name: Build & Test
         working-directory: ./backend
         run: mvn -ntp clean verify 

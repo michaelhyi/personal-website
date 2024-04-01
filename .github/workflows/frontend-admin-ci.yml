@@ -1,4 +1,4 @@
-name: web-ci
+name: frontend-admin-ci
 
 on:
   pull_request:
@@ -16,8 +16,8 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Build & Test Web Platform 
-        working-directory: ./frontend/web
+      - name: Build & Test
+        working-directory: ./frontend/admin
         run: |
           npm ci
           npm run build
