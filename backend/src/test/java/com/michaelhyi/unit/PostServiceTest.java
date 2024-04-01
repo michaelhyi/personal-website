@@ -1,7 +1,6 @@
 package com.michaelhyi.unit;
 
 import com.michaelhyi.dao.PostRepository;
-import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.exception.PostNotFoundException;
 import com.michaelhyi.exception.S3ObjectNotFoundException;
@@ -23,8 +22,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -47,28 +46,28 @@ class PostServiceTest {
 
     @Test
     void willThrowPostConstructorWhenBadRequest() {
-        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest(null)));
-        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("")));
-        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("no-title")));
-        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1></h1>")));
-        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1>no-content</h1>")));
-        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1>bad-title</h1><p>insert content</p>")));
-        assertThrows(IllegalArgumentException.class, () -> new Post(new PostRequest("<h1>title(1994)</h1><p>insert content</p>")));
+        assertThrows(IllegalArgumentException.class, () -> new Post(null));
+        assertThrows(IllegalArgumentException.class, () -> new Post(""));
+        assertThrows(IllegalArgumentException.class, () -> new Post("no-title"));
+        assertThrows(IllegalArgumentException.class, () -> new Post("<h1></h1>"));
+        assertThrows(IllegalArgumentException.class, () -> new Post("<h1>no-content</h1>"));
+        assertThrows(IllegalArgumentException.class, () -> new Post("<h1>bad-title</h1><p>insert content</p>"));
+        assertThrows(IllegalArgumentException.class, () -> new Post("<h1>title(1994)</h1><p>insert content</p>"));
 
-        PostRequest req = new PostRequest("<h1>title (1994)</h1>content");
-        Post newPost = new Post(req);
+        String text = "<h1>title (1994)</h1>content";
+        Post newPost = new Post(text);
         assertEquals(post.getId(), newPost.getId());
         assertEquals("title (1994)", newPost.getTitle());
         assertEquals(post.getContent(), newPost.getContent());
 
-        req = new PostRequest("<h1>Oldboy (2003)</h1><p>content</p>");
-        newPost = new Post(req);
+        text = "<h1>Oldboy (2003)</h1><p>content</p>";
+        newPost = new Post(text);
         assertEquals("oldboy", newPost.getId());
         assertEquals("Oldboy (2003)", newPost.getTitle());
         assertEquals("<p>content</p>", newPost.getContent());
 
-        req = new PostRequest("<h1>It's Such A Beautiful Day (2012)</h1>Don Hertzfeldt");
-        newPost = new Post(req);
+        text = "<h1>It's Such A Beautiful Day (2012)</h1>Don Hertzfeldt";
+        newPost = new Post(text);
         assertEquals("its-such-a-beautiful-day", newPost.getId());
         assertEquals("It's Such A Beautiful Day (2012)", newPost.getTitle());
         assertEquals("Don Hertzfeldt", newPost.getContent());
@@ -79,7 +78,15 @@ class PostServiceTest {
         when(repository.findById("title")).thenReturn(Optional.of(post));
 
         assertThrows(IllegalArgumentException.class, () ->
-                underTest.createPost(new PostRequest("<h1>title (1994)</h1><p>content</p>")));
+                underTest.createPost("<h1>title (1994)</h1><p>content</p>", null));
+        verify(repository).findById("title");
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    void willThrowCreatePostWhenImageDoesNotExist() {
+        assertThrows(IllegalArgumentException.class, () ->
+                underTest.createPost("<h1>title (1994)</h1><p>content</p>", null));
         verify(repository).findById("title");
         verifyNoMoreInteractions(repository);
     }
@@ -88,58 +95,22 @@ class PostServiceTest {
     void createPost() {
         when(repository.findById(post.getId())).thenReturn(Optional.empty());
 
-        underTest.createPost(
-                new PostRequest("<h1>title (1994)</h1>content")
+        String actualId = underTest.createPost(
+                "<h1>title (1994)</h1>content",
+                new MockMultipartFile("image", "Hello World!".getBytes())
         );
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
         verify(repository).findById(post.getId());
         verify(repository).saveAndFlush(postArgumentCaptor.capture());
+        verify(s3Service).putObject(post.getId(), "Hello World!".getBytes());
 
         Post capturedPost = postArgumentCaptor.getValue();
+        assertEquals(post.getId(), actualId);
         assertEquals(post.getId(), capturedPost.getId());
         assertEquals("title (1994)", capturedPost.getTitle());
         assertEquals(post.getContent(), capturedPost.getContent());
-    }
-
-    @Test
-    void willThrowCreatePostImageWhenPostNotFound() {
-        when(repository.findById("title")).thenThrow(new PostNotFoundException());
-
-        assertThrows(PostNotFoundException.class, () -> underTest.createPostImage("title", null));
-
-        verify(repository).findById("title");
-        verifyNoMoreInteractions(repository);
-        verifyNoMoreInteractions(s3Service);
-    }
-
-    @Test
-    void willUpdateS3ObjectDuringCreatePostImageWhenImageAlreadyExists() {
-        when(repository.findById("title"))
-                .thenReturn(Optional.of(post));
-        when(s3Service.getObject("title")).thenReturn("Hello World!".getBytes());
-
-        underTest.createPostImage("title", new MockMultipartFile("file", "New Hello World!".getBytes()));
-
-        verify(repository).findById("title");
-        verify(s3Service).getObject("title");
-        verify(s3Service).deleteObject("title");
-        verify(s3Service).putObject("title", "New Hello World!".getBytes());
-    }
-
-    @Test
-    void createPostImage() {
-        when(repository.findById("title"))
-                .thenReturn(Optional.of(post));
-        when(s3Service.getObject("title")).thenThrow(NoSuchKeyException.class);
-
-        underTest.createPostImage("title", new MockMultipartFile("file", "Hello World!".getBytes()));
-
-        verify(repository).findById("title");
-        verify(s3Service).getObject("title");
-        verify(s3Service, never()).deleteObject("title");
-        verify(s3Service).putObject(any(), eq("Hello World!".getBytes()));
     }
 
     @Test
@@ -206,7 +177,7 @@ class PostServiceTest {
         when(repository.findById("title")).thenReturn(Optional.empty());
 
         assertThrows(PostNotFoundException.class,
-                () -> underTest.updatePost("title", new PostRequest("<h1>title (1994)</h1>content"))
+                () -> underTest.updatePost("title", "<h1>title (1994)</h1>content", null)
         );
 
         verify(repository).findById("title");
@@ -217,12 +188,28 @@ class PostServiceTest {
     void updatePost() {
         when(repository.findById("title")).thenReturn(Optional.of(post));
 
-        underTest.updatePost("title", new PostRequest("<h1>title (1994)</h1>content"));
+        underTest.updatePost("title", "<h1>title (1994)</h1>content", null);
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
-        verify(repository).findById("title");
+        verify(repository, times(2)).findById("title");
         verify(repository).save(postArgumentCaptor.capture());
+        verify(s3Service).getObject("title");
+    }
+
+    @Test
+    void updatePostImage() {
+        when(repository.findById("title")).thenReturn(Optional.of(post));
+
+        underTest.updatePost("title", "<h1>title (1994)</h1>content", new MockMultipartFile("image", "New Hello World!".getBytes()));
+
+        ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
+
+        verify(repository, times(2)).findById("title");
+        verify(repository).save(postArgumentCaptor.capture());
+        verify(s3Service).getObject("title");
+        verify(s3Service).deleteObject("title");
+        verify(s3Service).putObject("title", "New Hello World!".getBytes());
     }
 
     @Test

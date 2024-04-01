@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelhyi.dao.PostRepository;
 import com.michaelhyi.dto.LoginRequest;
-import com.michaelhyi.dto.PostRequest;
 import com.michaelhyi.entity.Post;
 import com.michaelhyi.service.S3Service;
 import org.junit.jupiter.api.AfterAll;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -110,10 +109,10 @@ class PostIT {
                 .getResponse()
                 .getContentAsString();
 
-        PostRequest req = new PostRequest(null);
-        String error = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String text = "";
+        String error = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -121,21 +120,10 @@ class PostIT {
                 .getMessage();
         assertEquals("Fields cannot be blank.", error);
 
-        req = new PostRequest("");
-        error = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isBadRequest())
-                .andReturn()
-                .getResolvedException()
-                .getMessage();
-        assertEquals("Fields cannot be blank.", error);
-
-        req = new PostRequest("no-title");
-        error = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        text = "no-title";
+        error = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -143,10 +131,10 @@ class PostIT {
                 .getMessage();
         assertEquals("Title cannot be blank.", error);
 
-        req = new PostRequest("<h1></h1>");
-        error = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        text = "<h1></h1>";
+        error = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -154,10 +142,10 @@ class PostIT {
                 .getMessage();
         assertEquals("Title cannot be blank.", error);
 
-        req = new PostRequest("<h1>no-content</h1>");
-        error = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        text = "<h1>no-content</h1>";
+        error = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -165,10 +153,10 @@ class PostIT {
                 .getMessage();
         assertEquals("Content cannot be blank.", error);
 
-        req = new PostRequest("<h1>bad-title</h1><p>insert content</p>");
-        error = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        text = "<h1>bad-title</h1><p>insert content</p>";
+        error = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -176,10 +164,10 @@ class PostIT {
                 .getMessage();
         assertEquals("Title must contain a year in parentheses.", error);
 
-        req = new PostRequest("<h1>title(1994)</h1><p>insert content</p>");
-        error = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        text = "<h1>title(1994)</h1><p>insert content</p>";
+        error = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -187,10 +175,10 @@ class PostIT {
                 .getMessage();
         assertEquals("Year must be preceded by a space.", error);
 
-        req = new PostRequest("<h1>Oldboy (2003)</h1><p>content</p>");
-        String id = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        text = "<h1>Oldboy (2003)</h1><p>content</p>";
+        String id = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -217,17 +205,17 @@ class PostIT {
                 .getResponse()
                 .getContentAsString();
 
-        PostRequest req = new PostRequest("<h1>Already Exists (1994)</h1>content");
+        String text = "<h1>Already Exists (1994)</h1>content";
 
-        mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
 
-        String error = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String error = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -236,11 +224,11 @@ class PostIT {
 
         assertEquals(error, "A post with the same title already exists.");
 
-        req = new PostRequest("<h1>Title (1994)</h1>Content");
+        text = "<h1>Title (1994)</h1>Content";
 
-        String id = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String id = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -258,69 +246,15 @@ class PostIT {
         assertEquals(id, actual.getId());
         assertEquals("Title (1994)", actual.getTitle());
         assertEquals("Content", actual.getContent());
-    }
 
-    @Test
-    void createPostImage() throws Exception {
-        String token = mvc.perform(post("/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(new LoginRequest("test@mail.com"))))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        MockMultipartFile file = new MockMultipartFile("file", "Hello World!".getBytes());
-
-        String error = mvc.perform(multipart("/v1/post/does-not-exist/image")
-                        .file(file)
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResolvedException()
-                .getMessage();
-
-        assertEquals("Post not found.", error);
-
-        PostRequest req = new PostRequest("<h1>Title (1994)</h1>Content");
-        String id = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        mvc.perform(multipart("/v1/post/" + id + "/image")
-                        .file(file)
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk());
-
-        byte[] res = mvc.perform(get("/v1/post/" + id + "/image")
+        byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsByteArray();
 
-        assertArrayEquals(file.getBytes(), res);
-
-        MockMultipartFile newFile = new MockMultipartFile("file", "Hello World!".getBytes());
-        mvc.perform(multipart("/v1/post/" + id + "/image")
-                        .file(newFile)
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk());
-
-        byte[] newRes = mvc.perform(get("/v1/post/" + id + "/image")
-                        .accept(MediaType.IMAGE_JPEG_VALUE))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsByteArray();
-
-        assertNotEquals(res, newRes);
-        assertArrayEquals(newFile.getBytes(), newRes);
+        assertArrayEquals("Hello World!".getBytes(), imageRes);
     }
 
     @Test
@@ -340,11 +274,11 @@ class PostIT {
                 .getMessage();
         assertEquals("Post not found.", error);
 
-        PostRequest req = new PostRequest("<h1>Oldboy (2003)</h1><p>In Park Chan-wook's masterpiece...</p>");
+        String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's masterpiece...</p>";
 
-        String id = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String id = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -381,36 +315,23 @@ class PostIT {
                 .getMessage();
         assertEquals("Post not found.", error);
 
-        PostRequest req = new PostRequest("<h1>Oldboy (2003)</h1><p>In Park Chan-wook's masterpiece...</p>");
+        String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's masterpiece...</p>";
 
-        String id = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String id = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        error = mvc.perform(get("/v1/post/oldboy/image"))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResolvedException()
-                .getMessage();
-        assertEquals("S3 object not found.", error);
-
-        MockMultipartFile file = new MockMultipartFile("file", "Hello World!".getBytes());
-        mvc.perform(multipart("/v1/post/" + id + "/image")
-                        .file(file)
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk());
-
-        byte[] image = mvc.perform(get("/v1/post/oldboy/image"))
+        byte[] image = mvc.perform(get("/v1/post/" + id + "/image"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsByteArray();
-        assertArrayEquals(file.getBytes(), image);
+        assertArrayEquals("Hello World!".getBytes(), image);
     }
 
     @Test
@@ -423,30 +344,30 @@ class PostIT {
                 .getResponse()
                 .getContentAsString();
 
-        PostRequest req = new PostRequest("<h1>Title (1994)</h1>Content");
-        mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String text = "<h1>Title (1994)</h1>Content";
+        mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        req = new PostRequest("<h1>Oldboy (2003)</h1><p>In Park Chan-wook's masterpiece...</p>");
-        mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's masterpiece...</p>";
+        mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        req = new PostRequest("<h1>It's A Wonderful Life (1946)</h1><p>by Frank Capra.</p>");
-        mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        text = "<h1>It's A Wonderful Life (1946)</h1><p>by Frank Capra.</p>";
+        mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -484,11 +405,11 @@ class PostIT {
                 .getResponse()
                 .getContentAsString();
 
-        PostRequest req = new PostRequest("<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>");
+        String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
 
-        String error = mvc.perform(put("/v1/post/oldboy")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String error = mvc.perform(multipart(HttpMethod.PUT, "/v1/post/oldboy")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNotFound())
                 .andReturn()
@@ -497,22 +418,22 @@ class PostIT {
 
         assertEquals("Post not found.", error);
 
-        req = new PostRequest("<h1>Oldboy (2003)</h1><p>In Park Chan-wook's masterpiece...</p>");
+        text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's masterpiece...</p>";
 
-        String id = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String id = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        req = new PostRequest("<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>");
+        text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
 
-        String res = mvc.perform(put("/v1/post/" + id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String res = mvc.perform(multipart(HttpMethod.PUT, "/v1/post/" + id)
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -535,6 +456,34 @@ class PostIT {
         assertEquals(id, actual.getId());
         assertEquals("Oldboy (2003)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
+
+        byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")
+                        .accept(MediaType.IMAGE_JPEG_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsByteArray();
+
+        assertArrayEquals("Hello World!".getBytes(), imageRes);
+
+        mvc.perform(multipart(HttpMethod.PUT, "/v1/post/oldboy")
+                        .file(new MockMultipartFile("image", "New Hello World!".getBytes()))
+                        .param("text", text)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        byte[] newImageRes = mvc.perform(get("/v1/post/" + id + "/image")
+                        .accept(MediaType.IMAGE_JPEG_VALUE))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsByteArray();
+
+        assertNotEquals(imageRes, newImageRes);
+        assertArrayEquals("New Hello World!".getBytes(), newImageRes);
     }
 
     @Test
@@ -547,7 +496,7 @@ class PostIT {
                 .getResponse()
                 .getContentAsString();
 
-        PostRequest req = new PostRequest("<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>");
+        String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
 
         String error = mvc.perform(delete("/v1/post/oldboy")
                         .header("Authorization", "Bearer " + token))
@@ -558,9 +507,9 @@ class PostIT {
 
         assertEquals("Post not found.", error);
 
-        String id = mvc.perform(post("/v1/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req))
+        String id = mvc.perform(multipart("/v1/post")
+                        .file(new MockMultipartFile("image", "Hello World!".getBytes()))
+                        .param("text", text)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn()

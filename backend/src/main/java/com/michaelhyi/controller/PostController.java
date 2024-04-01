@@ -52,8 +52,12 @@ public class PostController {
     }
 
     @PutMapping("{id}")
+    @CacheEvict(
+            cacheNames = "readPostImage",
+            key = "#id",
+            condition = "#image != null"
+    )
     @CachePut(cacheNames = {"readAllPosts", "readPost"}, key = "#id")
-    @CacheEvict(cacheNames = "readPostImage", key = "#id", condition = "#image != null")
     public Post updatePost(
             @PathVariable("id") String id,
             @RequestParam("text") String text,
@@ -63,7 +67,10 @@ public class PostController {
     }
 
     @DeleteMapping("{id}")
-    @CacheEvict(cacheNames = "readAllPosts", allEntries = true)
+    @CacheEvict(
+            cacheNames = {"readAllPosts", "readPost", "readPostImage"},
+            allEntries = true
+    )
     public void deletePost(@PathVariable("id") String id) {
         service.deletePost(id);
     }
