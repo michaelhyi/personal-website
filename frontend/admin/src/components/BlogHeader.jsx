@@ -13,7 +13,7 @@ export default function BlogHeader() {
     }, [navigate]);
 
     return (
-        <div className="flex items-center justify-between">
+        <header className="flex items-center justify-between">
             <button
                 type="button"
                 onClick={logout}
@@ -40,6 +40,6 @@ export default function BlogHeader() {
                     Create Post
                 </Hoverable>
             </a>
-        </div>
+        </header>
     );
 }

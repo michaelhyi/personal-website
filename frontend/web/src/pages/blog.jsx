@@ -29,7 +29,7 @@ export default function Blog() {
     return (
         <Container absoluteFooter>
             <BackButton href="/" text="Home" />
-            <div className="mt-10 flex flex-col gap-2">
+            <section className="mt-10 flex flex-col gap-2">
                 {data.map((post) => (
                     <Hoverable key={post.id}>
                         <a
@@ -40,7 +40,7 @@ export default function Blog() {
                         </a>
                     </Hoverable>
                 ))}
-            </div>
+            </section>
         </Container>
     );
 }

@@ -3,7 +3,7 @@ import Footer from "./Footer";
 
 export default function Container({ children, absoluteFooter = false }) {
     return (
-        <div className="bg-neutral-900 text-white min-h-screen">
+        <main className="bg-neutral-900 text-white min-h-screen">
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -13,6 +13,6 @@ export default function Container({ children, absoluteFooter = false }) {
                 {children}
                 <Footer absolute={absoluteFooter} />
             </motion.div>
-        </div>
+        </main>
     );
 }

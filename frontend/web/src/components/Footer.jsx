@@ -1,5 +1,6 @@
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import Hoverable from "./Hoverable";
+import NewTabLink from "./NewTabLink";
 
 const LINKS = [
     {
@@ -14,8 +15,7 @@ const LINKS = [
 
 export default function Footer({ absolute }) {
     return (
-        <div
-            id="footer"
+        <footer
             className={`flex 
                   flex-col
                   items-center
@@ -28,21 +28,16 @@ export default function Footer({ absolute }) {
                   }
                 `}
         >
-            <div className="flex gap-2">
+            <section className="flex gap-2">
                 {LINKS.map(({ href, icon: Icon }) => (
                     <Hoverable key={href}>
-                        <a
-                            label="footer link"
-                            href={href}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
+                        <NewTabLink href={href}>
                             <Icon size={15} />
-                        </a>
+                        </NewTabLink>
                     </Hoverable>
                 ))}
-            </div>
-            <div>&copy; 2023 Michael Yi, All Rights Reserved.</div>
-        </div>
+            </section>
+            <p>&copy; 2023 Michael Yi, All Rights Reserved.</p>
+        </footer>
     );
 }

@@ -3,7 +3,7 @@ import Hoverable from "./Hoverable";
 
 export default function Menu({ id, handleToggleModal }) {
     return (
-        <div
+        <aside
             className="z-[1000]
                     flex 
                     flex-col 
@@ -40,6 +40,6 @@ export default function Menu({ id, handleToggleModal }) {
                     Delete Post
                 </button>
             </Hoverable>
-        </div>
+        </aside>
     );
 }

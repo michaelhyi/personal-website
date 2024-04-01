@@ -31,16 +31,16 @@ export default function ViewPost() {
     return (
         <Container>
             <BackButton href="/blog" text="Blog" />
-            <div className="mt-10 text-3xl font-bold">{data.title}</div>
-            <div className="mt-4 text-xs text-neutral-400">
+            <h1 className="mt-10 text-3xl font-bold">{data.title}</h1>
+            <p className="mt-4 text-xs text-neutral-400">
                 {format(new Date(data.date), "PPP")}
-            </div>
+            </p>
             <img
                 src={readPostImage(id)}
                 alt={data.title}
                 className="w-full mt-6"
             />
-            <div
+            <article
                 className="text-[15px] mt-8"
                 // eslint-disable-next-line react/no-danger -- html data is sanitized
                 dangerouslySetInnerHTML={{

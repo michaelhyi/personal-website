@@ -7,11 +7,11 @@ export default function Home() {
     return (
         <Container>
             <BackButton href="/" text="Home" />
-            <div className="mt-10 flex flex-col gap-8">
+            <section className="mt-10 flex flex-col gap-8">
                 {PROJECTS.map((project) => (
                     <Project key={project.name} project={project} />
                 ))}
-            </div>
+            </section>
         </Container>
     );
 }
