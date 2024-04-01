@@ -4,7 +4,8 @@ export default [
         href: "https://devpost.com/software/scribeai",
     },
     {
-        name: "Best Access to Healthcare Hack at PennApps \"Health Hacks\"",
+        // eslint-disable-next-line quotes -- must use backtick for double quotes within string
+        name: `Best Access to Healthcare Hack at PennApps "Health Hacks"`,
         href: "https://devpost.com/software/n-a-dek950",
     },
     {
