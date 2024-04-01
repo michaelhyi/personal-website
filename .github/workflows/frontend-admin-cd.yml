@@ -1,4 +1,4 @@
-name: web-cd
+name: frontend-admin-cd
 
 on:
   push:
@@ -12,26 +12,24 @@ jobs:
       contents: read
       packages: write
     env:
-      VERSION: 5.0.0
+      VERSION: 1.0.0
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-
-      - name: Login to Docker Hub
+        
+      - name: Deploy
+        working-directory: ./frontend/admin
         uses: docker/login-action@v3
         with:
           username: michaelyi
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build, Test, Deploy Web Platform
-        working-directory: ./frontend/web
         run: |
           npm ci
           npm run build
-          docker build . -t michaelyi/personal-website-web:latest
-          docker build . -t michaelyi/personal-website-web:${{ env.VERSION }}
-          docker push michaelyi/personal-website-web:latest
-          docker push michaelyi/personal-website-web:${{ env.VERSION }}
+          docker build . -t michaelyi/personal-website-admin:latest
+          docker build . -t michaelyi/personal-website-admin:${{ env.VERSION }}
+          docker push michaelyi/personal-website-admin:latest
+          docker push michaelyi/personal-website-admin:${{ env.VERSION }}
