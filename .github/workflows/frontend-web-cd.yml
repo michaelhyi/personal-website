@@ -19,13 +19,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-
-      - name: Deploy
-        working-directory: ./frontend/web
+      
+      - name: Login to Docker
         uses: docker/login-action@v3
         with:
           username: michaelyi
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Deploy
+        working-directory: ./frontend/web
         run: |
           npm ci
           npm run build
