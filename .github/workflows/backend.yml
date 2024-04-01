@@ -1,4 +1,4 @@
-name: api-ci
+name: backend
 
 on:
   pull_request:
@@ -57,6 +57,42 @@ jobs:
           echo "spring.cache.type=redis" >> ./application-it.properties
           echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
 
-      - name: Build & Test API
+      - name: Build & Test
         working-directory: ./backend
-        run: mvn -ntp clean verify 
+        run: |
+          mvn -ntp clean verify
+ 
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/prod'
+    permissions:
+      contents: read
+      packages: write
+    env:
+      VERSION: 1.2.1
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Deploy 
+        uses: docker/login-action@v3
+        with:
+          username: michaelyi
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          docker build . -t michaelyi/personal-website-api:latest
+          docker build . -t michaelyi/personal-website-api:${{ env.VERSION }}
+          docker push michaelyi/personal-website-api:latest
+          docker push michaelyi/personal-website-api:${{ env.VERSION }}
+          echo "$SSH_PRIVATE_KEY" > personal-website-api-kp.pem
+          chmod 400 personal-website-api-kp.pem
+          ssh -o StrictHostKeyChecking=no -i personal-website-api-kp.pem ec2-user@${SSH_HOST} '
+            sudo docker stop personal-website-api || true
+            sudo docker rm personal-website-api || true
+            sudo docker rmi -f $(sudo docker image ls -a -q)
+            sudo docker pull michaelyi/personal-website-api:latest
+            sudo docker run --name personal-website-api -d -p 8080:8080 michaelyi/personal-website-api:latest
+            '

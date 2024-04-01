@@ -1,13 +1,30 @@
-name: admin-cd
+name: frontend-admin
 
 on:
-  push:
-    branches:
-      - prod
+  pull_request:
 
 jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Build & Test
+        working-directory: ./frontend/admin
+        run: |
+          npm ci
+          npm run build
+
   deploy:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/prod'
     permissions:
       contents: read
       packages: write
@@ -16,21 +33,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
 
-      - name: Login to Docker Hub
+      - name: Deploy
         uses: docker/login-action@v3
+        working-directory: ./frontend/admin
         with:
           username: michaelyi
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build, Test, Deploy Admin Platform 
-        working-directory: ./frontend/admin
         run: |
-          npm ci
-          npm run build
           docker build . -t michaelyi/personal-website-admin:latest
           docker build . -t michaelyi/personal-website-admin:${{ env.VERSION }}
           docker push michaelyi/personal-website-admin:latest

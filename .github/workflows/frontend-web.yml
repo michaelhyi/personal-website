@@ -1,18 +1,14 @@
-name: web-cd
+name: frontend-web
 
 on:
-  push:
-    branches:
-      - prod
+  pull_request:
 
 jobs:
-  deploy:
+  build-and-test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    env:
-      VERSION: 5.0.0
 
     steps:
       - uses: actions/checkout@v3
@@ -20,17 +16,31 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: michaelyi
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build, Test, Deploy Web Platform
+      - name: Build & Test
         working-directory: ./frontend/web
         run: |
           npm ci
           npm run build
+  
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/prod'
+    permissions:
+      contents: read
+      packages: write 
+    env:
+      VERSION: 5.0.1
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Deploy
+        uses: docker/login-action@v3
+        working-directory: ./frontend/web
+        with:
+          username: michaelyi
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
           docker build . -t michaelyi/personal-website-web:latest
           docker build . -t michaelyi/personal-website-web:${{ env.VERSION }}
           docker push michaelyi/personal-website-web:latest
