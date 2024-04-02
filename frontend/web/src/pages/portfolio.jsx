@@ -19,13 +19,15 @@ export default function Home() {
             <section className="mt-16 flex flex-col gap-2">
                 <h1 className="text-3xl font-bold mb-6">Hackathons</h1>
                 {HACKATHONS.map((hackathon) => (
-                    <Hoverable key={hackathon.name}>
+                    <Hoverable className="text-left" key={hackathon.name}>
                         <a
-                            className="flex text-sm font-medium"
+                            className="text-sm font-medium"
                             href={hackathon.href}
                         >
                             {hackathon.name}
-                            <FiArrowUpRight />
+                            <span className="inline-block">
+                                <FiArrowUpRight />
+                            </span>
                         </a>
                     </Hoverable>
                 ))}

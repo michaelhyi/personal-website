@@ -8,7 +8,7 @@ export default function Container({ children, absoluteFooter = false }) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.75 }}
-                className="flex flex-col pt-20 mx-auto sm:w-[320px] md:w-[480px] lg:w-[512px] xl:w-[768px]"
+                className="flex flex-col pt-20 mx-auto sm:w-[360px] md:w-[480px] lg:w-[512px] xl:w-[768px]"
             >
                 {children}
                 <Footer absolute={absoluteFooter} />
