@@ -31,12 +31,15 @@ export default function Blog() {
             <BackButton href="/" text="Home" />
             <section className="mt-10 flex flex-col gap-2">
                 {data.map((post) => (
-                    <Hoverable key={post.id}>
+                    <Hoverable className="text-left" key={post.id}>
                         <a
-                            className="flex text-sm font-medium"
+                            className="text-sm font-medium"
                             href={`/blog/${post.id}`}
                         >
-                            {post.title} <FiArrowUpRight />
+                            {post.title}
+                            <span className="inline-block">
+                                <FiArrowUpRight />
+                            </span>
                         </a>
                     </Hoverable>
                 ))}

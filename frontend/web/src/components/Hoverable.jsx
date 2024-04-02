@@ -1,8 +1,8 @@
-export default function Hoverable({ children }) {
+export default function Hoverable({ children, className }) {
     return (
         <button
             type="button"
-            className="cursor-pointer duration-300 hover:opacity-50"
+            className={`${className} cursor-pointer duration-300 hover:opacity-50`}
         >
             {children}
         </button>
