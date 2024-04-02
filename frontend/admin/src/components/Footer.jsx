@@ -1,4 +1,5 @@
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
+import { SiLetterboxd } from "react-icons/si";
 import Hoverable from "./Hoverable";
 import NewTabLink from "./NewTabLink";
 
@@ -10,6 +11,10 @@ const LINKS = [
     {
         href: "https://www.linkedin.com/in/michaelhyi/",
         icon: AiFillLinkedin,
+    },
+    {
+        href: "https://letterboxd.com/michaelyi/",
+        icon: SiLetterboxd,
     },
 ];
 
