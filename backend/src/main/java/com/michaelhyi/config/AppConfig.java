@@ -2,7 +2,6 @@ package com.michaelhyi.config;
 
 import com.michaelhyi.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,13 +11,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.List;
-
 @Configuration
 @RequiredArgsConstructor
-public class ApplicationConfig {
-    @Value("${auth.whitelisted-emails}")
-    private List<String> whitelistedEmails;
+public class AppConfig {
     private final UserRepository repository;
 
     @Bean
@@ -42,10 +37,5 @@ public class ApplicationConfig {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found.")
                 );
-    }
-
-    @Bean
-    public List<String> whitelistedEmails() {
-        return whitelistedEmails;
     }
 }

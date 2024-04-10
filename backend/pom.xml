@@ -6,7 +6,7 @@
 
     <groupId>com.michaelhyi</groupId>
     <artifactId>api</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -179,20 +179,4 @@
         </plugins>
     </build>
 
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.3.1</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>checkstyle</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
 </project>

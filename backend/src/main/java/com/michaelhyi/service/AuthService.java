@@ -6,6 +6,7 @@ import com.michaelhyi.exception.UnauthorizedUserException;
 import com.michaelhyi.exception.UserNotFoundException;
 import com.michaelhyi.jwt.JwtService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +15,10 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class AuthService {
+    @Value("${auth.whitelisted-emails}")
+    private final List<String> whitelistedEmails;
     private final UserRepository repository;
     private final JwtService jwtService;
-    private final List<String> whitelistedEmails;
 
     public String login(String email) {
         Optional<User> user = repository.findById(email);
@@ -25,14 +27,9 @@ public class AuthService {
             return jwtService.generateToken(user.get());
         }
 
-        boolean authorized = false;
-
-        for (String whitelistedEmail : whitelistedEmails) {
-            if (whitelistedEmail.equals(email)) {
-                authorized = true;
-                break;
-            }
-        }
+        boolean authorized = whitelistedEmails
+                .stream()
+                .anyMatch(e -> e.equals(email));
 
         if (!authorized) {
             throw new UnauthorizedUserException();
@@ -43,13 +40,13 @@ public class AuthService {
         return jwtService.generateToken(newUser);
     }
 
-    public void validateToken(String token) {
-        String email = jwtService.extractUsername(token);
+    public void validateToken(String bearerToken) {
+        String email = jwtService.extractUsername(bearerToken.substring(7));
         User user = repository
                 .findById(email)
                 .orElseThrow(UserNotFoundException::new);
 
-        if (!jwtService.isTokenValid(token, user)) {
+        if (!jwtService.isTokenValid(bearerToken, user)) {
             throw new UnauthorizedUserException();
         }
     }

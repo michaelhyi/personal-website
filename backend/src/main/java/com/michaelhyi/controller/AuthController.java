@@ -25,9 +25,8 @@ public class AuthController {
 
     @GetMapping("validate-token")
     public void validateToken(
-            @RequestHeader("Authorization") String authHeader
+            @RequestHeader("Authorization") String bearerToken
     ) {
-        String token = authHeader.substring(7);
-        service.validateToken(token);
+        service.validateToken(bearerToken);
     }
 }
