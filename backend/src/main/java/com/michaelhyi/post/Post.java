@@ -1,19 +1,18 @@
 package com.michaelhyi.post;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class Post implements Serializable {
     @Id

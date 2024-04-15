@@ -1,17 +1,18 @@
 package com.michaelhyi.post;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.michaelhyi.s3.S3ObjectNotFoundException;
 import com.michaelhyi.s3.S3Service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -89,7 +90,7 @@ public class PostService {
         return post;
     }
 
-    public void deletePost(String id) throws PostNotFoundException { 
+    public void deletePost(String id) throws PostNotFoundException {
         readPost(id);
         s3Service.deleteObject(id);
         repository.deleteById(id);

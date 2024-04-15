@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.michaelhyi.auth.UnauthorizedUserException;
+import com.michaelhyi.auth.UnauthorizedException;
 import com.michaelhyi.auth.UserNotFoundException;
 import com.michaelhyi.post.PostNotFoundException;
 import com.michaelhyi.s3.S3ObjectNotFoundException;
@@ -47,9 +47,9 @@ public class ErrorHandler {
         );
     }
 
-    @ExceptionHandler(UnauthorizedUserException.class)
+    @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<String> handleException(
-            UnauthorizedUserException e
+            UnauthorizedException e
     ) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }

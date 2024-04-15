@@ -32,7 +32,7 @@ public class AuthService {
                 .anyMatch(e -> e.equals(email));
 
         if (!authorized) {
-            throw new UnauthorizedUserException();
+            throw new UnauthorizedException();
         }
 
         User newUser = new User(email);
@@ -48,7 +48,7 @@ public class AuthService {
                 .orElseThrow(UserNotFoundException::new);
 
         if (!jwtService.isTokenValid(token, user)) {
-            throw new UnauthorizedUserException();
+            throw new UnauthorizedException();
         }
     }
 }

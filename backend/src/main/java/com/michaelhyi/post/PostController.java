@@ -1,6 +1,7 @@
 package com.michaelhyi.post;
 
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.michaelhyi.auth.UnauthorizedUserException;
+import com.michaelhyi.auth.UnauthorizedException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -51,7 +51,7 @@ public class JwtService {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (JwtException e) {
-            throw new UnauthorizedUserException();
+            throw new UnauthorizedException();
         }
     }
 
