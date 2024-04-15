@@ -5,6 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.michaelhyi.auth.UnauthorizedUserException;
+import com.michaelhyi.auth.UserNotFoundException;
+import com.michaelhyi.post.PostNotFoundException;
+import com.michaelhyi.s3.S3ObjectNotFoundException;
+import com.michaelhyi.s3.S3ServiceException;
+
 @ControllerAdvice
 public class ErrorHandler {
     @ExceptionHandler(IllegalArgumentException.class)

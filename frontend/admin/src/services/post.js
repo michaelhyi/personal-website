@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import authConfig from "./authConfig";
 
 export async function createPost(formData) {
