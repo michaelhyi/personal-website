@@ -34,13 +34,13 @@ public class PostController {
 
     @GetMapping("{id}")
     @Cacheable(value = "readPost", key = "#id")
-    public Post readPost(@PathVariable("id") String id) {
+    public Post readPost(@PathVariable String id) {
         return service.readPost(id);
     }
 
     @GetMapping("{id}/image")
     @Cacheable(value = "readPostImage", key = "#id")
-    public byte[] readPostImage(@PathVariable("id") String id) {
+    public byte[] readPostImage(@PathVariable String id) {
         return service.readPostImage(id);
     }
 
@@ -58,7 +58,7 @@ public class PostController {
     )
     @CachePut(cacheNames = {"readAllPosts", "readPost"}, key = "#id")
     public Post updatePost(
-            @PathVariable("id") String id,
+            @PathVariable String id,
             @RequestParam("text") String text,
             @RequestParam(value = "image", required = false) MultipartFile image
     ) {
@@ -70,7 +70,7 @@ public class PostController {
             cacheNames = {"readAllPosts", "readPost", "readPostImage"},
             allEntries = true
     )
-    public void deletePost(@PathVariable("id") String id) {
+    public void deletePost(@PathVariable String id) {
         service.deletePost(id);
     }
 }

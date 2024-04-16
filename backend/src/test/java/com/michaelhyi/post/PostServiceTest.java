@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.michaelhyi.s3.S3ObjectNotFoundException;
 import com.michaelhyi.s3.S3Service;
 
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
@@ -114,7 +114,7 @@ class PostServiceTest {
     void willThrowReadPostWhenPostNotFound() {
         when(repository.findById("title")).thenReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, () -> underTest.readPost("title"));
+        assertThrows(NoSuchElementException.class, () -> underTest.readPost("title"));
         verify(repository).findById("title");
     }
 
@@ -134,7 +134,7 @@ class PostServiceTest {
     void willThrowReadPostImageWhenPostNotFound() {
         when(repository.findById("title")).thenReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, () -> underTest.readPostImage("title"));
+        assertThrows(NoSuchElementException.class, () -> underTest.readPostImage("title"));
         verify(repository).findById("title");
         verify(s3Service, never()).getObject(any());
     }
@@ -144,7 +144,7 @@ class PostServiceTest {
         when(repository.findById("title")).thenReturn(Optional.of(post));
         when(s3Service.getObject("title")).thenThrow(NoSuchKeyException.class);
 
-        assertThrows(S3ObjectNotFoundException.class, () -> underTest.readPostImage("title"));
+        assertThrows(NoSuchElementException.class, () -> underTest.readPostImage("title"));
         verify(repository).findById("title");
         verify(s3Service).getObject("title");
     }
@@ -173,7 +173,7 @@ class PostServiceTest {
     void willThrowUpdatePostWhenPostNotFound() {
         when(repository.findById("title")).thenReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class,
+        assertThrows(NoSuchElementException.class,
                 () -> underTest.updatePost("title", "<h1>title (1994)</h1>content", null)
         );
 
@@ -213,7 +213,7 @@ class PostServiceTest {
     void willThrowDeletePostWhenPostNotFound() {
         when(repository.findById("title")).thenReturn(Optional.empty());
 
-        assertThrows(PostNotFoundException.class, () -> underTest.deletePost("title"));
+        assertThrows(NoSuchElementException.class, () -> underTest.deletePost("title"));
         verifyNoMoreInteractions(s3Service);
         verifyNoMoreInteractions(repository);
     }

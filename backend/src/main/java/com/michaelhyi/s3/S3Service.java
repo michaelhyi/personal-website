@@ -3,6 +3,7 @@ package com.michaelhyi.s3;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -55,11 +56,11 @@ public class S3Service {
             try {
                 return res.readAllBytes();
             } catch (IOException e) {
-                throw new S3ObjectNotFoundException();
+                throw new NoSuchElementException("Post image not found.");
             }
         } else {
             if (!fakeBucket.containsKey(key)) {
-                throw new S3ObjectNotFoundException();
+                throw new NoSuchElementException("Post image not found.");
             }
 
             return fakeBucket.get(key);

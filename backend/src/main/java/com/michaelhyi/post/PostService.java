@@ -3,12 +3,12 @@ package com.michaelhyi.post;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.michaelhyi.s3.S3ObjectNotFoundException;
 import com.michaelhyi.s3.S3Service;
 
 import lombok.AllArgsConstructor;
@@ -45,10 +45,13 @@ public class PostService {
         return id;
     }
 
-    public Post readPost(String id) throws PostNotFoundException {
+    public Post readPost(String id)
+        throws NoSuchElementException {
         return repository
                 .findById(id)
-                .orElseThrow(PostNotFoundException::new);
+                .orElseThrow(() ->
+                        new NoSuchElementException("Post not found.")
+                );
     }
 
     public byte[] readPostImage(String id) {
@@ -56,8 +59,8 @@ public class PostService {
 
         try {
             return s3Service.getObject(id);
-        } catch (NoSuchKeyException | S3ObjectNotFoundException e) {
-            throw new S3ObjectNotFoundException();
+        } catch (NoSuchKeyException | NoSuchElementException e) {
+            throw new NoSuchElementException("Post image not found.");
         }
     }
 
@@ -90,7 +93,7 @@ public class PostService {
         return post;
     }
 
-    public void deletePost(String id) throws PostNotFoundException {
+    public void deletePost(String id) throws NoSuchElementException {
         readPost(id);
         s3Service.deleteObject(id);
         repository.deleteById(id);
