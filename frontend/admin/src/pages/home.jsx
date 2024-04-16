@@ -2,6 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { Toaster, toast } from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
+
 import Center from "../components/Center";
 import Container from "../components/Container";
 import Hoverable from "../components/Hoverable";

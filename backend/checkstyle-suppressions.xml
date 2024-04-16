@@ -11,6 +11,4 @@
     <suppress checks="Hidden" files="."/>
     <suppress checks="Javadoc" files="."/>
     <suppress checks="MagicNumber" files="."/>
-    <suppress checks="MemberName" files="."/>
-    <suppress checks="NewlineAtEndOfFile" files="."/>
 </suppressions>

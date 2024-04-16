@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+
 import AuthorizedRoute from "../components/AuthorizedRoute";
 import BackButton from "../components/BackButton";
 import Container from "../components/Container";
@@ -10,6 +11,7 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Spinner from "../components/Spinner";
 import Toast from "../components/Toast";
+
 import useEditor from "../hooks/useEditor";
 import { createPost, readPost, updatePost } from "../services/post";
 import validateForm from "../utils/validateForm";
