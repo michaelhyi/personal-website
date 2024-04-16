@@ -61,7 +61,7 @@ jobs:
           echo "spring.jpa.hibernate.ddl-auto=create" >> ./application-it.properties
           echo "spring.cache.type=redis" >> ./application-it.properties
           echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
-          echo >> ./application.properties
+          echo >> ./application-it.properties
 
       - name: Login to Docker
         uses: docker/login-action@v3
