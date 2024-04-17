@@ -41,6 +41,7 @@ jobs:
       - name: Create tmp Directory 
         run: |
           mkdir tmp
+          mkdir frontend/admin/build
           mv frontend/admin/build tmp
           mv tmp frontend/admin/build
 
