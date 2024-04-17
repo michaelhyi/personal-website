@@ -5,32 +5,53 @@ on:
     branches:
       - prod
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    env:
-      VERSION: 1.0.1
+permissions:
+  contents: read
+  packages: write
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
+
+      - name: Build 
+        working-directory: ./frontend/admin
+        run: |
+          npm ci
+          npm run build
       
+      - name: Archive Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build 
+          path: ./frontend/admin/build
+
+  deploy:
+    runs-on: ubuntu-latest      
+    env:
+      VERSION: 1.0.1
+    
+    steps:
+      - name: Download Build
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: ./frontend/admin
+
       - name: Login to Docker
         uses: docker/login-action@v3
         with:
           username: michaelyi
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-        
+
       - name: Deploy
         working-directory: ./frontend/admin
         run: |
-          npm ci
-          npm run build
           docker build . -t michaelyi/personal-website-admin:latest
           docker build . -t michaelyi/personal-website-admin:${{ env.VERSION }}
           docker push michaelyi/personal-website-admin:latest
