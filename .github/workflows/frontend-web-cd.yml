@@ -41,8 +41,9 @@ jobs:
       - name: Create tmp Directory 
         run: |
           mkdir tmp
-          mv frontend/admin/build tmp
-          mv tmp frontend/admin/build
+          mkdir frontend/web/build
+          mv frontend/web/build tmp
+          mv tmp frontend/web/build
 
       - name: Download Build
         uses: actions/download-artifact@v4
