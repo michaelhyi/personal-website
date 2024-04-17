@@ -66,6 +66,7 @@ jobs:
           path: ./backend/src/test/resources/application-it.properties
 
   build:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -90,8 +91,8 @@ jobs:
         run: ./gradlew clean bootJar --info
       
   test:
+    needs: setup
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/checkout@v3
       - name: Setup Java
