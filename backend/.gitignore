@@ -1,5 +1,6 @@
-target/
-src/test/resources/
+.gradle
+build
+src/test/resources
 
 src/main/resources/application.properties
 src/main/resources/application-prod.properties

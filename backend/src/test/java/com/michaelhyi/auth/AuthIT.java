@@ -45,8 +45,8 @@ import io.jsonwebtoken.security.Keys;
 @TestPropertySource("classpath:application-it.properties")
 class AuthIT {
     private static final int REDIS_PORT = 6379;
-    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0.36");
-    static GenericContainer<?> redis = new GenericContainer<>("redis:6.2.14")
+    private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0.36");
+    private static GenericContainer<?> redis = new GenericContainer<>("redis:6.2.14")
             .withExposedPorts(REDIS_PORT);
 
     @DynamicPropertySource

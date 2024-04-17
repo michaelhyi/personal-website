@@ -34,7 +34,7 @@ class PostServiceTest {
     @Mock
     private S3Service s3Service;
     private PostService underTest;
-    private static final Post post = new Post("title", new Date(), "title", "content");
+    private static final Post POST = new Post("title", new Date(), "title", "content");
 
     @BeforeEach
     void setUp() {
@@ -53,9 +53,9 @@ class PostServiceTest {
 
         String text = "<h1>title (1994)</h1>content";
         Post newPost = new Post(text);
-        assertEquals(post.getId(), newPost.getId());
+        assertEquals(POST.getId(), newPost.getId());
         assertEquals("title (1994)", newPost.getTitle());
-        assertEquals(post.getContent(), newPost.getContent());
+        assertEquals(POST.getContent(), newPost.getContent());
 
         text = "<h1>Oldboy (2003)</h1><p>content</p>";
         newPost = new Post(text);
@@ -72,7 +72,7 @@ class PostServiceTest {
 
     @Test
     void willThrowCreatePostWhenAlreadyExists() {
-        when(repository.findById("title")).thenReturn(Optional.of(post));
+        when(repository.findById("title")).thenReturn(Optional.of(POST));
 
         assertThrows(IllegalArgumentException.class, () ->
                 underTest.createPost("<h1>title (1994)</h1><p>content</p>", null));
@@ -90,7 +90,7 @@ class PostServiceTest {
 
     @Test
     void createPost() {
-        when(repository.findById(post.getId())).thenReturn(Optional.empty());
+        when(repository.findById(POST.getId())).thenReturn(Optional.empty());
 
         String actualId = underTest.createPost(
                 "<h1>title (1994)</h1>content",
@@ -99,15 +99,15 @@ class PostServiceTest {
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
-        verify(repository).findById(post.getId());
+        verify(repository).findById(POST.getId());
         verify(repository).saveAndFlush(postArgumentCaptor.capture());
-        verify(s3Service).putObject(post.getId(), "Hello World!".getBytes());
+        verify(s3Service).putObject(POST.getId(), "Hello World!".getBytes());
 
         Post capturedPost = postArgumentCaptor.getValue();
-        assertEquals(post.getId(), actualId);
-        assertEquals(post.getId(), capturedPost.getId());
+        assertEquals(POST.getId(), actualId);
+        assertEquals(POST.getId(), capturedPost.getId());
         assertEquals("title (1994)", capturedPost.getTitle());
-        assertEquals(post.getContent(), capturedPost.getContent());
+        assertEquals(POST.getContent(), capturedPost.getContent());
     }
 
     @Test
@@ -120,14 +120,14 @@ class PostServiceTest {
 
     @Test
     void readPost() {
-        when(repository.findById("title")).thenReturn(Optional.of(post));
+        when(repository.findById("title")).thenReturn(Optional.of(POST));
 
         Post actual = underTest.readPost("title");
 
         verify(repository).findById("title");
-        assertEquals(post.getId(), actual.getId());
-        assertEquals(post.getTitle(), actual.getTitle());
-        assertEquals(post.getContent(), actual.getContent());
+        assertEquals(POST.getId(), actual.getId());
+        assertEquals(POST.getTitle(), actual.getTitle());
+        assertEquals(POST.getContent(), actual.getContent());
     }
 
     @Test
@@ -141,7 +141,7 @@ class PostServiceTest {
 
     @Test
     void willThrowReadPostImageWhenS3KeyNotFound() {
-        when(repository.findById("title")).thenReturn(Optional.of(post));
+        when(repository.findById("title")).thenReturn(Optional.of(POST));
         when(s3Service.getObject("title")).thenThrow(NoSuchKeyException.class);
 
         assertThrows(NoSuchElementException.class, () -> underTest.readPostImage("title"));
@@ -153,7 +153,7 @@ class PostServiceTest {
     void readPostImage() {
         byte[] expected = "Hello World!".getBytes();
 
-        when(repository.findById("title")).thenReturn(Optional.of(post));
+        when(repository.findById("title")).thenReturn(Optional.of(POST));
         when(s3Service.getObject("title")).thenReturn(expected);
 
         byte[] actual = underTest.readPostImage("title");
@@ -183,7 +183,7 @@ class PostServiceTest {
 
     @Test
     void updatePost() {
-        when(repository.findById("title")).thenReturn(Optional.of(post));
+        when(repository.findById("title")).thenReturn(Optional.of(POST));
 
         underTest.updatePost("title", "<h1>title (1994)</h1>content", null);
 
@@ -196,7 +196,7 @@ class PostServiceTest {
 
     @Test
     void updatePostImage() {
-        when(repository.findById("title")).thenReturn(Optional.of(post));
+        when(repository.findById("title")).thenReturn(Optional.of(POST));
 
         underTest.updatePost("title", "<h1>title (1994)</h1>content", new MockMultipartFile("image", "New Hello World!".getBytes()));
 
@@ -220,7 +220,7 @@ class PostServiceTest {
 
     @Test
     void deletePost() {
-        when(repository.findById("title")).thenReturn(Optional.of(post));
+        when(repository.findById("title")).thenReturn(Optional.of(POST));
 
         underTest.deletePost("title");
 
