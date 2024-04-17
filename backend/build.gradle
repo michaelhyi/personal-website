@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+    id "io.freefair.lombok" version "8.6"
+    id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.michaelhyi'
+version = '1.2.3'
+
+java {
+    sourceCompatibility = 17 
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    implementation 'mysql:mysql-connector-java:8.0.26'
+    implementation 'software.amazon.awssdk:s3:2.20.26'
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.testcontainers:testcontainers:1.19.7'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mysql'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.michaelhyi.App'
+    }
+}
+
+checkstyle {
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
