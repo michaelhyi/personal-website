@@ -99,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app.jar 
-          path: ./backend/build/libs/api-{{ env.VERSION }}.jar
+          path: ./backend/build/libs/api-${{ env.VERSION }}.jar
 
   deploy:
     needs: build 
@@ -110,7 +110,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app.jar 
-          path: ./backend/build/libs/api-{{ env.VERSION }}.jar
+          path: ./backend/build/libs/
 
       - name: Login to Docker
         uses: docker/login-action@v3

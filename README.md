@@ -17,7 +17,7 @@ This repository contains the source code to my personal website and film blog. I
 
 - [Java](https://www.java.com/en/)
 - [Spring](https://spring.io/)
-- [Maven](https://maven.apache.org/)
+- [Gradle](https://gradle.org/)
 - [MySQL](https://www.mysql.com/)
 - [Redis](https://redis.io/)
 - [Docker](https://www.docker.com/)
