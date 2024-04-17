@@ -38,6 +38,12 @@ jobs:
       VERSION: 5.0.2
     
     steps:
+      - name: Create tmp Directory 
+        run: |
+          mkdir tmp
+          mv frontend/admin/build tmp
+          mv tmp frontend/admin/build
+
       - name: Download Build
         uses: actions/download-artifact@v4
         with:
