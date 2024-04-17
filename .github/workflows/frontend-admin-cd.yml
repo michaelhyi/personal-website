@@ -39,11 +39,12 @@ jobs:
     
     steps:
       - name: Create tmp Directory 
+        working-directory: ./frontend/admin
         run: |
           mkdir tmp
-          mkdir frontend/admin/build
-          mv frontend/admin/build tmp
-          mv tmp frontend/admin/build
+          mkdir build
+          mv build tmp
+          mv tmp build
 
       - name: Download Build
         uses: actions/download-artifact@v4
