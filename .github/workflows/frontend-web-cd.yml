@@ -32,6 +32,7 @@ jobs:
           path: ./frontend/web/build
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest      
     env:
       VERSION: 5.0.2
