@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build 
-          path: ./frontend/admin/build/
+          path: ./frontend/admin/build
 
   deploy:
     needs: build
@@ -42,7 +42,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build
-          path: ./frontend/admin/
+          path: ./frontend/admin
 
       - name: Login to Docker
         uses: docker/login-action@v3
