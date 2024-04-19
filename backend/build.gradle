@@ -6,8 +6,8 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.michaelhyi'
-version = '1.2.3'
+group = 'com.michaelyi'
+version = '1.2.4'
 
 java {
     sourceCompatibility = 17 
@@ -38,7 +38,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.michaelhyi.App'
+        attributes 'Main-Class': 'com.michaelyi.App'
     }
 }
 
