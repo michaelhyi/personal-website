@@ -99,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app.jar 
-          path: ./backend/build/libs/api-${{ env.VERSION }}.jar
+          path: ./backend/build/libs/backend-${{ env.VERSION }}.jar
 
   deploy:
     needs: build 
