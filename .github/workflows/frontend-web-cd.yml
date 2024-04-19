@@ -10,8 +10,11 @@ permissions:
   packages: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      VERSION: 5.0.2
+
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
@@ -24,34 +27,7 @@ jobs:
         run: |
           npm ci
           npm run build
-      
-      - name: Archive Build
-        uses: actions/upload-artifact@v4
-        with:
-          name: build 
-          path: ./frontend/web/build/
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest      
-    env:
-      VERSION: 5.0.2
     
-    steps:
-      - name: Create tmp Directory 
-        working-directory: ./frontend/web
-        run: |
-          mkdir tmp
-          mkdir build
-          mv build tmp
-          mv tmp build
-
-      - name: Download Build
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: ./frontend/web/
-
       - name: Login to Docker
         uses: docker/login-action@v3
         with:
