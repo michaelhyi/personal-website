@@ -1,6 +1,14 @@
-build/
-coverage/
-node_modules/
+.gradle
+.vscode
+.idea
+.settings
+bin
+build
+coverage
+node_modules
 
+.classpath
 .DS_Store
-npm-debug.log*
+.factorypath
+.project
+
