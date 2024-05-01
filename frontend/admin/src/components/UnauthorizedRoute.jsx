@@ -18,7 +18,7 @@ export default function UnauthorizedRoute({ children }) {
                 return false;
             }
         },
-    }); 
+    });
 
     if (isLoading) return <Loading />;
     return children;
