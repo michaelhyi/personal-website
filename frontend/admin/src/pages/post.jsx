@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 
@@ -17,100 +18,94 @@ import { createPost, readPost, updatePost } from "../services/post";
 import validateForm from "../utils/validateForm";
 
 export default function Post() {
-    const [title, setTitle] = useState(null);
-    const [image, setImage] = useState(null);
-    const [content, setContent] = useState(null);
-    const [showImage, setShowImage] = useState(null);
-    const [submitting, setSubmitting] = useState(false);
-
-    const [loading, setLoading] = useState(true);
-    const [notFound, setNotFound] = useState(false);
-
-    const editor = useEditor(content);
     const [params] = useSearchParams();
+    const queryClient = useQueryClient();
 
-    const handleSubmit = useCallback(async () => {
-        setSubmitting(true);
-
-        try {
-            const text = editor.getHTML();
-            validateForm(text, image, showImage);
-
-            const formData = new FormData();
-            formData.append("text", text);
-            formData.append("image", image || null);
-
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["readPost", params.get("id")],
+        queryFn: async () => {
             if (params.get("mode") === "edit") {
-                await updatePost(params.get("id"), formData);
-            } else {
-                await createPost(formData);
+                return readPost(params.get("id"));
             }
 
-            toast.custom(({ visible }) => (
-                <Toast
-                    success
-                    visible={visible}
-                    message={`Post successfully ${
-                        params.get("mode") === "create"
-                            ? "published"
-                            : "updated"
-                    }!`}
-                />
-            ));
-        } catch (e) {
-            toast.custom(({ visible }) => (
-                <Toast
-                    visible={visible}
-                    message={e.response ? e.response.data : e.message}
-                    success={false}
-                />
-            ));
-        }
+            return {
+                title: "",
+                content: "",
+            };
+        },
+    });
 
-        setSubmitting(false);
-    }, [setSubmitting, params, editor, image, showImage]);
+    const [image, setImage] = useState(null);
+    const [showImage, setShowImage] = useState(params.get("mode") === "edit");
+    const editor = useEditor(data && `<h1>${data.title}</h1>${data.content}`);
 
-    useEffect(() => {
-        setShowImage(params.get("mode") === "edit");
+    const { mutate, isPending } = useMutation({
+        mutationFn: async () => {
+            try {
+                const text = editor.getHTML();
+                validateForm(text, image, showImage);
 
-        if (params.get("mode") === "edit") {
-            (async () => {
-                setLoading(true);
+                const formData = new FormData();
+                formData.append("text", text);
+                formData.append("image", image || null);
 
-                const post = await readPost(params.get("id")).catch(() =>
-                    setNotFound(true),
-                );
+                if (params.get("mode") === "edit") {
+                    await updatePost(params.get("id"), formData);
+                } else {
+                    await createPost(formData);
+                }
 
-                setTitle(post.title);
-                setContent(`<h1>${post.title}</h1>${post.content}`);
-            })();
-        }
+                toast.custom(({ visible }) => (
+                    <Toast
+                        success
+                        visible={visible}
+                        message={`Post successfully ${
+                            params.get("mode") === "create"
+                                ? "published"
+                                : "updated"
+                        }!`}
+                    />
+                ));
+            } catch (e) {
+                toast.custom(({ visible }) => (
+                    <Toast
+                        visible={visible}
+                        message={e.response ? e.response.data : e.message}
+                        success={false}
+                    />
+                ));
+            }
+        },
+        onSuccess: () => {
+            if (params.get("mode") === "edit") {
+                queryClient.invalidateQueries(["readPost", params.get("id")]);
+            } else {
+                queryClient.invalidateQueries(["readAllPosts"]);
+            }
+        },
+    });
 
-        setLoading(false);
-    }, [params]);
-
-    if (notFound) return <NotFound />;
-    if (loading) return <Loading />;
+    if (isLoading) return <Loading />;
+    if (isError) return <NotFound />;
 
     return (
         <AuthorizedRoute>
             <Container>
                 <BackButton href="/blog" text="Blog" />
-                <Editor editor={editor} disabled={submitting} />
+                <Editor editor={editor} disabled={isPending} />
                 <div className="mt-4" />
                 <Dropzone
                     id={params.get("id")}
                     showImage={showImage}
                     setShowImage={setShowImage}
-                    title={title}
-                    submitting={submitting}
-                    setSubmitting={setSubmitting}
+                    title={data && data.title}
+                    submitting={isPending}
                     image={image}
                     setImage={setImage}
                 />
                 <button
                     type="submit"
-                    onClick={handleSubmit}
+                    onClick={mutate}
                     className="mt-12
                      ml-auto
                      text-sm
@@ -127,7 +122,7 @@ export default function Post() {
                      duration-500 
                      hover:opacity-50"
                 >
-                    {submitting ? <Spinner /> : "Submit"}
+                    {isPending ? <Spinner /> : "Submit"}
                 </button>
                 <Toaster position="bottom-center" />
             </Container>

@@ -9,18 +9,15 @@ export default function Dropzone({
     setShowImage,
     title,
     submitting,
-    setSubmitting,
     image,
     setImage,
 }) {
     const onDrop = useCallback(
         (acceptedFiles) => {
-            setSubmitting(true);
             setImage(acceptedFiles[0]);
             setShowImage(true);
-            setSubmitting(false);
         },
-        [setSubmitting, setImage, setShowImage],
+        [setImage, setShowImage],
     );
 
     const handleImageDelete = useCallback(() => {

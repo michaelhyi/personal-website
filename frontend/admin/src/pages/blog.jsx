@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useState } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 
@@ -17,8 +18,14 @@ export default function Blog() {
     const [menuOpen, setMenuOpen] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { data, isLoading } = useQuery({
+        queryKey: ["readAllPosts"],
+        queryFn: async () => {
+            const posts = await readAllPosts();
+            setMenuOpen(new Array(posts.length).fill(false));
+            return posts;
+        },
+    });
 
     const toggleMenu = useCallback(
         (index) => {
@@ -41,17 +48,7 @@ export default function Blog() {
         [setMenuOpen, data, modalOpen, setModalOpen, setId],
     );
 
-    useEffect(() => {
-        (async () => {
-            const posts = await readAllPosts();
-
-            setData(posts);
-            setMenuOpen(new Array(posts.length).fill(false));
-            setLoading(false);
-        })();
-    }, []);
-
-    if (loading) return <Loading />;
+    if (isLoading) return <Loading />;
 
     return (
         <AuthorizedRoute>
