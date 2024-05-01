@@ -1,32 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { sanitize } from "dompurify";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import BackButton from "../components/BackButton";
 import Container from "../components/Container";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
-
 import { readPost, readPostImage } from "../services/post";
 
 export default function ViewPost() {
     const { id } = useParams();
-    const [data, setData] = useState(null);
-    const [notFound, setNotFound] = useState(false);
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["readPost", id],
+        queryFn: () => readPost(id),
+    });
 
-    useEffect(() => {
-        (async () => {
-            try {
-                setData(await readPost(id));
-            } catch {
-                setNotFound(true);
-            }
-        })();
-    }, [id]);
-
-    if (notFound) return <NotFound />;
-    if (!data) return <Loading />;
+    if (isLoading) return <Loading />;
+    if (isError) return <NotFound />;
 
     return (
         <Container>

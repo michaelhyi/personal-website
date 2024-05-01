@@ -11,15 +11,15 @@ export default function About() {
                     <BackButton href="/" text="Home" />
                     <br />
                     <p>
-                        Michael Yi is a software engineer and an incoming intern
-                        at T-Mobile. He&apos;s currently studying Computer
-                        Science at Georgia Tech and previously interned at
-                        Ardent Labs and MegaEvolution.
+                        Michael Yi is a software engineer currently working at
+                        T-Mobile. He&apos;s a junior studying Computer Science
+                        at Georgia Tech, and he previously worked at Ardent Labs
+                        and MegaEvolution.
                     </p>
                     <br />
                     <p>
                         Michael loves building. When he&apos;s not creating
-                        software, he loves watching cinema.
+                        software, he loves watching cinema and playing piano.
                     </p>
                     <br />
                     <p>
