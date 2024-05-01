@@ -1,25 +1,7 @@
 import Container from "../components/Container";
 import Center from "../components/Center";
 import Hoverable from "../components/Hoverable";
-
-const LINKS = [
-    {
-        name: "About",
-        href: "/about",
-    },
-    {
-        name: "Portfolio",
-        href: "/portfolio",
-    },
-    {
-        name: "Blog",
-        href: "/blog",
-    },
-    {
-        name: "Resume",
-        href: "/Resume.pdf",
-    },
-];
+import LINKS from "../constants/links";
 
 export default function Home() {
     return (

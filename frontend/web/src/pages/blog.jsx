@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { FiArrowUpRight } from "react-icons/fi";
 
 import BackButton from "../components/BackButton";
@@ -10,21 +10,13 @@ import NotFound from "../components/NotFound";
 import { readAllPosts } from "../services/post";
 
 export default function Blog() {
-    const [data, setData] = useState(null);
-    const [notFound, setNotFound] = useState(false);
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["readAllPosts"],
+        queryFn: readAllPosts,
+    });
 
-    useEffect(() => {
-        (async () => {
-            try {
-                setData(await readAllPosts());
-            } catch {
-                setNotFound(true);
-            }
-        })();
-    }, []);
-
-    if (notFound) return <NotFound />;
-    if (!data) return <Loading />;
+    if (isLoading) return <Loading />;
+    if (isError) return <NotFound />;
 
     return (
         <Container absoluteFooter>

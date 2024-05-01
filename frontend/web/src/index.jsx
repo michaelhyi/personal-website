@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { inject } from "@vercel/analytics";
 import React from "react";
 // eslint-disable-next-line react/no-deprecated
@@ -12,6 +13,7 @@ import Home from "./pages/home";
 import Lauren from "./pages/lauren";
 import Portfolio from "./pages/portfolio";
 import ViewPost from "./pages/view-post";
+import NotFound from "./components/NotFound";
 
 const router = createBrowserRouter([
     {
@@ -38,11 +40,19 @@ const router = createBrowserRouter([
         path: "/blog/:id",
         element: <ViewPost />,
     },
+    {
+        path: "*",
+        element: <NotFound />,
+    },
 ]);
+
+const queryClient = new QueryClient();
 
 render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+        </QueryClientProvider>
     </React.StrictMode>,
     document.getElementById("root"),
 );
