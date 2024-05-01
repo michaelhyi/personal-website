@@ -67,7 +67,6 @@ export default function Post() {
                     />
                 ));
             } catch (e) {
-                console.log(e);
                 toast.custom(({ visible }) => (
                     <Toast
                         visible={visible}
