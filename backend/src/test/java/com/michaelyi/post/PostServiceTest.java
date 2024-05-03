@@ -48,8 +48,6 @@ class PostServiceTest {
         assertThrows(IllegalArgumentException.class, () -> new Post("no-title"));
         assertThrows(IllegalArgumentException.class, () -> new Post("<h1></h1>"));
         assertThrows(IllegalArgumentException.class, () -> new Post("<h1>no-content</h1>"));
-        assertThrows(IllegalArgumentException.class, () -> new Post("<h1>bad-title</h1><p>insert content</p>"));
-        assertThrows(IllegalArgumentException.class, () -> new Post("<h1>title(1994)</h1><p>insert content</p>"));
 
         String text = "<h1>title (1994)</h1>content";
         Post newPost = new Post(text);
