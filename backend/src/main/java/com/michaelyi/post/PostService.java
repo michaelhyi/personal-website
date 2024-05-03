@@ -73,6 +73,7 @@ public class PostService {
         Post post = readPost(id);
         Post updatedPost = new Post(text);
 
+        post.setTitle(updatedPost.getTitle());
         post.setContent(updatedPost.getContent());
         repository.save(post);
 
