@@ -32,6 +32,8 @@ jobs:
           echo "spring.data.redis.host=${{ secrets.API_SPRING_DATA_REDIS_HOST }}" >> ./application.properties
           echo "spring.data.redis.port=6379" >> ./application.properties
           echo "spring.data.redis.password=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }}" >> ./application.properties
+          echo "spring.servlet.multipart.max-file-size=10MB" >> ./application.properties
+          echo "spring.servlet.multipart.max-request-size=10MB" >> ./application.properties
           echo >> ./application.properties
 
       - name: Create Resources Directory for Intergration Tests
