@@ -440,7 +440,7 @@ class PostIT {
 
         actual = mapper.readValue(res, Post.class);
         assertEquals(id, actual.getId());
-        assertEquals("Oldboy (2003)", actual.getTitle());
+        assertEquals("Oldboy (2004)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
         byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")

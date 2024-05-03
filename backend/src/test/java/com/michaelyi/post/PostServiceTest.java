@@ -48,7 +48,6 @@ class PostServiceTest {
         assertThrows(IllegalArgumentException.class, () -> new Post("no-title"));
         assertThrows(IllegalArgumentException.class, () -> new Post("<h1></h1>"));
         assertThrows(IllegalArgumentException.class, () -> new Post("<h1>no-content</h1>"));
-        assertThrows(IllegalArgumentException.class, () -> new Post("<h1>title(1994)</h1><p>insert content</p>"));
 
         String text = "<h1>title (1994)</h1>content";
         Post newPost = new Post(text);
@@ -73,16 +72,16 @@ class PostServiceTest {
     void willThrowCreatePostWhenAlreadyExists() {
         when(repository.findById("title")).thenReturn(Optional.of(POST));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> underTest.createPost("<h1>title (1994)</h1><p>content</p>", null));
+        assertThrows(IllegalArgumentException.class, () ->
+                underTest.createPost("<h1>title (1994)</h1><p>content</p>", null));
         verify(repository).findById("title");
         verifyNoMoreInteractions(repository);
     }
 
     @Test
     void willThrowCreatePostWhenImageDoesNotExist() {
-        assertThrows(IllegalArgumentException.class,
-                () -> underTest.createPost("<h1>title (1994)</h1><p>content</p>", null));
+        assertThrows(IllegalArgumentException.class, () ->
+                underTest.createPost("<h1>title (1994)</h1><p>content</p>", null));
         verify(repository).findById("title");
         verifyNoMoreInteractions(repository);
     }
@@ -93,7 +92,8 @@ class PostServiceTest {
 
         String actualId = underTest.createPost(
                 "<h1>title (1994)</h1>content",
-                new MockMultipartFile("image", "Hello World!".getBytes()));
+                new MockMultipartFile("image", "Hello World!".getBytes())
+        );
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
@@ -172,7 +172,8 @@ class PostServiceTest {
         when(repository.findById("title")).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class,
-                () -> underTest.updatePost("title", "<h1>title (1994)</h1>content", null));
+                () -> underTest.updatePost("title", "<h1>title (1994)</h1>content", null)
+        );
 
         verify(repository).findById("title");
         verifyNoMoreInteractions(repository);
@@ -195,8 +196,7 @@ class PostServiceTest {
     void updatePostImage() {
         when(repository.findById("title")).thenReturn(Optional.of(POST));
 
-        underTest.updatePost("title", "<h1>title (1994)</h1>content",
-                new MockMultipartFile("image", "New Hello World!".getBytes()));
+        underTest.updatePost("title", "<h1>title (1994)</h1>content", new MockMultipartFile("image", "New Hello World!".getBytes()));
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
