@@ -11,7 +11,7 @@ export default function About() {
                     <BackButton href="/" text="Home" />
                     <br />
                     <p>
-                        Michael Yi is a software engineer currently working at
+                        Michael Yi is a software engineer currently interning at
                         T-Mobile. He&apos;s a junior studying Computer Science
                         at Georgia Tech, and he previously worked at Ardent Labs
                         and MegaEvolution.
