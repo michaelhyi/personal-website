@@ -5,10 +5,13 @@
 bin
 build
 coverage
+gradle
 node_modules
 
 .classpath
 .DS_Store
 .factorypath
 .project
+gradlew
+gradlew.bat
 
