@@ -67,7 +67,9 @@ jobs:
 
       - name: Generate Gradle Wrapper
         working-directory: ./backend
-        run: gradle wrapper
+        run: |
+          gradle wrapper
+          mv ./gradlew ./gradlew.sh
 
       - name: Archive application.properties
         uses: actions/upload-artifact@v4
