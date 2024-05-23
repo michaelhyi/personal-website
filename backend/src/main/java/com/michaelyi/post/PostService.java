@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,13 +23,13 @@ public class PostService {
     private final PostRepository repository;
     private final S3Service s3Service;
 
+    @CacheEvict(cacheNames = "readAllPosts", allEntries = true)
     public String createPost(String text, MultipartFile image) {
         Post post = new Post(text);
 
         if (repository.findById(post.getId()).isPresent()) {
             throw new IllegalArgumentException(
-                    "A post with the same title already exists."
-            );
+                    "A post with the same title already exists.");
         }
 
         if (image == null) {
@@ -45,15 +48,15 @@ public class PostService {
         return id;
     }
 
+    @Cacheable(value = "readPost", key = "#id")
     public Post readPost(String id)
-        throws NoSuchElementException {
+            throws NoSuchElementException {
         return repository
                 .findById(id)
-                .orElseThrow(() ->
-                        new NoSuchElementException("Post not found.")
-                );
+                .orElseThrow(() -> new NoSuchElementException("Post not found."));
     }
 
+    @Cacheable(value = "readPostImage", key = "#id")
     public byte[] readPostImage(String id) {
         readPost(id);
 
@@ -64,11 +67,14 @@ public class PostService {
         }
     }
 
+    @Cacheable(value = "readAllPosts")
     public List<Post> readAllPosts() {
         return repository
                 .findAll(Sort.by(Sort.Direction.DESC, "date"));
     }
 
+    @CacheEvict(cacheNames = "readPostImage", key = "#id", condition = "#image != null")
+    @CachePut(cacheNames = { "readAllPosts", "readPost" }, key = "#id")
     public Post updatePost(String id, String text, MultipartFile image) {
         Post post = readPost(id);
         Post updatedPost = new Post(text);
@@ -94,10 +100,10 @@ public class PostService {
         return post;
     }
 
+    @CacheEvict(cacheNames = { "readAllPosts", "readPost", "readPostImage" }, allEntries = true)
     public void deletePost(String id) throws NoSuchElementException {
         readPost(id);
         s3Service.deleteObject(id);
         repository.deleteById(id);
     }
 }
-

@@ -105,8 +105,8 @@ class AuthIT {
         repository.save(alreadyExists);
 
         String res = mvc.perform(post("/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(new AuthLoginRequest("alreadyexists@mail.com"))))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writer.writeValueAsString(new AuthLoginRequest("alreadyexists@mail.com"))))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -116,8 +116,8 @@ class AuthIT {
         assertEquals(alreadyExists.getEmail(), jwtService.extractUsername(res));
 
         String error = mvc.perform(post("/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(new AuthLoginRequest("unauthorized@mail.com"))))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writer.writeValueAsString(new AuthLoginRequest("unauthorized@mail.com"))))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -126,8 +126,8 @@ class AuthIT {
         assertEquals("Unauthorized.", error);
 
         res = mvc.perform(post("/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(new AuthLoginRequest("test@mail.com"))))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writer.writeValueAsString(new AuthLoginRequest("test@mail.com"))))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -147,8 +147,8 @@ class AuthIT {
         String token = jwtService.generateToken(user);
 
         String error = mvc.perform(get("/v1/auth/validate-token")
-                        .header("Authorization", "Bearer " + token)
-                        .servletPath("/v1/auth/validate-token"))
+                .header("Authorization", "Bearer " + token)
+                .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
@@ -161,8 +161,8 @@ class AuthIT {
         String unauthorizedToken = generateUnauthorizedToken(user);
 
         error = mvc.perform(get("/v1/auth/validate-token")
-                        .header("Authorization", "Bearer " + unauthorizedToken)
-                        .servletPath("/v1/auth/validate-token"))
+                .header("Authorization", "Bearer " + unauthorizedToken)
+                .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -175,8 +175,8 @@ class AuthIT {
                 + ".0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM";
 
         error = mvc.perform(get("/v1/auth/validate-token")
-                        .header("Authorization", "Bearer " + expiredToken)
-                        .servletPath("/v1/auth/validate-token"))
+                .header("Authorization", "Bearer " + expiredToken)
+                .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -185,7 +185,7 @@ class AuthIT {
         assertEquals("Unauthorized.", error);
 
         mvc.perform(get("/v1/auth/validate-token")
-                        .header("Authorization", "Bearer " + token))
+                .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
 
     }
@@ -200,8 +200,7 @@ class AuthIT {
                 .setSubject(details.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(
-                        System.currentTimeMillis() + 1L
-                ))
+                        System.currentTimeMillis() + 1L))
                 .signWith(Keys.hmacShaKeyFor(keyBytes), SignatureAlgorithm.HS256)
                 .compact();
     }
