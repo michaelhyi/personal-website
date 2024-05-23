@@ -55,6 +55,20 @@ jobs:
           echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
           echo >> ./application-it.properties
 
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+
+      - name: Generate Gradle Wrapper
+        working-directory: ./backend
+        run: gradle wrapper
+
       - name: Archive application.properties
         uses: actions/upload-artifact@v4
         with:
@@ -67,26 +81,40 @@ jobs:
           name: application-it.properties
           path: ./backend/src/test/resources/application-it.properties
 
+      - name: Archive Gradle Wrapper Dir
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-wrapper-dir
+          path: ./backend/gradle/wrapper
+
+      - name: Archive Gradle Wrapper Script 
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-wrapper-sh
+          path: ./backend/gradlew
+
   build:
     needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-
       - name: Download application.properties 
         uses: actions/download-artifact@v4
         with:
           name: application.properties
           path: ./backend/src/main/resources
+
+      - name: Download Gradle Wrapper Dir
+        uses: actions/download-artifact@v4
+        with:
+          name: gradle-wrapper-dir
+          path: ./backend/gradle/wrapper
+
+      - name: Download Gradle Wrapper Script
+        uses: actions/download-artifact@v4
+        with:
+          name: gradle-wrapper-sh
+          path: ./backend/gradlew
 
       - name: Build
         working-directory: ./backend
@@ -97,16 +125,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-
       - name: Download application.properties 
         uses: actions/download-artifact@v4
         with:
@@ -122,6 +140,18 @@ jobs:
         with:
           name: application-it.properties
           path: ./backend/src/main/resources
+
+      - name: Download Gradle Wrapper Dir
+        uses: actions/download-artifact@v4
+        with:
+          name: gradle-wrapper-dir
+          path: ./backend/gradle/wrapper
+
+      - name: Download Gradle Wrapper Script
+        uses: actions/download-artifact@v4
+        with:
+          name: gradle-wrapper-sh
+          path: ./backend/gradlew
 
       - name: Test
         working-directory: ./backend
