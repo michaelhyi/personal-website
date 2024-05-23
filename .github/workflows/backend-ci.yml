@@ -67,9 +67,7 @@ jobs:
 
       - name: Generate Gradle Wrapper
         working-directory: ./backend
-        run: |
-          gradle wrapper
-          mv ./gradlew ./gradlew.sh
+        run: gradle wrapper
 
       - name: Archive application.properties
         uses: actions/upload-artifact@v4
@@ -93,7 +91,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gradle-wrapper-sh
-          path: ./backend/gradlew.sh
+          path: ./backend/gradlew
 
   build:
     needs: setup
@@ -116,11 +114,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: gradle-wrapper-sh
-          path: ./backend/gradlew.sh
+          path: ./backend
 
       - name: Build
         working-directory: ./backend
-        run: ./gradlew.sh clean bootJar --info
+        run: ./gradlew clean bootJar --info
       
   test:
     needs: setup
@@ -153,8 +151,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: gradle-wrapper-sh
-          path: ./backend/gradlew.sh
+          path: ./backend
 
       - name: Test
         working-directory: ./backend
-        run: ./gradlew.sh check --info
+        run: ./gradlew check --info
