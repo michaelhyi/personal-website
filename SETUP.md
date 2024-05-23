@@ -6,6 +6,7 @@
 - Maven
 - MySQL 
 - Redis 
+- Docker 
 
 1. Clone the repository and navigate to the project.
 
@@ -21,14 +22,14 @@ auth.whitelisted-emails=
 
 aws.access-key=
 aws.secret-key=
-aws.s3.bucket=personal-website-api-bucket-dev
+aws.s3.bucket=
 
 security.cors.allowed-origins=http://localhost:3000,http://localhost:3001
 security.jwt.secret-key=
 
 spring.application.name=personal-website-api
 
-spring.datasource.url=jdbc:mysql://localhost:3306/personal_website_api_db
+spring.datasource.url=jdbc:mysql://localhost:3306/personal_website_api
 spring.datasource.username=root
 spring.datasource.password=root
 spring.jpa.hibernate.ddl-auto=update
@@ -37,6 +38,9 @@ spring.cache.type=redis
 spring.cache.redis.time-to-live=900000
 spring.data.redis.host=localhost
 spring.data.redis.port=6379
+
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
 ```
 
 - In `application.properties`, set `auth.whitelisted-emails` equal to all authorized emails to the admin platform. Separate emails with commas. In `application-it.properties`, set `auth.whitelisted-emails` equal to `test@mail.com`.
@@ -45,7 +49,6 @@ spring.data.redis.port=6379
 
 - Set `aws.access-key` equal to your AWS Access Key in both files.
 - Set `aws.secret-key` equal to your AWS Secret Key in both files.
-- In `application-it.properties`, change `aws.s3.bucket` to `personal-website-api-bucket-test`.
 
 > Use `openssl rand -base64 512` to generate a secret key for JWT signing.
 
@@ -57,11 +60,11 @@ spring.data.redis.port=6379
 
 3. Create a new MySQL database. 
 
-> Create a new database called `personal_website_api_db`. Make sure that your MySQL master username and password are both set to `root`.
+> Create a new database called `personal_website_api`. Make sure that your MySQL master username and password are both set to `root`.
 
 4. Create an AWS S3 bucket.
 
-> Go to your [AWS S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-west-2#). Create two buckets named `personal-website-api-bucket-dev` and `personal-website-api-bucket-test`. Make sure that you are using region `us-west-2`.
+> Go to your [AWS S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-west-2#). Create two buckets for storing blog images, one for dev and one for prod. Use a UUID generator to ensure uniqueness of bucket name. Make sure that you are using region `us-west-2`.
 
 5. Install dependencies and run the projects.
 
@@ -76,7 +79,7 @@ npm start
 
 ```shell
 cd backend 
-mvn spring-boot:run
+./gradlew bootRun
 ```
 
 ```shell
