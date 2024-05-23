@@ -79,6 +79,7 @@ npm start
 
 ```shell
 cd backend 
+gradle wrapper
 ./gradlew bootRun
 ```
 

@@ -91,7 +91,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gradle-wrapper-sh
-          path: ./backend/gradlew
+          path: ./backend/gradlew.sh
 
   build:
     needs: setup
@@ -114,11 +114,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: gradle-wrapper-sh
-          path: ./backend/gradlew
+          path: ./backend/gradlew.sh
 
       - name: Build
         working-directory: ./backend
-        run: ./gradlew clean bootJar --info
+        run: ./gradlew.sh clean bootJar --info
       
   test:
     needs: setup
@@ -151,8 +151,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: gradle-wrapper-sh
-          path: ./backend/gradlew
+          path: ./backend/gradlew.sh
 
       - name: Test
         working-directory: ./backend
-        run: ./gradlew check --info
+        run: ./gradlew.sh check --info
