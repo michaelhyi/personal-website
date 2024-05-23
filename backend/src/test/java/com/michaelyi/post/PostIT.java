@@ -157,7 +157,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -188,7 +188,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         String error = mvc.perform(multipart("/v1/post")
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
@@ -212,7 +212,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -262,7 +262,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -303,7 +303,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -331,7 +331,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -341,7 +341,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -351,7 +351,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -410,7 +410,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -500,7 +500,7 @@ class PostIT {
                 .file(new MockMultipartFile("image", "Hello World!".getBytes()))
                 .param("text", text)
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();

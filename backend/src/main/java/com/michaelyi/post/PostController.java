@@ -2,9 +2,8 @@ package com.michaelyi.post;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,52 +23,37 @@ public class PostController {
     private final PostService service;
 
     @PostMapping
-    @CacheEvict(cacheNames = "readAllPosts", allEntries = true)
-    public String createPost(
+    public ResponseEntity<String> createPost(
             @RequestParam("text") String text,
-            @RequestParam("image") MultipartFile image
-    ) {
-        return service.createPost(text, image);
+            @RequestParam("image") MultipartFile image) {
+        String id = service.createPost(text, image);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
-    @Cacheable(value = "readPost", key = "#id")
     public Post readPost(@PathVariable String id) {
         return service.readPost(id);
     }
 
     @GetMapping("{id}/image")
-    @Cacheable(value = "readPostImage", key = "#id")
     public byte[] readPostImage(@PathVariable String id) {
         return service.readPostImage(id);
     }
 
     @GetMapping
-    @Cacheable(value = "readAllPosts")
     public List<Post> readAllPosts() {
         return service.readAllPosts();
     }
 
     @PutMapping("{id}")
-    @CacheEvict(
-            cacheNames = "readPostImage",
-            key = "#id",
-            condition = "#image != null"
-    )
-    @CachePut(cacheNames = {"readAllPosts", "readPost"}, key = "#id")
     public Post updatePost(
             @PathVariable String id,
             @RequestParam("text") String text,
-            @RequestParam(value = "image", required = false) MultipartFile image
-    ) {
+            @RequestParam(value = "image", required = false) MultipartFile image) {
         return service.updatePost(id, text, image);
     }
 
     @DeleteMapping("{id}")
-    @CacheEvict(
-            cacheNames = {"readAllPosts", "readPost", "readPostImage"},
-            allEntries = true
-    )
     public void deletePost(@PathVariable String id) {
         service.deletePost(id);
     }

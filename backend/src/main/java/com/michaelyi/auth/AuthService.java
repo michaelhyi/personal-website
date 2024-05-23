@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.michaelyi.security.JwtService;
@@ -20,6 +21,7 @@ public class AuthService {
     private final UserRepository repository;
     private final JwtService jwtService;
 
+    @Cacheable(value = "login", key = "#email")
     public String login(String email) {
         Optional<User> user = repository.findById(email);
 
