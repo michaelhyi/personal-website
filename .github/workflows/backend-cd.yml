@@ -24,7 +24,7 @@ jobs:
           echo "auth.whitelisted-emails=${{ secrets.API_AUTH_WHITELISTED_EMAILS }}" >> ./application.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
-          echo "aws.s3.bucket=personal-website-api-bucket" >> ./application.properties
+          echo "aws.s3.bucket=${{ secrets.API_AWS_S3_BUCKET }}" >> ./application.properties
           echo "security.cors.allowed-origins=https://michael-yi.com,https://admin.michael-yi.com" >> ./application.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application.properties
           echo "spring.application.name=personal-website-api" >> ./application.properties

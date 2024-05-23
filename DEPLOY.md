@@ -148,11 +148,12 @@ sudo service nginx start
 > Set `API_AUTH_WHITELISTED_EMAILS` to a comma separated list of authorized emails for the admin platform.
 > Set `API_AWS_ACCESS_KEY` to your AWS Access Key.
 > Set `API_AWS_SECRET_KEY` to your AWS Secret Key.
+> Set `API_AWS_S3_BUCKET` to your production AWS S3 bucket name.
 > Set `API_SECURITY_JWT_SECRET_KEY` to your JWT signing key.
-> Set `API_SPRING_DATA_REDIS_HOST` to the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Redis server.
 > Set `API_SPRING_DATASOURCE_PASSWORD` to the MySQL user password. 
 > Set `API_SPRING_DATASOURCE_URL` to the JDBC url, but replace the host with the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your MySQL server.
 > Set `API_SPRING_DATASOURCE_USERNAME` to the MySQL user username.
+> Set `API_SPRING_DATA_REDIS_HOST` to the address listed under `Public IPv4 DNS` for your EC2 instance that hosts your Redis server.
 > Set `API_SPRING_DATA_REDIS_PASSWORD` to the Redis server authentication password. 
 > Set `DOCKERHUB_TOKEN` to your Docker Hub token.
 > Set `SSH_HOST` to the IP address of the EC2 instance hosting the Spring Boot app.
