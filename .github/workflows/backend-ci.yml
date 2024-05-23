@@ -118,10 +118,10 @@ jobs:
 
       - name: Build
         working-directory: ./backend
-        run: ./gradlew clean bootJar --info
+        run: sudo ./gradlew clean bootJar --info
       
   test:
-    needs: setup
+    needs: build 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -155,4 +155,4 @@ jobs:
 
       - name: Test
         working-directory: ./backend
-        run: ./gradlew check --info
+        run: sudo ./gradlew check --info
