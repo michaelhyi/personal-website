@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.michaelyi'
-version = '1.2.5'
+version = '1.2.6'
 
 java {
     sourceCompatibility = 17 
