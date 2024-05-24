@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.michaelyi.constants.Constants;
 import com.michaelyi.security.JwtService;
 import com.michaelyi.user.User;
 import com.michaelyi.user.UserRepository;
@@ -43,7 +44,7 @@ public class AuthService {
     }
 
     public void validateToken(String bearerToken) {
-        String token = bearerToken.substring(7);
+        String token = bearerToken.substring(Constants.BEARER_PREFIX_LENGTH);
         String email = jwtService.extractUsername(token);
         User user = repository
                 .findById(email)
