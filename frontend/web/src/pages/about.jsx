@@ -7,21 +7,18 @@ export default function About() {
     return (
         <Container absoluteFooter>
             <Center>
-                <section className="flex flex-col text-left text-[13px] sm:w-[360px] md:w-[576px]">
+                <section className="flex flex-col text-left text-[13px] gap-4 sm:w-[360px] md:w-[576px]">
                     <BackButton href="/" text="Home" />
-                    <br />
                     <p>
                         Michael Yi is a software engineer currently interning at
                         T-Mobile. He&apos;s a junior studying Computer Science
                         at Georgia Tech, and he previously worked at Ardent Labs
                         and MegaEvolution.
                     </p>
-                    <br />
                     <p>
                         Michael loves building. When he&apos;s not creating
                         software, he loves watching cinema and playing piano.
                     </p>
-                    <br />
                     <p>
                         Reach him at&nbsp;
                         <Hoverable>
