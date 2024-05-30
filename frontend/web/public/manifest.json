@@ -3,9 +3,9 @@
   "name": "Michael Yi",
   "icons": [
     {
-      "src": "michael.png",
-      "type": "image/png",
-      "sizes": "512x512 192x192 64x64 32x32 24x24 16x16"
+      "src": "favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "256x256 64x64 48x48 32x32 16x16"
     }
   ],
   "start_url": ".",
