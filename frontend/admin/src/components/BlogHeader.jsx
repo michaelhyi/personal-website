@@ -25,8 +25,7 @@ export default function BlogHeader() {
             </button>
             <a
                 href="/blog/post?mode=create"
-                className="focus:outline-none 
-                     text-xs 
+                className="text-xs 
                    bg-neutral-800
                    text-white 
                      font-semibold 

@@ -13,7 +13,7 @@ function useEditor(content) {
             content,
             editorProps: {
                 attributes: {
-                    class: "prose dark:prose-invert prose-sm mx-[1.5vw] my-5 focus:outline-none",
+                    class: "prose dark:prose-invert prose-sm mx-[1.5vw] my-5 outline-none",
                 },
             },
             extensions: [
