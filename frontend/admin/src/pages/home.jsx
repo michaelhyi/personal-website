@@ -54,7 +54,6 @@ export default function Home() {
                             className="flex 
                          bg-neutral-800
                          items-center
-                         focus:outline-none
                          text-sm 
                          font-semibold 
                          shadow-sm
