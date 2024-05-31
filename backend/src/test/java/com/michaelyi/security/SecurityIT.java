@@ -67,40 +67,40 @@ public class SecurityIT {
         String error = mvc.perform(get(endpoint))
                 .andExpect(status().isNotFound())
                 .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .getResolvedException()
+                .getMessage();
 
         assertEquals(NOT_FOUND, error);
 
         error = mvc.perform(post(endpoint))
                 .andExpect(status().isNotFound())
                 .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .getResolvedException()
+                .getMessage();
 
         assertEquals(NOT_FOUND, error);
 
         error = mvc.perform(put(endpoint))
                 .andExpect(status().isNotFound())
                 .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .getResolvedException()
+                .getMessage();
 
         assertEquals(NOT_FOUND, error);
 
         error = mvc.perform(patch(endpoint))
                 .andExpect(status().isNotFound())
                 .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .getResolvedException()
+                .getMessage();
 
         assertEquals(NOT_FOUND, error);
 
         error = mvc.perform(delete(endpoint))
                 .andExpect(status().isNotFound())
                 .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .getResolvedException()
+                .getMessage();
 
         assertEquals(NOT_FOUND, error);
     }
