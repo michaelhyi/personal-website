@@ -55,33 +55,35 @@ export default function Blog() {
             <Container absoluteFooter>
                 <BlogHeader />
                 <section className="mt-8 flex flex-col gap-2">
-                    {data.map((post, index) => (
-                        <div key={post.id} className="flex justify-between">
-                            <Hoverable>
-                                <a
-                                    className="flex text-sm font-medium"
-                                    href={`${process.env.REACT_APP_WEB_URL}/blog/${post.id}`}
-                                >
-                                    {post.title} <FiArrowUpRight />
-                                </a>
-                            </Hoverable>
-                            <section className="relative">
+                    {data &&
+                        menuOpen &&
+                        data.map((post, index) => (
+                            <div key={post.id} className="flex justify-between">
                                 <Hoverable>
-                                    <IoEllipsisHorizontal
-                                        onClick={() => {
-                                            toggleMenu(index);
-                                        }}
-                                    />
+                                    <a
+                                        className="flex text-sm font-medium"
+                                        href={`${process.env.REACT_APP_WEB_URL}/blog/${post.id}`}
+                                    >
+                                        {post.title} <FiArrowUpRight />
+                                    </a>
                                 </Hoverable>
-                                {menuOpen[index] ? (
-                                    <Menu
-                                        id={post.id}
-                                        handleToggleModal={toggleModal}
-                                    />
-                                ) : null}
-                            </section>
-                        </div>
-                    ))}
+                                <section className="relative">
+                                    <Hoverable>
+                                        <IoEllipsisHorizontal
+                                            onClick={() => {
+                                                toggleMenu(index);
+                                            }}
+                                        />
+                                    </Hoverable>
+                                    {menuOpen[index] ? (
+                                        <Menu
+                                            id={post.id}
+                                            handleToggleModal={toggleModal}
+                                        />
+                                    ) : null}
+                                </section>
+                            </div>
+                        ))}
                 </section>
                 <DeleteModal
                     id={id}
