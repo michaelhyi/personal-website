@@ -55,7 +55,7 @@ export default function Blog() {
             <Container absoluteFooter>
                 <BlogHeader />
                 <section className="mt-8 flex flex-col gap-2">
-                    {data.map((post, index) => (
+                    {data && menuOpen && data.map((post, index) => (
                         <div key={post.id} className="flex justify-between">
                             <Hoverable>
                                 <a
