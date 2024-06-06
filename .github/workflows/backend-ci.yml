@@ -16,6 +16,7 @@ jobs:
         working-directory: ./backend/src/main/resources
         run: |
           touch application.properties
+          echo "api.version-path=/v1" >> ./application.properties
           echo "auth.whitelisted-emails=${{ secrets.API_AUTH_WHITELISTED_EMAILS }}" >> ./application.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
@@ -44,6 +45,7 @@ jobs:
         working-directory: ./backend/src/test/resources
         run: |
           touch application-it.properties
+          echo "api.version-path=/v1" >> ./application-it.properties
           echo "auth.whitelisted-emails=test@mail.com" >> ./application-it.properties
           echo "aws.s3.bucket=test" >> ./application-it.properties
           echo "security.cors.allowed-origins=*" >> ./application-it.properties

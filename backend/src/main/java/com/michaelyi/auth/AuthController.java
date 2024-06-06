@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("v1/auth")
+@RequestMapping("${api.version-path}/auth")
 public class AuthController {
     private final AuthService service;
 

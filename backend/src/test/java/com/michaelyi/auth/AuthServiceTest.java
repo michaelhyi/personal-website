@@ -53,7 +53,8 @@ class AuthServiceTest {
 
     @Test
     void willThrowLoginWhenUnauthorized() {
-        assertThrows(UnauthorizedException.class, () -> underTest.login(UNAUTHORIZED_EMAIL));
+        assertThrows(UnauthorizedException.class, () ->
+                underTest.login(UNAUTHORIZED_EMAIL));
         verify(repository).findById(UNAUTHORIZED_EMAIL);
         verifyNoMoreInteractions(repository);
         verifyNoInteractions(jwtService);
@@ -73,7 +74,8 @@ class AuthServiceTest {
         when(jwtService.extractUsername(TOKEN)).thenReturn(EMAIL);
         when(repository.findById(EMAIL)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> underTest.validateToken(BEARER_TOKEN));
+        assertThrows(UserNotFoundException.class,
+                () -> underTest.validateToken(BEARER_TOKEN));
         verify(jwtService).extractUsername(TOKEN);
         verify(repository).findById(EMAIL);
         verifyNoMoreInteractions(jwtService);
@@ -87,7 +89,8 @@ class AuthServiceTest {
         when(repository.findById(EMAIL)).thenReturn(Optional.of(user));
         when(jwtService.isTokenValid(TOKEN, user)).thenReturn(false);
 
-        assertThrows(UnauthorizedException.class, () -> underTest.validateToken(BEARER_TOKEN));
+        assertThrows(UnauthorizedException.class,
+                () -> underTest.validateToken(BEARER_TOKEN));
         verify(jwtService).extractUsername(TOKEN);
         verify(repository).findById(EMAIL);
         verify(jwtService).isTokenValid(TOKEN, user);
