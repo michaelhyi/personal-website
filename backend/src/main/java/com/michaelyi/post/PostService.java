@@ -53,7 +53,8 @@ public class PostService {
             throws NoSuchElementException {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Post not found."));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Post not found."));
     }
 
     @Cacheable(value = "readPostImage", key = "#id")
@@ -73,8 +74,12 @@ public class PostService {
                 .findAll(Sort.by(Sort.Direction.DESC, "date"));
     }
 
-    @CacheEvict(cacheNames = "readPostImage", key = "#id", condition = "#image != null")
-    @CachePut(cacheNames = { "readAllPosts", "readPost" }, key = "#id")
+    @CacheEvict(
+            cacheNames = "readPostImage",
+            key = "#id",
+            condition = "#image != null"
+    )
+    @CachePut(cacheNames = {"readAllPosts", "readPost"}, key = "#id")
     public Post updatePost(String id, String text, MultipartFile image) {
         Post post = readPost(id);
         Post updatedPost = new Post(text);
@@ -100,7 +105,10 @@ public class PostService {
         return post;
     }
 
-    @CacheEvict(cacheNames = { "readAllPosts", "readPost", "readPostImage" }, allEntries = true)
+    @CacheEvict(
+            cacheNames = {"readAllPosts", "readPost", "readPostImage"},
+            allEntries = true
+    )
     public void deletePost(String id) throws NoSuchElementException {
         readPost(id);
         s3Service.deleteObject(id);

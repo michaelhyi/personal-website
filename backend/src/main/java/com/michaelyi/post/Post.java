@@ -1,18 +1,18 @@
 package com.michaelyi.post;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.michaelyi.constants.Constants;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import static com.michaelyi.constants.Constants.CLOSING_H1_TAG_LENGTH;
+import static com.michaelyi.constants.Constants.OPENING_H1_TAG_LENGTH;
 
 @Entity
 @Getter
@@ -52,8 +52,8 @@ public class Post implements Serializable {
             throw new IllegalArgumentException("Title cannot be blank.");
         }
 
-        String newTitle = text.substring(Constants.OPENING_H1_TAG_LENGTH, titleIndex);
-        String newContent = text.substring(titleIndex + Constants.CLOSING_H1_TAG_LENGTH);
+        String newTitle = text.substring(OPENING_H1_TAG_LENGTH, titleIndex);
+        String newContent = text.substring(titleIndex + CLOSING_H1_TAG_LENGTH);
 
         if (newTitle.isBlank() || newTitle.isEmpty()) {
             throw new IllegalArgumentException("Title cannot be blank.");
