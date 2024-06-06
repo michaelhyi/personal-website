@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("v1/post")
+@RequestMapping("${api.version-path}/post")
 public class PostController {
     private final PostService service;
 
