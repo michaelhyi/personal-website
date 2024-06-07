@@ -20,14 +20,13 @@ import static com.michaelyi.constants.Constants.OPENING_H1_TAG_LENGTH;
 @AllArgsConstructor
 public class Post implements Serializable {
     @Id
-    @Column(
-            nullable = false,
-            unique = true
-    )
     private String id;
 
     @CreationTimestamp
-    @Column(nullable = false)
+    @Column(
+            nullable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+    )
     private Date date;
 
     @Column(

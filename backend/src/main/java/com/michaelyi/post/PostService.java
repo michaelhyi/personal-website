@@ -1,33 +1,30 @@
 package com.michaelyi.post;
 
+import com.michaelyi.s3.S3Service;
+import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.michaelyi.s3.S3Service;
-
-import lombok.AllArgsConstructor;
-import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
-
 @Service
 @AllArgsConstructor
 public class PostService {
-    private final PostRepository repository;
+    private final PostDao dao;
     private final S3Service s3Service;
 
     @CacheEvict(cacheNames = "readAllPosts", allEntries = true)
     public String createPost(String text, MultipartFile image) {
         Post post = new Post(text);
 
-        if (repository.findById(post.getId()).isPresent()) {
+        if (dao.readPost(post.getId()).isPresent()) {
             throw new IllegalArgumentException(
                     "A post with the same title already exists.");
         }
@@ -36,7 +33,7 @@ public class PostService {
             throw new IllegalArgumentException("An image is required.");
         }
 
-        repository.saveAndFlush(post);
+        dao.createPost(post);
         String id = post.getId();
 
         try {
@@ -51,8 +48,8 @@ public class PostService {
     @Cacheable(value = "readPost", key = "#id")
     public Post readPost(String id)
             throws NoSuchElementException {
-        return repository
-                .findById(id)
+        return dao
+                .readPost(id)
                 .orElseThrow(() ->
                         new NoSuchElementException("Post not found."));
     }
@@ -70,8 +67,7 @@ public class PostService {
 
     @Cacheable(value = "readAllPosts")
     public List<Post> readAllPosts() {
-        return repository
-                .findAll(Sort.by(Sort.Direction.DESC, "date"));
+        return dao.readAllPosts();
     }
 
     @CacheEvict(
@@ -86,7 +82,7 @@ public class PostService {
 
         post.setTitle(updatedPost.getTitle());
         post.setContent(updatedPost.getContent());
-        repository.save(post);
+        dao.updatePost(post);
 
         byte[] currentImage = readPostImage(id);
         byte[] newImage;
@@ -112,6 +108,6 @@ public class PostService {
     public void deletePost(String id) throws NoSuchElementException {
         readPost(id);
         s3Service.deleteObject(id);
-        repository.deleteById(id);
+        dao.deletePost(id);
     }
 }

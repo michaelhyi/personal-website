@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.security.JwtService;
 import com.michaelyi.user.User;
-import com.michaelyi.user.UserRepository;
+import com.michaelyi.user.UserDao;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -65,7 +65,7 @@ class AuthIT {
     private MockMvc mvc;
 
     @Autowired
-    private UserRepository repository;
+    private UserDao dao;
 
     @Autowired
     private JwtService jwtService;
@@ -85,7 +85,7 @@ class AuthIT {
 
     @BeforeEach
     void setUp() {
-        repository.deleteAll();
+        dao.deleteAllUsers();
         writer = mapper.writer().withDefaultPrettyPrinter();
     }
 
@@ -105,7 +105,7 @@ class AuthIT {
     @Test
     void login() throws Exception {
         User alreadyExists = new User("alreadyexists@mail.com");
-        repository.save(alreadyExists);
+        dao.createUser(alreadyExists);
         AuthLoginRequest req = new AuthLoginRequest("alreadyexists@mail.com");
 
         String res = mvc.perform(post("/v1/auth/login")
@@ -140,8 +140,8 @@ class AuthIT {
                 .getResponse()
                 .getContentAsString();
 
-        User expected = repository
-                .findById("test@mail.com")
+        User expected = dao
+                .readUser("test@mail.com")
                 .get();
 
         assertTrue(jwtService.isTokenValid(res, expected));
@@ -166,7 +166,7 @@ class AuthIT {
 
         assertEquals("User not found.", error);
 
-        repository.save(user);
+        dao.createUser(user);
 
         String unauthorizedToken = generateUnauthorizedToken(user);
 
