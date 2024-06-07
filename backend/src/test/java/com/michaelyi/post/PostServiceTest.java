@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockMultipartFile;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
@@ -27,7 +26,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
     @Mock
-    private PostRepository repository;
+    private PostDao dao;
 
     @Mock
     private S3Service s3Service;
@@ -41,7 +40,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new PostService(repository, s3Service);
+        underTest = new PostService(dao, s3Service);
     }
 
     @Test
@@ -91,15 +90,15 @@ class PostServiceTest {
 
     @Test
     void willThrowCreatePostWhenAlreadyExists() {
-        when(repository.findById("title")).thenReturn(Optional.of(POST));
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         assertThrows(IllegalArgumentException.class, () ->
                 underTest.createPost(
                         "<h1>title (1994)</h1><p>content</p>",
                         null)
         );
-        verify(repository).findById("title");
-        verifyNoMoreInteractions(repository);
+        verify(dao).readPost("title");
+        verifyNoMoreInteractions(dao);
     }
 
     @Test
@@ -110,13 +109,13 @@ class PostServiceTest {
                         null
                 )
         );
-        verify(repository).findById("title");
-        verifyNoMoreInteractions(repository);
+        verify(dao).readPost("title");
+        verifyNoMoreInteractions(dao);
     }
 
     @Test
     void createPost() {
-        when(repository.findById(POST.getId())).thenReturn(
+        when(dao.readPost(POST.getId())).thenReturn(
                 Optional.empty()
         );
 
@@ -129,8 +128,8 @@ class PostServiceTest {
                 Post.class
         );
 
-        verify(repository).findById(POST.getId());
-        verify(repository).saveAndFlush(postArgumentCaptor.capture());
+        verify(dao).readPost(POST.getId());
+        verify(dao).createPost(postArgumentCaptor.capture());
         verify(s3Service).putObject(POST.getId(), "Hello World!".getBytes());
 
         Post capturedPost = postArgumentCaptor.getValue();
@@ -142,22 +141,22 @@ class PostServiceTest {
 
     @Test
     void willThrowReadPostWhenPostNotFound() {
-        when(repository.findById("title")).thenReturn(Optional.empty());
+        when(dao.readPost("title")).thenReturn(Optional.empty());
 
         assertThrows(
                 NoSuchElementException.class,
                 () -> underTest.readPost("title")
         );
-        verify(repository).findById("title");
+        verify(dao).readPost("title");
     }
 
     @Test
     void readPost() {
-        when(repository.findById("title")).thenReturn(Optional.of(POST));
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         Post actual = underTest.readPost("title");
 
-        verify(repository).findById("title");
+        verify(dao).readPost("title");
         assertEquals(POST.getId(), actual.getId());
         assertEquals(POST.getTitle(), actual.getTitle());
         assertEquals(POST.getContent(), actual.getContent());
@@ -165,19 +164,19 @@ class PostServiceTest {
 
     @Test
     void willThrowReadPostImageWhenPostNotFound() {
-        when(repository.findById("title")).thenReturn(Optional.empty());
+        when(dao.readPost("title")).thenReturn(Optional.empty());
 
         assertThrows(
                 NoSuchElementException.class,
                 () -> underTest.readPostImage("title")
         );
-        verify(repository).findById("title");
+        verify(dao).readPost("title");
         verify(s3Service, never()).getObject(any());
     }
 
     @Test
     void willThrowReadPostImageWhenS3KeyNotFound() {
-        when(repository.findById("title")).thenReturn(Optional.of(POST));
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
         when(s3Service.getObject("title"))
                 .thenThrow(NoSuchKeyException.class);
 
@@ -185,7 +184,7 @@ class PostServiceTest {
                 NoSuchElementException.class,
                 () -> underTest.readPostImage("title")
         );
-        verify(repository).findById("title");
+        verify(dao).readPost("title");
         verify(s3Service).getObject("title");
     }
 
@@ -193,12 +192,12 @@ class PostServiceTest {
     void readPostImage() {
         byte[] expected = "Hello World!".getBytes();
 
-        when(repository.findById("title")).thenReturn(Optional.of(POST));
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
         when(s3Service.getObject("title")).thenReturn(expected);
 
         byte[] actual = underTest.readPostImage("title");
 
-        verify(repository).findById("title");
+        verify(dao).readPost("title");
         verify(s3Service).getObject("title");
         assertEquals(expected, actual);
     }
@@ -206,14 +205,12 @@ class PostServiceTest {
     @Test
     void readAllPosts() {
         underTest.readAllPosts();
-        verify(repository).findAll(
-                Sort.by(Sort.Direction.DESC, "date")
-        );
+        verify(dao).readAllPosts();
     }
 
     @Test
     void willThrowUpdatePostWhenPostNotFound() {
-        when(repository.findById("title")).thenReturn(Optional.empty());
+        when(dao.readPost("title")).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class,
                 () -> underTest.updatePost(
@@ -223,13 +220,13 @@ class PostServiceTest {
                 )
         );
 
-        verify(repository).findById("title");
-        verifyNoMoreInteractions(repository);
+        verify(dao).readPost("title");
+        verifyNoMoreInteractions(dao);
     }
 
     @Test
     void updatePost() {
-        when(repository.findById("title")).thenReturn(Optional.of(POST));
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         underTest.updatePost(
                 "title",
@@ -240,14 +237,14 @@ class PostServiceTest {
         ArgumentCaptor<Post> postArgumentCaptor =
                 ArgumentCaptor.forClass(Post.class);
 
-        verify(repository, times(2)).findById("title");
-        verify(repository).save(postArgumentCaptor.capture());
+        verify(dao, times(2)).readPost("title");
+        verify(dao).updatePost(postArgumentCaptor.capture());
         verify(s3Service).getObject("title");
     }
 
     @Test
     void updatePostImage() {
-        when(repository.findById("title")).thenReturn(Optional.of(POST));
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         underTest.updatePost(
                 "title",
@@ -261,8 +258,8 @@ class PostServiceTest {
         ArgumentCaptor<Post> postArgumentCaptor =
                 ArgumentCaptor.forClass(Post.class);
 
-        verify(repository, times(2)).findById("title");
-        verify(repository).save(postArgumentCaptor.capture());
+        verify(dao, times(2)).readPost("title");
+        verify(dao).updatePost(postArgumentCaptor.capture());
         verify(s3Service).getObject("title");
         verify(s3Service).deleteObject("title");
         verify(s3Service).putObject("title", "New Hello World!".getBytes());
@@ -270,23 +267,23 @@ class PostServiceTest {
 
     @Test
     void willThrowDeletePostWhenPostNotFound() {
-        when(repository.findById("title")).thenReturn(Optional.empty());
+        when(dao.readPost("title")).thenReturn(Optional.empty());
 
         assertThrows(
                 NoSuchElementException.class,
                 () -> underTest.deletePost("title")
         );
         verifyNoMoreInteractions(s3Service);
-        verifyNoMoreInteractions(repository);
+        verifyNoMoreInteractions(dao);
     }
 
     @Test
     void deletePost() {
-        when(repository.findById("title")).thenReturn(Optional.of(POST));
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         underTest.deletePost("title");
 
         verify(s3Service).deleteObject("title");
-        verify(repository).deleteById("title");
+        verify(dao).deletePost("title");
     }
 }

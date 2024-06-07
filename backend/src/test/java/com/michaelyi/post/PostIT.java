@@ -63,7 +63,7 @@ class PostIT {
     private MockMvc mvc;
 
     @Autowired
-    private PostRepository repository;
+    private PostDao dao;
 
     @Autowired
     private S3Service s3Service;
@@ -83,7 +83,7 @@ class PostIT {
 
     @BeforeEach
     void setUp() {
-        repository.deleteAll();
+        dao.deleteAllPosts();
         writer = mapper.writer().withDefaultPrettyPrinter();
         s3Service.deleteObject("title");
         s3Service.deleteObject("oldboy");
@@ -550,8 +550,8 @@ class PostIT {
         text = "<h1>Oldboy (2004)</h1><p>by Park Chan-wook.</p>";
 
         String res = mvc.perform(multipart(
-                                    HttpMethod.PUT,
-                                    String.format("/v1/post/%s", id))
+                        HttpMethod.PUT,
+                        String.format("/v1/post/%s", id))
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -595,7 +595,7 @@ class PostIT {
         mvc.perform(multipart(HttpMethod.PUT, "/v1/post/oldboy")
                         .file(new MockMultipartFile(
                                 "image",
-                                      "New Hello World!".getBytes()
+                                "New Hello World!".getBytes()
                         ))
                         .param("text", text)
                         .header(
@@ -608,9 +608,9 @@ class PostIT {
                 .getContentAsString();
 
         byte[] newImageRes = mvc.perform(get(String.format(
-                                                "/v1/post/%s/image",
-                                                id
-                                            ))
+                        "/v1/post/%s/image",
+                        id
+                ))
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
