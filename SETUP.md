@@ -18,6 +18,8 @@ cd personal-website
 2. In `backend/src/main/resources`, create a file named `application.properties`. Copy the following into the file:
 
 ```shell
+api.version-path=/v1
+
 auth.whitelisted-emails=
 
 aws.access-key=

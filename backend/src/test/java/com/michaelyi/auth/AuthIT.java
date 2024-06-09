@@ -1,16 +1,14 @@
 package com.michaelyi.auth;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.michaelyi.security.JwtService;
+import com.michaelyi.user.User;
+import com.michaelyi.user.UserDao;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,25 +27,28 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.security.JwtService;
-import com.michaelyi.user.User;
-import com.michaelyi.user.UserRepository;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource("classpath:application-it.properties")
 class AuthIT {
     private static final int REDIS_PORT = 6379;
-    private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0.36");
-    private static GenericContainer<?> redis = new GenericContainer<>("redis:6.2.14")
-            .withExposedPorts(REDIS_PORT);
+    private static MySQLContainer<?> mysql = new MySQLContainer<>(
+            "mysql:8.0.36"
+    );
+    private static GenericContainer<?> redis =
+            new GenericContainer<>("redis:6.2.14")
+                    .withExposedPorts(REDIS_PORT);
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -55,14 +56,16 @@ class AuthIT {
         registry.add("spring.datasource.username", mysql::getUsername);
         registry.add("spring.datasource.password", mysql::getPassword);
         registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", () -> String.valueOf(redis.getMappedPort(REDIS_PORT)));
+        registry.add("spring.data.redis.port", () -> String.valueOf(
+                redis.getMappedPort(REDIS_PORT)
+        ));
     }
 
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private UserRepository repository;
+    private UserDao dao;
 
     @Autowired
     private JwtService jwtService;
@@ -82,7 +85,7 @@ class AuthIT {
 
     @BeforeEach
     void setUp() {
-        repository.deleteAll();
+        dao.deleteAllUsers();
         writer = mapper.writer().withDefaultPrettyPrinter();
     }
 
@@ -102,11 +105,12 @@ class AuthIT {
     @Test
     void login() throws Exception {
         User alreadyExists = new User("alreadyexists@mail.com");
-        repository.save(alreadyExists);
+        dao.createUser(alreadyExists);
+        AuthLoginRequest req = new AuthLoginRequest("alreadyexists@mail.com");
 
         String res = mvc.perform(post("/v1/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(writer.writeValueAsString(new AuthLoginRequest("alreadyexists@mail.com"))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(writer.writeValueAsString(req)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -115,9 +119,11 @@ class AuthIT {
         assertTrue(jwtService.isTokenValid(res, alreadyExists));
         assertEquals(alreadyExists.getEmail(), jwtService.extractUsername(res));
 
+        req = new AuthLoginRequest("unauthorized@mail.com");
+
         String error = mvc.perform(post("/v1/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(writer.writeValueAsString(new AuthLoginRequest("unauthorized@mail.com"))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(writer.writeValueAsString(req)))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -125,16 +131,17 @@ class AuthIT {
 
         assertEquals("Unauthorized.", error);
 
+        req = new AuthLoginRequest("test@mail.com");
         res = mvc.perform(post("/v1/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(writer.writeValueAsString(new AuthLoginRequest("test@mail.com"))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(writer.writeValueAsString(req)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        User expected = repository
-                .findById("test@mail.com")
+        User expected = dao
+                .readUser("test@mail.com")
                 .get();
 
         assertTrue(jwtService.isTokenValid(res, expected));
@@ -147,8 +154,11 @@ class AuthIT {
         String token = jwtService.generateToken(user);
 
         String error = mvc.perform(get("/v1/auth/validate-token")
-                .header("Authorization", "Bearer " + token)
-                .servletPath("/v1/auth/validate-token"))
+                        .header(
+                                "Authorization",
+                                String.format("Bearer %s", token)
+                        )
+                        .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
@@ -156,13 +166,16 @@ class AuthIT {
 
         assertEquals("User not found.", error);
 
-        repository.save(user);
+        dao.createUser(user);
 
         String unauthorizedToken = generateUnauthorizedToken(user);
 
         error = mvc.perform(get("/v1/auth/validate-token")
-                .header("Authorization", "Bearer " + unauthorizedToken)
-                .servletPath("/v1/auth/validate-token"))
+                        .header(
+                                "Authorization",
+                                String.format("Bearer %s", unauthorizedToken)
+                        )
+                        .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -171,12 +184,16 @@ class AuthIT {
         assertEquals("Unauthorized.", error);
 
         final String expiredToken = "eyJhbGciOiJIUzI1NiJ9"
-                + ".eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzA5MzI0OTUxLCJleHAiOjE3MDkzMjQ5NTF9"
+                + ".eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzA5MzI0OTUxLCJleHA"
+                + "iOjE3MDkzMjQ5NTF9"
                 + ".0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM";
 
         error = mvc.perform(get("/v1/auth/validate-token")
-                .header("Authorization", "Bearer " + expiredToken)
-                .servletPath("/v1/auth/validate-token"))
+                        .header(
+                                "Authorization",
+                                String.format("Bearer %s", expiredToken)
+                        )
+                        .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -185,14 +202,19 @@ class AuthIT {
         assertEquals("Unauthorized.", error);
 
         mvc.perform(get("/v1/auth/validate-token")
-                .header("Authorization", "Bearer " + token))
+                        .header("Authorization",
+                                String.format("Bearer %s", token)))
                 .andExpect(status().isOk());
 
     }
 
     private String generateUnauthorizedToken(UserDetails details) {
         Map<String, Object> extraClaims = new HashMap<>();
-        byte[] keyBytes = Decoders.BASE64.decode("fakesigninkeyfakesigninkeyfakesigninkeyfakesigninkey");
+        byte[] keyBytes = Decoders
+                .BASE64
+                .decode(
+                        "fakesigninkeyfakesigninkeyfakesigninkeyfakesigninkey"
+                );
 
         return Jwts
                 .builder()
@@ -201,7 +223,10 @@ class AuthIT {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(
                         System.currentTimeMillis() + 1L))
-                .signWith(Keys.hmacShaKeyFor(keyBytes), SignatureAlgorithm.HS256)
+                .signWith(
+                        Keys.hmacShaKeyFor(keyBytes),
+                        SignatureAlgorithm.HS256
+                )
                 .compact();
     }
 }

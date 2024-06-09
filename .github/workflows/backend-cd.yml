@@ -13,65 +13,6 @@ env:
   VERSION: 1.2.8
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Create application.properties
-        working-directory: ./backend/src/main/resources
-        run: |
-          touch application.properties
-          echo "auth.whitelisted-emails=${{ secrets.API_AUTH_WHITELISTED_EMAILS }}" >> ./application.properties
-          echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
-          echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
-          echo "aws.s3.bucket=${{ secrets.API_AWS_S3_BUCKET }}" >> ./application.properties
-          echo "security.cors.allowed-origins=https://michael-yi.com,https://admin.michael-yi.com" >> ./application.properties
-          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application.properties
-          echo "spring.application.name=personal-website-api" >> ./application.properties
-          echo "spring.datasource.url=${{ secrets.API_SPRING_DATASOURCE_URL }}" >> ./application.properties
-          echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./application.properties
-          echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./application.properties
-          echo "spring.jpa.hibernate.ddl-auto=validate" >> ./application.properties
-          echo "spring.cache.type=redis" >> ./application.properties
-          echo "spring.cache.redis.time-to-live=900000" >> ./application.properties
-          echo "spring.data.redis.host=${{ secrets.API_SPRING_DATA_REDIS_HOST }}" >> ./application.properties
-          echo "spring.data.redis.port=6379" >> ./application.properties
-          echo "spring.data.redis.password=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }}" >> ./application.properties
-          echo "spring.servlet.multipart.max-file-size=10MB" >> ./application.properties
-          echo "spring.servlet.multipart.max-request-size=10MB" >> ./application.properties
-          echo >> ./application.properties
-
-      - name: Create Resources Directory for Intergration Tests
-        working-directory: ./backend/src/test
-        run: mkdir resources
-
-      - name: Create application-it.properties
-        working-directory: ./backend/src/test/resources
-        run: |
-          touch application-it.properties
-          echo "auth.whitelisted-emails=test@mail.com" >> ./application-it.properties
-          echo "aws.s3.bucket=test" >> ./application-it.properties
-          echo "security.cors.allowed-origins=*" >> ./application-it.properties
-          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
-          echo "spring.application.name=personal-website-api" >> ./application-it.properties
-          echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./application-it.properties
-          echo "spring.jpa.hibernate.ddl-auto=create" >> ./application-it.properties
-          echo "spring.cache.type=redis" >> ./application-it.properties
-          echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
-          echo >> ./application-it.properties
-
-      - name: Archive application.properties
-        uses: actions/upload-artifact@v4
-        with:
-          name: application.properties
-          path: ./backend/src/main/resources/application.properties
-
-      - name: Archive application-it.properties
-        uses: actions/upload-artifact@v4
-        with:
-          name: application-it.properties
-          path: ./backend/src/test/resources/application-it.properties
-
   build:
     needs: setup
     runs-on: ubuntu-latest
@@ -86,12 +27,6 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
-
-      - name: Download application.properties 
-        uses: actions/download-artifact@v4
-        with:
-          name: application.properties
-          path: ./backend/src/main/resources
 
       - name: Build
         working-directory: ./backend
@@ -137,5 +72,25 @@ jobs:
             sudo docker rm personal-website-api || true
             sudo docker rmi -f $(sudo docker image ls -a -q)
             sudo docker pull michaelyi/personal-website-api:latest
-            sudo docker run --name personal-website-api -d -p 8080:8080 michaelyi/personal-website-api:latest
+            sudo docker run --name personal-website-api -d -p 8080:8080 \
+              -e API_VERSION_PATH=/v1 \
+              -e AUTH_WHITELISTED_EMAILS=${{ secrets.API_AUTH_WHITELISTED_EMAILS }} \
+              -e AWS_ACCESS_KEY=${{ secrets.API_AWS_ACCESS_KEY }} \
+              -e AWS_SECRET_KEY=${{ secrets.API_AWS_SECRET_KEY }} \
+              -e AWS_S3_BUCKET=${{ secrets.API_AWS_S3_BUCKET }} \
+              -e SECURITY_CORS_ALLOWED_ORIGINS=https://michael-yi.com,https://admin.michael-yi.com \
+              -e SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
+              -e SPRING_APPLICATION_NAME=personal-website-api \
+              -e SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
+              -e SPRING_DATASOURCE_USERNAME=${{ secrets.API_SPRING_DATASOURCE_USERNAME }} \
+              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }} \
+              -e SPRING_JPA_HIBERNATE_DDL_AUTO=validate \
+              -e SPRING_CACHE_TYPE=redis \
+              -e SPRING_CACHE_REDIS_TIME_TO_LIVE=900000 \
+              -e SPRING_DATA_REDIS_HOST=${{ secrets.API_SPRING_DATA_REDIS_HOST }} \
+              -e SPRING_DATA_REDIS_PORT=6379 \
+              -e SPRING_DATA_REDIS_PASSWORD=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }} \
+              -e SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=10MB \
+              -e SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE=10MB \
+              michaelyi/personal-website-api:latest
             '

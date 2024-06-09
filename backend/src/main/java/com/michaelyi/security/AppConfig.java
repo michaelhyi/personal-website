@@ -1,5 +1,7 @@
 package com.michaelyi.security;
 
+import com.michaelyi.user.UserDao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,14 +11,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.michaelyi.user.UserRepository;
-
-import lombok.RequiredArgsConstructor;
-
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
-    private final UserRepository repository;
+    private final UserDao dao;
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -35,9 +33,10 @@ public class AppConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findById(username)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found.")
+        return username -> dao
+                .readUser(username)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException("User not found.")
                 );
     }
 }

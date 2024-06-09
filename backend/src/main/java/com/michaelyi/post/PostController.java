@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("v1/post")
+@RequestMapping("${api.version-path}/post")
 public class PostController {
     private final PostService service;
 
@@ -49,7 +49,10 @@ public class PostController {
     public Post updatePost(
             @PathVariable String id,
             @RequestParam("text") String text,
-            @RequestParam(value = "image", required = false) MultipartFile image) {
+            @RequestParam(
+                    value = "image",
+                    required = false
+            ) MultipartFile image) {
         return service.updatePost(id, text, image);
     }
 
