@@ -1,6 +1,5 @@
 package com.michaelyi.security;
 
-import com.michaelyi.user.User;
 import com.michaelyi.user.UserDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,8 +10,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Optional;
 
 @Configuration
 @RequiredArgsConstructor
