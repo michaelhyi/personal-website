@@ -14,7 +14,6 @@ env:
 
 jobs:
   build:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
