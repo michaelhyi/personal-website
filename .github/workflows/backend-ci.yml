@@ -32,10 +32,12 @@ jobs:
       - uses: actions/checkout@v3
       - name: Create application.properties
         working-directory: ./backend/src/main/resources
+        env:
+          AUTH_ADMIN_PW: ${{ secrets.API_AUTH_ADMIN_PW }}
         run: |
           touch application.properties
           echo "api.version-path=/v1" >> ./application.properties
-          echo "auth.admin-pw=${{ secrets.API_AUTH_ADMIN_PW // '$'/'$$' }}" >> ./application.properties
+          echo "auth.admin-pw=$AUTH_ADMIN_PW" >> ./application.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
           echo "aws.s3.bucket=${{ secrets.API_AWS_S3_BUCKET }}" >> ./application.properties
@@ -61,10 +63,12 @@ jobs:
 
       - name: Create application-it.properties
         working-directory: ./backend/src/test/resources
+        env:
+          TEST_AUTH_ADMIN_PW: ${{ secrets.API_TEST_AUTH_ADMIN_PW }}
         run: |
           touch application-it.properties
           echo "api.version-path=/v1" >> ./application-it.properties
-          echo "auth.admin-pw=${{ secrets.API_TEST_AUTH_ADMIN_PW // '$'/'$$' }}" >> ./application-it.properties
+          echo "auth.admin-pw=$TEST_AUTH_ADMIN_PW" >> ./application-it.properties
           echo "aws.s3.bucket=test" >> ./application-it.properties
           echo "security.cors.allowed-origins=*" >> ./application-it.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
@@ -117,11 +121,6 @@ jobs:
         with:
           name: application-it.properties
           path: ./backend/src/test/resources
-
-      - name: Verify Integrity of Files
-        run: |
-          openssl sha256 ./backend/src/main/resources/application.properties
-          openssl sha256 ./backend/src/test/resources/application-it.properties
 
       - name: Test
         working-directory: ./backend
