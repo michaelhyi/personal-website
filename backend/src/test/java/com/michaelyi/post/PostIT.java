@@ -3,7 +3,7 @@ package com.michaelyi.post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.auth.AuthLoginRequest;
+import com.michaelyi.auth.LoginRequest;
 import com.michaelyi.s3.S3Service;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -59,6 +59,8 @@ class PostIT {
         ));
     }
 
+    private static final String AUTHORIZED_PASSWORD = "authorized password";
+
     @Autowired
     private MockMvc mvc;
 
@@ -107,7 +109,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -213,7 +215,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -303,7 +305,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -356,7 +358,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -401,7 +403,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -497,7 +499,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -626,7 +628,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com")
+                                new LoginRequest(AUTHORIZED_PASSWORD)
                         )))
                 .andExpect(status().isOk())
                 .andReturn()

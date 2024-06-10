@@ -1,112 +1,75 @@
 package com.michaelyi.auth;
 
 import com.michaelyi.security.JwtService;
-import com.michaelyi.user.User;
-import com.michaelyi.user.UserDao;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
     @Mock
-    private UserDao dao;
-
-    @Mock
     private JwtService jwtService;
     private AuthService underTest;
-    private static final String EMAIL = "test@mail.com";
-    private static final String UNAUTHORIZED_EMAIL = "unauthorized@mail.com";
+    private static final BCryptPasswordEncoder ENCODER
+            = new BCryptPasswordEncoder();
+    private static User adminUser;
+    private static final String AUTHORIZED_PASSWORD = "authorized password";
+    private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
     private static final String BEARER_TOKEN = "Bearer token";
     private static final String TOKEN = "token";
 
-    @BeforeEach
-    void setUp() {
-        underTest = new AuthService(List.of(EMAIL), dao, jwtService);
+    @BeforeAll
+    static void beforeAll() {
+        adminUser = new User(ENCODER.encode(AUTHORIZED_PASSWORD));
     }
 
-    @Test
-    void willLoginWhenUserAlreadyExists() {
-        User user = new User(EMAIL);
-
-        when(dao.readUser(EMAIL)).thenReturn(Optional.of(user));
-
-        underTest.login(EMAIL);
-        verify(dao).readUser(EMAIL);
-        verify(jwtService).generateToken(user);
-        verifyNoMoreInteractions(dao);
-        verifyNoMoreInteractions(jwtService);
+    @BeforeEach
+    void setUp() {
+        underTest = new AuthService(
+                ENCODER.encode(AUTHORIZED_PASSWORD),
+                jwtService,
+                adminUser
+        );
     }
 
     @Test
     void willThrowLoginWhenUnauthorized() {
         assertThrows(UnauthorizedException.class, () ->
-                underTest.login(UNAUTHORIZED_EMAIL));
-        verify(dao).readUser(UNAUTHORIZED_EMAIL);
-        verifyNoMoreInteractions(dao);
+                underTest.login(new LoginRequest(UNAUTHORIZED_PASSWORD)));
         verifyNoInteractions(jwtService);
     }
 
     @Test
     void login() {
-        underTest.login(EMAIL);
-
-        verify(dao).readUser(EMAIL);
-        verify(dao).createUser(any());
-        verify(jwtService).generateToken(any());
-    }
-
-    @Test
-    void willThrowValidateTokenWhenUserNotFound() {
-        when(jwtService.extractUsername(TOKEN)).thenReturn(EMAIL);
-        when(dao.readUser(EMAIL)).thenReturn(Optional.empty());
-
-        assertThrows(UserNotFoundException.class,
-                () -> underTest.validateToken(BEARER_TOKEN));
-        verify(jwtService).extractUsername(TOKEN);
-        verify(dao).readUser(EMAIL);
-        verifyNoMoreInteractions(jwtService);
+        underTest.login(new LoginRequest(AUTHORIZED_PASSWORD));
+        verify(jwtService).generateToken(adminUser);
     }
 
     @Test
     void willThrowValidateTokenWhenTokenIsInvalid() {
-        User user = new User(EMAIL);
+        when(jwtService.isTokenExpired(TOKEN)).thenReturn(true);
 
-        when(jwtService.extractUsername(TOKEN)).thenReturn(EMAIL);
-        when(dao.readUser(EMAIL)).thenReturn(Optional.of(user));
-        when(jwtService.isTokenValid(TOKEN, user)).thenReturn(false);
+        assertThrows(
+                UnauthorizedException.class,
+                () -> underTest.validateToken(BEARER_TOKEN)
+        );
 
-        assertThrows(UnauthorizedException.class,
-                () -> underTest.validateToken(BEARER_TOKEN));
-        verify(jwtService).extractUsername(TOKEN);
-        verify(dao).readUser(EMAIL);
-        verify(jwtService).isTokenValid(TOKEN, user);
+        verify(jwtService).isTokenExpired(TOKEN);
     }
 
     @Test
     void validateToken() {
-        User user = new User(EMAIL);
-
-        when(jwtService.extractUsername(TOKEN)).thenReturn(EMAIL);
-        when(dao.readUser(EMAIL)).thenReturn(Optional.of(user));
-        when(jwtService.isTokenValid(TOKEN, user)).thenReturn(true);
-
+        when(jwtService.isTokenExpired(TOKEN)).thenReturn(false);
         underTest.validateToken(BEARER_TOKEN);
-
-        verify(jwtService).extractUsername(TOKEN);
-        verify(dao).readUser(EMAIL);
-        verify(jwtService).isTokenValid(TOKEN, user);
+        verify(jwtService).isTokenExpired(TOKEN);
     }
 }

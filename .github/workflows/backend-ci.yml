@@ -8,16 +8,36 @@ permissions:
   packages: write
 
 jobs:
-  setup:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+
+      - name: Build
+        working-directory: ./backend
+        run: ./gradlew clean bootJar --info
+
+  setup-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Create application.properties
         working-directory: ./backend/src/main/resources
+        env:
+          AUTH_ADMIN_PW: ${{ secrets.API_AUTH_ADMIN_PW }}
         run: |
           touch application.properties
           echo "api.version-path=/v1" >> ./application.properties
-          echo "auth.whitelisted-emails=${{ secrets.API_AUTH_WHITELISTED_EMAILS }}" >> ./application.properties
+          echo "auth.admin-pw=$AUTH_ADMIN_PW" >> ./application.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
           echo "aws.s3.bucket=${{ secrets.API_AWS_S3_BUCKET }}" >> ./application.properties
@@ -43,10 +63,12 @@ jobs:
 
       - name: Create application-it.properties
         working-directory: ./backend/src/test/resources
+        env:
+          TEST_AUTH_ADMIN_PW: ${{ secrets.API_TEST_AUTH_ADMIN_PW }}
         run: |
           touch application-it.properties
           echo "api.version-path=/v1" >> ./application-it.properties
-          echo "auth.whitelisted-emails=test@mail.com" >> ./application-it.properties
+          echo "auth.admin-pw=$TEST_AUTH_ADMIN_PW" >> ./application-it.properties
           echo "aws.s3.bucket=test" >> ./application-it.properties
           echo "security.cors.allowed-origins=*" >> ./application-it.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
@@ -69,33 +91,8 @@ jobs:
           name: application-it.properties
           path: ./backend/src/test/resources/application-it.properties
 
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-
-      - name: Download application.properties 
-        uses: actions/download-artifact@v4
-        with:
-          name: application.properties
-          path: ./backend/src/main/resources
-
-      - name: Build
-        working-directory: ./backend
-        run: ./gradlew clean bootJar --info
-      
   test:
-    needs: setup
+    needs: setup-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -123,7 +120,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: application-it.properties
-          path: ./backend/src/main/resources
+          path: ./backend/src/test/resources
 
       - name: Test
         working-directory: ./backend

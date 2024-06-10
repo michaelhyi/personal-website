@@ -11,8 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
 import java.util.Date;
 
-import static com.michaelyi.constants.Constants.CLOSING_H1_TAG_LENGTH;
-import static com.michaelyi.constants.Constants.OPENING_H1_TAG_LENGTH;
+import static com.michaelyi.util.Constants.CLOSING_H1_TAG_LENGTH;
+import static com.michaelyi.util.Constants.OPENING_H1_TAG_LENGTH;
+
 
 @Entity
 @Getter
