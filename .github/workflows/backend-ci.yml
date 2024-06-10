@@ -46,7 +46,7 @@ jobs:
         run: |
           touch application-it.properties
           echo "api.version-path=/v1" >> ./application-it.properties
-          echo "auth.admin-pw=${{ secrets.API_TEST_AUTH_ADMIN_PW }}" >> ./application.properties
+          echo "auth.admin-pw=${{ secrets.API_TEST_AUTH_ADMIN_PW }}" >> ./application-it.properties
           echo "aws.s3.bucket=test" >> ./application-it.properties
           echo "security.cors.allowed-origins=*" >> ./application-it.properties
           echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
