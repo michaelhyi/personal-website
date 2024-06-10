@@ -18,7 +18,13 @@ public class PostDao {
                            INSERT INTO post (id, date, title, content)
                            VALUES (?, ?, ?, ?)
                            """;
-        template.update(SQL, post.getId(), post.getDate(), post.getTitle(), post.getContent());
+        template.update(
+                SQL,
+                post.getId(),
+                post.getDate(),
+                post.getTitle(),
+                post.getContent()
+        );
     }
 
     public Optional<Post> readPost(String id) {
