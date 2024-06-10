@@ -30,6 +30,10 @@ class PostServiceTest {
 
     @Mock
     private S3Service s3Service;
+
+    @Mock
+    private PostCacheService cacheService;
+
     private PostService underTest;
     private static final Post POST = new Post(
             "title",
@@ -40,7 +44,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new PostService(dao, s3Service);
+        underTest = new PostService(dao, s3Service, cacheService);
     }
 
     @Test
@@ -114,7 +118,7 @@ class PostServiceTest {
     }
 
     @Test
-    void createPost() {
+    void createPost() throws Exception {
         when(dao.readPost(POST.getId())).thenReturn(
                 Optional.empty()
         );
@@ -151,7 +155,7 @@ class PostServiceTest {
     }
 
     @Test
-    void readPost() {
+    void readPost() throws Exception {
         when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         Post actual = underTest.readPost("title");
@@ -189,7 +193,7 @@ class PostServiceTest {
     }
 
     @Test
-    void readPostImage() {
+    void readPostImage() throws Exception {
         byte[] expected = "Hello World!".getBytes();
 
         when(dao.readPost("title")).thenReturn(Optional.of(POST));
@@ -203,7 +207,7 @@ class PostServiceTest {
     }
 
     @Test
-    void readAllPosts() {
+    void readAllPosts() throws Exception {
         underTest.readAllPosts();
         verify(dao).readAllPosts();
     }
@@ -225,7 +229,7 @@ class PostServiceTest {
     }
 
     @Test
-    void updatePost() {
+    void updatePost() throws Exception {
         when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         underTest.updatePost(
@@ -243,7 +247,7 @@ class PostServiceTest {
     }
 
     @Test
-    void updatePostImage() {
+    void updatePostImage() throws Exception {
         when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         underTest.updatePost(
@@ -278,7 +282,7 @@ class PostServiceTest {
     }
 
     @Test
-    void deletePost() {
+    void deletePost() throws Exception {
         when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
         underTest.deletePost("title");
