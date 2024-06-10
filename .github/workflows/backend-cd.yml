@@ -73,7 +73,7 @@ jobs:
             sudo docker pull michaelyi/personal-website-api:latest
             sudo docker run --name personal-website-api -d -p 8080:8080 \
               -e API_VERSION_PATH=/v1 \
-              -e AUTH_WHITELISTED_EMAILS=${{ secrets.API_AUTH_WHITELISTED_EMAILS }} \
+              -e AUTH_ADMIN_PW=${{ secrets.API_AUTH_ADMIN_PW }} \
               -e AWS_ACCESS_KEY=${{ secrets.API_AWS_ACCESS_KEY }} \
               -e AWS_SECRET_KEY=${{ secrets.API_AWS_SECRET_KEY }} \
               -e AWS_S3_BUCKET=${{ secrets.API_AWS_S3_BUCKET }} \

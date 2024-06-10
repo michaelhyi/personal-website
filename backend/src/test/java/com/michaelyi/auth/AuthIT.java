@@ -3,8 +3,6 @@ package com.michaelyi.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.security.JwtService;
-import com.michaelyi.user.User;
-import com.michaelyi.user.UserDao;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -19,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
@@ -31,8 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -65,9 +61,6 @@ class AuthIT {
     private MockMvc mvc;
 
     @Autowired
-    private UserDao dao;
-
-    @Autowired
     private JwtService jwtService;
 
     @Autowired
@@ -85,7 +78,6 @@ class AuthIT {
 
     @BeforeEach
     void setUp() {
-        dao.deleteAllUsers();
         writer = mapper.writer().withDefaultPrettyPrinter();
     }
 
@@ -104,22 +96,7 @@ class AuthIT {
 
     @Test
     void login() throws Exception {
-        User alreadyExists = new User("alreadyexists@mail.com");
-        dao.createUser(alreadyExists);
-        LoginRequest req = new LoginRequest("alreadyexists@mail.com");
-
-        String res = mvc.perform(post("/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(writer.writeValueAsString(req)))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        assertTrue(jwtService.isTokenValid(res, alreadyExists));
-        assertEquals(alreadyExists.getEmail(), jwtService.extractUsername(res));
-
-        req = new LoginRequest("unauthorized@mail.com");
+        LoginRequest req = new LoginRequest("unauthorized password");
 
         String error = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -131,8 +108,8 @@ class AuthIT {
 
         assertEquals("Unauthorized.", error);
 
-        req = new LoginRequest("test@mail.com");
-        res = mvc.perform(post("/v1/auth/login")
+        req = new LoginRequest("authorized password");
+        String res = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(req)))
                 .andExpect(status().isOk())
@@ -140,37 +117,14 @@ class AuthIT {
                 .getResponse()
                 .getContentAsString();
 
-        User expected = dao
-                .readUser("test@mail.com")
-                .get();
-
-        assertTrue(jwtService.isTokenValid(res, expected));
-        assertEquals(expected.getEmail(), jwtService.extractUsername(res));
+        assertFalse(jwtService.isTokenExpired(res));
+        assertEquals("admin@michael-yi.com", jwtService.extractUsername(res));
     }
 
     @Test
     void validateToken() throws Exception {
-        User user = new User("test@mail.com");
-        String token = jwtService.generateToken(user);
-
+        String unauthorizedToken = generateUnauthorizedToken();
         String error = mvc.perform(get("/v1/auth/validate-token")
-                        .header(
-                                "Authorization",
-                                String.format("Bearer %s", token)
-                        )
-                        .servletPath("/v1/auth/validate-token"))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResolvedException()
-                .getMessage();
-
-        assertEquals("User not found.", error);
-
-        dao.createUser(user);
-
-        String unauthorizedToken = generateUnauthorizedToken(user);
-
-        error = mvc.perform(get("/v1/auth/validate-token")
                         .header(
                                 "Authorization",
                                 String.format("Bearer %s", unauthorizedToken)
@@ -201,14 +155,22 @@ class AuthIT {
 
         assertEquals("Unauthorized.", error);
 
+        LoginRequest req = new LoginRequest("authorized password");
+        String token = mvc.perform(post("/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(writer.writeValueAsString(req)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
         mvc.perform(get("/v1/auth/validate-token")
                         .header("Authorization",
                                 String.format("Bearer %s", token)))
                 .andExpect(status().isOk());
-
     }
 
-    private String generateUnauthorizedToken(UserDetails details) {
+    private String generateUnauthorizedToken() {
         Map<String, Object> extraClaims = new HashMap<>();
         byte[] keyBytes = Decoders
                 .BASE64
@@ -219,7 +181,7 @@ class AuthIT {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(details.getUsername())
+                .setSubject("unauthorized@michael-yi.com")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(
                         System.currentTimeMillis() + 1L))
