@@ -36,8 +36,6 @@ spring.datasource.username=root
 spring.datasource.password=root
 spring.jpa.hibernate.ddl-auto=update
 
-spring.cache.type=redis
-spring.cache.redis.time-to-live=900000
 spring.data.redis.host=localhost
 spring.data.redis.port=6379
 

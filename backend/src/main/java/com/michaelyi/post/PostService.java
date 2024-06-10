@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.michaelyi.cache.CacheExpiredException;
 import com.michaelyi.s3.S3Service;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
@@ -116,10 +115,6 @@ public class PostService {
         return post;
     }
 
-    @CacheEvict(
-            cacheNames = {"readAllPosts", "readPost", "readPostImage"},
-            allEntries = true
-    )
     public void deletePost(String id) throws NoSuchElementException, JsonProcessingException {
         readPost(id);
         s3Service.deleteObject(id);

@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -65,9 +64,6 @@ class AuthIT {
     private JwtService jwtService;
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
@@ -84,9 +80,6 @@ class AuthIT {
 
     @AfterEach
     void tearDown() {
-        cacheManager.getCacheNames()
-                .parallelStream()
-                .forEach(n -> cacheManager.getCache(n).clear());
     }
 
     @AfterAll
