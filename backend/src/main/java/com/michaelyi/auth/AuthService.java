@@ -5,7 +5,6 @@ import com.michaelyi.user.User;
 import com.michaelyi.util.Constants;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,8 @@ public class AuthService {
     @Value("${auth.admin-pw}")
     private final String adminPassword;
     private final JwtService jwtService;
+    private final User adminUser;
 
-    @Cacheable(value = "login", key = "#email")
     public String login(LoginRequest req) {
         final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         boolean authorized = encoder.matches(req.password(), adminPassword);
@@ -25,8 +24,7 @@ public class AuthService {
             throw new UnauthorizedException();
         }
 
-        User user = new User(encoder.encode(req.password()));
-        return jwtService.generateToken(user);
+        return jwtService.generateToken(adminUser);
     }
 
     public void validateToken(String bearerToken) {

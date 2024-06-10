@@ -21,6 +21,11 @@ public class AuthConfig {
     private final String adminPassword;
 
     @Bean
+    public User adminUser() {
+        return new User(adminPassword);
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config
     ) throws Exception {
@@ -44,7 +49,7 @@ public class AuthConfig {
                 throw new UsernameNotFoundException("User not found.");
             }
 
-            return new User(adminPassword);
+            return adminUser();
         };
     }
 }
