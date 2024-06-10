@@ -21,7 +21,10 @@ public class PostService {
     private final S3Service s3Service;
     private final PostCacheService cacheService;
 
-    public String createPost(String text, MultipartFile image) throws JsonProcessingException {
+    public String createPost(
+            String text,
+            MultipartFile image
+    ) throws JsonProcessingException {
         Post post = new Post(text);
 
         if (dao.readPost(post.getId()).isPresent()) {
@@ -88,7 +91,11 @@ public class PostService {
         }
     }
 
-    public Post updatePost(String id, String text, MultipartFile image) throws JsonProcessingException {
+    public Post updatePost(
+            String id,
+            String text,
+            MultipartFile image
+    ) throws JsonProcessingException {
         Post post = readPost(id);
         Post updatedPost = new Post(text);
 
@@ -115,7 +122,8 @@ public class PostService {
         return post;
     }
 
-    public void deletePost(String id) throws NoSuchElementException, JsonProcessingException {
+    public void deletePost(String id)
+            throws NoSuchElementException, JsonProcessingException {
         readPost(id);
         s3Service.deleteObject(id);
         dao.deletePost(id);

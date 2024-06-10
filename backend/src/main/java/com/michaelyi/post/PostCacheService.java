@@ -108,7 +108,10 @@ public class PostCacheService {
         }
     }
 
-    public void cachePostImage(String id, byte[] image) throws JsonProcessingException {
+    public void cachePostImage(
+            String id,
+            byte[] image
+    ) throws JsonProcessingException {
         template.opsForValue().set(
                 String.format("readPostImage?id=%s", id),
                 writer.writeValueAsString(
