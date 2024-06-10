@@ -116,7 +116,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: application-it.properties
-          path: ./backend/src/main/resources
+          path: ./backend/src/test/resources
 
       - name: Verify Integrity of Files
         run: |
