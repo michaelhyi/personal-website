@@ -1,7 +1,6 @@
 package com.michaelyi.auth;
 
 import com.michaelyi.security.JwtService;
-import com.michaelyi.user.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

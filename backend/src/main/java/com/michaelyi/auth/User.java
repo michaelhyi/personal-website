@@ -1,4 +1,4 @@
-package com.michaelyi.user;
+package com.michaelyi.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

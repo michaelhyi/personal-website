@@ -1,7 +1,6 @@
 package com.michaelyi.auth;
 
 import com.michaelyi.security.JwtService;
-import com.michaelyi.user.User;
 import com.michaelyi.util.Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
