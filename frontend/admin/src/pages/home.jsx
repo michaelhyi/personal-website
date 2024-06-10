@@ -1,11 +1,9 @@
-import { useGoogleLogin } from "@react-oauth/google";
-import { Toaster, toast } from "react-hot-toast";
-import { FcGoogle } from "react-icons/fc";
+import { useCallback } from "react";
+import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import Center from "../components/Center";
 import Container from "../components/Container";
-import Hoverable from "../components/Hoverable";
 import Toast from "../components/Toast";
 import UnauthorizedRoute from "../components/UnauthorizedRoute";
 import { login } from "../services/auth";
@@ -13,25 +11,26 @@ import { login } from "../services/auth";
 export default function Home() {
     const navigate = useNavigate();
 
-    const handleLogin = useGoogleLogin({
-        // eslint-disable-next-line camelcase -- google api uses snake_case
-        onSuccess: ({ access_token }) => {
-            (async () => {
-                try {
-                    await login(access_token);
-                    navigate("/blog");
-                } catch (e) {
-                    toast.custom(({ visible }) => (
-                        <Toast
-                            visible={visible}
-                            message={e.response.data}
-                            success={false}
-                        />
-                    ));
-                }
-            })();
-        },
-    });
+    const handleSubmit = useCallback(async (e) => {
+        e.preventDefault();
+
+        try {
+            await login(e.target[0].value);
+            navigate("/blog");
+        } catch (error) {
+            toast.custom(({ visible }) => (
+                <Toast
+                    visible={visible}
+                    message={
+                        error.response && error.response.data
+                            ? error.response.data
+                            : "Internal server error"
+                    }
+                    success={false}
+                />
+            ));
+        }
+    }, []);
 
     return (
         <UnauthorizedRoute>
@@ -46,26 +45,24 @@ export default function Home() {
                     <p className="mt-1 text-xs font-light text-neutral-400">
                         Personal Website Admin
                     </p>
-                    <Hoverable>
-                        <button
-                            type="button"
-                            label="google login button"
-                            onClick={handleLogin}
-                            className="flex 
-                         bg-neutral-800
-                         items-center
-                         text-sm 
-                         font-semibold 
-                         shadow-sm
-                         rounded-md 
-                         mt-4 
-                         gap-3
-                         px-6 
-                         py-2"
-                        >
-                            <FcGoogle />
-                        </button>
-                    </Hoverable>
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="password"
+                            className="mt-4
+                                   px-3
+                                   py-1
+                                   bg-neutral-900
+                                   outline-none
+                                   border-[1px]
+                                   border-neutral-600
+                                   rounded-md
+                                   text-white
+                                   text-xs
+                                   placeholder:text-neutral-600
+                                   placeholder:text-xs"
+                            placeholder="Password"
+                        />
+                    </form>
                 </Center>
                 <Toaster position="top-center" />
             </Container>
