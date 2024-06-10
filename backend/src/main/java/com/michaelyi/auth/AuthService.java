@@ -38,7 +38,7 @@ public class AuthService {
     public void validateToken(String bearerToken) {
         String token = bearerToken.substring(Constants.BEARER_PREFIX_LENGTH);
 
-        if (!jwtService.isTokenExpired(token)) {
+        if (jwtService.isTokenExpired(token)) {
             throw new UnauthorizedException();
         }
     }

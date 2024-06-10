@@ -11,13 +11,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
     @Mock
     private JwtService jwtService;
     private AuthService underTest;
+    private static final BCryptPasswordEncoder ENCODER
+            = new BCryptPasswordEncoder();
     private static User adminUser;
     private static final String AUTHORIZED_PASSWORD = "authorized password";
     private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
@@ -26,13 +30,16 @@ class AuthServiceTest {
 
     @BeforeAll
     static void beforeAll() {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        adminUser = new User(encoder.encode(AUTHORIZED_PASSWORD));
+        adminUser = new User(ENCODER.encode(AUTHORIZED_PASSWORD));
     }
 
     @BeforeEach
     void setUp() {
-        underTest = new AuthService(AUTHORIZED_PASSWORD, jwtService, adminUser);
+        underTest = new AuthService(
+                ENCODER.encode(AUTHORIZED_PASSWORD),
+                jwtService,
+                adminUser
+        );
     }
 
     @Test
