@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -71,9 +70,6 @@ class PostIT {
     private S3Service s3Service;
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
@@ -93,9 +89,6 @@ class PostIT {
 
     @AfterEach
     void tearDown() {
-        cacheManager.getCacheNames()
-                .parallelStream()
-                .forEach(n -> cacheManager.getCache(n).clear());
     }
 
     @AfterAll

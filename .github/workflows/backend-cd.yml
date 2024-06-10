@@ -84,8 +84,6 @@ jobs:
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.API_SPRING_DATASOURCE_USERNAME }} \
               -e SPRING_DATASOURCE_PASSWORD=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }} \
               -e SPRING_JPA_HIBERNATE_DDL_AUTO=validate \
-              -e SPRING_CACHE_TYPE=redis \
-              -e SPRING_CACHE_REDIS_TIME_TO_LIVE=900000 \
               -e SPRING_DATA_REDIS_HOST=${{ secrets.API_SPRING_DATA_REDIS_HOST }} \
               -e SPRING_DATA_REDIS_PORT=6379 \
               -e SPRING_DATA_REDIS_PASSWORD=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }} \

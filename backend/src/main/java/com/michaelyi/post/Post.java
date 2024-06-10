@@ -6,28 +6,21 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import static com.michaelyi.util.Constants.CLOSING_H1_TAG_LENGTH;
 import static com.michaelyi.util.Constants.OPENING_H1_TAG_LENGTH;
 
-
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post implements Serializable {
+public class Post {
     @Id
     private String id;
 
-    @CreationTimestamp
-    @Column(
-            nullable = false,
-            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-    )
+    @Column(nullable = false, updatable = false)
     private Date date;
 
     @Column(
@@ -71,6 +64,10 @@ public class Post implements Serializable {
                 ? newId.substring(0, newId.length() - 1) : newId;
         title = newTitle.replaceAll("<[^>]*>", "");
         content = newContent;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setTitle(String title) {

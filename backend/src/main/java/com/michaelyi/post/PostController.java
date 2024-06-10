@@ -2,6 +2,7 @@ package com.michaelyi.post;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,23 +26,23 @@ public class PostController {
     @PostMapping
     public ResponseEntity<String> createPost(
             @RequestParam("text") String text,
-            @RequestParam("image") MultipartFile image) {
+            @RequestParam("image") MultipartFile image) throws JsonProcessingException {
         String id = service.createPost(text, image);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
-    public Post readPost(@PathVariable String id) {
+    public Post readPost(@PathVariable String id) throws JsonProcessingException {
         return service.readPost(id);
     }
 
     @GetMapping("{id}/image")
-    public byte[] readPostImage(@PathVariable String id) {
+    public byte[] readPostImage(@PathVariable String id) throws JsonProcessingException {
         return service.readPostImage(id);
     }
 
     @GetMapping
-    public List<Post> readAllPosts() {
+    public List<Post> readAllPosts() throws JsonProcessingException {
         return service.readAllPosts();
     }
 
@@ -52,12 +53,12 @@ public class PostController {
             @RequestParam(
                     value = "image",
                     required = false
-            ) MultipartFile image) {
+            ) MultipartFile image) throws JsonProcessingException {
         return service.updatePost(id, text, image);
     }
 
     @DeleteMapping("{id}")
-    public void deletePost(@PathVariable String id) {
+    public void deletePost(@PathVariable String id) throws JsonProcessingException {
         service.deletePost(id);
     }
 }

@@ -48,8 +48,6 @@ jobs:
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./application.properties
           echo "spring.jpa.hibernate.ddl-auto=validate" >> ./application.properties
-          echo "spring.cache.type=redis" >> ./application.properties
-          echo "spring.cache.redis.time-to-live=900000" >> ./application.properties
           echo "spring.data.redis.host=${{ secrets.API_SPRING_DATA_REDIS_HOST }}" >> ./application.properties
           echo "spring.data.redis.port=6379" >> ./application.properties
           echo "spring.data.redis.password=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }}" >> ./application.properties
@@ -75,8 +73,6 @@ jobs:
           echo "spring.application.name=personal-website-api" >> ./application-it.properties
           echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./application-it.properties
           echo "spring.jpa.hibernate.ddl-auto=create" >> ./application-it.properties
-          echo "spring.cache.type=redis" >> ./application-it.properties
-          echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
           echo >> ./application-it.properties
 
       - name: Archive application.properties
