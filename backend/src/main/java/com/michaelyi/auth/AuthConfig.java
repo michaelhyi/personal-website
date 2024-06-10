@@ -1,7 +1,8 @@
-package com.michaelyi.security;
+package com.michaelyi.auth;
 
-import com.michaelyi.user.UserDao;
+import com.michaelyi.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,10 +12,13 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import static com.michaelyi.util.Constants.ADMIN_EMAIL;
+
 @Configuration
 @RequiredArgsConstructor
-public class AppConfig {
-    private final UserDao dao;
+public class AuthConfig {
+    @Value("${auth.admin-pw}")
+    private final String adminPassword;
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -33,10 +37,14 @@ public class AppConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> dao
-                .readUser(username)
-                .orElseThrow(
-                        () -> new UsernameNotFoundException("User not found.")
-                );
+        return username -> {
+            boolean authorized = username.equals(ADMIN_EMAIL);
+
+            if (!authorized) {
+                throw new UsernameNotFoundException("User not found.");
+            }
+
+            return new User(adminPassword);
+        };
     }
 }

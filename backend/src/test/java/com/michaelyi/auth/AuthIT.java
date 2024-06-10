@@ -106,7 +106,7 @@ class AuthIT {
     void login() throws Exception {
         User alreadyExists = new User("alreadyexists@mail.com");
         dao.createUser(alreadyExists);
-        AuthLoginRequest req = new AuthLoginRequest("alreadyexists@mail.com");
+        LoginRequest req = new LoginRequest("alreadyexists@mail.com");
 
         String res = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +119,7 @@ class AuthIT {
         assertTrue(jwtService.isTokenValid(res, alreadyExists));
         assertEquals(alreadyExists.getEmail(), jwtService.extractUsername(res));
 
-        req = new AuthLoginRequest("unauthorized@mail.com");
+        req = new LoginRequest("unauthorized@mail.com");
 
         String error = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -131,7 +131,7 @@ class AuthIT {
 
         assertEquals("Unauthorized.", error);
 
-        req = new AuthLoginRequest("test@mail.com");
+        req = new LoginRequest("test@mail.com");
         res = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(req)))

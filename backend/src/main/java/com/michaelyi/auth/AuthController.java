@@ -16,8 +16,8 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping("login")
-    public String login(@RequestBody AuthLoginRequest req) {
-        return service.login(req.email());
+    public String login(@RequestBody LoginRequest req) {
+        return service.login(req);
     }
 
     @GetMapping("validate-token")
