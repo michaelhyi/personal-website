@@ -8,7 +8,25 @@ permissions:
   packages: write
 
 jobs:
-  setup:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+
+      - name: Build
+        working-directory: ./backend
+        run: ./gradlew clean bootJar --info
+
+  setup-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -69,33 +87,8 @@ jobs:
           name: application-it.properties
           path: ./backend/src/test/resources/application-it.properties
 
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-
-      - name: Download application.properties 
-        uses: actions/download-artifact@v4
-        with:
-          name: application.properties
-          path: ./backend/src/main/resources
-
-      - name: Build
-        working-directory: ./backend
-        run: ./gradlew clean bootJar --info
-      
   test:
-    needs: setup
+    needs: setup-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -124,6 +117,11 @@ jobs:
         with:
           name: application-it.properties
           path: ./backend/src/main/resources
+
+      - name: Verify Integrity of Files
+        run: |
+          openssl sha256 ./backend/src/main/resources/application.properties
+          openssl sha256 ./backend/src/test/resources/application-it.properties
 
       - name: Test
         working-directory: ./backend
