@@ -17,7 +17,7 @@ jobs:
         run: |
           touch application.properties
           echo "api.version-path=/v1" >> ./application.properties
-          echo "auth.admin-pw=${{ secrets.API_TEST_AUTH_ADMIN_PW }}" >> ./application.properties
+          echo "auth.admin-pw=${{ secrets.API_AUTH_ADMIN_PW }}" >> ./application.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
           echo "aws.s3.bucket=${{ secrets.API_AWS_S3_BUCKET }}" >> ./application.properties
