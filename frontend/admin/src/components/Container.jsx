@@ -1,7 +1,16 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Footer from "./Footer";
 
 export default function Container({ children, absoluteFooter = false }) {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
+
     return (
         <main className="bg-neutral-900 text-white min-h-screen">
             <motion.div

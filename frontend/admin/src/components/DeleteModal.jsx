@@ -1,23 +1,17 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
+import { useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { deletePost } from "../services/post";
 
 export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { mutate } = useMutation({
-        mutationFn: async () => {
-            await deletePost(id);
-            handleToggleModal();
-            navigate(0);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries("readAllPosts");
-        },
-    });
+    const handleDeletePost = useCallback(async () => {
+        await deletePost(id);
+        handleToggleModal();
+        navigate(0);
+    }, []);
 
     return (
         <AnimatePresence>
@@ -53,7 +47,7 @@ export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
                         </section>
                         <section className="flex pr-4 pb-6 mt-12">
                             <button
-                                onClick={mutate}
+                                onClick={handleDeletePost}
                                 type="button"
                                 className="ml-auto bg-red-400 px-4 py-3 rounded-lg duration-500 hover:opacity-50 text-sm font-semibold"
                             >

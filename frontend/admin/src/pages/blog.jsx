@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 
@@ -17,15 +16,12 @@ export default function Blog() {
     const [id, setId] = useState(null);
     const [menuOpen, setMenuOpen] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-
-    const { data, isLoading } = useQuery({
-        queryKey: ["readAllPosts"],
-        queryFn: async () => {
-            const posts = await readAllPosts();
-            setMenuOpen(new Array(posts.length).fill(false));
-            return posts;
-        },
+    const [query, setQuery] = useState({
+        data: null,
+        loading: true,
+        error: false,
     });
+    const { data, loading } = query;
 
     const toggleMenu = useCallback(
         (index) => {
@@ -48,7 +44,19 @@ export default function Blog() {
         [setMenuOpen, data, modalOpen, setModalOpen, setId],
     );
 
-    if (isLoading) return <Loading />;
+    useEffect(() => {
+        (async () => {
+            try {
+                const posts = await readAllPosts();
+                setMenuOpen(new Array(posts.length).fill(false));
+                setQuery({ data: posts, loading: false, error: false });
+            } catch (e) {
+                setQuery({ data: null, loading: false, error: true });
+            }
+        })();
+    }, []);
+
+    if (loading) return <Loading />;
 
     return (
         <AuthorizedRoute>
