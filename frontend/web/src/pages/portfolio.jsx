@@ -1,4 +1,4 @@
-import { FiArrowUpRight } from "react-icons/fi";
+import FiArrowUpRight from "../assets/icons/FiArrowUpRight";
 import BackButton from "../components/BackButton";
 import Container from "../components/Container";
 import Hoverable from "../components/Hoverable";

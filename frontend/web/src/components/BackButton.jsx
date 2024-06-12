@@ -1,4 +1,4 @@
-import { FaArrowLeftLong } from "react-icons/fa6";
+import FaArrowLeftLong from "../assets/icons/FaArrowLeftLong";
 import Hoverable from "./Hoverable";
 
 export default function BackButton({ href, text }) {
