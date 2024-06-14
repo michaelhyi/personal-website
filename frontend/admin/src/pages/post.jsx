@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 
 import AuthorizedRoute from "../components/AuthorizedRoute";
@@ -28,6 +27,13 @@ export default function Post() {
     const [image, setImage] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [showImage, setShowImage] = useState(params.get("mode") === "edit");
+    const [toast, setToast] = useState({
+        message: "",
+        visible: false,
+        animation: "animate-fadeIn",
+        success: true,
+    });
+
     const editor = useEditor(data && `<h1>${data.title}</h1>${data.content}`);
 
     const handleSubmit = useCallback(async () => {
@@ -47,25 +53,61 @@ export default function Post() {
                 await createPost(formData);
             }
 
-            toast.custom(({ visible }) => (
-                <Toast
-                    success
-                    visible={visible}
-                    message={`Post successfully ${
+            setToast({
+                message: `Post successfully ${
+                    params.get("mode") === "create" ? "published" : "updated"
+                }!`,
+                visible: true,
+                animation: "animate-fadeIn",
+                success: true,
+            });
+
+            setTimeout(() => {
+                setToast({
+                    visible: true,
+                    message: `Post successfully ${
                         params.get("mode") === "create"
                             ? "published"
                             : "updated"
-                    }!`}
-                />
-            ));
+                    }!`,
+                    animation: "animate-fadeOut",
+                    success: true,
+                });
+            }, 3000);
+
+            setTimeout(() => {
+                setToast({
+                    message: "",
+                    visible: false,
+                    animation: "animate-fadeIn",
+                    success: true,
+                });
+            }, 4000);
         } catch (e) {
-            toast.custom(({ visible }) => (
-                <Toast
-                    visible={visible}
-                    message={e.response ? e.response.data : e.message}
-                    success={false}
-                />
-            ));
+            setToast({
+                message: e.response ? e.response.data : e.message,
+                visible: true,
+                animation: "animate-fadeIn",
+                success: false,
+            });
+
+            setTimeout(() => {
+                setToast({
+                    visible: true,
+                    message: e.response ? e.response.data : e.message,
+                    animation: "animate-fadeOut",
+                    success: false,
+                });
+            }, 3000);
+
+            setTimeout(() => {
+                setToast({
+                    message: "",
+                    visible: false,
+                    animation: "animate-fadeIn",
+                    success: true,
+                });
+            }, 4000);
         } finally {
             setSubmitting(false);
         }
@@ -123,7 +165,13 @@ export default function Post() {
                 >
                     {submitting ? <Spinner /> : "Submit"}
                 </button>
-                <Toaster position="bottom-center" />
+                {toast.visible && (
+                    <Toast
+                        animation={toast.animation}
+                        message={toast.message}
+                        success={toast.success}
+                    />
+                )}
             </Container>
         </AuthorizedRoute>
     );
