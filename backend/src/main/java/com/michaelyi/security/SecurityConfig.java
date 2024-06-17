@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST)
                         .hasAnyRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET)
+                        .requestMatchers(HttpMethod.GET, "/v1/post/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT)
                         .hasAnyRole(ADMIN)

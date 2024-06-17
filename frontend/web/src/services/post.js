@@ -9,7 +9,7 @@ export async function readPost(id) {
 }
 
 export function readPostImage(id) {
-    return `${process.env.REACT_APP_API_URL}/post/${id}/image`;
+    return `${process.env.REACT_APP_API_URL}/post/image/${id}`;
 }
 
 export async function readAllPosts() {
