@@ -36,7 +36,7 @@ public class PostController {
         return service.readPost(id);
     }
 
-    @GetMapping("{id}/image")
+    @GetMapping("image/{id}")
     public byte[] readPostImage(@PathVariable String id) throws JsonProcessingException {
         return service.readPostImage(id);
     }
