@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { FiArrowUpRight } from "react-icons/fi";
-import { IoEllipsisHorizontal } from "react-icons/io5";
+import FiArrowUpRight from "../assets/icons/FiArrowUpRight";
+import IoEllipsisHorizontal from "../assets/icons/IoEllipsisHorizontal";
 
 import AuthorizedRoute from "../components/AuthorizedRoute";
 import BlogHeader from "../components/BlogHeader";
@@ -15,7 +15,11 @@ import { readAllPosts } from "../services/post";
 export default function Blog() {
     const [id, setId] = useState(null);
     const [menuOpen, setMenuOpen] = useState(null);
-    const [modalOpen, setModalOpen] = useState(false);
+    const [modal, setModal] = useState({
+        visible: false,
+        animation: "animate-fadeIn",
+    });
+
     const [query, setQuery] = useState({
         data: null,
         loading: true,
@@ -35,13 +39,33 @@ export default function Blog() {
     const toggleModal = useCallback(
         (postId) => {
             setMenuOpen(data && new Array(data.length).fill(false));
-            setModalOpen(!modalOpen);
+
+            if (modal.visible) {
+                setTimeout(() => {
+                    setModal({
+                        visible: true,
+                        animation: "animate-fadeOut",
+                    });
+                }, 1000);
+                
+                setTimeout(() => {
+                    setModal({
+                        visible: false,
+                        animation: "animate-fadeIn",
+                    });
+                }, 1500);
+            } else {
+                setModal({
+                    visible: true,
+                    animation: "animate-fadeIn",
+                });
+            }
 
             if (postId) {
                 setId(postId);
             }
         },
-        [setMenuOpen, data, modalOpen, setModalOpen, setId],
+        [setMenuOpen, data, modal.visible, setModal, setId],
     );
 
     useEffect(() => {
@@ -95,7 +119,8 @@ export default function Blog() {
                 </section>
                 <DeleteModal
                     id={id}
-                    modalOpen={modalOpen}
+                    animation={modal.animation}
+                    modalOpen={modal.visible}
                     handleToggleModal={toggleModal}
                 />
             </Container>

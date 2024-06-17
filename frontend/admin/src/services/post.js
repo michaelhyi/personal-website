@@ -3,7 +3,6 @@ export async function createPost(formData) {
         method: "POST",
         headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
         },
         body: formData,
     });

@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { AiOutlineClose, AiOutlineCloudDownload } from "react-icons/ai";
+import AiOutlineClose from "../assets/icons/AiOutlineClose";
+import AiOutlineCloudDownload from "../assets/icons/AiOutlineCloudDownload";
 import { readPostImage } from "../services/post";
 
 export default function Dropzone({
