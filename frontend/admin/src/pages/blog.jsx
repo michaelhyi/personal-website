@@ -47,7 +47,7 @@ export default function Blog() {
                         animation: "animate-fadeOut",
                     });
                 }, 1000);
-                
+
                 setTimeout(() => {
                     setModal({
                         visible: false,
