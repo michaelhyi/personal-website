@@ -1,22 +1,35 @@
-import { useQuery } from "@tanstack/react-query";
-import { FiArrowUpRight } from "react-icons/fi";
+import { useEffect, useState } from "react";
 
+import FiArrowUpRight from "../assets/icons/FiArrowUpRight";
 import BackButton from "../components/BackButton";
 import Container from "../components/Container";
 import Hoverable from "../components/Hoverable";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
-
 import { readAllPosts } from "../services/post";
 
 export default function Blog() {
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ["readAllPosts"],
-        queryFn: readAllPosts,
+    const [query, setQuery] = useState({
+        data: null,
+        loading: true,
+        error: false,
     });
 
-    if (isLoading) return <Loading />;
-    if (isError) return <NotFound />;
+    const { data, loading, error } = query;
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const posts = await readAllPosts();
+                setQuery({ data: posts, loading: false, error: false });
+            } catch (e) {
+                setQuery({ data: null, loading: false, error: true });
+            }
+        })();
+    }, []);
+
+    if (loading) return <Loading />;
+    if (error) return <NotFound />;
 
     return (
         <Container absoluteFooter>

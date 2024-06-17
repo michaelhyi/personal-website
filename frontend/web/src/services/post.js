@@ -1,8 +1,11 @@
-import axios from "axios";
-
 export async function readPost(id) {
-    const { data } = await axios(`${process.env.REACT_APP_API_URL}/post/${id}`);
-    return data;
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
+
+    if (!res.ok) {
+        throw new Error(res.text());
+    }
+
+    return res.json();
 }
 
 export function readPostImage(id) {
@@ -10,6 +13,11 @@ export function readPostImage(id) {
 }
 
 export async function readAllPosts() {
-    const { data } = await axios(`${process.env.REACT_APP_API_URL}/post`);
-    return data;
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
+
+    if (!res.ok) {
+        throw new Error(res.text());
+    }
+
+    return res.json();
 }

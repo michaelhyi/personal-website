@@ -1,5 +1,4 @@
-import { useCallback } from "react";
-import { toast, Toaster } from "react-hot-toast";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Center from "../components/Center";
@@ -10,6 +9,11 @@ import { login } from "../services/auth";
 
 export default function Home() {
     const navigate = useNavigate();
+    const [toast, setToast] = useState({
+        message: "",
+        visible: false,
+        animation: "animate-fadeIn",
+    });
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
@@ -18,17 +22,30 @@ export default function Home() {
             await login(e.target[0].value);
             navigate("/blog");
         } catch (error) {
-            toast.custom(({ visible }) => (
-                <Toast
-                    visible={visible}
-                    message={
-                        error.response && error.response.data
-                            ? error.response.data
-                            : "Internal server error"
-                    }
-                    success={false}
-                />
-            ));
+            setToast({
+                message:
+                    error.response && error.response.data
+                        ? error.response.data
+                        : "Internal server error",
+                visible: true,
+                animation: "animate-fadeIn",
+            });
+
+            setTimeout(() => {
+                setToast({
+                    visible: true,
+                    message: "Internal server error",
+                    animation: "animate-fadeOut",
+                });
+            }, 3000);
+
+            setTimeout(() => {
+                setToast({
+                    message: "",
+                    visible: false,
+                    animation: "animate-fadeIn",
+                });
+            }, 4000);
         }
     }, []);
 
@@ -46,11 +63,13 @@ export default function Home() {
                         Personal Website Admin
                     </p>
                     <form onSubmit={handleSubmit}>
-                        <input
-                            type="password"
-                            className="mt-4
+                        <fieldset disabled={toast.visible}>
+                            <input
+                                type="password"
+                                className="mt-4
                                    px-3
                                    py-1
+                                   w-40
                                    bg-neutral-900
                                    outline-none
                                    border-[1px]
@@ -60,11 +79,18 @@ export default function Home() {
                                    text-xs
                                    placeholder:text-neutral-600
                                    placeholder:text-xs"
-                            placeholder="Password"
-                        />
+                                placeholder="Password"
+                            />
+                        </fieldset>
                     </form>
                 </Center>
-                <Toaster position="top-center" />
+                {toast.visible && (
+                    <Toast
+                        animation={toast.animation}
+                        message={toast.message}
+                        success={false}
+                    />
+                )}
             </Container>
         </UnauthorizedRoute>
     );
