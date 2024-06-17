@@ -27,27 +27,30 @@ public class PostService {
     ) throws JsonProcessingException {
         Post post = new Post(text);
 
-        if (dao.readPost(post.getId()).isPresent()) {
-            throw new IllegalArgumentException(
-                    "A post with the same title already exists.");
-        }
-
-        if (image == null) {
-            throw new IllegalArgumentException("An image is required.");
-        }
-
-        post.setDate(new Date());
-        dao.createPost(post);
-        String id = post.getId();
-
         try {
-            s3Service.putObject(id, image.getBytes());
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Image could not be read.");
-        }
+            readPost(post.getId());
 
-        cacheService.createPost(post);
-        return id;
+            throw new IllegalArgumentException(
+                    "A post with the same title already exists."
+            );
+        } catch (NoSuchElementException e) {
+            if (image == null) {
+                throw new IllegalArgumentException("An image is required.");
+            }
+
+            post.setDate(new Date());
+            dao.createPost(post);
+            String id = post.getId();
+
+            try {
+                s3Service.putObject(id, image.getBytes());
+            } catch (IOException err) {
+                throw new IllegalArgumentException("Image could not be read.");
+            }
+
+            cacheService.createPost(post);
+            return id;
+        }
     }
 
     public Post readPost(String id)
@@ -66,11 +69,11 @@ public class PostService {
     }
 
     public byte[] readPostImage(String id) throws JsonProcessingException {
+        readPost(id);
+
         try {
             return cacheService.readPostImage(id);
         } catch (NoSuchElementException | CacheExpiredException e) {
-            readPost(id);
-
             try {
                 byte[] image = s3Service.getObject(id);
                 cacheService.cachePostImage(id, image);
@@ -125,9 +128,9 @@ public class PostService {
     public void deletePost(String id)
             throws NoSuchElementException, JsonProcessingException {
         readPost(id);
+
         s3Service.deleteObject(id);
         dao.deletePost(id);
-
         cacheService.deletePost(id);
     }
 }

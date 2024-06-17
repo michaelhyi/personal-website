@@ -3,6 +3,7 @@ package com.michaelyi.post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.michaelyi.TestcontainersConfig;
 import com.michaelyi.auth.LoginRequest;
 import com.michaelyi.s3.S3Service;
 import org.junit.jupiter.api.AfterAll;
@@ -38,26 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource("classpath:application-it.properties")
-class PostIT {
-    private static final int REDIS_PORT = 6379;
-    private static MySQLContainer<?> mysql = new MySQLContainer<>(
-            "mysql:8.0.36"
-    );
-    private static GenericContainer<?> redis =
-            new GenericContainer<>("redis:6.2.14")
-                    .withExposedPorts(REDIS_PORT);
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mysql::getJdbcUrl);
-        registry.add("spring.datasource.username", mysql::getUsername);
-        registry.add("spring.datasource.password", mysql::getPassword);
-        registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", () -> String.valueOf(
-                redis.getMappedPort(REDIS_PORT)
-        ));
-    }
-
+class PostIT extends TestcontainersConfig {
     private static final String AUTHORIZED_PASSWORD = "authorized password";
 
     @Autowired
@@ -73,28 +55,12 @@ class PostIT {
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
-    @BeforeAll
-    static void beforeAll() {
-        mysql.start();
-        redis.start();
-    }
-
     @BeforeEach
     void setUp() {
         dao.deleteAllPosts();
         writer = mapper.writer().withDefaultPrettyPrinter();
         s3Service.deleteObject("title");
         s3Service.deleteObject("oldboy");
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-    @AfterAll
-    static void afterAll() {
-        mysql.stop();
-        redis.stop();
     }
 
     @Test

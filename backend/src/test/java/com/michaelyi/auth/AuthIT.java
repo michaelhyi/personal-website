@@ -2,26 +2,20 @@ package com.michaelyi.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.michaelyi.TestcontainersConfig;
 import com.michaelyi.security.JwtService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.MySQLContainer;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -37,26 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @TestPropertySource("classpath:application-it.properties")
-class AuthIT {
-    private static final int REDIS_PORT = 6379;
-    private static MySQLContainer<?> mysql = new MySQLContainer<>(
-            "mysql:8.0.36"
-    );
-    private static GenericContainer<?> redis =
-            new GenericContainer<>("redis:6.2.14")
-                    .withExposedPorts(REDIS_PORT);
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mysql::getJdbcUrl);
-        registry.add("spring.datasource.username", mysql::getUsername);
-        registry.add("spring.datasource.password", mysql::getPassword);
-        registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", () -> String.valueOf(
-                redis.getMappedPort(REDIS_PORT)
-        ));
-    }
-
+class AuthIT extends TestcontainersConfig {
     @Autowired
     private MockMvc mvc;
 
@@ -67,25 +42,9 @@ class AuthIT {
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
-    @BeforeAll
-    static void beforeAll() {
-        mysql.start();
-        redis.start();
-    }
-
     @BeforeEach
     void setUp() {
         writer = mapper.writer().withDefaultPrettyPrinter();
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-    @AfterAll
-    static void afterAll() {
-        mysql.stop();
-        redis.stop();
     }
 
     @Test
