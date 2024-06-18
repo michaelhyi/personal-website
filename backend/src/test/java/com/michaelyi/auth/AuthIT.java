@@ -9,6 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,8 +42,8 @@ class AuthIT extends TestConfig {
     private JwtService jwtService;
 
     @Autowired
-    private static ObjectMapper mapper;
-    private static ObjectWriter writer;
+    private ObjectMapper mapper;
+    private ObjectWriter writer;
 
     private static final String EXPIRED_TOKEN = """
             eyJhbGciOiJIUzI1NiJ9
@@ -51,8 +52,8 @@ class AuthIT extends TestConfig {
             .0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM
             """;
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         writer = mapper.writer();
     }
 
