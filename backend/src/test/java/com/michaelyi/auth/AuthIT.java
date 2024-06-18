@@ -44,13 +44,13 @@ class AuthIT extends TestConfig {
     @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
-
-    private static final String EXPIRED_TOKEN = """
-            eyJhbGciOiJIUzI1NiJ9
-            .eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzA5MzI0OTUxLCJleHA
-            iOjE3MDkzMjQ5NTF9
-            .0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM
-            """;
+    private static final String EXPIRED_TOKEN = String.format(
+            "%s%s%s%s",
+            "eyJhbGciOiJIUzI1NiJ9",
+            ".eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzA5MzI0OTUxLCJleHA",
+            "iOjE3MDkzMjQ5NjF9",
+            ".0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM"
+    );
 
     @BeforeEach
     void setUp() {
