@@ -8,7 +8,7 @@ export async function createPost(formData) {
     });
 
     if (!res.ok) {
-        throw new Error(res.text());
+        throw new Error(await res.text());
     }
 
     return res.text();
@@ -18,7 +18,7 @@ export async function readPost(id) {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
 
     if (!res.ok) {
-        throw new Error(res.text());
+        throw new Error(await res.text());
     }
 
     return res.json();
@@ -32,7 +32,7 @@ export async function readAllPosts() {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
 
     if (!res.ok) {
-        throw new Error(res.text());
+        throw new Error(await res.text());
     }
 
     return res.json();
@@ -43,7 +43,6 @@ export async function updatePost(id, formData) {
         method: "PUT",
         headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
         },
         body: formData,
     });

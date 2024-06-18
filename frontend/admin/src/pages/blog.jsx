@@ -100,12 +100,12 @@ export default function Blog() {
                                     </a>
                                 </Hoverable>
                                 <section className="relative">
-                                    <Hoverable>
-                                        <IoEllipsisHorizontal
-                                            onClick={() => {
-                                                toggleMenu(index);
-                                            }}
-                                        />
+                                    <Hoverable
+                                        onClick={() => {
+                                            toggleMenu(index);
+                                        }}
+                                    >
+                                        <IoEllipsisHorizontal />
                                     </Hoverable>
                                     {menuOpen[index] ? (
                                         <Menu

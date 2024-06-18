@@ -3,17 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 import Center from "../components/Center";
 import Container from "../components/Container";
-import Toast from "../components/Toast";
 import UnauthorizedRoute from "../components/UnauthorizedRoute";
 import { login } from "../services/auth";
 
 export default function Home() {
     const navigate = useNavigate();
-    const [toast, setToast] = useState({
-        message: "",
-        visible: false,
-        animation: "animate-fadeIn",
-    });
+    const [error, setError] = useState("");
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
@@ -21,31 +16,8 @@ export default function Home() {
         try {
             await login(e.target[0].value);
             navigate("/blog");
-        } catch (error) {
-            setToast({
-                message:
-                    error.response && error.response.data
-                        ? error.response.data
-                        : "Internal server error",
-                visible: true,
-                animation: "animate-fadeIn",
-            });
-
-            setTimeout(() => {
-                setToast({
-                    visible: true,
-                    message: "Internal server error",
-                    animation: "animate-fadeOut",
-                });
-            }, 3000);
-
-            setTimeout(() => {
-                setToast({
-                    message: "",
-                    visible: false,
-                    animation: "animate-fadeIn",
-                });
-            }, 4000);
+        } catch (err) {
+            setError(err.message);
         }
     }, []);
 
@@ -53,20 +25,10 @@ export default function Home() {
         <UnauthorizedRoute>
             <Container absoluteFooter>
                 <Center className="flex flex-col items-center">
-                    <img
-                        src="/michael.png"
-                        alt="michael"
-                        className="h-[100px] w-[100px] rounded-full"
-                    />
-                    <h2 className="mt-4 text-2xl font-medium">Michael Yi</h2>
-                    <p className="mt-1 text-xs font-light text-neutral-400">
-                        Personal Website Admin
-                    </p>
                     <form onSubmit={handleSubmit}>
-                        <fieldset disabled={toast.visible}>
-                            <input
-                                type="password"
-                                className="mt-4
+                        <input
+                            type="password"
+                            className="mt-4
                                    px-3
                                    py-1
                                    w-40
@@ -79,18 +41,13 @@ export default function Home() {
                                    text-xs
                                    placeholder:text-neutral-600
                                    placeholder:text-xs"
-                                placeholder="Password"
-                            />
-                        </fieldset>
+                            placeholder="Password"
+                        />
                     </form>
+                    <p className="min-h-4 mt-2 text-xs text-red-300 font-light">
+                        {error || ""}
+                    </p>
                 </Center>
-                {toast.visible && (
-                    <Toast
-                        animation={toast.animation}
-                        message={toast.message}
-                        success={false}
-                    />
-                )}
             </Container>
         </UnauthorizedRoute>
     );
