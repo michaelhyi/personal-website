@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/${api.version-path}/post")
+@RequestMapping("${api.version-path}/post")
 public class PostController {
     private final PostService service;
 
