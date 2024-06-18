@@ -7,7 +7,7 @@ module.exports = {
                 fadeIn: "fadeIn 0.75s ease-in",
                 fadeOut: "fadeOut 0.75s ease-out",
                 popIn: "fadeIn 0.5s ease-in",
-                popOut: "fadeOut 0.5s ease-out"
+                popOut: "fadeOut 0.5s ease-out",
             },
             keyframes: {
                 fadeIn: {
