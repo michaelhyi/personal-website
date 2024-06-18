@@ -111,7 +111,7 @@ class AuthIT extends TestConfig {
                 .getResolvedException()
                 .getMessage();
 
-        assertEquals("Unauthorized.", error);
+        assertEquals("Unauthorized", error);
 
         LoginRequest req = new LoginRequest("authorized password");
         String token = mvc.perform(post("/v1/auth/login")
