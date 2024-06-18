@@ -62,7 +62,7 @@ jobs:
       - name: Create application-it.properties
         working-directory: ./backend/src/test/resources
         env:
-          TEST_SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_SECURITY_TEST_AUTH_ADMIN_PW }}
+          TEST_SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_TEST_SECURITY_AUTH_ADMIN_PW }}
         run: |
           touch application-it.properties
           echo "api.version-path=/v1" >> ./application-it.properties
