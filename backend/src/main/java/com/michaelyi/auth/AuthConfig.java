@@ -11,12 +11,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static com.michaelyi.util.Constants.ADMIN_EMAIL;
+import static com.michaelyi.util.Constants.SECURITY_AUTH_ADMIN_PW;
 
 @Configuration
 public class AuthConfig {
     private final String adminPassword;
 
-    public AuthConfig(@Value("${auth.admin-pw}") String adminPassword) {
+    public AuthConfig(@Value(SECURITY_AUTH_ADMIN_PW) String adminPassword) {
         this.adminPassword = adminPassword;
     }
 

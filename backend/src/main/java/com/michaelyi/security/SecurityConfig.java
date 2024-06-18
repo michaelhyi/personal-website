@@ -1,5 +1,6 @@
 package com.michaelyi.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,7 +15,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import lombok.RequiredArgsConstructor;
+import static com.michaelyi.util.Constants.ADMIN_ROLE;
+import static com.michaelyi.util.Constants.AUTH_ENDPOINTS;
+import static com.michaelyi.util.Constants.POST_ENDPOINTS;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private static final String ADMIN = "ADMIN";
 
     @Bean
     public SecurityFilterChain securityFilterChain(
@@ -38,16 +40,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v1/auth/**")
+                        .requestMatchers(AUTH_ENDPOINTS)
                         .permitAll()
                         .requestMatchers(HttpMethod.POST)
-                        .hasAnyRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/v1/post/**")
+                        .hasAnyRole(ADMIN_ROLE)
+                        .requestMatchers(HttpMethod.GET, POST_ENDPOINTS)
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT)
-                        .hasAnyRole(ADMIN)
+                        .hasAnyRole(ADMIN_ROLE)
                         .requestMatchers(HttpMethod.DELETE)
-                        .hasAnyRole(ADMIN)
+                        .hasAnyRole(ADMIN_ROLE)
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(sess -> sess

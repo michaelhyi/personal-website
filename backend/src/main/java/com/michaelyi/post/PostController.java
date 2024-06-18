@@ -1,8 +1,6 @@
 package com.michaelyi.post;
 
-import java.util.List;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.AllArgsConstructor;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("${api.version-path}/post")
+@RequestMapping("/${api.version-path}/post")
 public class PostController {
     private final PostService service;
 
@@ -27,41 +25,39 @@ public class PostController {
     public ResponseEntity<String> createPost(
             @RequestParam("text") String text,
             @RequestParam("image") MultipartFile image
-    ) throws JsonProcessingException {
+    ) {
         String id = service.createPost(text, image);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}")
-    public Post readPost(@PathVariable String id)
-            throws JsonProcessingException {
+    @GetMapping("/{id}")
+    public Post readPost(@PathVariable String id) {
         return service.readPost(id);
     }
-  
-    @GetMapping("image/{id}")
-    public byte[] readPostImage(@PathVariable String id) throws JsonProcessingException {
+
+    @GetMapping("/image/{id}")
+    public byte[] readPostImage(@PathVariable String id) {
         return service.readPostImage(id);
     }
 
     @GetMapping
-    public List<Post> readAllPosts() throws JsonProcessingException {
+    public List<Post> readAllPosts() {
         return service.readAllPosts();
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public Post updatePost(
             @PathVariable String id,
             @RequestParam("text") String text,
             @RequestParam(
                     value = "image",
                     required = false
-            ) MultipartFile image) throws JsonProcessingException {
+            ) MultipartFile image) {
         return service.updatePost(id, text, image);
     }
 
-    @DeleteMapping("{id}")
-    public void deletePost(@PathVariable String id)
-            throws JsonProcessingException {
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable String id) {
         service.deletePost(id);
     }
 }

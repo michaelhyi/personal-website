@@ -1,13 +1,7 @@
 package com.michaelyi.s3;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -16,9 +10,16 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import static com.michaelyi.util.Constants.AWS_S3_BUCKET;
+
 @Service
 public class S3Service {
-    @Value("${aws.s3.bucket}")
+    @Value(AWS_S3_BUCKET)
     private String bucket;
     private final S3Client client;
     private Map<String, byte[]> fakeBucket;

@@ -8,7 +8,6 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -35,7 +34,6 @@ public class PostService {
                 throw new IllegalArgumentException("An image is required.");
             }
 
-            post.setDate(new Date());
             dao.createPost(post);
             String id = post.getId();
 
@@ -51,28 +49,24 @@ public class PostService {
 
     public Post readPost(String id)
             throws NoSuchElementException {
-        Post post = dao
+        return dao
                 .readPost(id)
                 .orElseThrow(() ->
                         new NoSuchElementException("Post not found."));
-
-        return post;
     }
 
     public byte[] readPostImage(String id) {
         readPost(id);
 
         try {
-            byte[] image = s3Service.getObject(id);
-            return image;
+            return s3Service.getObject(id);
         } catch (NoSuchKeyException | NoSuchElementException err) {
             throw new NoSuchElementException("Post image not found.");
         }
     }
 
     public List<Post> readAllPosts() {
-        List<Post> posts = dao.readAllPosts();
-        return posts;
+        return dao.readAllPosts();
     }
 
     public Post updatePost(
