@@ -1,15 +1,23 @@
-import axios from "axios";
-
 export async function readPost(id) {
-    const { data } = await axios(`${process.env.REACT_APP_API_URL}/post/${id}`);
-    return data;
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
+
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
+
+    return res.json();
 }
 
 export function readPostImage(id) {
-    return `${process.env.REACT_APP_API_URL}/post/${id}/image`;
+    return `${process.env.REACT_APP_API_URL}/post/image/${id}`;
 }
 
 export async function readAllPosts() {
-    const { data } = await axios(`${process.env.REACT_APP_API_URL}/post`);
-    return data;
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
+
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
+
+    return res.json();
 }

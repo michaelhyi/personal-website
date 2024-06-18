@@ -1,24 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateToken } from "../services/auth";
 import Loading from "./Loading";
 
 export default function AuthorizedRoute({ children }) {
     const navigate = useNavigate();
-    const { isLoading } = useQuery({
-        queryKey: ["isAuthorized"],
-        queryFn: async () => {
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        (async () => {
             try {
                 await validateToken();
-                return true;
+                setLoading(false);
             } catch {
                 localStorage.removeItem("token");
                 navigate("/");
-                return false;
             }
-        },
-    });
+        })();
+    }, []);
 
-    if (isLoading) return <Loading />;
+    if (loading) return <Loading />;
     return children;
 }

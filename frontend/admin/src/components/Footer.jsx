@@ -1,23 +1,3 @@
-import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
-import { SiLetterboxd } from "react-icons/si";
-import Hoverable from "./Hoverable";
-import NewTabLink from "./NewTabLink";
-
-const LINKS = [
-    {
-        href: "https://github.com/michaelhyi/",
-        icon: AiFillGithub,
-    },
-    {
-        href: "https://www.linkedin.com/in/michaelhyi/",
-        icon: AiFillLinkedin,
-    },
-    {
-        href: "https://letterboxd.com/michaelyi/",
-        icon: SiLetterboxd,
-    },
-];
-
 export default function Footer({ absolute }) {
     return (
         <footer
@@ -33,15 +13,6 @@ export default function Footer({ absolute }) {
                   }
                 `}
         >
-            <section className="flex gap-2">
-                {LINKS.map(({ href, icon: Icon }) => (
-                    <Hoverable key={href}>
-                        <NewTabLink href={href}>
-                            <Icon size={15} />
-                        </NewTabLink>
-                    </Hoverable>
-                ))}
-            </section>
             <p>&copy; 2023 Michael Yi, All Rights Reserved.</p>
         </footer>
     );

@@ -1,7 +1,6 @@
-import { FiArrowUpRight } from "react-icons/fi";
-
 import Hoverable from "./Hoverable";
 import NewTabLink from "./NewTabLink";
+import FiArrowUpRight from "../assets/icons/FiArrowUpRight";
 
 export default function Project({ project }) {
     return (
@@ -11,7 +10,7 @@ export default function Project({ project }) {
                 href={project.href}
             >
                 <p className="w-56 text-[13px] font-light text-neutral-400 sm:mb-2 md:mb-0">
-                    {project.date}{" "}
+                    {project.date}
                 </p>
                 <section className="w-full">
                     <h3 className="font-semibold">

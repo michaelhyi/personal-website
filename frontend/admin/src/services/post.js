@@ -1,48 +1,58 @@
-import axios from "axios";
-
-import authConfig from "./authConfig";
-
 export async function createPost(formData) {
-    const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/post`,
-        formData,
-        {
-            headers: {
-                ...authConfig().headers,
-                "Content-Type": "multipart/form-data",
-            },
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/post`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    );
+        body: formData,
+    });
 
-    return data;
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
+
+    return res.text();
 }
 
 export async function readPost(id) {
-    const { data } = await axios(`${process.env.REACT_APP_API_URL}/post/${id}`);
-    return data;
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
+
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
+
+    return res.json();
 }
 
 export function readPostImage(id) {
-    return `${process.env.REACT_APP_API_URL}/post/${id}/image`;
+    return `${process.env.REACT_APP_API_URL}/post/image/${id}`;
 }
 
 export async function readAllPosts() {
-    const { data } = await axios(`${process.env.REACT_APP_API_URL}/post`);
-    return data;
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
+
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
+
+    return res.json();
 }
 
 export async function updatePost(id, formData) {
-    await axios.put(`${process.env.REACT_APP_API_URL}/post/${id}`, formData, {
+    await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`, {
+        method: "PUT",
         headers: {
-            ...authConfig().headers,
-            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        body: formData,
     });
 }
 
 export async function deletePost(id) {
-    await axios.delete(
-        `${process.env.REACT_APP_API_URL}/post/${id}`,
-        authConfig(),
-    );
+    await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
 }

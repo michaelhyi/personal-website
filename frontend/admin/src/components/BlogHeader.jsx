@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { FaPlus } from "react-icons/fa";
-import { FaArrowLeftLong } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import FaArrowLeftLong from "../assets/icons/FaArrowLeftLong";
+import FaPlus from "../assets/icons/FaPlus";
 import Hoverable from "./Hoverable";
 
 export default function BlogHeader() {

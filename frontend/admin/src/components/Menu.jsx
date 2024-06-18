@@ -1,4 +1,5 @@
-import { IoPencil, IoTrashOutline } from "react-icons/io5";
+import IoPencil from "../assets/icons/IoPencil";
+import IoTrashOutline from "../assets/icons/IoTrashOutline";
 import Hoverable from "./Hoverable";
 
 export default function Menu({ id, handleToggleModal }) {

@@ -1,19 +1,30 @@
-import axios from "axios";
-
-import authConfig from "./authConfig";
-
 export async function login(password) {
-    const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
-        { password },
-    );
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+    });
 
-    localStorage.setItem("token", data);
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
+
+    localStorage.setItem("token", await res.text());
 }
 
 export async function validateToken() {
-    await axios(
+    const res = await fetch(
         `${process.env.REACT_APP_API_URL}/auth/validate-token`,
-        authConfig(),
+        {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        },
     );
+
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
 }
