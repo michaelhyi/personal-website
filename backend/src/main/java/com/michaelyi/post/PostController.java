@@ -26,16 +26,18 @@ public class PostController {
     @PostMapping
     public ResponseEntity<String> createPost(
             @RequestParam("text") String text,
-            @RequestParam("image") MultipartFile image) throws JsonProcessingException {
+            @RequestParam("image") MultipartFile image
+    ) throws JsonProcessingException {
         String id = service.createPost(text, image);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
-    public Post readPost(@PathVariable String id) throws JsonProcessingException {
+    public Post readPost(@PathVariable String id)
+            throws JsonProcessingException {
         return service.readPost(id);
     }
-
+  
     @GetMapping("image/{id}")
     public byte[] readPostImage(@PathVariable String id) throws JsonProcessingException {
         return service.readPostImage(id);
@@ -58,7 +60,8 @@ public class PostController {
     }
 
     @DeleteMapping("{id}")
-    public void deletePost(@PathVariable String id) throws JsonProcessingException {
+    public void deletePost(@PathVariable String id)
+            throws JsonProcessingException {
         service.deletePost(id);
     }
 }

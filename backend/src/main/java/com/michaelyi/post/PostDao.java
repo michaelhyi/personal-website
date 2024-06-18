@@ -15,10 +15,16 @@ public class PostDao {
 
     public void createPost(Post post) {
         final String SQL = """
-                           INSERT INTO post (id, title, content)
-                           VALUES (?, ?, ?)
+                           INSERT INTO post (id, date, title, content)
+                           VALUES (?, ?, ?, ?)
                            """;
-        template.update(SQL, post.getId(), post.getTitle(), post.getContent());
+        template.update(
+                SQL,
+                post.getId(),
+                post.getDate(),
+                post.getTitle(),
+                post.getContent()
+        );
     }
 
     public Optional<Post> readPost(String id) {

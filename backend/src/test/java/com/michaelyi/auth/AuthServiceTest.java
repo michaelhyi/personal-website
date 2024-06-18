@@ -1,7 +1,6 @@
 package com.michaelyi.auth;
 
 import com.michaelyi.security.JwtService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,42 +15,54 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
+    private AuthService service;
+
     @Mock
     private JwtService jwtService;
-    private AuthService underTest;
+
     private static final BCryptPasswordEncoder ENCODER
             = new BCryptPasswordEncoder();
-    private static User adminUser;
     private static final String AUTHORIZED_PASSWORD = "authorized password";
     private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
     private static final String BEARER_TOKEN = "Bearer token";
     private static final String TOKEN = "token";
-
-    @BeforeAll
-    static void beforeAll() {
-        adminUser = new User(ENCODER.encode(AUTHORIZED_PASSWORD));
-    }
+    private static final String ENCODED_AUTHORIZED_PASSWORD
+            = ENCODER.encode(AUTHORIZED_PASSWORD);
+    private static final User ADMIN_USER
+            = new User(ENCODED_AUTHORIZED_PASSWORD);
 
     @BeforeEach
     void setUp() {
-        underTest = new AuthService(
-                ENCODER.encode(AUTHORIZED_PASSWORD),
+        service = new AuthService(
+                ENCODED_AUTHORIZED_PASSWORD,
                 jwtService,
-                adminUser
+                ADMIN_USER
         );
     }
 
     @Test
     void willThrowLoginWhenUnauthorized() {
-        assertThrows(UnauthorizedException.class, () ->
-                underTest.login(new LoginRequest(UNAUTHORIZED_PASSWORD)));
+        LoginRequest unauthorizedLoginRequest = new LoginRequest(
+                UNAUTHORIZED_PASSWORD
+        );
+
+        assertThrows(
+                UnauthorizedException.class, () ->
+                        service.login(unauthorizedLoginRequest)
+        );
+
         verifyNoInteractions(jwtService);
     }
 
     @Test
     void login() {
-        underTest.login(new LoginRequest(AUTHORIZED_PASSWORD));
-        verify(jwtService).generateToken(adminUser);
+        LoginRequest authorizedLoginRequest = new LoginRequest(
+                AUTHORIZED_PASSWORD
+        );
+
+        service.login(authorizedLoginRequest);
+
+        verify(jwtService).generateToken(ADMIN_USER);
     }
 
     @Test
@@ -60,7 +71,7 @@ class AuthServiceTest {
 
         assertThrows(
                 UnauthorizedException.class,
-                () -> underTest.validateToken(BEARER_TOKEN)
+                () -> service.validateToken(BEARER_TOKEN)
         );
 
         verify(jwtService).isTokenExpired(TOKEN);
@@ -69,7 +80,9 @@ class AuthServiceTest {
     @Test
     void validateToken() {
         when(jwtService.isTokenExpired(TOKEN)).thenReturn(false);
-        underTest.validateToken(BEARER_TOKEN);
+
+        service.validateToken(BEARER_TOKEN);
+
         verify(jwtService).isTokenExpired(TOKEN);
     }
 }

@@ -21,7 +21,10 @@ public class PostExceptionHandler {
     public ResponseEntity<String> handleException(
             JsonProcessingException e
     ) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(
+                e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
     }
 
     @ExceptionHandler(NoSuchElementException.class)
