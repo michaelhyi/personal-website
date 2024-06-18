@@ -15,9 +15,9 @@ public class PostDao {
 
     public void createPost(Post post) {
         final String SQL = """
-                           INSERT INTO post (id, date, title, content)
-                           VALUES (?, ?, ?, ?)
-                           """;
+                INSERT INTO post (id, date, title, content)
+                VALUES (?, ?, ?, ?)
+                """;
         template.update(
                 SQL,
                 post.getId(),
@@ -39,8 +39,8 @@ public class PostDao {
 
     public void updatePost(Post post) {
         final String SQL = """
-                           UPDATE post SET title = ?, content = ? WHERE id = ?
-                           """;
+                UPDATE post SET title = ?, content = ? WHERE id = ?
+                """;
         template.update(SQL, post.getTitle(), post.getContent(), post.getId());
     }
 

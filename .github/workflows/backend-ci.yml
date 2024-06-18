@@ -33,17 +33,14 @@ jobs:
       - name: Create application.properties
         working-directory: ./backend/src/main/resources
         env:
-          AUTH_ADMIN_PW: ${{ secrets.API_AUTH_ADMIN_PW }}
+          SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_SECURITY_AUTH_ADMIN_PW }}
         run: |
           touch application.properties
           echo "api.version-path=/v1" >> ./application.properties
-          echo "auth.admin-pw=$AUTH_ADMIN_PW" >> ./application.properties
+          echo "spring.application.name=personal-website-api" >> ./application.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
           echo "aws.s3.bucket=${{ secrets.API_AWS_S3_BUCKET }}" >> ./application.properties
-          echo "security.cors.allowed-origins=https://michael-yi.com,https://admin.michael-yi.com" >> ./application.properties
-          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application.properties
-          echo "spring.application.name=personal-website-api" >> ./application.properties
           echo "spring.datasource.url=${{ secrets.API_SPRING_DATASOURCE_URL }}" >> ./application.properties
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./application.properties
@@ -51,6 +48,9 @@ jobs:
           echo "spring.data.redis.host=${{ secrets.API_SPRING_DATA_REDIS_HOST }}" >> ./application.properties
           echo "spring.data.redis.port=6379" >> ./application.properties
           echo "spring.data.redis.password=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }}" >> ./application.properties
+          echo "security.auth.admin-pw=$SECURITY_AUTH_ADMIN_PW" >> ./application.properties
+          echo "security.cors.allowed-origins=https://michael-yi.com,https://admin.michael-yi.com" >> ./application.properties
+          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application.properties
           echo "spring.servlet.multipart.max-file-size=10MB" >> ./application.properties
           echo "spring.servlet.multipart.max-request-size=10MB" >> ./application.properties
           echo >> ./application.properties
@@ -62,17 +62,17 @@ jobs:
       - name: Create application-it.properties
         working-directory: ./backend/src/test/resources
         env:
-          TEST_AUTH_ADMIN_PW: ${{ secrets.API_TEST_AUTH_ADMIN_PW }}
+          TEST_SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_TEST_SECURITY_AUTH_ADMIN_PW }}
         run: |
           touch application-it.properties
           echo "api.version-path=/v1" >> ./application-it.properties
-          echo "auth.admin-pw=$TEST_AUTH_ADMIN_PW" >> ./application-it.properties
           echo "aws.s3.bucket=test" >> ./application-it.properties
-          echo "security.cors.allowed-origins=*" >> ./application-it.properties
-          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
           echo "spring.application.name=personal-website-api" >> ./application-it.properties
           echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./application-it.properties
           echo "spring.jpa.hibernate.ddl-auto=create" >> ./application-it.properties
+          echo "security.auth.admin-pw=$TEST_SECURITY_AUTH_ADMIN_PW" >> ./application-it.properties
+          echo "security.cors.allowed-origins=*" >> ./application-it.properties
+          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
           echo >> ./application-it.properties
 
       - name: Archive application.properties

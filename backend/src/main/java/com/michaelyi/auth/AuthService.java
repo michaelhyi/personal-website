@@ -1,10 +1,12 @@
 package com.michaelyi.auth;
 
 import com.michaelyi.security.JwtService;
-import com.michaelyi.util.Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.michaelyi.util.Constants.BEARER_PREFIX_LENGTH;
+import static com.michaelyi.util.Constants.SECURITY_AUTH_ADMIN_PW;
 
 @Service
 public class AuthService {
@@ -13,7 +15,7 @@ public class AuthService {
     private final User adminUser;
 
     public AuthService(
-            @Value("${auth.admin-pw}")
+            @Value(SECURITY_AUTH_ADMIN_PW)
             String adminPassword,
             JwtService jwtService,
             User adminUser
@@ -35,7 +37,7 @@ public class AuthService {
     }
 
     public void validateToken(String bearerToken) {
-        String token = bearerToken.substring(Constants.BEARER_PREFIX_LENGTH);
+        String token = bearerToken.substring(BEARER_PREFIX_LENGTH);
 
         if (jwtService.isTokenExpired(token)) {
             throw new UnauthorizedException();

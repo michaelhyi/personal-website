@@ -6,20 +6,25 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 import static com.michaelyi.util.Constants.CLOSING_H1_TAG_LENGTH;
 import static com.michaelyi.util.Constants.OPENING_H1_TAG_LENGTH;
+import static lombok.AccessLevel.NONE;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
     @Id
+    @Setter(NONE)
     private String id;
 
+    @Setter(NONE)
     @Column(nullable = false, updatable = false)
     private Date date;
 
@@ -62,19 +67,8 @@ public class Post {
 
         id = newId.charAt(newId.length() - 1) == '-'
                 ? newId.substring(0, newId.length() - 1) : newId;
+        date = new Date();
         title = newTitle.replaceAll("<[^>]*>", "");
         content = newContent;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 }

@@ -1,8 +1,5 @@
 package com.michaelyi.security;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,16 +7,16 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
+import static com.michaelyi.util.Constants.ALLOWED_AND_EXPOSED_HEADERS;
+import static com.michaelyi.util.Constants.ALLOWED_METHODS;
+import static com.michaelyi.util.Constants.SECURITY_CORS_ALLOWED_ORIGINS;
+
 @Configuration
 public class CorsConfig {
-    @Value("${security.cors.allowed-origins}")
+    @Value(SECURITY_CORS_ALLOWED_ORIGINS)
     private List<String> allowedOrigins;
-
-    private static final List<String> ALLOWED_METHODS =
-            Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS");
-
-    private static final List<String> ALLOWED_AND_EXPOSED_HEADERS =
-            Arrays.asList("Authorization", "Content-Type");
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

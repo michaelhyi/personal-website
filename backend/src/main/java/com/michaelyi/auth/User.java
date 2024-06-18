@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.michaelyi.util.Constants.ADMIN_EMAIL;
+import static com.michaelyi.util.Constants.ADMIN_ROLE;
 
 @Getter
 @NoArgsConstructor
@@ -19,12 +20,13 @@ import static com.michaelyi.util.Constants.ADMIN_EMAIL;
 public class User implements UserDetails {
     private String password;
 
-    private static final String ROLE_ADMIN = "ROLE_ADMIN";
-
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(ROLE_ADMIN));
+        SimpleGrantedAuthority role = new SimpleGrantedAuthority(
+                String.format("ROLE_%s", ADMIN_ROLE));
+
+        return List.of(role);
     }
 
     @Override

@@ -3,18 +3,21 @@ package com.michaelyi.s3;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
+import static com.michaelyi.util.Constants.AWS_ACCESS_KEY;
+import static com.michaelyi.util.Constants.AWS_REGION;
+import static com.michaelyi.util.Constants.AWS_SECRET_KEY;
+
 @Configuration
 public class S3Config {
-    @Value("${aws.access-key}")
+    @Value(AWS_ACCESS_KEY)
     private String accessKey;
 
-    @Value("${aws.secret-key}")
+    @Value(AWS_SECRET_KEY)
     private String secretKey;
 
     @Bean
@@ -27,7 +30,7 @@ public class S3Config {
                 .credentialsProvider(
                         StaticCredentialsProvider
                                 .create(credentials))
-                .region(Region.of("us-west-2"))
+                .region(Region.of(AWS_REGION))
                 .build();
     }
 }

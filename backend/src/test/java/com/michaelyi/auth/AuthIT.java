@@ -2,7 +2,7 @@ package com.michaelyi.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.TestcontainersConfig;
+import com.michaelyi.TestConfig;
 import com.michaelyi.security.JwtService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestPropertySource("classpath:application-it.properties")
-class AuthIT extends TestcontainersConfig {
+class AuthIT extends TestConfig {
     @Autowired
     private MockMvc mvc;
 
@@ -43,10 +43,17 @@ class AuthIT extends TestcontainersConfig {
     @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
+    private static final String EXPIRED_TOKEN = String.format(
+            "%s%s%s%s",
+            "eyJhbGciOiJIUzI1NiJ9",
+            ".eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzA5MzI0OTUxLCJleHA",
+            "iOjE3MDkzMjQ5NjF9",
+            ".0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM"
+    );
 
     @BeforeEach
     void setUp() {
-        writer = mapper.writer().withDefaultPrettyPrinter();
+        writer = mapper.writer();
     }
 
     @Test
@@ -61,7 +68,7 @@ class AuthIT extends TestcontainersConfig {
                 .getResolvedException()
                 .getMessage();
 
-        assertEquals("Unauthorized.", error);
+        assertEquals("Unauthorized", error);
 
         req = new LoginRequest("authorized password");
         String res = mvc.perform(post("/v1/auth/login")
@@ -90,17 +97,12 @@ class AuthIT extends TestcontainersConfig {
                 .getResolvedException()
                 .getMessage();
 
-        assertEquals("Unauthorized.", error);
-
-        final String expiredToken = "eyJhbGciOiJIUzI1NiJ9"
-                + ".eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzA5MzI0OTUxLCJleHA"
-                + "iOjE3MDkzMjQ5NTF9"
-                + ".0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM";
+        assertEquals("Unauthorized", error);
 
         error = mvc.perform(get("/v1/auth/validate-token")
                         .header(
                                 "Authorization",
-                                String.format("Bearer %s", expiredToken)
+                                String.format("Bearer %s", EXPIRED_TOKEN)
                         )
                         .servletPath("/v1/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
@@ -108,7 +110,7 @@ class AuthIT extends TestcontainersConfig {
                 .getResolvedException()
                 .getMessage();
 
-        assertEquals("Unauthorized.", error);
+        assertEquals("Unauthorized", error);
 
         LoginRequest req = new LoginRequest("authorized password");
         String token = mvc.perform(post("/v1/auth/login")

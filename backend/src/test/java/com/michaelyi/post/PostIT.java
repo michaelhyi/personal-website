@@ -3,7 +3,7 @@ package com.michaelyi.post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.TestcontainersConfig;
+import com.michaelyi.TestConfig;
 import com.michaelyi.auth.LoginRequest;
 import com.michaelyi.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestPropertySource("classpath:application-it.properties")
-class PostIT extends TestcontainersConfig {
+class PostIT extends TestConfig {
     private static final String AUTHORIZED_PASSWORD = "authorized password";
 
     @Autowired
@@ -244,7 +244,7 @@ class PostIT extends TestcontainersConfig {
         assertEquals("Title (1994)", actual.getTitle());
         assertEquals("Content", actual.getContent());
 
-        byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")
+        byte[] imageRes = mvc.perform(get("/v1/post/image/" + id)
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -319,7 +319,7 @@ class PostIT extends TestcontainersConfig {
                 .getResponse()
                 .getContentAsString();
 
-        String error = mvc.perform(get("/v1/post/oldboy/image"))
+        String error = mvc.perform(get("/v1/post/image/oldboy"))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
@@ -344,7 +344,7 @@ class PostIT extends TestcontainersConfig {
                 .getResponse()
                 .getContentAsString();
 
-        byte[] image = mvc.perform(get("/v1/post/" + id + "/image"))
+        byte[] image = mvc.perform(get("/v1/post/image/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -539,7 +539,7 @@ class PostIT extends TestcontainersConfig {
         assertEquals("Oldboy (2004)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
-        byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")
+        byte[] imageRes = mvc.perform(get("/v1/post/image/" + id)
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -564,7 +564,7 @@ class PostIT extends TestcontainersConfig {
                 .getContentAsString();
 
         byte[] newImageRes = mvc.perform(get(String.format(
-                        "/v1/post/%s/image",
+                        "/v1/post/image/%s",
                         id
                 ))
                         .accept(MediaType.IMAGE_JPEG_VALUE))

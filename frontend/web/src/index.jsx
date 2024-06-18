@@ -4,15 +4,14 @@ import React from "react";
 import { render } from "react-dom";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
-import reportWebVitals from "./reportWebVitals";
 
 import About from "./pages/about";
 import Blog from "./pages/blog";
 import Home from "./pages/home";
 import Lauren from "./pages/lauren";
+import NotFound from "./components/NotFound";
 import Portfolio from "./pages/portfolio";
 import ViewPost from "./pages/view-post";
-import NotFound from "./components/NotFound";
 
 const router = createBrowserRouter([
     {
@@ -32,16 +31,16 @@ const router = createBrowserRouter([
         element: <Lauren />,
     },
     {
+        path: "*",
+        element: <NotFound />,
+    },
+    {
         path: "/portfolio",
         element: <Portfolio />,
     },
     {
         path: "/blog/:id",
         element: <ViewPost />,
-    },
-    {
-        path: "*",
-        element: <NotFound />,
     },
 ]);
 
@@ -52,5 +51,4 @@ render(
     document.getElementById("root"),
 );
 
-reportWebVitals();
 inject();
