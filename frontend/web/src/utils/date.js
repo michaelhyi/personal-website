@@ -14,10 +14,10 @@ const MONTHS = [
 ];
 
 export default function format(date) {
-    const dateObject = new Date(date);
-    const month = MONTHS[dateObject.getMonth()];
-    const day = dateObject.getDate();
-    const year = dateObject.getFullYear();
+    const obj = new Date(date);
+    const month = MONTHS[obj.getMonth()];
+    const day = obj.getDate();
+    const year = obj.getFullYear();
 
     return `${month} ${day}, ${year}`;
 }

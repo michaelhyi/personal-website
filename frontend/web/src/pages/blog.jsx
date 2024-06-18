@@ -11,11 +11,11 @@ import { readAllPosts } from "../services/post";
 export default function Blog() {
     const [query, setQuery] = useState({
         data: null,
-        loading: true,
         error: false,
+        loading: true,
     });
 
-    const { data, loading, error } = query;
+    const { data, error, loading } = query;
 
     useEffect(() => {
         (async () => {
@@ -28,20 +28,17 @@ export default function Blog() {
         })();
     }, []);
 
-    if (loading) return <Loading />;
     if (error) return <NotFound />;
+    if (loading) return <Loading />;
 
     return (
         <Container absoluteFooter>
             <BackButton href="/" text="Home" />
             <section className="mt-10 flex flex-col gap-2">
-                {data.map((post) => (
-                    <Hoverable className="text-left" key={post.id}>
-                        <a
-                            className="text-sm font-medium"
-                            href={`/blog/${post.id}`}
-                        >
-                            {post.title}
+                {data.map(({ id, title }) => (
+                    <Hoverable className="text-left" key={id}>
+                        <a className="text-sm font-medium" href={`/blog/${id}`}>
+                            {title}
                             <span className="inline-block">
                                 <FiArrowUpRight />
                             </span>

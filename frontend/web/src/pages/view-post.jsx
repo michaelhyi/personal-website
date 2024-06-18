@@ -13,10 +13,10 @@ export default function ViewPost() {
     const { id } = useParams();
     const [query, setQuery] = useState({
         data: null,
-        loading: true,
         error: false,
+        loading: true,
     });
-    const { data, loading, error } = query;
+    const { data, error, loading } = query;
 
     useEffect(() => {
         (async () => {
@@ -29,8 +29,8 @@ export default function ViewPost() {
         })();
     }, []);
 
-    if (loading) return <Loading />;
     if (error) return <NotFound />;
+    if (loading) return <Loading />;
 
     return (
         <Container>
