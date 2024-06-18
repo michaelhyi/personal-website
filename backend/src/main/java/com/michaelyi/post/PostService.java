@@ -1,7 +1,5 @@
 package com.michaelyi.post;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.michaelyi.cache.CacheExpiredException;
 import com.michaelyi.s3.S3Service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,12 +17,11 @@ import java.util.NoSuchElementException;
 public class PostService {
     private final PostDao dao;
     private final S3Service s3Service;
-    private final PostCacheService cacheService;
 
     public String createPost(
             String text,
             MultipartFile image
-    ) throws JsonProcessingException {
+    ) {
         Post post = new Post(text);
 
         try {
@@ -48,57 +45,41 @@ public class PostService {
                 throw new IllegalArgumentException("Image could not be read.");
             }
 
-            cacheService.createPost(post);
             return id;
         }
     }
 
     public Post readPost(String id)
-            throws NoSuchElementException, JsonProcessingException {
-        try {
-            return cacheService.readPost(id);
-        } catch (NoSuchElementException | CacheExpiredException e) {
-            Post post = dao
-                    .readPost(id)
-                    .orElseThrow(() ->
-                            new NoSuchElementException("Post not found."));
+            throws NoSuchElementException {
+        Post post = dao
+                .readPost(id)
+                .orElseThrow(() ->
+                        new NoSuchElementException("Post not found."));
 
-            cacheService.cachePost(post);
-            return post;
-        }
+        return post;
     }
 
-    public byte[] readPostImage(String id) throws JsonProcessingException {
+    public byte[] readPostImage(String id) {
         readPost(id);
 
         try {
-            return cacheService.readPostImage(id);
-        } catch (NoSuchElementException | CacheExpiredException e) {
-            try {
-                byte[] image = s3Service.getObject(id);
-                cacheService.cachePostImage(id, image);
-                return image;
-            } catch (NoSuchKeyException | NoSuchElementException err) {
-                throw new NoSuchElementException("Post image not found.");
-            }
+            byte[] image = s3Service.getObject(id);
+            return image;
+        } catch (NoSuchKeyException | NoSuchElementException err) {
+            throw new NoSuchElementException("Post image not found.");
         }
     }
 
-    public List<Post> readAllPosts() throws JsonProcessingException {
-        try {
-            return cacheService.readAllPosts();
-        } catch (NoSuchElementException | CacheExpiredException e) {
-            List<Post> posts = dao.readAllPosts();
-            cacheService.cacheAllPosts(posts);
-            return posts;
-        }
+    public List<Post> readAllPosts() {
+        List<Post> posts = dao.readAllPosts();
+        return posts;
     }
 
     public Post updatePost(
             String id,
             String text,
             MultipartFile image
-    ) throws JsonProcessingException {
+    ) {
         Post post = readPost(id);
         Post updatedPost = new Post(text);
 
@@ -118,19 +99,16 @@ public class PostService {
         if (newImage != null && !Arrays.equals(currentImage, newImage)) {
             s3Service.deleteObject(id);
             s3Service.putObject(id, newImage);
-            cacheService.cachePostImage(id, newImage);
         }
 
-        cacheService.updatePost(post);
         return post;
     }
 
     public void deletePost(String id)
-            throws NoSuchElementException, JsonProcessingException {
+            throws NoSuchElementException {
         readPost(id);
 
         s3Service.deleteObject(id);
         dao.deletePost(id);
-        cacheService.deletePost(id);
     }
 }

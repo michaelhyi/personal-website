@@ -8,6 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -16,8 +17,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
@@ -28,90 +30,99 @@ class PostServiceTest {
 
     @Mock
     private S3Service s3Service;
-
-    @Mock
-    private PostCacheService cacheService;
     private PostService underTest;
-
-    private static final Date DATE = new Date();
     private static final Post POST = new Post(
             "title",
-            DATE,
-            "title (1994)",
+            new Date(),
+            "title",
             "content"
-    );
-    private static final String POST_INPUT = "<h1>title (1994)</h1>content";
-    private static final String IMAGE_NAME = "image";
-    private static final byte[] IMAGE_BLOB = "image".getBytes();
-    private static final MockMultipartFile IMAGE = new MockMultipartFile(
-            IMAGE_NAME,
-            IMAGE_BLOB
     );
 
     @BeforeEach
     void setUp() {
-        underTest = new PostService(dao, s3Service, cacheService);
+        underTest = new PostService(dao, s3Service);
     }
 
     @Test
     void willThrowPostConstructorWhenBadRequest() {
-        String[] invalidPostInputs = new String[]{
-                null,
-                "",
-                "no-title",
-                "<h1></h1>",
-                "<h1>no-content</h1>"
-        };
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Post(null)
+        );
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Post("")
+        );
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Post("no-title")
+        );
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Post("<h1></h1>")
+        );
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Post("<h1>no-content</h1>")
+        );
 
-        for (String invalidPostInput : invalidPostInputs) {
-            assertThrows(
-                    IllegalArgumentException.class,
-                    () -> new Post(invalidPostInput)
-            );
-        }
+        String text = "<h1>title (1994)</h1>content";
+        Post newPost = new Post(text);
+        assertEquals(POST.getId(), newPost.getId());
+        assertEquals("title (1994)", newPost.getTitle());
+        assertEquals(POST.getContent(), newPost.getContent());
+
+        text = "<h1>Oldboy (2003)</h1><p>content</p>";
+        newPost = new Post(text);
+        assertEquals("oldboy", newPost.getId());
+        assertEquals("Oldboy (2003)", newPost.getTitle());
+        assertEquals("<p>content</p>", newPost.getContent());
+
+        text = "<h1>It's Such A Beautiful Day (2012)</h1>Don Hertzfeldt";
+        newPost = new Post(text);
+        assertEquals("its-such-a-beautiful-day", newPost.getId());
+        assertEquals(
+                "It's Such A Beautiful Day (2012)",
+                newPost.getTitle()
+        );
+        assertEquals("Don Hertzfeldt", newPost.getContent());
     }
 
     @Test
     void willThrowCreatePostWhenAlreadyExists() {
-        when(dao.readPost(POST.getId())).thenReturn(Optional.of(POST));
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.createPost(
-                        POST_INPUT,
-                        null
-                )
+        assertThrows(IllegalArgumentException.class, () ->
+                underTest.createPost(
+                        "<h1>title (1994)</h1><p>content</p>",
+                        null)
         );
-
-        verify(dao).readPost(POST.getId());
+        verify(dao).readPost("title");
         verifyNoMoreInteractions(dao);
-        verifyNoInteractions(s3Service);
-        verifyNoInteractions(cacheService);
     }
 
     @Test
     void willThrowCreatePostWhenImageDoesNotExist() {
-        when(dao.readPost(POST.getId())).thenReturn(Optional.empty());
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.createPost(
-                        POST_INPUT,
+        assertThrows(IllegalArgumentException.class, () ->
+                underTest.createPost(
+                        "<h1>title (1994)</h1><p>content</p>",
                         null
                 )
         );
-
-        verify(dao).readPost(POST.getId());
+        verify(dao).readPost("title");
         verifyNoMoreInteractions(dao);
-        verifyNoInteractions(s3Service);
-        verifyNoInteractions(cacheService);
     }
 
     @Test
-    void createPost() throws Exception {
-        when(dao.readPost(POST.getId())).thenReturn(Optional.empty());
+    void createPost() {
+        when(dao.readPost(POST.getId())).thenReturn(
+                Optional.empty()
+        );
 
-        String actualId = underTest.createPost(POST_INPUT, IMAGE);
+        String actualId = underTest.createPost(
+                "<h1>title (1994)</h1>content",
+                new MockMultipartFile("image", "Hello World!".getBytes())
+        );
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(
                 Post.class
@@ -119,95 +130,160 @@ class PostServiceTest {
 
         verify(dao).readPost(POST.getId());
         verify(dao).createPost(postArgumentCaptor.capture());
-        verify(s3Service).putObject(POST.getId(), IMAGE_BLOB);
-        verify(cacheService).createPost(any());
+        verify(s3Service).putObject(POST.getId(), "Hello World!".getBytes());
 
         Post capturedPost = postArgumentCaptor.getValue();
         assertEquals(POST.getId(), actualId);
-        assertEquals(POST.getTitle(), capturedPost.getTitle());
+        assertEquals(POST.getId(), capturedPost.getId());
+        assertEquals("title (1994)", capturedPost.getTitle());
         assertEquals(POST.getContent(), capturedPost.getContent());
     }
 
     @Test
-    void willReadPostWhenCacheHit() throws Exception {
-        when(cacheService.readPost(POST.getId())).thenReturn(POST);
+    void willThrowReadPostWhenPostNotFound() {
+        when(dao.readPost("title")).thenReturn(Optional.empty());
 
-        Post actual = underTest.readPost(POST.getId());
+        assertThrows(
+                NoSuchElementException.class,
+                () -> underTest.readPost("title")
+        );
+        verify(dao).readPost("title");
+    }
 
-        verify(cacheService).readPost(POST.getId());
-        verifyNoInteractions(dao);
-        verifyNoMoreInteractions(cacheService);
+    @Test
+    void readPost() {
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
+        Post actual = underTest.readPost("title");
+
+        verify(dao).readPost("title");
         assertEquals(POST.getId(), actual.getId());
-        assertEquals(POST.getDate(), actual.getDate());
         assertEquals(POST.getTitle(), actual.getTitle());
         assertEquals(POST.getContent(), actual.getContent());
     }
 
     @Test
-    void willThrowReadPostWhenPostNotFound() throws Exception {
-        when(cacheService.readPost(POST.getId()))
-                .thenThrow(NoSuchElementException.class);
-        when(dao.readPost(POST.getId())).thenReturn(Optional.empty());
+    void willThrowReadPostImageWhenPostNotFound() {
+        when(dao.readPost("title")).thenReturn(Optional.empty());
 
         assertThrows(
                 NoSuchElementException.class,
-                () -> underTest.readPost(POST.getId())
+                () -> underTest.readPostImage("title")
         );
-
-        verify(cacheService).readPost(POST.getId());
-        verify(dao).readPost(POST.getId());
-        verifyNoMoreInteractions(cacheService);
+        verify(dao).readPost("title");
+        verify(s3Service, never()).getObject(any());
     }
 
     @Test
-    void readPost() throws Exception {
-        when(cacheService.readPost(POST.getId()))
-                .thenThrow(NoSuchElementException.class);
-        when(dao.readPost(POST.getId())).thenReturn(Optional.of(POST));
-
-        Post actual = underTest.readPost(POST.getId());
-
-        verify(cacheService).readPost(POST.getId());
-        verify(dao).readPost(POST.getId());
-        verify(cacheService).cachePost(actual);
-
-        assertEquals(POST.getId(), actual.getId());
-        assertEquals(POST.getDate(), actual.getDate());
-        assertEquals(POST.getTitle(), actual.getTitle());
-        assertEquals(POST.getContent(), actual.getContent());
-    }
-
-    @Test
-    void willThrowReadPostImageWhenPostNotFound() throws Exception {
-        when(cacheService.readPost(POST.getId()))
-                .thenThrow(NoSuchElementException.class);
-        when(dao.readPost(POST.getId()))
-                .thenThrow(NoSuchElementException.class);
+    void willThrowReadPostImageWhenS3KeyNotFound() {
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+        when(s3Service.getObject("title"))
+                .thenThrow(NoSuchKeyException.class);
 
         assertThrows(
                 NoSuchElementException.class,
-                () -> underTest.readPostImage(POST.getId())
+                () -> underTest.readPostImage("title")
+        );
+        verify(dao).readPost("title");
+        verify(s3Service).getObject("title");
+    }
+
+    @Test
+    void readPostImage() {
+        byte[] expected = "Hello World!".getBytes();
+
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+        when(s3Service.getObject("title")).thenReturn(expected);
+
+        byte[] actual = underTest.readPostImage("title");
+
+        verify(dao).readPost("title");
+        verify(s3Service).getObject("title");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void readAllPosts() {
+        underTest.readAllPosts();
+        verify(dao).readAllPosts();
+    }
+
+    @Test
+    void willThrowUpdatePostWhenPostNotFound() {
+        when(dao.readPost("title")).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class,
+                () -> underTest.updatePost(
+                        "title",
+                        "<h1>title (1994)</h1>content",
+                        null
+                )
         );
 
-        verify(cacheService).readPost(POST.getId());
-        verify(dao).readPost(POST.getId());
-        verifyNoMoreInteractions(cacheService);
+        verify(dao).readPost("title");
         verifyNoMoreInteractions(dao);
-        verifyNoInteractions(s3Service);
     }
 
     @Test
-    void willReadPostImageWhenCacheHit() throws Exception {
-        when(cacheService.readPost(POST.getId())).thenReturn(POST);
-        when(cacheService.readPostImage(POST.getId())).thenReturn(IMAGE_BLOB);
+    void updatePost() {
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
 
-        byte[] actual = underTest.readPostImage(POST.getId());
+        underTest.updatePost(
+                "title",
+                "<h1>title (1994)</h1>content",
+                null
+        );
 
-        verify(cacheService).readPost(POST.getId());
-        verify(cacheService).readPostImage(POST.getId());
-        verifyNoMoreInteractions(cacheService);
-        verifyNoInteractions(dao);
-        verifyNoInteractions(s3Service);
+        ArgumentCaptor<Post> postArgumentCaptor =
+                ArgumentCaptor.forClass(Post.class);
+
+        verify(dao, times(2)).readPost("title");
+        verify(dao).updatePost(postArgumentCaptor.capture());
+        verify(s3Service).getObject("title");
+    }
+
+    @Test
+    void updatePostImage() {
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+
+        underTest.updatePost(
+                "title",
+                "<h1>title (1994)</h1>content",
+                new MockMultipartFile(
+                        "image",
+                        "New Hello World!".getBytes()
+                )
+        );
+
+        ArgumentCaptor<Post> postArgumentCaptor =
+                ArgumentCaptor.forClass(Post.class);
+
+        verify(dao, times(2)).readPost("title");
+        verify(dao).updatePost(postArgumentCaptor.capture());
+        verify(s3Service).getObject("title");
+        verify(s3Service).deleteObject("title");
+        verify(s3Service).putObject("title", "New Hello World!".getBytes());
+    }
+
+    @Test
+    void willThrowDeletePostWhenPostNotFound() {
+        when(dao.readPost("title")).thenReturn(Optional.empty());
+
+        assertThrows(
+                NoSuchElementException.class,
+                () -> underTest.deletePost("title")
+        );
+        verifyNoMoreInteractions(s3Service);
+        verifyNoMoreInteractions(dao);
+    }
+
+    @Test
+    void deletePost() {
+        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+
+        underTest.deletePost("title");
+
+        verify(s3Service).deleteObject("title");
+        verify(dao).deletePost("title");
     }
 }

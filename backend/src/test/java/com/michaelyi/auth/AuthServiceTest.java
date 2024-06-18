@@ -1,7 +1,6 @@
 package com.michaelyi.auth;
 
 import com.michaelyi.security.JwtService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +15,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
+    private AuthService service;
+
     @Mock
     private JwtService jwtService;
-    private AuthService underTest;
-    private static User adminUser;
 
     private static final BCryptPasswordEncoder ENCODER
             = new BCryptPasswordEncoder();
@@ -29,18 +28,15 @@ class AuthServiceTest {
     private static final String TOKEN = "token";
     private static final String ENCODED_AUTHORIZED_PASSWORD
             = ENCODER.encode(AUTHORIZED_PASSWORD);
-
-    @BeforeAll
-    static void beforeAll() {
-        adminUser = new User(ENCODED_AUTHORIZED_PASSWORD);
-    }
+    private static final User ADMIN_USER
+            = new User(ENCODED_AUTHORIZED_PASSWORD);
 
     @BeforeEach
     void setUp() {
-        underTest = new AuthService(
+        service = new AuthService(
                 ENCODED_AUTHORIZED_PASSWORD,
                 jwtService,
-                adminUser
+                ADMIN_USER
         );
     }
 
@@ -52,7 +48,7 @@ class AuthServiceTest {
 
         assertThrows(
                 UnauthorizedException.class, () ->
-                        underTest.login(unauthorizedLoginRequest)
+                        service.login(unauthorizedLoginRequest)
         );
 
         verifyNoInteractions(jwtService);
@@ -64,9 +60,9 @@ class AuthServiceTest {
                 AUTHORIZED_PASSWORD
         );
 
-        underTest.login(authorizedLoginRequest);
+        service.login(authorizedLoginRequest);
 
-        verify(jwtService).generateToken(adminUser);
+        verify(jwtService).generateToken(ADMIN_USER);
     }
 
     @Test
@@ -75,7 +71,7 @@ class AuthServiceTest {
 
         assertThrows(
                 UnauthorizedException.class,
-                () -> underTest.validateToken(BEARER_TOKEN)
+                () -> service.validateToken(BEARER_TOKEN)
         );
 
         verify(jwtService).isTokenExpired(TOKEN);
@@ -85,7 +81,7 @@ class AuthServiceTest {
     void validateToken() {
         when(jwtService.isTokenExpired(TOKEN)).thenReturn(false);
 
-        underTest.validateToken(BEARER_TOKEN);
+        service.validateToken(BEARER_TOKEN);
 
         verify(jwtService).isTokenExpired(TOKEN);
     }
