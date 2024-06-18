@@ -319,7 +319,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        String error = mvc.perform(get("/v1/post/oldboy/image"))
+        String error = mvc.perform(get("/v1/post/image/oldboy"))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
@@ -344,7 +344,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        byte[] image = mvc.perform(get("/v1/post/" + id + "/image"))
+        byte[] image = mvc.perform(get("/v1/post/image/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
