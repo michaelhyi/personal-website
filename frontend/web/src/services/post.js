@@ -2,7 +2,7 @@ export async function readPost(id) {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
 
     if (!res.ok) {
-        throw new Error(res.text());
+        throw new Error(await res.text());
     }
 
     return res.json();
@@ -16,7 +16,7 @@ export async function readAllPosts() {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
 
     if (!res.ok) {
-        throw new Error(res.text());
+        throw new Error(await res.text());
     }
 
     return res.json();

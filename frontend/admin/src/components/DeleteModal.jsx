@@ -34,11 +34,14 @@ export default function DeleteModal({
                                 Are you sure? This action cannot be undone.
                             </p>
                         </div>
-                        <IoMdClose
-                            size={18}
+                        <button
+                            aria-label="Close Modal"
+                            type="button"
                             className="ml-auto cursor-pointer duration-500 hover:opacity-50"
                             onClick={handleToggleModal}
-                        />
+                        >
+                            <IoMdClose />
+                        </button>
                     </section>
                     <section className="flex pr-4 pb-6 mt-12">
                         <button

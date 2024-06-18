@@ -122,6 +122,8 @@ export default function Post() {
                 } catch (e) {
                     setQuery({ data: null, loading: false, error: true });
                 }
+            } else {
+                setQuery({ data: null, loading: false, error: false });
             }
         })();
     }, []);

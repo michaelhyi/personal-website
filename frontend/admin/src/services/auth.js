@@ -8,10 +8,10 @@ export async function login(password) {
     });
 
     if (!res.ok) {
-        throw new Error(res.text());
+        throw new Error(await res.text());
     }
 
-    localStorage.setItem("token", res.text());
+    localStorage.setItem("token", await res.text());
 }
 
 export async function validateToken() {
@@ -25,6 +25,6 @@ export async function validateToken() {
     );
 
     if (!res.ok) {
-        throw new Error(res.text());
+        throw new Error(await res.text());
     }
 }
