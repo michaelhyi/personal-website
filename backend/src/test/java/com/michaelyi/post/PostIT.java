@@ -244,7 +244,7 @@ class PostIT extends TestConfig {
         assertEquals("Title (1994)", actual.getTitle());
         assertEquals("Content", actual.getContent());
 
-        byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")
+        byte[] imageRes = mvc.perform(get("/v1/post/image/" + id)
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -539,7 +539,7 @@ class PostIT extends TestConfig {
         assertEquals("Oldboy (2004)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
-        byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")
+        byte[] imageRes = mvc.perform(get("/v1/post/image/" + id)
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -564,7 +564,7 @@ class PostIT extends TestConfig {
                 .getContentAsString();
 
         byte[] newImageRes = mvc.perform(get(String.format(
-                        "/v1/post/%s/image",
+                        "/v1/post/image/%s",
                         id
                 ))
                         .accept(MediaType.IMAGE_JPEG_VALUE))
