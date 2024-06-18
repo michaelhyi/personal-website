@@ -22,11 +22,11 @@ public class Constants {
     public static final String AWS_SECRET_KEY = "${aws.secret-key}";
     public static final String AWS_S3_BUCKET = "${aws.s3.bucket}";
     public static final String AWS_REGION = "us-west-2";
-    public static final String SECURITY_AUTH_ADMIN_PW 
+    public static final String SECURITY_AUTH_ADMIN_PW
             = "${security.auth.admin-pw}";
-    public static final String SECURITY_CORS_ALLOWED_ORIGINS 
+    public static final String SECURITY_CORS_ALLOWED_ORIGINS
             = "${security.cors.allowed-origins}";
-    public static final String SECURITY_JWT_SECRET_KEY 
+    public static final String SECURITY_JWT_SECRET_KEY
             = "${security.jwt.secret-key}";
 
     // Security 
