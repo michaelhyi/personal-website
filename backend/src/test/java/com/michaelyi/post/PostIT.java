@@ -3,7 +3,7 @@ package com.michaelyi.post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.TestcontainersConfig;
+import com.michaelyi.TestConfig;
 import com.michaelyi.auth.LoginRequest;
 import com.michaelyi.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestPropertySource("classpath:application-it.properties")
-class PostIT extends TestcontainersConfig {
+class PostIT extends TestConfig {
     private static final String AUTHORIZED_PASSWORD = "authorized password";
 
     @Autowired
