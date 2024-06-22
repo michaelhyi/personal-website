@@ -1,7 +1,7 @@
 {
     "name": "web",
     "author": "michaelhyi",
-    "version": "5.0.6",
+    "version": "5.1.0",
     "license": "MIT",
     "private": true,
     "dependencies": {
