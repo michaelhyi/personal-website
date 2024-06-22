@@ -60,7 +60,7 @@ class AuthIT extends TestConfig {
     void login() throws Exception {
         LoginRequest req = new LoginRequest("unauthorized password");
 
-        String error = mvc.perform(post("/v1/auth/login")
+        String error = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(req)))
                 .andExpect(status().isUnauthorized())
@@ -71,7 +71,7 @@ class AuthIT extends TestConfig {
         assertEquals("Unauthorized", error);
 
         req = new LoginRequest("authorized password");
-        String res = mvc.perform(post("/v1/auth/login")
+        String res = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(req)))
                 .andExpect(status().isOk())
@@ -86,12 +86,12 @@ class AuthIT extends TestConfig {
     @Test
     void validateToken() throws Exception {
         String unauthorizedToken = generateUnauthorizedToken();
-        String error = mvc.perform(get("/v1/auth/validate-token")
+        String error = mvc.perform(get("/v2/auth/validate-token")
                         .header(
                                 "Authorization",
                                 String.format("Bearer %s", unauthorizedToken)
                         )
-                        .servletPath("/v1/auth/validate-token"))
+                        .servletPath("/v2/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -99,12 +99,12 @@ class AuthIT extends TestConfig {
 
         assertEquals("Unauthorized", error);
 
-        error = mvc.perform(get("/v1/auth/validate-token")
+        error = mvc.perform(get("/v2/auth/validate-token")
                         .header(
                                 "Authorization",
                                 String.format("Bearer %s", EXPIRED_TOKEN)
                         )
-                        .servletPath("/v1/auth/validate-token"))
+                        .servletPath("/v2/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -113,7 +113,7 @@ class AuthIT extends TestConfig {
         assertEquals("Unauthorized", error);
 
         LoginRequest req = new LoginRequest("authorized password");
-        String token = mvc.perform(post("/v1/auth/login")
+        String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(req)))
                 .andExpect(status().isOk())
@@ -121,7 +121,7 @@ class AuthIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        mvc.perform(get("/v1/auth/validate-token")
+        mvc.perform(get("/v2/auth/validate-token")
                         .header("Authorization",
                                 String.format("Bearer %s", token)))
                 .andExpect(status().isOk());

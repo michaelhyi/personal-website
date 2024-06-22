@@ -60,7 +60,7 @@ class PostIT extends TestConfig {
 
     @Test
     void postConstructor() throws Exception {
-        String token = mvc.perform(post("/v1/auth/login")
+        String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
                                 new LoginRequest(AUTHORIZED_PASSWORD))
@@ -71,7 +71,7 @@ class PostIT extends TestConfig {
                 .getContentAsString();
 
         String text = "";
-        String error = mvc.perform(multipart("/v1/post")
+        String error = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -88,7 +88,7 @@ class PostIT extends TestConfig {
         assertEquals("Fields cannot be blank.", error);
 
         text = "no-title";
-        error = mvc.perform(multipart("/v1/post")
+        error = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -105,7 +105,7 @@ class PostIT extends TestConfig {
         assertEquals("Title cannot be blank.", error);
 
         text = "<h1></h1>";
-        error = mvc.perform(multipart("/v1/post")
+        error = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -122,7 +122,7 @@ class PostIT extends TestConfig {
         assertEquals("Title cannot be blank.", error);
 
         text = "<h1>no-content</h1>";
-        error = mvc.perform(multipart("/v1/post")
+        error = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -139,7 +139,7 @@ class PostIT extends TestConfig {
         assertEquals("Content cannot be blank.", error);
 
         text = "<h1>Oldboy (2003)</h1><p>content</p>";
-        String id = mvc.perform(multipart("/v1/post")
+        String id = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -153,7 +153,7 @@ class PostIT extends TestConfig {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        String res = mvc.perform(get("/v1/post/" + id))
+        String res = mvc.perform(get("/v2/post/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -166,7 +166,7 @@ class PostIT extends TestConfig {
 
     @Test
     void createPost() throws Exception {
-        String token = mvc.perform(post("/v1/auth/login")
+        String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
                                 new LoginRequest(AUTHORIZED_PASSWORD))
@@ -178,7 +178,7 @@ class PostIT extends TestConfig {
 
         String text = "<h1>Already Exists (1994)</h1>content";
 
-        mvc.perform(multipart("/v1/post")
+        mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -190,7 +190,7 @@ class PostIT extends TestConfig {
                         ))
                 .andExpect(status().isCreated());
 
-        String error = mvc.perform(multipart("/v1/post")
+        String error = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -207,7 +207,7 @@ class PostIT extends TestConfig {
 
         assertEquals(error, "A post with the same title already exists.");
 
-        mvc.perform(multipart("/v1/post")
+        mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -217,7 +217,7 @@ class PostIT extends TestConfig {
 
         text = "<h1>Title (1994)</h1>Content";
 
-        String id = mvc.perform(multipart("/v1/post")
+        String id = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -232,7 +232,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        String res = mvc.perform(get("/v1/post/" + id))
+        String res = mvc.perform(get("/v2/post/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -244,7 +244,7 @@ class PostIT extends TestConfig {
         assertEquals("Title (1994)", actual.getTitle());
         assertEquals("Content", actual.getContent());
 
-        byte[] imageRes = mvc.perform(get("/v1/post/image/" + id)
+        byte[] imageRes = mvc.perform(get("/v2/post/image/" + id)
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -256,7 +256,7 @@ class PostIT extends TestConfig {
 
     @Test
     void readPost() throws Exception {
-        String token = mvc.perform(post("/v1/auth/login")
+        String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
                                 new LoginRequest(AUTHORIZED_PASSWORD))
@@ -266,7 +266,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        String error = mvc.perform(get("/v1/post/oldboy"))
+        String error = mvc.perform(get("/v2/post/oldboy"))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
@@ -276,7 +276,7 @@ class PostIT extends TestConfig {
         String text =
                 "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
 
-        String id = mvc.perform(multipart("/v1/post")
+        String id = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -291,7 +291,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        String res = mvc.perform(get("/v1/post/" + id))
+        String res = mvc.perform(get("/v2/post/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -309,7 +309,7 @@ class PostIT extends TestConfig {
 
     @Test
     void readPostImage() throws Exception {
-        String token = mvc.perform(post("/v1/auth/login")
+        String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
                                 new LoginRequest(AUTHORIZED_PASSWORD))
@@ -319,7 +319,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        String error = mvc.perform(get("/v1/post/image/oldboy"))
+        String error = mvc.perform(get("/v2/post/image/oldboy"))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
@@ -329,7 +329,7 @@ class PostIT extends TestConfig {
         String text =
                 "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
 
-        String id = mvc.perform(multipart("/v1/post")
+        String id = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -344,7 +344,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        byte[] image = mvc.perform(get("/v1/post/image/" + id))
+        byte[] image = mvc.perform(get("/v2/post/image/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -354,7 +354,7 @@ class PostIT extends TestConfig {
 
     @Test
     void readAllPosts() throws Exception {
-        String token = mvc.perform(post("/v1/auth/login")
+        String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
                                 new LoginRequest(AUTHORIZED_PASSWORD))
@@ -365,7 +365,7 @@ class PostIT extends TestConfig {
                 .getContentAsString();
 
         String text = "<h1>Title (1994)</h1>Content";
-        mvc.perform(multipart("/v1/post")
+        mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -381,7 +381,7 @@ class PostIT extends TestConfig {
                 .getContentAsString();
 
         text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-        mvc.perform(multipart("/v1/post")
+        mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -397,7 +397,7 @@ class PostIT extends TestConfig {
                 .getContentAsString();
 
         text = "<h1>It's A Wonderful Life (1946)</h1><p>by Frank Capra.</p>";
-        mvc.perform(multipart("/v1/post")
+        mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -412,7 +412,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        String res = mvc.perform(get("/v1/post"))
+        String res = mvc.perform(get("/v2/post"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -450,7 +450,7 @@ class PostIT extends TestConfig {
 
     @Test
     void updatePost() throws Exception {
-        String token = mvc.perform(post("/v1/auth/login")
+        String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
                                 new LoginRequest(AUTHORIZED_PASSWORD))
@@ -461,7 +461,7 @@ class PostIT extends TestConfig {
                 .getContentAsString();
 
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
-        mvc.perform(multipart(HttpMethod.PUT, "/v1/post/oldboy")
+        mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -469,7 +469,7 @@ class PostIT extends TestConfig {
                         .param("text", text))
                 .andExpect(status().isForbidden());
 
-        String error = mvc.perform(multipart(HttpMethod.PUT, "/v1/post/oldboy")
+        String error = mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -488,7 +488,7 @@ class PostIT extends TestConfig {
 
         text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
 
-        String id = mvc.perform(multipart("/v1/post")
+        String id = mvc.perform(multipart("/v2/post")
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -507,7 +507,7 @@ class PostIT extends TestConfig {
 
         String res = mvc.perform(multipart(
                         HttpMethod.PUT,
-                        String.format("/v1/post/%s", id))
+                        String.format("/v2/post/%s", id))
                         .file(new MockMultipartFile(
                                 "image",
                                 "Hello World!".getBytes()
@@ -528,7 +528,7 @@ class PostIT extends TestConfig {
         assertEquals("Oldboy (2004)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
-        res = mvc.perform(get("/v1/post/" + id))
+        res = mvc.perform(get("/v2/post/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -539,7 +539,7 @@ class PostIT extends TestConfig {
         assertEquals("Oldboy (2004)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
-        byte[] imageRes = mvc.perform(get("/v1/post/image/" + id)
+        byte[] imageRes = mvc.perform(get("/v2/post/image/" + id)
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -548,7 +548,7 @@ class PostIT extends TestConfig {
 
         assertArrayEquals("Hello World!".getBytes(), imageRes);
 
-        mvc.perform(multipart(HttpMethod.PUT, "/v1/post/oldboy")
+        mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
                         .file(new MockMultipartFile(
                                 "image",
                                 "New Hello World!".getBytes()
@@ -564,7 +564,7 @@ class PostIT extends TestConfig {
                 .getContentAsString();
 
         byte[] newImageRes = mvc.perform(get(String.format(
-                        "/v1/post/image/%s",
+                        "/v2/post/image/%s",
                         id
                 ))
                         .accept(MediaType.IMAGE_JPEG_VALUE))
@@ -579,7 +579,7 @@ class PostIT extends TestConfig {
 
     @Test
     void deletePost() throws Exception {
-        String token = mvc.perform(post("/v1/auth/login")
+        String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
                                 new LoginRequest(AUTHORIZED_PASSWORD)
@@ -591,10 +591,10 @@ class PostIT extends TestConfig {
 
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
 
-        mvc.perform(delete("/v1/post/oldboy"))
+        mvc.perform(delete("/v2/post/oldboy"))
                 .andExpect(status().isForbidden());
 
-        String error = mvc.perform(delete("/v1/post/oldboy")
+        String error = mvc.perform(delete("/v2/post/oldboy")
                         .header(
                                 "Authorization",
                                 String.format("Bearer %s", token)
@@ -606,7 +606,7 @@ class PostIT extends TestConfig {
 
         assertEquals("Post not found.", error);
 
-        String id = mvc.perform(multipart("/v1/post")
+        String id = mvc.perform(multipart("/v2/post")
                         .file(
                                 new MockMultipartFile(
                                         "image",
@@ -623,7 +623,7 @@ class PostIT extends TestConfig {
                 .getResponse()
                 .getContentAsString();
 
-        String res = mvc.perform(get("/v1/post/" + id))
+        String res = mvc.perform(get("/v2/post/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -634,14 +634,14 @@ class PostIT extends TestConfig {
         assertEquals("Oldboy (2003)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
-        mvc.perform(delete("/v1/post/" + id)
+        mvc.perform(delete("/v2/post/" + id)
                         .header(
                                 "Authorization",
                                 String.format("Bearer %s", token)
                         ))
                 .andExpect(status().isOk());
 
-        error = mvc.perform(get("/v1/post/" + id))
+        error = mvc.perform(get("/v2/post/" + id))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
