@@ -23,22 +23,11 @@ export default function BlogHeader() {
                     <FaArrowLeftLong /> Logout
                 </Hoverable>
             </button>
-            <a
-                href="/blog/post?mode=create"
-                className="text-xs 
-                   bg-neutral-800
-                   text-white 
-                     font-semibold 
-                     px-3 
-                     py-2 
-                     rounded-md 
-                     shadow-sm"
-            >
-                <Hoverable className="flex items-center gap-2">
+            <Hoverable>
+                <a aria-label="Create post" href="/blog/post?mode=create">
                     <FaPlus />
-                    Create Post
-                </Hoverable>
-            </a>
+                </a>
+            </Hoverable>
         </header>
     );
 }

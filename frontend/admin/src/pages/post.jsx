@@ -104,7 +104,7 @@ export default function Post() {
         } finally {
             setSubmitting(false);
         }
-    }, [setSubmitting, editor, setToast]);
+    }, [setSubmitting, editor, image, setToast]);
 
     useEffect(() => {
         (async () => {

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import FiArrowUpRight from "../assets/icons/FiArrowUpRight";
 import IoEllipsisHorizontal from "../assets/icons/IoEllipsisHorizontal";
 
 import AuthorizedRoute from "../components/AuthorizedRoute";
@@ -39,23 +38,9 @@ export default function Blog() {
         (postId) => {
             setMenuOpen(data && new Array(data.length).fill(false));
 
-            if (modal.visible) {
-                setTimeout(() => {
-                    setModal({
-                        visible: true,
-                    });
-                }, 1000);
-
-                setTimeout(() => {
-                    setModal({
-                        visible: false,
-                    });
-                }, 1500);
-            } else {
-                setModal({
-                    visible: true,
-                });
-            }
+            setModal({
+                visible: !modal.visible,
+            })
 
             if (postId) {
                 setId(postId);
@@ -92,7 +77,7 @@ export default function Blog() {
                                         className="flex text-sm font-medium"
                                         href={`${process.env.REACT_APP_WEB_URL}/blog/${post.id}`}
                                     >
-                                        {post.title} <FiArrowUpRight />
+                                        {post.title}
                                     </a>
                                 </Hoverable>
                                 <section className="relative">

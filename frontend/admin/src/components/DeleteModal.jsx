@@ -14,7 +14,7 @@ export default function DeleteModal({
         await deletePost(id);
         handleToggleModal();
         navigate(0);
-    }, []);
+    }, [id, navigate]);
 
     return (
         modalOpen && (
@@ -24,7 +24,7 @@ export default function DeleteModal({
                 <div
                     className="w-2/5 bg-neutral-800 shadow-md rounded-xl overflow-y-auto max-h-[768px]"
                 >
-                    <section className="flex mt-4 ml-6 mr-4">
+                    <section className="flex items-start mt-4 ml-6 mr-4">
                         <div>
                             <h3 className="text-xl font-semibold">
                                 Delete Post
