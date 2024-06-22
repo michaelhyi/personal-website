@@ -15,11 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.michaelyi.util.Constants.CONTEXT_PATH;
-
 @RestController
 @AllArgsConstructor
-@RequestMapping(CONTEXT_PATH + "/post")
+@RequestMapping("/v2/post")
 public class PostController {
     private final PostService service;
 

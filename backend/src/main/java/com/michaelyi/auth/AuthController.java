@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.michaelyi.util.Constants.CONTEXT_PATH;
-
 @RestController
 @AllArgsConstructor
-@RequestMapping(CONTEXT_PATH + "/auth")
+@RequestMapping("/v2/auth")
 public class AuthController {
     private final AuthService service;
 

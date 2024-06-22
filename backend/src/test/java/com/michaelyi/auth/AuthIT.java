@@ -90,8 +90,7 @@ class AuthIT extends TestConfig {
                         .header(
                                 "Authorization",
                                 String.format("Bearer %s", unauthorizedToken)
-                        )
-                        .servletPath("/v2/auth/validate-token"))
+                        ))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()
@@ -103,8 +102,7 @@ class AuthIT extends TestConfig {
                         .header(
                                 "Authorization",
                                 String.format("Bearer %s", EXPIRED_TOKEN)
-                        )
-                        .servletPath("/v2/auth/validate-token"))
+                        ))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
                 .getResolvedException()

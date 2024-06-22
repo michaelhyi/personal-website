@@ -29,16 +29,11 @@ public class Constants {
     public static final String SECURITY_JWT_SECRET_KEY
             = "${security.jwt.secret-key}";
 
-    // REST Controller
-    public static final String CONTEXT_PATH = "/v2";
-
-    // Security 
+    // Security
     public static final String ADMIN_EMAIL = "admin@michael-yi.com";
     public static final String ADMIN_ROLE = "ADMIN";
-    public static final String AUTH_ENDPOINTS
-            = CONTEXT_PATH + "/auth/**";
-    public static final String POST_ENDPOINTS
-            = CONTEXT_PATH + "/post/**";
+    public static final String AUTH_ENDPOINTS = "/v2/auth/**";
+    public static final String POST_ENDPOINTS = "/v2/post/**";
     public static final int BEARER_PREFIX_LENGTH = 7;
     public static final long JWT_EXPIRATION = 6048000000L;
 }
