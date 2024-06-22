@@ -7,9 +7,6 @@ permissions:
   contents: read
   packages: write
 
-env:
-  VERSION: 2.0.0
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,7 +37,7 @@ jobs:
         run: |
           touch application.properties
           echo "spring.application.name=personal-website-api" >> ./application.properties
-          echo "spring.application.version=${{ env.VERSION }}" >> ./application.properties
+          echo "spring.application.version=1.0.0" >> ./application.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
           echo "aws.s3.bucket=${{ secrets.API_AWS_S3_BUCKET }}" >> ./application.properties
@@ -68,7 +65,7 @@ jobs:
           TEST_SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_TEST_SECURITY_AUTH_ADMIN_PW }}
         run: |
           touch application-it.properties
-          echo "spring.application.version=${{ env.VERSION }}" >> ./application-it.properties
+          echo "spring.application.version=1.0.0" >> ./application-it.properties
           echo "aws.s3.bucket=test" >> ./application-it.properties
           echo "spring.application.name=personal-website-api" >> ./application-it.properties
           echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./application-it.properties
