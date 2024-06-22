@@ -1,32 +1,30 @@
-import axios from "axios";
-
-import authConfig from "./authConfig";
-
-async function extractUsernameFromGoogleToken(token) {
-    const { data } = await axios(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-            headers: { Authorization: `Bearer ${token}` },
+export async function login(password) {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
         },
-    );
+        body: JSON.stringify({ password }),
+    });
 
-    return data.email;
-}
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
 
-export async function login(googleToken) {
-    const email = await extractUsernameFromGoogleToken(googleToken);
-
-    const { data: jwt } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
-        { email },
-    );
-
-    localStorage.setItem("token", jwt);
+    localStorage.setItem("token", await res.text());
 }
 
 export async function validateToken() {
-    await axios(
+    const res = await fetch(
         `${process.env.REACT_APP_API_URL}/auth/validate-token`,
-        authConfig(),
+        {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        },
     );
+
+    if (!res.ok) {
+        throw new Error(await res.text());
+    }
 }

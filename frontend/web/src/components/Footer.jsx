@@ -1,16 +1,17 @@
-import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
-import { SiLetterboxd } from "react-icons/si";
+import AiGithub from "../assets/icons/AiGithub";
+import AiLinkedin from "../assets/icons/AiLinkedin";
+import SiLetterboxd from "../assets/icons/SiLetterboxd";
 import Hoverable from "./Hoverable";
 import NewTabLink from "./NewTabLink";
 
 const LINKS = [
     {
         href: "https://github.com/michaelhyi/",
-        icon: AiFillGithub,
+        icon: AiGithub,
     },
     {
         href: "https://www.linkedin.com/in/michaelhyi/",
-        icon: AiFillLinkedin,
+        icon: AiLinkedin,
     },
     {
         href: "https://letterboxd.com/michaelyi/",
@@ -37,7 +38,7 @@ export default function Footer({ absolute }) {
                 {LINKS.map(({ href, icon: Icon }) => (
                     <Hoverable key={href}>
                         <NewTabLink href={href}>
-                            <Icon size={15} />
+                            <Icon />
                         </NewTabLink>
                     </Hoverable>
                 ))}

@@ -1,34 +1,44 @@
-import { useQuery } from "@tanstack/react-query";
-import { FiArrowUpRight } from "react-icons/fi";
+import { useEffect, useState } from "react";
 
+import FiArrowUpRight from "../assets/icons/FiArrowUpRight";
 import BackButton from "../components/BackButton";
 import Container from "../components/Container";
 import Hoverable from "../components/Hoverable";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
-
 import { readAllPosts } from "../services/post";
 
 export default function Blog() {
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ["readAllPosts"],
-        queryFn: readAllPosts,
+    const [query, setQuery] = useState({
+        data: null,
+        error: false,
+        loading: true,
     });
 
-    if (isLoading) return <Loading />;
-    if (isError) return <NotFound />;
+    const { data, error, loading } = query;
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const posts = await readAllPosts();
+                setQuery({ data: posts, loading: false, error: false });
+            } catch (e) {
+                setQuery({ data: null, loading: false, error: true });
+            }
+        })();
+    }, []);
+
+    if (error) return <NotFound />;
+    if (loading) return <Loading />;
 
     return (
         <Container absoluteFooter>
             <BackButton href="/" text="Home" />
             <section className="mt-10 flex flex-col gap-2">
-                {data.map((post) => (
-                    <Hoverable className="text-left" key={post.id}>
-                        <a
-                            className="text-sm font-medium"
-                            href={`/blog/${post.id}`}
-                        >
-                            {post.title}
+                {data.map(({ id, title }) => (
+                    <Hoverable className="text-left" key={id}>
+                        <a className="text-sm font-medium" href={`/blog/${id}`}>
+                            {title}
                             <span className="inline-block">
                                 <FiArrowUpRight />
                             </span>

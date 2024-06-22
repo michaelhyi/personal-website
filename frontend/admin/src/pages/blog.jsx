@@ -1,7 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
-import { FiArrowUpRight } from "react-icons/fi";
-import { IoEllipsisHorizontal } from "react-icons/io5";
+import { useCallback, useEffect, useState } from "react";
+import IoEllipsisHorizontal from "../assets/icons/IoEllipsisHorizontal";
 
 import AuthorizedRoute from "../components/AuthorizedRoute";
 import BlogHeader from "../components/BlogHeader";
@@ -16,16 +14,16 @@ import { readAllPosts } from "../services/post";
 export default function Blog() {
     const [id, setId] = useState(null);
     const [menuOpen, setMenuOpen] = useState(null);
-    const [modalOpen, setModalOpen] = useState(false);
-
-    const { data, isLoading } = useQuery({
-        queryKey: ["readAllPosts"],
-        queryFn: async () => {
-            const posts = await readAllPosts();
-            setMenuOpen(new Array(posts.length).fill(false));
-            return posts;
-        },
+    const [modal, setModal] = useState({
+        visible: false,
     });
+
+    const [query, setQuery] = useState({
+        data: null,
+        loading: true,
+        error: false,
+    });
+    const { data, loading } = query;
 
     const toggleMenu = useCallback(
         (index) => {
@@ -39,16 +37,31 @@ export default function Blog() {
     const toggleModal = useCallback(
         (postId) => {
             setMenuOpen(data && new Array(data.length).fill(false));
-            setModalOpen(!modalOpen);
+
+            setModal({
+                visible: !modal.visible,
+            });
 
             if (postId) {
                 setId(postId);
             }
         },
-        [setMenuOpen, data, modalOpen, setModalOpen, setId],
+        [setMenuOpen, data, modal.visible, setModal, setId],
     );
 
-    if (isLoading) return <Loading />;
+    useEffect(() => {
+        (async () => {
+            try {
+                const posts = await readAllPosts();
+                setMenuOpen(new Array(posts.length).fill(false));
+                setQuery({ data: posts, loading: false, error: false });
+            } catch (e) {
+                setQuery({ data: null, loading: false, error: true });
+            }
+        })();
+    }, []);
+
+    if (loading) return <Loading />;
 
     return (
         <AuthorizedRoute>
@@ -64,16 +77,16 @@ export default function Blog() {
                                         className="flex text-sm font-medium"
                                         href={`${process.env.REACT_APP_WEB_URL}/blog/${post.id}`}
                                     >
-                                        {post.title} <FiArrowUpRight />
+                                        {post.title}
                                     </a>
                                 </Hoverable>
                                 <section className="relative">
-                                    <Hoverable>
-                                        <IoEllipsisHorizontal
-                                            onClick={() => {
-                                                toggleMenu(index);
-                                            }}
-                                        />
+                                    <Hoverable
+                                        onClick={() => {
+                                            toggleMenu(index);
+                                        }}
+                                    >
+                                        <IoEllipsisHorizontal />
                                     </Hoverable>
                                     {menuOpen[index] ? (
                                         <Menu
@@ -87,7 +100,7 @@ export default function Blog() {
                 </section>
                 <DeleteModal
                     id={id}
-                    modalOpen={modalOpen}
+                    modalOpen={modal.visible}
                     handleToggleModal={toggleModal}
                 />
             </Container>

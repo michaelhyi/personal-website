@@ -1,34 +1,33 @@
 package com.michaelyi.security;
 
-import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
 import com.michaelyi.auth.UnauthorizedException;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import static com.michaelyi.util.Constants.JWT_EXPIRATION;
+import static com.michaelyi.util.Constants.SECURITY_JWT_SECRET_KEY;
 
 @Service
 public class JwtService {
-    @Value("${security.jwt.secret-key}")
+    @Value(SECURITY_JWT_SECRET_KEY)
     private String secretKey;
-    private static final long EXPIRATION = 6048000000L;
 
     private String buildToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long expiration
+            UserDetails userDetails
     ) {
         return Jwts
                 .builder()
@@ -36,7 +35,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(
-                        System.currentTimeMillis() + expiration
+                        System.currentTimeMillis() + JWT_EXPIRATION
                 ))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
@@ -79,7 +78,7 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        return buildToken(extraClaims, userDetails, EXPIRATION);
+        return buildToken(extraClaims, userDetails);
     }
 
     private Key getSignInKey() {
@@ -87,7 +86,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

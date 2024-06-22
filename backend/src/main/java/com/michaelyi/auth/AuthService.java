@@ -1,52 +1,45 @@
 package com.michaelyi.auth;
 
-import com.michaelyi.constants.Constants;
 import com.michaelyi.security.JwtService;
-import com.michaelyi.user.User;
-import com.michaelyi.user.UserDao;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import static com.michaelyi.util.Constants.BEARER_PREFIX_LENGTH;
+import static com.michaelyi.util.Constants.SECURITY_AUTH_ADMIN_PW;
 
 @Service
-@AllArgsConstructor
 public class AuthService {
-    @Value("${auth.whitelisted-emails}")
-    private final List<String> whitelistedEmails;
-    private final UserDao dao;
+    private final String adminPassword;
     private final JwtService jwtService;
+    private final User adminUser;
 
-    @Cacheable(value = "login", key = "#email")
-    public String login(String email) {
-        Optional<User> user = dao.readUser(email);
+    public AuthService(
+            @Value(SECURITY_AUTH_ADMIN_PW)
+            String adminPassword,
+            JwtService jwtService,
+            User adminUser
+    ) {
+        this.adminPassword = adminPassword;
+        this.jwtService = jwtService;
+        this.adminUser = adminUser;
+    }
 
-        if (user.isPresent()) {
-            return jwtService.generateToken(user.get());
-        }
-
-        boolean authorized = whitelistedEmails
-                .stream()
-                .anyMatch(e -> e.equals(email));
+    public String login(LoginRequest req) {
+        final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        boolean authorized = encoder.matches(req.password(), adminPassword);
 
         if (!authorized) {
             throw new UnauthorizedException();
         }
 
-        User newUser = new User(email);
-        dao.createUser(newUser);
-        return jwtService.generateToken(newUser);
+        return jwtService.generateToken(adminUser);
     }
 
     public void validateToken(String bearerToken) {
-        String token = bearerToken.substring(Constants.BEARER_PREFIX_LENGTH);
-        String email = jwtService.extractUsername(token);
-        User user = dao.readUser(email).orElseThrow(UserNotFoundException::new);
+        String token = bearerToken.substring(BEARER_PREFIX_LENGTH);
 
-        if (!jwtService.isTokenValid(token, user)) {
+        if (jwtService.isTokenExpired(token)) {
             throw new UnauthorizedException();
         }
     }

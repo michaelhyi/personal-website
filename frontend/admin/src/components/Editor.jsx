@@ -1,5 +1,6 @@
 import { EditorContent } from "@tiptap/react";
-import { FaBold, FaItalic } from "react-icons/fa";
+import FaBold from "../assets/icons/FaBold";
+import FaItalic from "../assets/icons/FaItalic";
 import Hoverable from "./Hoverable";
 
 export default function Editor({ editor, disabled }) {
@@ -25,8 +26,8 @@ export default function Editor({ editor, disabled }) {
                             label="rtf control"
                             className={`duration-500 ${
                                 editor?.isActive(id)
-                                    ? "text-white"
-                                    : "text-neutral-500"
+                                    ? "fill-white"
+                                    : "fill-neutral-500"
                             }`}
                             onClick={onClick}
                             disabled={disabled}

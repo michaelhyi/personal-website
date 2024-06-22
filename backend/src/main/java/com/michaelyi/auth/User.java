@@ -1,9 +1,6 @@
-package com.michaelyi.user;
+package com.michaelyi.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,30 +11,33 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
+import static com.michaelyi.util.Constants.ADMIN_EMAIL;
+import static com.michaelyi.util.Constants.ADMIN_ROLE;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "\"user\"")
 public class User implements UserDetails {
-    @Id
-    private String email;
+    private String password;
 
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        SimpleGrantedAuthority role = new SimpleGrantedAuthority(
+                String.format("ROLE_%s", ADMIN_ROLE));
+
+        return List.of(role);
     }
 
     @Override
     @JsonIgnore
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return ADMIN_EMAIL;
     }
 
     @Override

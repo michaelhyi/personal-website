@@ -1,7 +1,6 @@
 package com.michaelyi.post;
 
-import java.util.List;
-
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,28 +13,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.AllArgsConstructor;
+import java.util.List;
+
+import static com.michaelyi.util.Constants.API_ENDPOINT_VERSION_PREFIX;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("${api.version-path}/post")
+@RequestMapping(API_ENDPOINT_VERSION_PREFIX + "/post")
 public class PostController {
     private final PostService service;
 
     @PostMapping
     public ResponseEntity<String> createPost(
             @RequestParam("text") String text,
-            @RequestParam("image") MultipartFile image) {
+            @RequestParam("image") MultipartFile image
+    ) {
         String id = service.createPost(text, image);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Post readPost(@PathVariable String id) {
         return service.readPost(id);
     }
 
-    @GetMapping("{id}/image")
+    @GetMapping("/image/{id}")
     public byte[] readPostImage(@PathVariable String id) {
         return service.readPostImage(id);
     }
@@ -45,7 +47,7 @@ public class PostController {
         return service.readAllPosts();
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public Post updatePost(
             @PathVariable String id,
             @RequestParam("text") String text,
@@ -56,7 +58,7 @@ public class PostController {
         return service.updatePost(id, text, image);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deletePost(@PathVariable String id) {
         service.deletePost(id);
     }

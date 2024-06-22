@@ -8,31 +8,49 @@ permissions:
   packages: write
 
 jobs:
-  setup:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build
+        working-directory: ./backend
+        run: ./gradlew clean bootJar --info
+
+  setup-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - name: Create application.properties
         working-directory: ./backend/src/main/resources
+        env:
+          SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_SECURITY_AUTH_ADMIN_PW }}
         run: |
           touch application.properties
-          echo "api.version-path=/v1" >> ./application.properties
-          echo "auth.whitelisted-emails=${{ secrets.API_AUTH_WHITELISTED_EMAILS }}" >> ./application.properties
+          echo "spring.application.name=personal-website-api" >> ./application.properties
+          echo "spring.application.version=1.0.0" >> ./application.properties
           echo "aws.access-key=${{ secrets.API_AWS_ACCESS_KEY }}" >> ./application.properties
           echo "aws.secret-key=${{ secrets.API_AWS_SECRET_KEY }}" >> ./application.properties
           echo "aws.s3.bucket=${{ secrets.API_AWS_S3_BUCKET }}" >> ./application.properties
-          echo "security.cors.allowed-origins=https://michael-yi.com,https://admin.michael-yi.com" >> ./application.properties
-          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application.properties
-          echo "spring.application.name=personal-website-api" >> ./application.properties
           echo "spring.datasource.url=${{ secrets.API_SPRING_DATASOURCE_URL }}" >> ./application.properties
           echo "spring.datasource.username=${{ secrets.API_SPRING_DATASOURCE_USERNAME }}" >> ./application.properties
           echo "spring.datasource.password=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}" >> ./application.properties
           echo "spring.jpa.hibernate.ddl-auto=validate" >> ./application.properties
-          echo "spring.cache.type=redis" >> ./application.properties
-          echo "spring.cache.redis.time-to-live=900000" >> ./application.properties
           echo "spring.data.redis.host=${{ secrets.API_SPRING_DATA_REDIS_HOST }}" >> ./application.properties
           echo "spring.data.redis.port=6379" >> ./application.properties
           echo "spring.data.redis.password=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }}" >> ./application.properties
+          echo "security.auth.admin-pw=$SECURITY_AUTH_ADMIN_PW" >> ./application.properties
+          echo "security.cors.allowed-origins=https://michael-yi.com,https://admin.michael-yi.com" >> ./application.properties
+          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application.properties
           echo "spring.servlet.multipart.max-file-size=10MB" >> ./application.properties
           echo "spring.servlet.multipart.max-request-size=10MB" >> ./application.properties
           echo >> ./application.properties
@@ -43,18 +61,18 @@ jobs:
 
       - name: Create application-it.properties
         working-directory: ./backend/src/test/resources
+        env:
+          TEST_SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_TEST_SECURITY_AUTH_ADMIN_PW }}
         run: |
           touch application-it.properties
-          echo "api.version-path=/v1" >> ./application-it.properties
-          echo "auth.whitelisted-emails=test@mail.com" >> ./application-it.properties
+          echo "spring.application.version=1.0.0" >> ./application-it.properties
           echo "aws.s3.bucket=test" >> ./application-it.properties
-          echo "security.cors.allowed-origins=*" >> ./application-it.properties
-          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
           echo "spring.application.name=personal-website-api" >> ./application-it.properties
           echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./application-it.properties
           echo "spring.jpa.hibernate.ddl-auto=create" >> ./application-it.properties
-          echo "spring.cache.type=redis" >> ./application-it.properties
-          echo "spring.cache.redis.time-to-live=900000" >> ./application-it.properties
+          echo "security.auth.admin-pw=$TEST_SECURITY_AUTH_ADMIN_PW" >> ./application-it.properties
+          echo "security.cors.allowed-origins=*" >> ./application-it.properties
+          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
           echo >> ./application-it.properties
 
       - name: Archive application.properties
@@ -69,45 +87,20 @@ jobs:
           name: application-it.properties
           path: ./backend/src/test/resources/application-it.properties
 
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-
-      - name: Download application.properties 
-        uses: actions/download-artifact@v4
-        with:
-          name: application.properties
-          path: ./backend/src/main/resources
-
-      - name: Build
-        working-directory: ./backend
-        run: ./gradlew clean bootJar --info
-      
   test:
-    needs: setup
+    needs: setup-test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: 'gradle'
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Download application.properties 
         uses: actions/download-artifact@v4
@@ -123,7 +116,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: application-it.properties
-          path: ./backend/src/main/resources
+          path: ./backend/src/test/resources
 
       - name: Test
         working-directory: ./backend

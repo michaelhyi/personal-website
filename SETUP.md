@@ -20,7 +20,7 @@ cd personal-website
 ```shell
 api.version-path=/v1
 
-auth.whitelisted-emails=
+auth.admin-pw=
 
 aws.access-key=
 aws.secret-key=
@@ -36,8 +36,6 @@ spring.datasource.username=root
 spring.datasource.password=root
 spring.jpa.hibernate.ddl-auto=update
 
-spring.cache.type=redis
-spring.cache.redis.time-to-live=900000
 spring.data.redis.host=localhost
 spring.data.redis.port=6379
 
@@ -45,7 +43,7 @@ spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=10MB
 ```
 
-- In `application.properties`, set `auth.whitelisted-emails` equal to all authorized emails to the admin platform. Separate emails with commas. In `application-it.properties`, set `auth.whitelisted-emails` equal to `test@mail.com`.
+- In `application.properties`, set `auth.admin-pw` equal to a secure, hashed password. Generate one using `openssl` or any password manager.
 
 > To generate AWS secret keys, log in to your [AWS console](https://aws.amazon.com/). Click on your username, and click `Security credentials` on the dropdown menu. Scroll down to `Access keys`, and click `Create access key`.
 

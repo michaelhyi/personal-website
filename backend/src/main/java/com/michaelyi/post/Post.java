@@ -6,27 +6,26 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import static com.michaelyi.constants.Constants.CLOSING_H1_TAG_LENGTH;
-import static com.michaelyi.constants.Constants.OPENING_H1_TAG_LENGTH;
+import static com.michaelyi.util.Constants.CLOSING_H1_TAG_LENGTH;
+import static com.michaelyi.util.Constants.OPENING_H1_TAG_LENGTH;
+import static lombok.AccessLevel.NONE;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post implements Serializable {
+public class Post {
     @Id
+    @Setter(NONE)
     private String id;
 
-    @CreationTimestamp
-    @Column(
-            nullable = false,
-            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-    )
+    @Setter(NONE)
+    @Column(nullable = false, updatable = false)
     private Date date;
 
     @Column(
@@ -68,15 +67,8 @@ public class Post implements Serializable {
 
         id = newId.charAt(newId.length() - 1) == '-'
                 ? newId.substring(0, newId.length() - 1) : newId;
+        date = new Date();
         title = newTitle.replaceAll("<[^>]*>", "");
         content = newContent;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 }

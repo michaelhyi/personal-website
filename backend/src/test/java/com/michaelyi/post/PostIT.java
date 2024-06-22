@@ -3,26 +3,20 @@ package com.michaelyi.post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.auth.AuthLoginRequest;
+import com.michaelyi.TestConfig;
+import com.michaelyi.auth.LoginRequest;
 import com.michaelyi.s3.S3Service;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.MySQLContainer;
 
 import java.util.List;
 
@@ -32,32 +26,16 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestPropertySource("classpath:application-it.properties")
-class PostIT {
-    private static final int REDIS_PORT = 6379;
-    private static MySQLContainer<?> mysql = new MySQLContainer<>(
-            "mysql:8.0.36"
-    );
-    private static GenericContainer<?> redis =
-            new GenericContainer<>("redis:6.2.14")
-                    .withExposedPorts(REDIS_PORT);
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mysql::getJdbcUrl);
-        registry.add("spring.datasource.username", mysql::getUsername);
-        registry.add("spring.datasource.password", mysql::getPassword);
-        registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", () -> String.valueOf(
-                redis.getMappedPort(REDIS_PORT)
-        ));
-    }
+class PostIT extends TestConfig {
+    private static final String AUTHORIZED_PASSWORD = "authorized password";
 
     @Autowired
     private MockMvc mvc;
@@ -69,17 +47,8 @@ class PostIT {
     private S3Service s3Service;
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
-
-    @BeforeAll
-    static void beforeAll() {
-        mysql.start();
-        redis.start();
-    }
 
     @BeforeEach
     void setUp() {
@@ -89,25 +58,12 @@ class PostIT {
         s3Service.deleteObject("oldboy");
     }
 
-    @AfterEach
-    void tearDown() {
-        cacheManager.getCacheNames()
-                .parallelStream()
-                .forEach(n -> cacheManager.getCache(n).clear());
-    }
-
-    @AfterAll
-    static void afterAll() {
-        mysql.stop();
-        redis.stop();
-    }
-
     @Test
     void postConstructor() throws Exception {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -213,7 +169,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -288,7 +244,7 @@ class PostIT {
         assertEquals("Title (1994)", actual.getTitle());
         assertEquals("Content", actual.getContent());
 
-        byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")
+        byte[] imageRes = mvc.perform(get("/v1/post/image/" + id)
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -303,7 +259,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -356,14 +312,14 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        String error = mvc.perform(get("/v1/post/oldboy/image"))
+        String error = mvc.perform(get("/v1/post/image/oldboy"))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
@@ -388,7 +344,7 @@ class PostIT {
                 .getResponse()
                 .getContentAsString();
 
-        byte[] image = mvc.perform(get("/v1/post/" + id + "/image"))
+        byte[] image = mvc.perform(get("/v1/post/image/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -401,7 +357,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -497,7 +453,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com"))
+                                new LoginRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -583,7 +539,7 @@ class PostIT {
         assertEquals("Oldboy (2004)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
-        byte[] imageRes = mvc.perform(get("/v1/post/" + id + "/image")
+        byte[] imageRes = mvc.perform(get("/v1/post/image/" + id)
                         .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -608,7 +564,7 @@ class PostIT {
                 .getContentAsString();
 
         byte[] newImageRes = mvc.perform(get(String.format(
-                        "/v1/post/%s/image",
+                        "/v1/post/image/%s",
                         id
                 ))
                         .accept(MediaType.IMAGE_JPEG_VALUE))
@@ -626,7 +582,7 @@ class PostIT {
         String token = mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new AuthLoginRequest("test@mail.com")
+                                new LoginRequest(AUTHORIZED_PASSWORD)
                         )))
                 .andExpect(status().isOk())
                 .andReturn()
