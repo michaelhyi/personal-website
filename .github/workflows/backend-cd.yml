@@ -73,7 +73,6 @@ jobs:
             sudo docker pull michaelyi/personal-website-api:latest
             sudo docker run --name personal-website-api -d -p 8080:8080 \
               -e SPRING_APPLICATION_NAME=personal-website-api \
-              -e SPRING_APPLICATION_VERSION=${{ env.VERSION }} \
               -e AWS_ACCESS_KEY=${{ secrets.API_AWS_ACCESS_KEY }} \
               -e AWS_SECRET_KEY=${{ secrets.API_AWS_SECRET_KEY }} \
               -e AWS_S3_BUCKET=${{ secrets.API_AWS_S3_BUCKET }} \
