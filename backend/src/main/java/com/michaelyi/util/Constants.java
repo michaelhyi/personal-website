@@ -36,8 +36,10 @@ public class Constants {
     // Security 
     public static final String ADMIN_EMAIL = "admin@michael-yi.com";
     public static final String ADMIN_ROLE = "ADMIN";
-    public static final String AUTH_ENDPOINTS = "/v1/auth/**";
-    public static final String POST_ENDPOINTS = "/v1/post/**";
+    public static final String AUTH_ENDPOINTS
+        = API_ENDPOINT_VERSION_PREFIX + "/auth/**";
+    public static final String POST_ENDPOINTS
+        = API_ENDPOINT_VERSION_PREFIX + "/post/**";
     public static final int BEARER_PREFIX_LENGTH = 7;
     public static final long JWT_EXPIRATION = 6048000000L;
 }
