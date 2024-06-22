@@ -30,7 +30,6 @@ export default function Post() {
     const [toast, setToast] = useState({
         message: "",
         visible: false,
-        animation: "animate-fadeIn",
         success: true,
     });
 
@@ -58,7 +57,6 @@ export default function Post() {
                     params.get("mode") === "create" ? "published" : "updated"
                 }!`,
                 visible: true,
-                animation: "animate-fadeIn",
                 success: true,
             });
 
@@ -70,7 +68,6 @@ export default function Post() {
                             ? "published"
                             : "updated"
                     }!`,
-                    animation: "animate-fadeOut",
                     success: true,
                 });
             }, 3000);
@@ -79,7 +76,6 @@ export default function Post() {
                 setToast({
                     message: "",
                     visible: false,
-                    animation: "animate-fadeIn",
                     success: true,
                 });
             }, 4000);
@@ -87,7 +83,6 @@ export default function Post() {
             setToast({
                 message: e.message,
                 visible: true,
-                animation: "animate-fadeIn",
                 success: false,
             });
 
@@ -95,7 +90,6 @@ export default function Post() {
                 setToast({
                     visible: true,
                     message: e.message,
-                    animation: "animate-fadeOut",
                     success: false,
                 });
             }, 3000);
@@ -104,7 +98,6 @@ export default function Post() {
                 setToast({
                     message: "",
                     visible: false,
-                    animation: "animate-fadeIn",
                     success: true,
                 });
             }, 4000);
@@ -169,7 +162,6 @@ export default function Post() {
                 </button>
                 {toast.visible && (
                     <Toast
-                        animation={toast.animation}
                         message={toast.message}
                         success={toast.success}
                     />

@@ -5,7 +5,6 @@ import { deletePost } from "../services/post";
 
 export default function DeleteModal({
     id,
-    animation,
     modalOpen,
     handleToggleModal,
 }) {
@@ -20,10 +19,10 @@ export default function DeleteModal({
     return (
         modalOpen && (
             <div
-                className={`${animation} flex justify-center items-center fixed inset-0 z-50 bg-neutral-900/70`}
+                className="flex justify-center items-center fixed inset-0 z-50 bg-neutral-900/70"
             >
                 <div
-                    className={`${animation} w-2/5 bg-neutral-800 shadow-md rounded-xl overflow-y-auto max-h-[768px]`}
+                    className="w-2/5 bg-neutral-800 shadow-md rounded-xl overflow-y-auto max-h-[768px]"
                 >
                     <section className="flex mt-4 ml-6 mr-4">
                         <div>

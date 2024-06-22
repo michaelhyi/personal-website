@@ -17,7 +17,6 @@ export default function Blog() {
     const [menuOpen, setMenuOpen] = useState(null);
     const [modal, setModal] = useState({
         visible: false,
-        animation: "animate-fadeIn",
     });
 
     const [query, setQuery] = useState({
@@ -44,20 +43,17 @@ export default function Blog() {
                 setTimeout(() => {
                     setModal({
                         visible: true,
-                        animation: "animate-fadeOut",
                     });
                 }, 1000);
 
                 setTimeout(() => {
                     setModal({
                         visible: false,
-                        animation: "animate-fadeIn",
                     });
                 }, 1500);
             } else {
                 setModal({
                     visible: true,
-                    animation: "animate-fadeIn",
                 });
             }
 
@@ -119,7 +115,6 @@ export default function Blog() {
                 </section>
                 <DeleteModal
                     id={id}
-                    animation={modal.animation}
                     modalOpen={modal.visible}
                     handleToggleModal={toggleModal}
                 />
