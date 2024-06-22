@@ -19,7 +19,7 @@ export default function Home() {
         } catch (err) {
             setError(err.message);
         }
-    }, []);
+    }, [navigate, setError]);
 
     return (
         <UnauthorizedRoute>

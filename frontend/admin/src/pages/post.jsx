@@ -85,7 +85,7 @@ export default function Post() {
             }, 4000);
         } catch (e) {
             setToast({
-                message: e.response ? e.response.data : e.message,
+                message: e.message,
                 visible: true,
                 animation: "animate-fadeIn",
                 success: false,
@@ -94,7 +94,7 @@ export default function Post() {
             setTimeout(() => {
                 setToast({
                     visible: true,
-                    message: e.response ? e.response.data : e.message,
+                    message: e.message,
                     animation: "animate-fadeOut",
                     success: false,
                 });
@@ -111,13 +111,13 @@ export default function Post() {
         } finally {
             setSubmitting(false);
         }
-    }, []);
+    }, [setSubmitting, editor, setToast]);
 
     useEffect(() => {
         (async () => {
             if (params.get("mode") === "edit") {
                 try {
-                    const post = readPost(params.get("id"));
+                    const post = await readPost(params.get("id"));
                     setQuery({ data: post, loading: false, error: false });
                 } catch (e) {
                     setQuery({ data: null, loading: false, error: true });
