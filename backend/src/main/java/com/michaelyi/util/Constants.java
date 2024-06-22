@@ -30,16 +30,16 @@ public class Constants {
             = "${security.jwt.secret-key}";
 
     // REST Controller
-    public static final String API_ENDPOINT_VERSION_PREFIX 
+    public static final String CONTEXT_PATH
         = "/v#{'${spring.application.version}'.split('[.]')[0]}";
 
     // Security 
     public static final String ADMIN_EMAIL = "admin@michael-yi.com";
     public static final String ADMIN_ROLE = "ADMIN";
     public static final String AUTH_ENDPOINTS
-        = API_ENDPOINT_VERSION_PREFIX + "/auth/**";
+        = CONTEXT_PATH + "/auth/**";
     public static final String POST_ENDPOINTS
-        = API_ENDPOINT_VERSION_PREFIX + "/post/**";
+        = CONTEXT_PATH + "/post/**";
     public static final int BEARER_PREFIX_LENGTH = 7;
     public static final long JWT_EXPIRATION = 6048000000L;
 }
