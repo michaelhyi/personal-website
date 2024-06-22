@@ -59,7 +59,6 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_SECURITY_AUTH_ADMIN_PW }}
         run: |
           docker build . -t michaelyi/personal-website-api:latest
           docker build . -t michaelyi/personal-website-api:${{ env.VERSION }}
@@ -84,7 +83,7 @@ jobs:
               -e SPRING_DATA_REDIS_HOST=${{ secrets.API_SPRING_DATA_REDIS_HOST }} \
               -e SPRING_DATA_REDIS_PORT=6379 \
               -e SPRING_DATA_REDIS_PASSWORD=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }} \
-              -e SECURITY_AUTH_ADMIN_PW="${SECURITY_AUTH_ADMIN_PW}" \
+              -e SECURITY_AUTH_ADMIN_PW=${{ secrets.API_SECURITY_AUTH_ADMIN_PW }} \
               -e SECURITY_CORS_ALLOWED_ORIGINS=https://michael-yi.com,https://admin.michael-yi.com \
               -e SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
               -e SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=10MB \
