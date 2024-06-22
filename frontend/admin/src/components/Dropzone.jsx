@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import AiOutlineClose from "../assets/icons/AiOutlineClose";
 import AiOutlineCloudDownload from "../assets/icons/AiOutlineCloudDownload";
 import { readPostImage } from "../services/post";
+import Hoverable from "./Hoverable";
 
 export default function Dropzone({
     id,
@@ -53,7 +54,7 @@ export default function Dropzone({
             </section>
             {showImage && (image !== null || id !== null) ? (
                 <>
-                    <div className="flex gap-2 mt-4">
+                    <div className="flex gap-2 mt-4 items-start">
                         <img
                             alt="post"
                             className="h-[150px]"
@@ -63,11 +64,9 @@ export default function Dropzone({
                                     : URL.createObjectURL(image)
                             }
                         />
-                        <AiOutlineClose
-                            size={12}
-                            onClick={handleImageDelete}
-                            className="cursor-pointer duration-500 hover:opacity-50"
-                        />
+                        <Hoverable onClick={handleImageDelete}>
+                            <AiOutlineClose />
+                        </Hoverable>
                     </div>
                     <p className="text-xs mt-2">
                         {!image ? `${title}.jpg` : image.name}

@@ -3,29 +3,20 @@ import { useNavigate } from "react-router-dom";
 import IoMdClose from "../assets/icons/IoMdClose";
 import { deletePost } from "../services/post";
 
-export default function DeleteModal({
-    id,
-    animation,
-    modalOpen,
-    handleToggleModal,
-}) {
+export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
     const navigate = useNavigate();
 
     const handleDeletePost = useCallback(async () => {
         await deletePost(id);
         handleToggleModal();
         navigate(0);
-    }, []);
+    }, [id, navigate]);
 
     return (
         modalOpen && (
-            <div
-                className={`${animation} flex justify-center items-center fixed inset-0 z-50 bg-neutral-900/70`}
-            >
-                <div
-                    className={`${animation} w-2/5 bg-neutral-800 shadow-md rounded-xl overflow-y-auto max-h-[768px]`}
-                >
-                    <section className="flex mt-4 ml-6 mr-4">
+            <div className="flex justify-center items-center fixed inset-0 z-50 bg-neutral-900/70">
+                <div className="w-2/5 bg-neutral-800 shadow-md rounded-xl overflow-y-auto max-h-[768px]">
+                    <section className="flex items-start mt-4 ml-6 mr-4">
                         <div>
                             <h3 className="text-xl font-semibold">
                                 Delete Post

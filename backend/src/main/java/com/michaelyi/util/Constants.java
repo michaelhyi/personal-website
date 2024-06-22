@@ -29,6 +29,10 @@ public class Constants {
     public static final String SECURITY_JWT_SECRET_KEY
             = "${security.jwt.secret-key}";
 
+    // REST Controller
+    public static final String API_ENDPOINT_VERSION_PREFIX 
+        = "/v#{'${spring.application.version}'.split('[.]')[0]}";
+
     // Security 
     public static final String ADMIN_EMAIL = "admin@michael-yi.com";
     public static final String ADMIN_ROLE = "ADMIN";

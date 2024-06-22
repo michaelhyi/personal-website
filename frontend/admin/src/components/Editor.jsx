@@ -26,8 +26,8 @@ export default function Editor({ editor, disabled }) {
                             label="rtf control"
                             className={`duration-500 ${
                                 editor?.isActive(id)
-                                    ? "text-white"
-                                    : "text-neutral-500"
+                                    ? "fill-white"
+                                    : "fill-neutral-500"
                             }`}
                             onClick={onClick}
                             disabled={disabled}
