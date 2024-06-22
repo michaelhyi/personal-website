@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (request
                 .getServletPath()
                 .contains(
-                        String.format("/%s/auth", CONTEXT_PATH)
+                        String.format("%s/auth", CONTEXT_PATH)
                 )
         ) {
             filterChain.doFilter(request, response);
