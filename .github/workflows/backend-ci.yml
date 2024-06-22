@@ -34,6 +34,7 @@ jobs:
         working-directory: ./backend/src/main/resources
         env:
           SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_SECURITY_AUTH_ADMIN_PW }}
+          SECURITY_JWT_SECRET_KEY: ${{ secrets.API_SECURITY_JWT_SECRET_KEY }}
         run: |
           touch application.properties
           echo "spring.application.name=personal-website-api" >> ./application.properties
@@ -49,7 +50,7 @@ jobs:
           echo "spring.data.redis.password=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }}" >> ./application.properties
           echo "security.auth.admin-pw=$SECURITY_AUTH_ADMIN_PW" >> ./application.properties
           echo "security.cors.allowed-origins=https://michael-yi.com,https://admin.michael-yi.com" >> ./application.properties
-          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application.properties
+          echo "security.jwt.secret-key=$SECURITY_JWT_SECRET_KEY" >> ./application.properties
           echo "spring.servlet.multipart.max-file-size=10MB" >> ./application.properties
           echo "spring.servlet.multipart.max-request-size=10MB" >> ./application.properties
           echo >> ./application.properties
@@ -62,6 +63,7 @@ jobs:
         working-directory: ./backend/src/test/resources
         env:
           TEST_SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_TEST_SECURITY_AUTH_ADMIN_PW }}
+          SECURITY_JWT_SECRET_KEY: ${{ secrets.API_SECURITY_JWT_SECRET_KEY }}
         run: |
           touch application-it.properties
           echo "aws.s3.bucket=test" >> ./application-it.properties
@@ -70,7 +72,7 @@ jobs:
           echo "spring.jpa.hibernate.ddl-auto=create" >> ./application-it.properties
           echo "security.auth.admin-pw=$TEST_SECURITY_AUTH_ADMIN_PW" >> ./application-it.properties
           echo "security.cors.allowed-origins=*" >> ./application-it.properties
-          echo "security.jwt.secret-key=${{ secrets.API_SECURITY_JWT_SECRET_KEY }}" >> ./application-it.properties
+          echo "security.jwt.secret-key=$SECURITY_JWT_SECRET_KEY" >> ./application-it.properties
           echo >> ./application-it.properties
 
       - name: Archive application.properties
