@@ -9,7 +9,6 @@ import Editor from "../components/Editor";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Spinner from "../components/Spinner";
-import Toast from "../components/Toast";
 
 import useEditor from "../hooks/useEditor";
 import { createPost, readPost, updatePost } from "../services/post";
@@ -22,17 +21,12 @@ export default function Post() {
         loading: true,
         error: false,
     });
-    const { data, loading, error } = query;
+    const { data, loading, error: notFound } = query;
 
     const [image, setImage] = useState(null);
+    const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [showImage, setShowImage] = useState(params.get("mode") === "edit");
-    const [toast, setToast] = useState({
-        message: "",
-        visible: false,
-        success: true,
-    });
-
     const editor = useEditor(data && `<h1>${data.title}</h1>${data.content}`);
 
     const handleSubmit = useCallback(async () => {
@@ -42,69 +36,24 @@ export default function Post() {
             const text = editor.getHTML();
             validateForm(text, image, showImage);
 
+            let id = params.get("id") || null;
             const formData = new FormData();
             formData.append("text", text);
             formData.append("image", image || null);
 
             if (params.get("mode") === "edit") {
-                await updatePost(params.get("id"), formData);
+                await updatePost(id, formData);
             } else {
-                await createPost(formData);
+                id = await createPost(formData);
             }
 
-            setToast({
-                message: `Post successfully ${
-                    params.get("mode") === "create" ? "published" : "updated"
-                }!`,
-                visible: true,
-                success: true,
-            });
-
-            setTimeout(() => {
-                setToast({
-                    visible: true,
-                    message: `Post successfully ${
-                        params.get("mode") === "create"
-                            ? "published"
-                            : "updated"
-                    }!`,
-                    success: true,
-                });
-            }, 3000);
-
-            setTimeout(() => {
-                setToast({
-                    message: "",
-                    visible: false,
-                    success: true,
-                });
-            }, 4000);
-        } catch (e) {
-            setToast({
-                message: e.message,
-                visible: true,
-                success: false,
-            });
-
-            setTimeout(() => {
-                setToast({
-                    visible: true,
-                    message: e.message,
-                    success: false,
-                });
-            }, 3000);
-
-            setTimeout(() => {
-                setToast({
-                    message: "",
-                    visible: false,
-                    success: true,
-                });
-            }, 4000);
+            window.location.href = `${process.env.REACT_APP_WEB_URL}/blog/${id}`;
+        } catch ({ message }) {
+            setError(message);
         } finally {
             setSubmitting(false);
         }
-    }, [setSubmitting, editor, image, setToast]);
+    }, [setSubmitting, editor, image]);
 
     useEffect(() => {
         (async () => {
@@ -122,7 +71,7 @@ export default function Post() {
     }, []);
 
     if (loading) return <Loading />;
-    if (error) return <NotFound />;
+    if (notFound) return <NotFound />;
 
     return (
         <AuthorizedRoute>
@@ -139,10 +88,13 @@ export default function Post() {
                     image={image}
                     setImage={setImage}
                 />
+                <p className="ml-auto min-h-4 mt-4 text-xs text-red-300 font-light">
+                    {error || ""}
+                </p>
                 <button
                     type="submit"
                     onClick={handleSubmit}
-                    className="mt-12
+                    className="mt-3
                      ml-auto
                      text-sm
                      flex
@@ -160,9 +112,6 @@ export default function Post() {
                 >
                     {submitting ? <Spinner /> : "Submit"}
                 </button>
-                {toast.visible && (
-                    <Toast message={toast.message} success={toast.success} />
-                )}
             </Container>
         </AuthorizedRoute>
     );
