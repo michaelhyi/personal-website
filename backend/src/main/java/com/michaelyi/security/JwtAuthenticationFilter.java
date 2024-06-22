@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import static com.michaelyi.util.Constants.CONTEXT_PATH;
+
 import java.io.IOException;
 
 @Component
@@ -29,7 +31,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains("/v1/auth")) {
+        if (request
+                .getServletPath()
+                .contains(
+                        String.format("%s/auth", CONTEXT_PATH)
+                )
+        ) {
             filterChain.doFilter(request, response);
             return;
         }

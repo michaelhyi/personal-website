@@ -15,11 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.michaelyi.util.Constants.API_ENDPOINT_VERSION_PREFIX;
+import static com.michaelyi.util.Constants.CONTEXT_PATH;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(API_ENDPOINT_VERSION_PREFIX + "/post")
+@RequestMapping(CONTEXT_PATH + "/post")
 public class PostController {
     private final PostService service;
 
