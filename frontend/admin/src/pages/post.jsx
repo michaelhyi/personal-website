@@ -161,10 +161,7 @@ export default function Post() {
                     {submitting ? <Spinner /> : "Submit"}
                 </button>
                 {toast.visible && (
-                    <Toast
-                        message={toast.message}
-                        success={toast.success}
-                    />
+                    <Toast message={toast.message} success={toast.success} />
                 )}
             </Container>
         </AuthorizedRoute>

@@ -1,4 +1,4 @@
-export default function Toast({  message, success }) {
+export default function Toast({ message, success }) {
     return (
         <div
             className={`

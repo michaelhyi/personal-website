@@ -64,9 +64,7 @@ export default function Dropzone({
                                     : URL.createObjectURL(image)
                             }
                         />
-                        <Hoverable 
-                            onClick={handleImageDelete}
-                        >
+                        <Hoverable onClick={handleImageDelete}>
                             <AiOutlineClose />
                         </Hoverable>
                     </div>

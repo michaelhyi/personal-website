@@ -10,16 +10,19 @@ export default function Home() {
     const navigate = useNavigate();
     const [error, setError] = useState("");
 
-    const handleSubmit = useCallback(async (e) => {
-        e.preventDefault();
+    const handleSubmit = useCallback(
+        async (e) => {
+            e.preventDefault();
 
-        try {
-            await login(e.target[0].value);
-            navigate("/blog");
-        } catch (err) {
-            setError(err.message);
-        }
-    }, [navigate, setError]);
+            try {
+                await login(e.target[0].value);
+                navigate("/blog");
+            } catch (err) {
+                setError(err.message);
+            }
+        },
+        [navigate, setError],
+    );
 
     return (
         <UnauthorizedRoute>

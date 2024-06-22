@@ -40,7 +40,7 @@ export default function Blog() {
 
             setModal({
                 visible: !modal.visible,
-            })
+            });
 
             if (postId) {
                 setId(postId);
