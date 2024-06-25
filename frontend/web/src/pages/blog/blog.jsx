@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 
 import FiArrowUpRight from "../../components/Icons/FiArrowUpRight";
 
-import { BackButton, Container, Hoverable, Loading, NotFound } from "../../components";
+import {
+    BackButton,
+    Container,
+    Hoverable,
+    Loading,
+    NotFound,
+} from "../../components";
 import { readAllPosts } from "../../services/post";
 
 export default function Blog() {

@@ -13,9 +13,7 @@ export default function Home() {
                     className="home-headshot"
                 />
                 <h2 className="home-header">Michael Yi</h2>
-                <p className="home-subheader">
-                    Software Engineer
-                </p>
+                <p className="home-subheader">Software Engineer</p>
                 <section className="home-links home-links-text">
                     {HERO_LINKS.map((v, i) => (
                         <Hoverable key={v.name}>

@@ -3,7 +3,7 @@ import "./Footer.css";
 import Hoverable from "../Hoverable/Hoverable";
 import NewTabLink from "../NewTabLink/NewTabLink";
 
-import FOOTER_LINKS from "../../utils/constants/footer-links"
+import FOOTER_LINKS from "../../utils/constants/footer-links";
 
 export default function Footer({ absolute }) {
     return (

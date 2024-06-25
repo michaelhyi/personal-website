@@ -9,9 +9,7 @@ export default function Project({ project }) {
         <Hoverable key={project.name}>
             <NewTabLink className="project-link" href={project.href}>
                 <p className="project-date">{project.date}</p>
-                <section
-                    className="project-details"
-                >
+                <section className="project-details">
                     <h3 className="project-name">
                         {project.name}
                         <span className="project-name-arrow">

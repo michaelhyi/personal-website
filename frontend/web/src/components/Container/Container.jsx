@@ -1,4 +1,4 @@
-import "./Container.css"
+import "./Container.css";
 
 import { useEffect, useState } from "react";
 import Footer from "../Footer/Footer";
