@@ -3,7 +3,11 @@ import "./Container.css";
 import { useEffect, useState } from "react";
 import Footer from "../Footer/Footer";
 
-export default function Container({ children, absoluteFooter = false, footer = true }) {
+export default function Container({
+    children,
+    absoluteFooter = false,
+    footer = true,
+}) {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {

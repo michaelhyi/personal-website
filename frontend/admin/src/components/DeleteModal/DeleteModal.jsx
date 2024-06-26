@@ -24,7 +24,7 @@ export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
                             <h3 className="delete-modal-header-title">
                                 Delete Post
                             </h3>
-                            <p className="delete-modal-header-subittle">
+                            <p className="delete-modal-header-subtitle">
                                 Are you sure? This action cannot be undone.
                             </p>
                         </div>
