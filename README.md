@@ -29,7 +29,6 @@ This repository contains the source code to my personal website and film blog. I
 - [Node.js](https://nodejs.org/en)
 - [JavaScript](https://www.javascript.com/)
 - [React](https://react.dev/)
-- [Tailwind](https://tailwindcss.com/)
 
 ## Screenshots
 
