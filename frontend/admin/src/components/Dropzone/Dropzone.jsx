@@ -1,7 +1,6 @@
 import "./Dropzone.css";
 
 import { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
 import AiOutlineClose from "../Icons/AiOutlineClose";
 import AiOutlineCloudDownload from "../Icons/AiOutlineCloudDownload";
 import { readPostImage } from "../../services/post";
@@ -29,30 +28,21 @@ export default function Dropzone({
         setShowImage(false);
     }, [setImage, setShowImage]);
 
-    const { getRootProps, getInputProps } = useDropzone({
-        accept: {
-            "image/webp": [".webp"],
-            "image/jpeg": [".jpeg", ".jpg"],
-            "image/png": [".png"],
-        },
-        maxFiles: 1,
-        onDrop,
-    });
-
     return (
         <section className="dropzone-wrapper">
-            <section
-                {...getRootProps({ className: "dropzone" })}
-                className="dropzone-input"
-            >
+            <section className="dropzone">
                 <input
-                    {...getInputProps({ name: "file" })}
+                    type="file"
+                    className="dropzone-input"
+                    onChange={(e) => onDrop(e.target.files)}
                     disabled={submitting}
                 />
-                <AiOutlineCloudDownload size={48} />
-                <p className="dropzone-input-text">
-                    Drag & drop an image here, or click to select an image.
-                </p>
+                <div className="dropzone-input-content">
+                    <AiOutlineCloudDownload />
+                    <p className="dropzone-input-text">
+                        Drag & drop an image here, or click to select an image.
+                    </p>
+                </div>
             </section>
             {showImage && (image !== null || id !== null) ? (
                 <>

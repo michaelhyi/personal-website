@@ -30,7 +30,7 @@ export default function Post() {
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [showImage, setShowImage] = useState(params.get("mode") === "edit");
-    const editor = useEditor(data && `<h1>${data.title}</h1>${data.content}`);
+    const editor = useEditor();
 
     const handleSubmit = useCallback(async () => {
         setSubmitting(true);
@@ -60,9 +60,10 @@ export default function Post() {
 
     useEffect(() => {
         (async () => {
-            if (params.get("mode") === "edit") {
+            if (params.get("mode") === "edit" && editor) {
                 try {
                     const post = await readPost(params.get("id"));
+                    editor.commands.setContent(`<h1>${post.title}</h1>${post.content}`)
                     setQuery({ data: post, loading: false, error: false });
                 } catch (e) {
                     setQuery({ data: null, loading: false, error: true });
@@ -71,7 +72,7 @@ export default function Post() {
                 setQuery({ data: null, loading: false, error: false });
             }
         })();
-    }, []);
+    }, [editor]);
 
     if (loading) return <Loading />;
     if (notFound) return <NotFound />;

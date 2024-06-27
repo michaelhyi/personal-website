@@ -9,10 +9,10 @@ const CustomDocument = Document.extend({
     content: "heading block*",
 });
 
-function useEditor(content) {
+function useEditor() {
     return editor(
         {
-            content,
+            content: "",
             editorProps: {
                 attributes: {
                     class: "editor-props",
@@ -33,7 +33,7 @@ function useEditor(content) {
                 StarterKit.configure({ document: false }),
             ],
         },
-        [content],
+        [],
     );
 }
 

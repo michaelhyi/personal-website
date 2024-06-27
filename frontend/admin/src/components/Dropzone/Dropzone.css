@@ -4,22 +4,39 @@
     margin-top: 8px;
 }
 
-.dropzone-input {
+.dropzone {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-width: 1px;
-    border-style: dashed;
+    position: relative;
     cursor: pointer;
     transition-duration: 500ms;
+    border-width: 1px;
+    border-style: dashed;
     height: 256px;
     border-color: rgb(82 82 82);
     border-radius: 8px;
 }
 
-.dropzone-input:hover {
+.dropzone:hover {
     opacity: 0.5;
+}
+
+.dropzone-input {
+    z-index: 1000;
+    cursor: pointer;
+    height: 256px;
+    width: 100%;
+    opacity: 0; 
+}
+
+.dropzone-input-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .dropzone-input-text {
