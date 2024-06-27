@@ -63,7 +63,9 @@ export default function Post() {
             if (params.get("mode") === "edit" && editor) {
                 try {
                     const post = await readPost(params.get("id"));
-                    editor.commands.setContent(`<h1>${post.title}</h1>${post.content}`)
+                    editor.commands.setContent(
+                        `<h1>${post.title}</h1>${post.content}`,
+                    );
                     setQuery({ data: post, loading: false, error: false });
                 } catch (e) {
                     setQuery({ data: null, loading: false, error: true });
