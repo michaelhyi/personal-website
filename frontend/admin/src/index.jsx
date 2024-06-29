@@ -1,7 +1,7 @@
 import "./index.css";
+
 import React from "react";
-// eslint-disable-next-line react/no-deprecated
-import { render } from "react-dom";
+import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { inject } from "@vercel/analytics";
@@ -13,12 +13,12 @@ const router = createBrowserRouter([
     { path: "/", element: <Home /> },
     { path: "/blog/post", element: <Post /> },
 ]);
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-render(
+root.render(
     <React.StrictMode>
         <RouterProvider router={router} />
     </React.StrictMode>,
-    document.getElementById("root"),
 );
 
 inject();
