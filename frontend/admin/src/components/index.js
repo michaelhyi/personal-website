@@ -9,7 +9,6 @@ export { default as Editor } from "./Editor/Editor";
 export { default as Footer } from "./Footer/Footer";
 export { default as Hoverable } from "./Hoverable/Hoverable";
 export { default as Loading } from "./Loading/Loading";
-export { default as Menu } from "./Menu/Menu";
 export { default as NewTabLink } from "./NewTabLink";
 export { default as NotFound } from "./NotFound/NotFound";
 export { default as Spinner } from "./Spinner/Spinner";
