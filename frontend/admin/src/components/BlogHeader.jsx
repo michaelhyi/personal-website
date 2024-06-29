@@ -24,7 +24,7 @@ export default function BlogHeader() {
                 </Hoverable>
             </button>
             <Hoverable>
-                <a aria-label="Create post" href="/blog/post?mode=create">
+                <a aria-label="Create post" href="/blog/post">
                     <FaPlus />
                 </a>
             </Hoverable>
