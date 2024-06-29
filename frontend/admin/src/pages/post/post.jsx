@@ -29,8 +29,8 @@ export default function Post() {
     const [image, setImage] = useState(null);
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
-    const [showImage, setShowImage] = useState(params.get("mode") === "edit");
-    const editor = useEditor();
+    const [showImage, setShowImage] = useState(params.get("id") !== null);
+    const editor = useEditor(data && `<h1>${data.title}</h1>${data.content}`);
 
     const handleSubmit = useCallback(async () => {
         setSubmitting(true);
@@ -39,12 +39,12 @@ export default function Post() {
             const text = editor.getHTML();
             validateForm(text, image, showImage);
 
-            let id = params.get("id") || null;
+            let id = params.get("id");
             const formData = new FormData();
             formData.append("text", text);
             formData.append("image", image || null);
 
-            if (params.get("mode") === "edit") {
+            if (id) {
                 await updatePost(id, formData);
             } else {
                 id = await createPost(formData);
@@ -60,12 +60,11 @@ export default function Post() {
 
     useEffect(() => {
         (async () => {
-            if (params.get("mode") === "edit" && editor) {
+            const id = params.get("id");
+
+            if (id) {
                 try {
-                    const post = await readPost(params.get("id"));
-                    editor.commands.setContent(
-                        `<h1>${post.title}</h1>${post.content}`,
-                    );
+                    const post = await readPost(id);
                     setQuery({ data: post, loading: false, error: false });
                 } catch (e) {
                     setQuery({ data: null, loading: false, error: true });
