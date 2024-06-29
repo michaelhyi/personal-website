@@ -12,7 +12,7 @@ export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
     const handleDeletePost = useCallback(async () => {
         await deletePost(id);
         handleToggleModal();
-        navigate(0);
+        navigate("/blog");
     }, [id, navigate]);
 
     return (

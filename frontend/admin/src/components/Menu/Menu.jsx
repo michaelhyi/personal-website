@@ -8,7 +8,7 @@ export default function Menu({ id, handleToggleModal }) {
     return (
         <aside className="menu-wrapper">
             <Hoverable>
-                <a href={`/blog/post?mode=edit&id=${id}`} className="menu-btn">
+                <a href={`/blog/post?id=${id}`} className="menu-btn">
                     <IoPencil /> Edit Post
                 </a>
             </Hoverable>

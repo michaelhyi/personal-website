@@ -22,7 +22,7 @@
 }
 
 .dropzone-input {
-    z-index: 1000;
+    z-index: 1;
     cursor: pointer;
     height: 256px;
     width: 100%;
