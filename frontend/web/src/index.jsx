@@ -1,17 +1,14 @@
-import { inject } from "@vercel/analytics";
+import "./index.css";
+
 import React from "react";
 // eslint-disable-next-line react/no-deprecated
 import { render } from "react-dom";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./index.css";
 
-import About from "./pages/about";
-import Blog from "./pages/blog";
-import Home from "./pages/home";
-import Lauren from "./pages/lauren";
-import NotFound from "./components/NotFound";
-import Portfolio from "./pages/portfolio";
-import ViewPost from "./pages/view-post";
+import { inject } from "@vercel/analytics";
+
+import { About, Blog, Home, Lauren, Portfolio, ViewPost } from "./pages";
+import { NotFound } from "./components";
 
 const router = createBrowserRouter([
     {
@@ -31,16 +28,16 @@ const router = createBrowserRouter([
         element: <Lauren />,
     },
     {
-        path: "*",
-        element: <NotFound />,
-    },
-    {
         path: "/portfolio",
         element: <Portfolio />,
     },
     {
         path: "/blog/:id",
         element: <ViewPost />,
+    },
+    {
+        path: "*",
+        element: <NotFound />,
     },
 ]);
 
