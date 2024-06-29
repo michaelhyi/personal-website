@@ -23,7 +23,7 @@ export default function Menu({ id, handleToggleModal }) {
         >
             <Hoverable>
                 <a
-                    href={`/blog/post?mode=edit&id=${id}`}
+                    href={`/blog/post?id=${id}`}
                     className="flex items-center gap-2 text-sm"
                 >
                     <IoPencil /> Edit Post
