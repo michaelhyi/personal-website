@@ -23,7 +23,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build
-        working-directory: ./backend
+        working-directory: ./backend/java
         run: ./gradlew clean bootJar --info
 
   setup-test:
@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Create application.properties
-        working-directory: ./backend/src/main/resources
+        working-directory: ./backend/java/src/main/resources
         env:
           SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_SECURITY_AUTH_ADMIN_PW }}
           SECURITY_JWT_SECRET_KEY: ${{ secrets.API_SECURITY_JWT_SECRET_KEY }}
@@ -56,11 +56,11 @@ jobs:
           echo >> ./application.properties
 
       - name: Create Resources Directory for Intergration Tests
-        working-directory: ./backend/src/test
+        working-directory: ./backend/java/src/test
         run: mkdir resources
 
       - name: Create application-it.properties
-        working-directory: ./backend/src/test/resources
+        working-directory: ./backend/java/src/test/resources
         env:
           TEST_SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_TEST_SECURITY_AUTH_ADMIN_PW }}
           SECURITY_JWT_SECRET_KEY: ${{ secrets.API_SECURITY_JWT_SECRET_KEY }}
@@ -79,13 +79,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: application.properties
-          path: ./backend/src/main/resources/application.properties
+          path: ./backend/java/src/main/resources/application.properties
 
       - name: Archive application-it.properties
         uses: actions/upload-artifact@v4
         with:
           name: application-it.properties
-          path: ./backend/src/test/resources/application-it.properties
+          path: ./backend/java/src/test/resources/application-it.properties
 
   test:
     needs: setup-test
@@ -106,18 +106,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: application.properties
-          path: ./backend/src/main/resources
+          path: ./backend/java/src/main/resources
 
       - name: Create Resources Directory for Intergration Tests
-        working-directory: ./backend/src/test
+        working-directory: ./backend/java/src/test
         run: mkdir resources
       
       - name: Download application-it.properties 
         uses: actions/download-artifact@v4
         with:
           name: application-it.properties
-          path: ./backend/src/test/resources
+          path: ./backend/java/src/test/resources
 
       - name: Test
-        working-directory: ./backend
+        working-directory: ./backend/java
         run: ./gradlew check --info
