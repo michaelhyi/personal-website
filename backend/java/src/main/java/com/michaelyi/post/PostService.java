@@ -1,7 +1,6 @@
 package com.michaelyi.post;
 
 import com.michaelyi.s3.S3Service;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
@@ -12,10 +11,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-@AllArgsConstructor
 public class PostService {
     private final PostDao dao;
     private final S3Service s3Service;
+
+    public PostService(PostDao dao, S3Service s3Service) {
+        this.dao = dao;
+        this.s3Service = s3Service;
+    }
 
     public String createPost(
             String text,

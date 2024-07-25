@@ -1,6 +1,5 @@
 package com.michaelyi.post;
 
-import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -8,10 +7,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@AllArgsConstructor
 public class PostDao {
     private final JdbcTemplate template;
     private final PostRowMapper mapper;
+
+    public PostDao(JdbcTemplate template, PostRowMapper mapper) {
+        this.template = template;
+        this.mapper = mapper;
+    }
 
     public void createPost(Post post) {
         final String SQL = """

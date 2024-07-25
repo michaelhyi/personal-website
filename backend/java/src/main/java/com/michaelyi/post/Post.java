@@ -3,28 +3,17 @@ package com.michaelyi.post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
 
 import static com.michaelyi.util.Constants.CLOSING_H1_TAG_LENGTH;
 import static com.michaelyi.util.Constants.OPENING_H1_TAG_LENGTH;
-import static lombok.AccessLevel.NONE;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Post {
     @Id
-    @Setter(NONE)
     private String id;
 
-    @Setter(NONE)
     @Column(nullable = false, updatable = false)
     private Date date;
 
@@ -36,6 +25,13 @@ public class Post {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    public Post(String id, Date date, String title, String content) {
+        this.id = id;
+        this.date = date;
+        this.title = title;
+        this.content = content;
+    }
 
     public Post(String text) {
         if (text == null
@@ -70,5 +66,32 @@ public class Post {
         date = new Date();
         title = newTitle.replaceAll("<[^>]*>", "");
         content = newContent;
+    }
+
+    public Post() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

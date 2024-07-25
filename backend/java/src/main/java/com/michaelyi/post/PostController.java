@@ -1,6 +1,5 @@
 package com.michaelyi.post;
 
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,10 +17,13 @@ import java.util.List;
 import static com.michaelyi.util.Constants.CONTEXT_PATH;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping(CONTEXT_PATH + "/post")
 public class PostController {
     private final PostService service;
+
+    public PostController(PostService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public ResponseEntity<String> createPost(
