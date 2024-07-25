@@ -28,14 +28,14 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build
-        working-directory: ./backend
+        working-directory: ./backend/java
         run: ./gradlew clean bootJar --info
 
       - name: Archive .jar File 
         uses: actions/upload-artifact@v4
         with:
           name: app.jar 
-          path: ./backend/build/libs/backend-${{ env.VERSION }}.jar
+          path: ./backend/java/build/libs/java-${{ env.VERSION }}.jar
 
   deploy:
     needs: build 
@@ -46,7 +46,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app.jar 
-          path: ./backend/build/libs/
+          path: ./backend/java/build/libs/
 
       - name: Login to Docker
         uses: docker/login-action@v3
@@ -55,7 +55,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Deploy
-        working-directory: ./backend
+        working-directory: ./backend/java
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
