@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class AuthControllerAdvice {
-    @ExceptionHandler({JwtException.class, UnauthorizedException.class})
+    @ExceptionHandler({
+            JwtException.class,
+            UnauthorizedException.class
+    })
     public ResponseEntity<String> handleUnauthorizedException(
             RuntimeException e
     ) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 }
