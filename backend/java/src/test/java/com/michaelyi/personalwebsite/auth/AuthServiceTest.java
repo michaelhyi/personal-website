@@ -24,13 +24,8 @@ class AuthServiceTest {
     @Mock
     private PasswordEncoder encoder;
 
-    @Mock
     private JwtParserBuilder jwtParserBuilder;
-
-    @Mock
     private JwtParser jwtParser;
-
-    @Mock
     private Claims claims;
 
     private static final String AUTHORIZED_PASSWORD = "authorized password";
@@ -41,6 +36,10 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
+        jwtParserBuilder = Mockito.mock(JwtParserBuilder.class);
+        jwtParser = Mockito.mock(JwtParser.class);
+        claims = Mockito.mock(Claims.class);
+
         String encodedAuthorizedPassword = encoder.encode(AUTHORIZED_PASSWORD);
 
         service = new AuthService(
