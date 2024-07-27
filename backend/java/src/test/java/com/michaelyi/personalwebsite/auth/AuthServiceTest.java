@@ -1,6 +1,7 @@
 package com.michaelyi.personalwebsite.auth;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.Jwts;
@@ -24,8 +25,16 @@ class AuthServiceTest {
     @Mock
     private PasswordEncoder encoder;
 
+    @Mock
     private JwtParserBuilder jwtParserBuilder;
+
+    @Mock
     private JwtParser jwtParser;
+
+    @Mock
+    private Jws<Claims> jws;
+
+    @Mock
     private Claims claims;
 
     private static final String AUTHORIZED_PASSWORD = "authorized password";
@@ -37,10 +46,6 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
-        jwtParserBuilder = Mockito.mock(JwtParserBuilder.class);
-        jwtParser = Mockito.mock(JwtParser.class);
-        claims = Mockito.mock(Claims.class);
-
         adminPassword = encoder.encode(AUTHORIZED_PASSWORD);
 
         service = new AuthService(
@@ -76,7 +81,7 @@ class AuthServiceTest {
         service.login(authorizedLoginRequest);
         Mockito.verify(encoder).matches(
                 authorizedLoginRequest.password(),
-               adminPassword
+                adminPassword
         );
     }
 
@@ -87,7 +92,8 @@ class AuthServiceTest {
                 AuthUtil.getSigningKey(SIGNING_KEY))
         ).thenReturn(jwtParserBuilder);
         when(jwtParserBuilder.build()).thenReturn(jwtParser);
-        when(jwtParser.parseClaimsJws(TOKEN).getBody()).thenReturn(claims);
+        when(jwtParser.parseClaimsJws(TOKEN)).thenReturn(jws);
+        when(jws.getBody()).thenReturn(claims);
         when(claims.getExpiration())
                 .thenReturn(new Date(System.currentTimeMillis() - EXPIRATION));
 
@@ -104,7 +110,8 @@ class AuthServiceTest {
                 AuthUtil.getSigningKey(SIGNING_KEY))
         ).thenReturn(jwtParserBuilder);
         when(jwtParserBuilder.build()).thenReturn(jwtParser);
-        when(jwtParser.parseClaimsJws(TOKEN).getBody()).thenReturn(claims);
+        when(jwtParser.parseClaimsJws(TOKEN)).thenReturn(jws);
+        when(jws.getBody()).thenReturn(claims);
         when(claims.getExpiration())
                 .thenReturn(new Date(System.currentTimeMillis() + EXPIRATION));
 
