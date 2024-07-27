@@ -86,8 +86,8 @@ class AuthIT extends TestConfig {
                         .servletPath("/v2/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
                 .andReturn()
-                .getResolvedException()
-                .getMessage();
+                .getResponse()
+                .getContentAsString();
 
         assertEquals("Unauthorized", error);
 

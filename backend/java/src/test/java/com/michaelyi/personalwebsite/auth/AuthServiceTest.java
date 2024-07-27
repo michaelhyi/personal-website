@@ -28,7 +28,8 @@ class AuthServiceTest {
 
     private static final String AUTHORIZED_PASSWORD = "authorized password";
     private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
-    private static final String SIGNING_KEY = "signingkey";
+    private static final String SIGNING_KEY
+            = "fakesigninkeyfakesigninkeyfakesigninkeyfakesigninkey";
     private String adminPassword;
 
     @BeforeEach
