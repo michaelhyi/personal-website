@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
@@ -24,53 +23,60 @@ class AuthServiceTest {
     private AuthService service;
 
     @Mock
-    private PasswordEncoder encoder;
+    private PasswordEncoder passwordEncoder;
 
-    private static final String AUTHORIZED_PASSWORD = "authorized password";
+    private static final String AUTHORIZED_PASSWORD = "authorized";
     private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
     private static final String SIGNING_KEY
             = "fakesigninkeyfakesigninkeyfakesigninkeyfakesigninkey";
-    private String adminPassword;
+    private static final String ADMIN_PASSWORD = "encoded password";
 
     @BeforeEach
     void setUp() {
-        PasswordEncoder realEncoder = new BCryptPasswordEncoder();
-        adminPassword = realEncoder.encode(AUTHORIZED_PASSWORD);
-
         service = new AuthService(
-                adminPassword,
+                ADMIN_PASSWORD,
                 SIGNING_KEY,
-                encoder
+                passwordEncoder
         );
     }
 
     @Test
     void willThrowLoginWhenUnauthorized() {
-        AuthRequest unauthorizedLoginRequest = new AuthRequest(
+        AuthRequest req = new AuthRequest(
                 UNAUTHORIZED_PASSWORD
         );
 
+        Mockito.when(passwordEncoder.matches(
+                req.password(),
+                ADMIN_PASSWORD
+        )).thenReturn(false);
+
         assertThrows(
                 UnauthorizedException.class, () ->
-                        service.login(unauthorizedLoginRequest)
+                        service.login(req)
         );
 
-        Mockito.verify(encoder).matches(
-                unauthorizedLoginRequest.password(),
-                adminPassword
+        Mockito.verify(passwordEncoder).matches(
+                req.password(),
+                ADMIN_PASSWORD
         );
     }
 
     @Test
     void login() {
-        AuthRequest authorizedLoginRequest = new AuthRequest(
+        AuthRequest req = new AuthRequest(
                 AUTHORIZED_PASSWORD
         );
 
-        service.login(authorizedLoginRequest);
-        Mockito.verify(encoder).matches(
-                authorizedLoginRequest.password(),
-                adminPassword
+        Mockito.when(passwordEncoder.matches(
+                req.password(),
+                ADMIN_PASSWORD
+        )).thenReturn(true);
+
+        service.login(req);
+        Mockito.verify(passwordEncoder).matches(
+                req.password(),
+                ADMIN_PASSWORD
         );
     }
 
