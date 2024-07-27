@@ -1,6 +1,6 @@
 package com.michaelyi.personalwebsite.auth;
 
-public record LoginRequest(
+public record AuthRequest(
         String password
 ) {
 }

@@ -1,16 +1,20 @@
 package com.michaelyi.personalwebsite.auth;
 
-import com.michaelyi.personalwebsite.security.JwtService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.JwtParserBuilder;
+import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -18,31 +22,37 @@ class AuthServiceTest {
     private AuthService service;
 
     @Mock
-    private JwtService jwtService;
+    private PasswordEncoder encoder;
 
-    private static final BCryptPasswordEncoder ENCODER
-            = new BCryptPasswordEncoder();
+    @Mock
+    private JwtParserBuilder jwtParserBuilder;
+
+    @Mock
+    private JwtParser jwtParser;
+
+    @Mock
+    private Claims claims;
+
     private static final String AUTHORIZED_PASSWORD = "authorized password";
     private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
-    private static final String BEARER_TOKEN = "Bearer token";
     private static final String TOKEN = "token";
-    private static final String ENCODED_AUTHORIZED_PASSWORD
-            = ENCODER.encode(AUTHORIZED_PASSWORD);
-    private static final User ADMIN_USER
-            = new User(ENCODED_AUTHORIZED_PASSWORD);
+    private static final String SIGNING_KEY = "signing key";
+    private static final int EXPIRATION = 15000;
 
     @BeforeEach
     void setUp() {
+        String encodedAuthorizedPassword = encoder.encode(AUTHORIZED_PASSWORD);
+
         service = new AuthService(
-                ENCODED_AUTHORIZED_PASSWORD,
-                jwtService,
-                ADMIN_USER
+                encodedAuthorizedPassword,
+                SIGNING_KEY,
+                encoder
         );
     }
 
     @Test
     void willThrowLoginWhenUnauthorized() {
-        LoginRequest unauthorizedLoginRequest = new LoginRequest(
+        AuthRequest unauthorizedLoginRequest = new AuthRequest(
                 UNAUTHORIZED_PASSWORD
         );
 
@@ -51,38 +61,53 @@ class AuthServiceTest {
                         service.login(unauthorizedLoginRequest)
         );
 
-        verifyNoInteractions(jwtService);
+        Mockito.verify(encoder).matches(
+                unauthorizedLoginRequest.password(),
+                AUTHORIZED_PASSWORD
+        );
     }
 
     @Test
     void login() {
-        LoginRequest authorizedLoginRequest = new LoginRequest(
+        AuthRequest authorizedLoginRequest = new AuthRequest(
                 AUTHORIZED_PASSWORD
         );
 
         service.login(authorizedLoginRequest);
-
-        verify(jwtService).generateToken(ADMIN_USER);
+        Mockito.verify(encoder).matches(
+                authorizedLoginRequest.password(),
+                AUTHORIZED_PASSWORD
+        );
     }
 
     @Test
     void willThrowValidateTokenWhenTokenIsInvalid() {
-        when(jwtService.isTokenExpired(TOKEN)).thenReturn(true);
+        when(Jwts.parserBuilder()).thenReturn(jwtParserBuilder);
+        when(jwtParserBuilder.setSigningKey(
+                AuthUtil.getSigningKey(SIGNING_KEY))
+        ).thenReturn(jwtParserBuilder);
+        when(jwtParserBuilder.build()).thenReturn(jwtParser);
+        when(jwtParser.parseClaimsJws(TOKEN).getBody()).thenReturn(claims);
+        when(claims.getExpiration())
+                .thenReturn(new Date(System.currentTimeMillis() - EXPIRATION));
 
         assertThrows(
                 UnauthorizedException.class,
-                () -> service.validateToken(BEARER_TOKEN)
+                () -> service.validateToken(TOKEN)
         );
-
-        verify(jwtService).isTokenExpired(TOKEN);
     }
 
     @Test
     void validateToken() {
-        when(jwtService.isTokenExpired(TOKEN)).thenReturn(false);
+        when(Jwts.parserBuilder()).thenReturn(jwtParserBuilder);
+        when(jwtParserBuilder.setSigningKey(
+                AuthUtil.getSigningKey(SIGNING_KEY))
+        ).thenReturn(jwtParserBuilder);
+        when(jwtParserBuilder.build()).thenReturn(jwtParser);
+        when(jwtParser.parseClaimsJws(TOKEN).getBody()).thenReturn(claims);
+        when(claims.getExpiration())
+                .thenReturn(new Date(System.currentTimeMillis() + EXPIRATION));
 
-        service.validateToken(BEARER_TOKEN);
-
-        verify(jwtService).isTokenExpired(TOKEN);
+        service.validateToken(TOKEN);
     }
 }

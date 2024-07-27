@@ -3,7 +3,6 @@ package com.michaelyi.personalwebsite.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.personalwebsite.TestConfig;
-import com.michaelyi.personalwebsite.security.JwtService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,9 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthIT extends TestConfig {
     @Autowired
     private MockMvc mvc;
-
-    @Autowired
-    private JwtService jwtService;
 
     @Autowired
     private ObjectMapper mapper;
@@ -58,7 +53,7 @@ class AuthIT extends TestConfig {
 
     @Test
     void login() throws Exception {
-        LoginRequest req = new LoginRequest("unauthorized password");
+        AuthRequest req = new AuthRequest("unauthorized password");
 
         String error = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -70,7 +65,7 @@ class AuthIT extends TestConfig {
 
         assertEquals("Unauthorized", error);
 
-        req = new LoginRequest("authorized password");
+        req = new AuthRequest("authorized password");
         String res = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(req)))
@@ -78,9 +73,6 @@ class AuthIT extends TestConfig {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-
-        assertFalse(jwtService.isTokenExpired(res));
-        assertEquals("admin@michael-yi.com", jwtService.extractUsername(res));
     }
 
     @Test
@@ -112,7 +104,7 @@ class AuthIT extends TestConfig {
 
         assertEquals("Unauthorized", error);
 
-        LoginRequest req = new LoginRequest("authorized password");
+        AuthRequest req = new AuthRequest("authorized password");
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(req)))

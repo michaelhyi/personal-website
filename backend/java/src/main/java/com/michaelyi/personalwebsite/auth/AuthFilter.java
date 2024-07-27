@@ -1,15 +1,12 @@
-package com.michaelyi.personalwebsite.security;
+package com.michaelyi.personalwebsite.auth;
 
 import com.michaelyi.personalwebsite.util.Constants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,68 +14,60 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+public class AuthFilter extends OncePerRequestFilter {
+    private final AuthService authService;
+    private final User user;
 
-    public JwtAuthenticationFilter(
-            JwtService jwtService,
-            UserDetailsService userDetailsService
+    public AuthFilter(
+            AuthService authService,
+            User user
     ) {
-        this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
+        this.authService = authService;
+        this.user = user;
     }
 
     @Override
     protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request
-                .getServletPath()
-                .contains(
-                        String.format("%s/auth", Constants.CONTEXT_PATH)
-                )
-        ) {
+        if (request.getServletPath().contains("auth")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
+        String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(Constants.BEARER_PREFIX_LENGTH);
-        userEmail = jwtService.extractUsername(jwt);
+        String token = authHeader.substring(Constants.BEARER_PREFIX_LENGTH);
 
-        if (userEmail != null
-                && SecurityContextHolder
+        if (SecurityContextHolder
                 .getContext()
                 .getAuthentication() == null
         ) {
-            UserDetails userDetails = this
-                    .userDetailsService
-                    .loadUserByUsername(userEmail);
+            try {
+                authService.validateToken(token);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                user,
                                 null,
-                                userDetails.getAuthorities()
+                                user.getAuthorities()
                         );
 
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().
                                 buildDetails(request)
                 );
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } catch (Exception e) {
+                SecurityContextHolder.clearContext();
             }
         }
 
