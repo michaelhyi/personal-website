@@ -30,28 +30,23 @@ import static com.michaelyi.personalwebsite.util.Constants.SECURITY_CORS_ALLOWED
 public class AuthConfig {
     private final String adminPassword;
     private final List<String> allowedOrigins;
-    private final AuthFilter jwtAuthFilter;
+    private final AuthFilter authFilter;
 
     public AuthConfig(
             @Value(SECURITY_AUTH_ADMIN_PW)
             String adminPassword,
             @Value(SECURITY_CORS_ALLOWED_ORIGINS)
             List<String> allowedOrigins,
-            AuthFilter jwtAuthFilter
+            AuthFilter authFilter
     ) {
         this.adminPassword = adminPassword;
         this.allowedOrigins = allowedOrigins;
-        this.jwtAuthFilter = jwtAuthFilter;
+        this.authFilter = authFilter;
     }
 
     @Bean
     public User user() {
         return new User(adminPassword);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -96,7 +91,7 @@ public class AuthConfig {
                                 SessionCreationPolicy.STATELESS
                         ))
                 .addFilterBefore(
-                        jwtAuthFilter,
+                        authFilter,
                         UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
