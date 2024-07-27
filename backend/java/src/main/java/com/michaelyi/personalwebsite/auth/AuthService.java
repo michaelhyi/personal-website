@@ -64,16 +64,13 @@ public class AuthService {
     public void validateToken(String authHeader) {
         String token = authHeader.substring(BEARER_PREFIX_LENGTH);
 
-        Claims claims = Jwts
-                .parserBuilder()
-                .setSigningKey(AuthUtil.getSigningKey(signingKey))
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        Date expiration = claims.getExpiration();
-
-        if (expiration.before(new Date())) {
+        try {
+            Jwts
+                    .parserBuilder()
+                    .setSigningKey(AuthUtil.getSigningKey(signingKey))
+                    .build()
+                    .parseClaimsJws(token);
+        } catch (Exception e) {
             throw new UnauthorizedException();
         }
     }
