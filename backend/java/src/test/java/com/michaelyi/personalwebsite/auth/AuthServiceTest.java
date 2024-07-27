@@ -33,6 +33,7 @@ class AuthServiceTest {
     private static final String TOKEN = "token";
     private static final String SIGNING_KEY = "signing key";
     private static final int EXPIRATION = 15000;
+    private String adminPassword;
 
     @BeforeEach
     void setUp() {
@@ -40,10 +41,10 @@ class AuthServiceTest {
         jwtParser = Mockito.mock(JwtParser.class);
         claims = Mockito.mock(Claims.class);
 
-        String encodedAuthorizedPassword = encoder.encode(AUTHORIZED_PASSWORD);
+        adminPassword = encoder.encode(AUTHORIZED_PASSWORD);
 
         service = new AuthService(
-                encodedAuthorizedPassword,
+                adminPassword,
                 SIGNING_KEY,
                 encoder
         );
@@ -62,7 +63,7 @@ class AuthServiceTest {
 
         Mockito.verify(encoder).matches(
                 unauthorizedLoginRequest.password(),
-                AUTHORIZED_PASSWORD
+                adminPassword
         );
     }
 
@@ -75,7 +76,7 @@ class AuthServiceTest {
         service.login(authorizedLoginRequest);
         Mockito.verify(encoder).matches(
                 authorizedLoginRequest.password(),
-                AUTHORIZED_PASSWORD
+               adminPassword
         );
     }
 
