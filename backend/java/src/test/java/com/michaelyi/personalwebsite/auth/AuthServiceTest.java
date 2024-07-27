@@ -94,7 +94,7 @@ class AuthServiceTest {
 
         assertThrows(
                 UnauthorizedException.class,
-                () -> service.validateToken(token)
+                () -> service.validateToken(String.format("Bearer %s", token))
         );
     }
 
@@ -116,6 +116,6 @@ class AuthServiceTest {
                         )
                         .compact();
 
-        service.validateToken(token);
+        service.validateToken(String.format("Bearer %s", token));
     }
 }
