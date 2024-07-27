@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
@@ -27,12 +28,13 @@ class AuthServiceTest {
 
     private static final String AUTHORIZED_PASSWORD = "authorized password";
     private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
-    private static final String SIGNING_KEY = "signing key";
+    private static final String SIGNING_KEY = "signingkey";
     private String adminPassword;
 
     @BeforeEach
     void setUp() {
-        adminPassword = encoder.encode(AUTHORIZED_PASSWORD);
+        PasswordEncoder realEncoder = new BCryptPasswordEncoder();
+        adminPassword = realEncoder.encode(AUTHORIZED_PASSWORD);
 
         service = new AuthService(
                 adminPassword,
