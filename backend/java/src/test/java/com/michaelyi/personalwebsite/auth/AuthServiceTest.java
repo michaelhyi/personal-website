@@ -1,10 +1,8 @@
 package com.michaelyi.personalwebsite.auth;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.JwtParserBuilder;
+import com.michaelyi.personalwebsite.util.Constants;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,9 +12,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.michaelyi.personalwebsite.util.Constants.JWT_EXPIRATION;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
@@ -25,23 +25,9 @@ class AuthServiceTest {
     @Mock
     private PasswordEncoder encoder;
 
-    @Mock
-    private JwtParserBuilder jwtParserBuilder;
-
-    @Mock
-    private JwtParser jwtParser;
-
-    @Mock
-    private Jws<Claims> jws;
-
-    @Mock
-    private Claims claims;
-
     private static final String AUTHORIZED_PASSWORD = "authorized password";
     private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
-    private static final String TOKEN = "token";
     private static final String SIGNING_KEY = "signing key";
-    private static final int EXPIRATION = 15000;
     private String adminPassword;
 
     @BeforeEach
@@ -87,34 +73,46 @@ class AuthServiceTest {
 
     @Test
     void willThrowValidateTokenWhenTokenIsInvalid() {
-        when(Jwts.parserBuilder()).thenReturn(jwtParserBuilder);
-        when(jwtParserBuilder.setSigningKey(
-                AuthUtil.getSigningKey(SIGNING_KEY))
-        ).thenReturn(jwtParserBuilder);
-        when(jwtParserBuilder.build()).thenReturn(jwtParser);
-        when(jwtParser.parseClaimsJws(TOKEN)).thenReturn(jws);
-        when(jws.getBody()).thenReturn(claims);
-        when(claims.getExpiration())
-                .thenReturn(new Date(System.currentTimeMillis() - EXPIRATION));
+        Map<String, Object> claims = new HashMap<>();
+        long currentTime = System.currentTimeMillis();
+
+        String token =
+                Jwts
+                        .builder()
+                        .setClaims(claims)
+                        .setSubject(Constants.ADMIN_EMAIL)
+                        .setIssuedAt(new Date(currentTime))
+                        .setExpiration(new Date(currentTime - JWT_EXPIRATION))
+                        .signWith(
+                                AuthUtil.getSigningKey(SIGNING_KEY),
+                                SignatureAlgorithm.HS256
+                        )
+                        .compact();
 
         assertThrows(
                 UnauthorizedException.class,
-                () -> service.validateToken(TOKEN)
+                () -> service.validateToken(token)
         );
     }
 
     @Test
     void validateToken() {
-        when(Jwts.parserBuilder()).thenReturn(jwtParserBuilder);
-        when(jwtParserBuilder.setSigningKey(
-                AuthUtil.getSigningKey(SIGNING_KEY))
-        ).thenReturn(jwtParserBuilder);
-        when(jwtParserBuilder.build()).thenReturn(jwtParser);
-        when(jwtParser.parseClaimsJws(TOKEN)).thenReturn(jws);
-        when(jws.getBody()).thenReturn(claims);
-        when(claims.getExpiration())
-                .thenReturn(new Date(System.currentTimeMillis() + EXPIRATION));
+        Map<String, Object> claims = new HashMap<>();
+        long currentTime = System.currentTimeMillis();
 
-        service.validateToken(TOKEN);
+        String token =
+                Jwts
+                        .builder()
+                        .setClaims(claims)
+                        .setSubject(Constants.ADMIN_EMAIL)
+                        .setIssuedAt(new Date(currentTime))
+                        .setExpiration(new Date(currentTime + JWT_EXPIRATION))
+                        .signWith(
+                                AuthUtil.getSigningKey(SIGNING_KEY),
+                                SignatureAlgorithm.HS256
+                        )
+                        .compact();
+
+        service.validateToken(token);
     }
 }
