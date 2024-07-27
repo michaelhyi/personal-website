@@ -1,7 +1,6 @@
 package com.michaelyi.personalwebsite.auth;
 
 import com.michaelyi.personalwebsite.util.Constants;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
