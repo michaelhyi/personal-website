@@ -72,21 +72,16 @@ jobs:
             sudo docker rmi -f $(sudo docker image ls -a -q)
             sudo docker pull michaelyi/personal-website-api:latest
             sudo docker run --name personal-website-api -d -p 8080:8080 \
-              -e SPRING_APPLICATION_NAME=personal-website-api \
-              -e AWS_ACCESS_KEY=${{ secrets.API_AWS_ACCESS_KEY }} \
-              -e AWS_SECRET_KEY=${{ secrets.API_AWS_SECRET_KEY }} \
-              -e AWS_S3_BUCKET=${{ secrets.API_AWS_S3_BUCKET }} \
-              -e SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
-              -e SPRING_DATASOURCE_USERNAME=${{ secrets.API_SPRING_DATASOURCE_USERNAME }} \
-              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }} \
-              -e SPRING_JPA_HIBERNATE_DDL_AUTO=validate \
-              -e SPRING_DATA_REDIS_HOST=${{ secrets.API_SPRING_DATA_REDIS_HOST }} \
-              -e SPRING_DATA_REDIS_PORT=6379 \
-              -e SPRING_DATA_REDIS_PASSWORD=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }} \
-              -e SECURITY_AUTH_ADMIN_PW=${{ secrets.API_SECURITY_AUTH_ADMIN_PW }} \
-              -e SECURITY_CORS_ALLOWED_ORIGINS=https://michael-yi.com,https://admin.michael-yi.com \
-              -e SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
-              -e SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=10MB \
-              -e SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE=10MB \
+              -e PERSONAL_WEBSITE_AWS_ACCESS_KEY=${{ secrets.API_AWS_ACCESS_KEY }} \
+              -e PERSONAL_WEBSITE_AWS_SECRET_KEY=${{ secrets.API_AWS_SECRET_KEY }} \
+              -e PERSONAL_WEBSITE_AWS_S3_BUCKET=${{ secrets.API_AWS_S3_BUCKET }} \
+              -e PERSONAL_WEBSITE_SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
+              -e PERSONAL_WEBSITE_SPRING_DATASOURCE_USERNAME=${{ secrets.API_SPRING_DATASOURCE_USERNAME }} \
+              -e PERSONAL_WEBSITE_SPRING_DATASOURCE_PASSWORD=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }} \
+              -e PERSONAL_WEBSITE_SPRING_DATA_REDIS_HOST=${{ secrets.API_SPRING_DATA_REDIS_HOST }} \
+              -e PERSONAL_WEBSITE_SPRING_DATA_REDIS_PASSWORD=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }} \
+              -e PERSONAL_WEBSITE_SECURITY_AUTH_ADMIN_PW=${{ secrets.API_SECURITY_AUTH_ADMIN_PW }} \
+              -e PERSONAL_WEBSITE_SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
+              -e SPRING_PROFILES_ACTIVE=prod \
               michaelyi/personal-website-api:latest
             '
