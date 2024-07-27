@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@TestPropertySource("classpath:application-it.properties")
+@TestPropertySource("classpath:application-test.properties")
 class AuthIT extends TestConfig {
     @Autowired
     private MockMvc mvc;
