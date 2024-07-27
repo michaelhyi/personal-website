@@ -1,6 +1,5 @@
 package com.michaelyi.personalwebsite.auth;
 
-import com.michaelyi.personalwebsite.util.Constants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,14 +43,12 @@ public class AuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authHeader.substring(Constants.BEARER_PREFIX_LENGTH);
-
         if (SecurityContextHolder
                 .getContext()
                 .getAuthentication() == null
         ) {
             try {
-                authService.validateToken(token);
+                authService.validateToken(authHeader);
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(

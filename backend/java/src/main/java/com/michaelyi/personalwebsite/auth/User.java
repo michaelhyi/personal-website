@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class User implements UserDetails {
-    private static final String USERNAME = Constants.ADMIN_EMAIL;
     private String password;
 
     public User(String password) {
@@ -36,7 +35,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return USERNAME;
+        return Constants.ADMIN_EMAIL;
     }
 
     @Override
