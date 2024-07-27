@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.personalwebsite.TestConfig;
-import com.michaelyi.personalwebsite.auth.LoginRequest;
+import com.michaelyi.personalwebsite.auth.AuthRequest;
 import com.michaelyi.personalwebsite.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +63,7 @@ class PostIT extends TestConfig {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new LoginRequest(AUTHORIZED_PASSWORD))
+                                new AuthRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -169,7 +169,7 @@ class PostIT extends TestConfig {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new LoginRequest(AUTHORIZED_PASSWORD))
+                                new AuthRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -259,7 +259,7 @@ class PostIT extends TestConfig {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new LoginRequest(AUTHORIZED_PASSWORD))
+                                new AuthRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -312,7 +312,7 @@ class PostIT extends TestConfig {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new LoginRequest(AUTHORIZED_PASSWORD))
+                                new AuthRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -357,7 +357,7 @@ class PostIT extends TestConfig {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new LoginRequest(AUTHORIZED_PASSWORD))
+                                new AuthRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -453,7 +453,7 @@ class PostIT extends TestConfig {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new LoginRequest(AUTHORIZED_PASSWORD))
+                                new AuthRequest(AUTHORIZED_PASSWORD))
                         ))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -582,7 +582,7 @@ class PostIT extends TestConfig {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
-                                new LoginRequest(AUTHORIZED_PASSWORD)
+                                new AuthRequest(AUTHORIZED_PASSWORD)
                         )))
                 .andExpect(status().isOk())
                 .andReturn()

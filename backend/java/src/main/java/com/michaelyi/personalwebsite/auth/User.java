@@ -1,15 +1,13 @@
 package com.michaelyi.personalwebsite.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.michaelyi.personalwebsite.util.Constants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-
-import static com.michaelyi.personalwebsite.util.Constants.ADMIN_EMAIL;
-import static com.michaelyi.personalwebsite.util.Constants.ADMIN_ROLE;
 
 public class User implements UserDetails {
     private String password;
@@ -24,9 +22,8 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority role = new SimpleGrantedAuthority(
-                String.format("ROLE_%s", ADMIN_ROLE));
-
+        SimpleGrantedAuthority role
+                = new SimpleGrantedAuthority(Constants.GRANTED_AUTHORITY_ADMIN);
         return List.of(role);
     }
 
@@ -38,7 +35,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return ADMIN_EMAIL;
+        return Constants.ADMIN_EMAIL;
     }
 
     @Override

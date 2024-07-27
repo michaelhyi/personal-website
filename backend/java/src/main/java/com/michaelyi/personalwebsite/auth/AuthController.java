@@ -1,5 +1,6 @@
 package com.michaelyi.personalwebsite.auth;
 
+import com.michaelyi.personalwebsite.util.Constants;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,10 +8,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.michaelyi.personalwebsite.util.Constants.CONTEXT_PATH;
-
 @RestController
-@RequestMapping(CONTEXT_PATH + "/auth")
+@RequestMapping(Constants.CONTEXT_PATH + "/auth")
 public class AuthController {
     private final AuthService service;
 
@@ -19,14 +18,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest req) {
+    public String login(@RequestBody AuthRequest req) {
         return service.login(req);
     }
 
     @GetMapping("/validate-token")
     public void validateToken(
-            @RequestHeader("Authorization") String bearerToken
+            @RequestHeader("Authorization") String authHeader
     ) {
-        service.validateToken(bearerToken);
+        service.validateToken(authHeader);
     }
 }
