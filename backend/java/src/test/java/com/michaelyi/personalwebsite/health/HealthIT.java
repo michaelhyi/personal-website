@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@TestPropertySource("classpath:application-test.properties")
 public class HealthIT {
     @Autowired
     private MockMvc mvc;
@@ -48,7 +47,10 @@ public class HealthIT {
         assertEquals(healthResponse.getStatus(), "UP");
         assertNotNull(healthResponse.getUptime());
 
-        Field[] detailsFields = healthResponse.getDetails().getClass().getDeclaredFields();
+        Field[] detailsFields = healthResponse
+                .getDetails()
+                .getClass()
+                .getDeclaredFields();
         for (Field f : detailsFields) {
             f.setAccessible(true);
             String value = ((HealthStatus) f.get(healthResponse.getDetails()))
