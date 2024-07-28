@@ -18,18 +18,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static com.michaelyi.personalwebsite.util.Constants.ALLOWED_AND_EXPOSED_HEADERS;
-import static com.michaelyi.personalwebsite.util.Constants.ALLOWED_METHODS;
-import static com.michaelyi.personalwebsite.util.Constants.SECURITY_CORS_ALLOWED_ORIGINS;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     private final List<String> allowedOrigins;
     private final AuthFilter authFilter;
+    public static final List<String> ALLOWED_AND_EXPOSED_HEADERS =
+            List.of("Authorization", "Content-Type");
+
+    public static final List<String> ALLOWED_METHODS =
+            List.of("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
     public SecurityConfig(
-            @Value(SECURITY_CORS_ALLOWED_ORIGINS)
+            @Value("${security.cors.allowed-origins}")
             List<String> allowedOrigins,
             AuthFilter authFilter
     ) {
@@ -59,6 +61,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/")
+                        .permitAll()
                         .requestMatchers(Constants.AUTH_ENDPOINTS)
                         .permitAll()
                         .requestMatchers(HttpMethod.POST)

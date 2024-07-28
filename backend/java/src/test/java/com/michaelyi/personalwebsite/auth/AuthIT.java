@@ -2,7 +2,7 @@ package com.michaelyi.personalwebsite.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.personalwebsite.TestConfig;
+import com.michaelyi.personalwebsite.IntegrationTest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestPropertySource("classpath:application-test.properties")
-class AuthIT extends TestConfig {
+class AuthIT extends IntegrationTest {
     @Autowired
     private MockMvc mvc;
 
