@@ -33,33 +33,38 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public Post readPost(@PathVariable String id) {
-        return service.readPost(id);
+    public ResponseEntity<Post> readPost(@PathVariable String id) {
+        Post post = service.readPost(id);
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @GetMapping("/image/{id}")
-    public byte[] readPostImage(@PathVariable String id) {
-        return service.readPostImage(id);
+    public ResponseEntity<byte[]> readPostImage(@PathVariable String id) {
+        byte[] image = service.readPostImage(id);
+        return new ResponseEntity<>(image, HttpStatus.OK);
     }
 
     @GetMapping
-    public List<Post> readAllPosts() {
-        return service.readAllPosts();
+    public ResponseEntity<List<Post>> readAllPosts() {
+        List<Post> posts = service.readAllPosts();
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(
+    public ResponseEntity<Post> updatePost(
             @PathVariable String id,
             @RequestParam("text") String text,
             @RequestParam(
                     value = "image",
                     required = false
             ) MultipartFile image) {
-        return service.updatePost(id, text, image);
+        Post updatedPost = service.updatePost(id, text, image);
+        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable String id) {
+    public ResponseEntity<Void> deletePost(@PathVariable String id) {
         service.deletePost(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

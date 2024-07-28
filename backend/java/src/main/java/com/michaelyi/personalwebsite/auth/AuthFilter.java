@@ -38,7 +38,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
             filterChain.doFilter(request, response);
             return;
         }

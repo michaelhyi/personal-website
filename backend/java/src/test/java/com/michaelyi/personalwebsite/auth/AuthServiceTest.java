@@ -1,7 +1,5 @@
 package com.michaelyi.personalwebsite.auth;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,120 +8,124 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
-    private AuthService service;
+    private AuthService underTest;
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    private static final String AUTHORIZED_PASSWORD = "authorized";
-    private static final String UNAUTHORIZED_PASSWORD = "unauthorized password";
-    private static final String SIGNING_KEY
-            = "fakesigninkeyfakesigninkeyfakesigninkeyfakesigninkey";
-    private static final String ADMIN_PASSWORD = "encoded password";
+    private static final String ADMIN_PASSWORD = "admin";
 
     @BeforeEach
     void setUp() {
-        service = new AuthService(
+        underTest = new AuthService(
                 ADMIN_PASSWORD,
-                SIGNING_KEY,
+                AuthTestUtil.SIGNING_KEY,
                 passwordEncoder
         );
     }
 
     @Test
-    void willThrowLoginWhenUnauthorized() {
-        AuthRequest req = new AuthRequest(
-                UNAUTHORIZED_PASSWORD
-        );
-
-        Mockito.when(passwordEncoder.matches(
-                req.password(),
-                ADMIN_PASSWORD
-        )).thenReturn(false);
+    void willThrowLoginWhenBadRequest() {
+        AuthRequest nullReq = new AuthRequest(null);
 
         assertThrows(
-                UnauthorizedException.class, () ->
-                        service.login(req)
+                IllegalArgumentException.class,
+                () -> underTest.login(nullReq)
         );
 
-        Mockito.verify(passwordEncoder).matches(
-                req.password(),
-                ADMIN_PASSWORD
+        AuthRequest emptyReq = new AuthRequest("");
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.login(emptyReq)
         );
+
+        AuthRequest blankReq = new AuthRequest(" ");
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.login(blankReq)
+        );
+
+        Mockito.verifyNoInteractions(passwordEncoder);
+    }
+
+    @Test
+    void willThrowLoginWhenUnauthorized() {
+        AuthRequest req = new AuthRequest("unauthorized");
+
+        Mockito.when(
+                passwordEncoder.matches(req.password(), ADMIN_PASSWORD)
+        ).thenReturn(false);
+
+        assertThrows(UnauthorizedException.class, () -> underTest.login(req));
+
+        Mockito.verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
     }
 
     @Test
     void login() {
-        AuthRequest req = new AuthRequest(
-                AUTHORIZED_PASSWORD
+        AuthRequest req = new AuthRequest("authorized");
+
+        Mockito.when(
+                passwordEncoder.matches(req.password(), ADMIN_PASSWORD)
+        ).thenReturn(true);
+
+        underTest.login(req);
+
+        Mockito.verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
+    }
+
+    @Test
+    void willThrowValidateTokenWhenBadRequest() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.validateToken(null)
         );
 
-        Mockito.when(passwordEncoder.matches(
-                req.password(),
-                ADMIN_PASSWORD
-        )).thenReturn(true);
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.validateToken("")
+        );
 
-        service.login(req);
-        Mockito.verify(passwordEncoder).matches(
-                req.password(),
-                ADMIN_PASSWORD
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.validateToken(" ")
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.validateToken("Basic")
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.validateToken("Bearer")
         );
     }
 
     @Test
     void willThrowValidateTokenWhenTokenIsInvalid() {
-        Map<String, Object> claims = new HashMap<>();
-        long currentTime = System.currentTimeMillis();
-
-        String token =
-                Jwts
-                        .builder()
-                        .setClaims(claims)
-                        .setSubject(AuthUtil.ADMIN_EMAIL)
-                        .setIssuedAt(new Date(currentTime))
-                        .setExpiration(
-                                new Date(currentTime - AuthUtil.JWT_EXPIRATION)
-                        )
-                        .signWith(
-                                AuthUtil.getSigningKey(SIGNING_KEY),
-                                SignatureAlgorithm.HS256
-                        )
-                        .compact();
+        String token = AuthTestUtil.generateToken(
+                AuthUtil.JWT_EXPIRATION * -1
+        );
 
         assertThrows(
                 UnauthorizedException.class,
-                () -> service.validateToken(String.format("Bearer %s", token))
+                () -> underTest.validateToken(String.format("Bearer %s", token))
         );
     }
 
     @Test
     void validateToken() {
-        Map<String, Object> claims = new HashMap<>();
-        long currentTime = System.currentTimeMillis();
+        String token = AuthTestUtil.generateToken(
+                AuthUtil.JWT_EXPIRATION
+        );
 
-        String token =
-                Jwts
-                        .builder()
-                        .setClaims(claims)
-                        .setSubject(AuthUtil.ADMIN_EMAIL)
-                        .setIssuedAt(new Date(currentTime))
-                        .setExpiration(
-                                new Date(currentTime + AuthUtil.JWT_EXPIRATION)
-                        )
-                        .signWith(
-                                AuthUtil.getSigningKey(SIGNING_KEY),
-                                SignatureAlgorithm.HS256
-                        )
-                        .compact();
-
-        service.validateToken(String.format("Bearer %s", token));
+        underTest.validateToken(String.format("Bearer %s", token));
     }
 }

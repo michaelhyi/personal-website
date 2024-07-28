@@ -44,48 +44,83 @@ class PostServiceTest {
     }
 
     @Test
-    void willThrowPostConstructorWhenBadRequest() {
+    void willThrowCreatePostWhenBadRequest() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Post(null)
-        );
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Post("")
-        );
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Post("no-title")
-        );
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Post("<h1></h1>")
-        );
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Post("<h1>no-content</h1>")
+                () -> underTest.createPost(
+                        null,
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
         );
 
-        String text = "<h1>title (1994)</h1>content";
-        Post newPost = new Post(text);
-        assertEquals(POST.getId(), newPost.getId());
-        assertEquals("title (1994)", newPost.getTitle());
-        assertEquals(POST.getContent(), newPost.getContent());
-
-        text = "<h1>Oldboy (2003)</h1><p>content</p>";
-        newPost = new Post(text);
-        assertEquals("oldboy", newPost.getId());
-        assertEquals("Oldboy (2003)", newPost.getTitle());
-        assertEquals("<p>content</p>", newPost.getContent());
-
-        text = "<h1>It's Such A Beautiful Day (2012)</h1>Don Hertzfeldt";
-        newPost = new Post(text);
-        assertEquals("its-such-a-beautiful-day", newPost.getId());
-        assertEquals(
-                "It's Such A Beautiful Day (2012)",
-                newPost.getTitle()
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.createPost(
+                        "",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
         );
-        assertEquals("Don Hertzfeldt", newPost.getContent());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.createPost(
+                        "no-title",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.createPost(
+                        "<h1></h1>",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.createPost(
+                        "<h1>no-content</h1>",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.createPost(
+                        "<h1>no-content</h1><p></p>",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.createPost(
+                        "<h1>title</h1><p>content</p>",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
     }
 
     @Test
@@ -95,18 +130,12 @@ class PostServiceTest {
         assertThrows(IllegalArgumentException.class, () ->
                 underTest.createPost(
                         "<h1>title (1994)</h1><p>content</p>",
-                        null)
-        );
-        verify(dao).readPost("title");
-        verifyNoMoreInteractions(dao);
-    }
-
-    @Test
-    void willThrowCreatePostWhenImageDoesNotExist() {
-        assertThrows(IllegalArgumentException.class, () ->
-                underTest.createPost(
-                        "<h1>title (1994)</h1><p>content</p>",
-                        null
+                        new MockMultipartFile(
+                                "image",
+                                "image.jpg",
+                                "image/jpeg",
+                                "Hello World!".getBytes()
+                        )
                 )
         );
         verify(dao).readPost("title");
@@ -121,7 +150,12 @@ class PostServiceTest {
 
         String actualId = underTest.createPost(
                 "<h1>title (1994)</h1>content",
-                new MockMultipartFile("image", "Hello World!".getBytes())
+                new MockMultipartFile(
+                        "image",
+                        "image.jpg",
+                        "image/jpeg",
+                        "Hello World!".getBytes()
+                )
         );
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(
@@ -209,6 +243,106 @@ class PostServiceTest {
     }
 
     @Test
+    void willThrowUpdatePostWhenBadRequest() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.updatePost(
+                        null,
+                        null,
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.updatePost(
+                        "",
+                        null,
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.updatePost(
+                        " ",
+                        null,
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        when(dao.readPost("id")).thenReturn(Optional.of(POST));
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.updatePost(
+                        "id",
+                        null,
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.updatePost(
+                        "id",
+                        "",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.updatePost(
+                        "id",
+                        "no-title",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.updatePost(
+                        "id",
+                        "<h1></h1>",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.updatePost(
+                        "id",
+                        "<h1>no-content</h1>",
+                        new MockMultipartFile(
+                                "Hi",
+                                "Hello World!".getBytes()
+                        )
+                )
+        );
+    }
+
+    @Test
     void willThrowUpdatePostWhenPostNotFound() {
         when(dao.readPost("title")).thenReturn(Optional.empty());
 
@@ -231,7 +365,13 @@ class PostServiceTest {
         underTest.updatePost(
                 "title",
                 "<h1>title (1994)</h1>content",
-                null
+                new MockMultipartFile(
+                        "image",
+                        "image.jpg",
+                        "image/jpeg",
+                        "Hello World!".getBytes(
+                        )
+                )
         );
 
         ArgumentCaptor<Post> postArgumentCaptor =
@@ -251,6 +391,8 @@ class PostServiceTest {
                 "<h1>title (1994)</h1>content",
                 new MockMultipartFile(
                         "image",
+                        "image.jpg",
+                        "image/jpeg",
                         "New Hello World!".getBytes()
                 )
         );
