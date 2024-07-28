@@ -17,7 +17,7 @@ cd personal-website
 
 2. Set up environment variables.
 
-Set environment variables by pasting the following in `.zshrc` or running the following in your terminal:
+Set environment variables by pasting the following in `.zshrc` (if you're using zsh) or running the following in your terminal:
 
 ```shell
 export PERSONAL_WEBSITE_AWS_ACCESS_KEY=<your-aws-access-key>
