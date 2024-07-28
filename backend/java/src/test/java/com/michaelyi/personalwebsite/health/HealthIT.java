@@ -2,6 +2,7 @@ package com.michaelyi.personalwebsite.health;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.michaelyi.personalwebsite.IntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class HealthIT {
+@TestPropertySource("classpath:application-test.properties")
+public class HealthIT extends IntegrationTest {
     @Autowired
     private MockMvc mvc;
 
