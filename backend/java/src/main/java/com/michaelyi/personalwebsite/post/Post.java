@@ -6,9 +6,6 @@ import jakarta.persistence.Id;
 
 import java.util.Date;
 
-import static com.michaelyi.personalwebsite.util.Constants.CLOSING_H1_TAG_LENGTH;
-import static com.michaelyi.personalwebsite.util.Constants.OPENING_H1_TAG_LENGTH;
-
 @Entity
 public class Post {
     @Id
@@ -46,8 +43,13 @@ public class Post {
             throw new IllegalArgumentException("Title cannot be blank.");
         }
 
-        String newTitle = text.substring(OPENING_H1_TAG_LENGTH, titleIndex);
-        String newContent = text.substring(titleIndex + CLOSING_H1_TAG_LENGTH);
+        String newTitle = text.substring(
+                PostUtil.OPENING_H1_TAG_LENGTH,
+                titleIndex
+        );
+        String newContent = text.substring(
+                titleIndex + PostUtil.CLOSING_H1_TAG_LENGTH
+        );
 
         if (newTitle.isBlank() || newTitle.isEmpty()) {
             throw new IllegalArgumentException("Title cannot be blank.");

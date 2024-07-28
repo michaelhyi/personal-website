@@ -1,6 +1,5 @@
 package com.michaelyi.personalwebsite.auth;
 
-import com.michaelyi.personalwebsite.util.Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +23,13 @@ public class SecurityConfig {
     private final List<String> allowedOrigins;
     private final AuthFilter authFilter;
     private final AuthEntryPoint authEntryPoint;
-    public static final List<String> ALLOWED_AND_EXPOSED_HEADERS =
+
+    private static final List<String> ALLOWED_AND_EXPOSED_HEADERS =
             List.of("Authorization", "Content-Type");
-    public static final List<String> ALLOWED_METHODS =
+    private static final List<String> ALLOWED_METHODS =
             List.of("GET", "POST", "PUT", "DELETE", "OPTIONS");
+    private static final String ADMIN = "ADMIN";
+    private static final String[] WHITELISTED_ENDPOINTS = {"/", "/v2/auth/**"};
 
     public SecurityConfig(
             @Value("${security.cors.allowed-origins}")
@@ -63,21 +65,13 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/")
+                                .requestMatchers(WHITELISTED_ENDPOINTS)
                                 .permitAll()
-                                .requestMatchers(Constants.AUTH_ENDPOINTS)
-                                .permitAll()
-                                .requestMatchers(HttpMethod.POST)
-                                .hasAnyRole(Constants.ADMIN_ROLE)
                                 .requestMatchers(
                                         HttpMethod.GET,
-                                        Constants.POST_ENDPOINTS
+                                        "/v2/post/**"
                                 )
                                 .permitAll()
-                                .requestMatchers(HttpMethod.PUT)
-                                .hasAnyRole(Constants.ADMIN_ROLE)
-                                .requestMatchers(HttpMethod.DELETE)
-                                .hasAnyRole(Constants.ADMIN_ROLE)
                                 .anyRequest()
                                 .authenticated()
                 )

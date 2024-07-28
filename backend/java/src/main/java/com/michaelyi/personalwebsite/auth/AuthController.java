@@ -1,6 +1,5 @@
 package com.michaelyi.personalwebsite.auth;
 
-import com.michaelyi.personalwebsite.util.Constants;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(Constants.CONTEXT_PATH + "/auth")
+@RequestMapping("/v2/auth")
 public class AuthController {
     private final AuthService service;
 

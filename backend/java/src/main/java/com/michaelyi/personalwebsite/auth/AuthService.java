@@ -1,6 +1,5 @@
 package com.michaelyi.personalwebsite.auth;
 
-import com.michaelyi.personalwebsite.util.Constants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,14 +10,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.michaelyi.personalwebsite.util.Constants.BEARER_PREFIX_LENGTH;
-import static com.michaelyi.personalwebsite.util.Constants.JWT_EXPIRATION;
-
 @Service
 public class AuthService {
     private final String adminPassword;
     private final String signingKey;
     private final PasswordEncoder passwordEncoder;
+    private static final int BEARER_PREFIX_LENGTH = 7;
 
     public AuthService(
             @Value("${security.auth.admin-pw}") String adminPassword,
@@ -46,9 +43,9 @@ public class AuthService {
         return Jwts
                 .builder()
                 .setClaims(claims)
-                .setSubject(Constants.ADMIN_EMAIL)
+                .setSubject(AuthUtil.ADMIN_EMAIL)
                 .setIssuedAt(new Date(currentTime))
-                .setExpiration(new Date(currentTime + JWT_EXPIRATION))
+                .setExpiration(new Date(currentTime + AuthUtil.JWT_EXPIRATION))
                 .signWith(
                         AuthUtil.getSigningKey(signingKey),
                         SignatureAlgorithm.HS256
