@@ -58,11 +58,11 @@ public class S3Service {
             try {
                 return res.readAllBytes();
             } catch (IOException e) {
-                throw new NoSuchElementException("Post image not found.");
+                throw new NoSuchElementException("Post image not found");
             }
         } else {
             if (!fakeBucket.containsKey(key)) {
-                throw new NoSuchElementException("Post image not found.");
+                throw new NoSuchElementException("Post image not found");
             }
 
             return fakeBucket.get(key);

@@ -1,5 +1,6 @@
 package com.michaelyi.personalwebsite.auth;
 
+import com.michaelyi.personalwebsite.util.StringUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +29,10 @@ public class AuthService {
     }
 
     public String login(AuthRequest req) {
+        if (StringUtil.isStringInvalid(req.password())) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+
         boolean authorized = passwordEncoder.matches(
                 req.password(),
                 adminPassword
@@ -54,6 +59,12 @@ public class AuthService {
     }
 
     public void validateToken(String authHeader) {
+        if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
+            throw new IllegalArgumentException(
+                    "Authorization header is invalid"
+            );
+        }
+
         String token = authHeader.substring(BEARER_PREFIX_LENGTH);
 
         try {

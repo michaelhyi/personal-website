@@ -30,46 +30,6 @@ public class Post {
         this.content = content;
     }
 
-    public Post(String text) {
-        if (text == null
-                || text.isBlank()
-                || text.isEmpty()) {
-            throw new IllegalArgumentException("Fields cannot be blank.");
-        }
-
-        int titleIndex = text.indexOf("</h1>");
-
-        if (titleIndex == -1) {
-            throw new IllegalArgumentException("Title cannot be blank.");
-        }
-
-        String newTitle = text.substring(
-                PostUtil.OPENING_H1_TAG_LENGTH,
-                titleIndex
-        );
-        String newContent = text.substring(
-                titleIndex + PostUtil.CLOSING_H1_TAG_LENGTH
-        );
-
-        if (newTitle.isBlank() || newTitle.isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be blank.");
-        }
-
-        if (newContent.isBlank() || newContent.isEmpty()) {
-            throw new IllegalArgumentException("Content cannot be blank.");
-        }
-
-        String newId = newTitle.toLowerCase()
-                .replace(" ", "-")
-                .replaceAll("[^a-z\\-]", "");
-
-        id = newId.charAt(newId.length() - 1) == '-'
-                ? newId.substring(0, newId.length() - 1) : newId;
-        date = new Date();
-        title = newTitle.replaceAll("<[^>]*>", "");
-        content = newContent;
-    }
-
     public Post() {
     }
 

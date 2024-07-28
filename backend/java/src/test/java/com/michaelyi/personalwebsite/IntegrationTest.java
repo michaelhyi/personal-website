@@ -10,34 +10,23 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 public abstract class IntegrationTest {
     private static final int REDIS_PORT = 6379;
-    private static final String MYSQL_IMAGE = "mysql:8.0.36";
-    private static final String REDIS_IMAGE = "redis:6.2.14";
-    private static final String SPRING_DATASOURCE_URL = "spring.datasource.url";
-    private static final String SPRING_DATASOURCE_USERNAME
-            = "spring.datasource.username";
-    private static final String SPRING_DATASOURCE_PASSWORD =
-            "spring.datasource.password";
-    private static final String SPRING_DATA_REDIS_HOST
-            = "spring.data.redis.host";
-    private static final String SPRING_DATA_REDIS_PORT
-            = "spring.data.redis.port";
 
     @Container
     private static final MySQLContainer<?> MYSQL =
-            new MySQLContainer<>(MYSQL_IMAGE);
+            new MySQLContainer<>("mysql:8.0.36");
 
     @Container
-    private static final GenericContainer<?> REDIS  =
-            new GenericContainer<>(REDIS_IMAGE).withExposedPorts(REDIS_PORT);
+    private static final GenericContainer<?> REDIS =
+            new GenericContainer<>("redis:6.2.14").withExposedPorts(REDIS_PORT);
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add(SPRING_DATASOURCE_URL, MYSQL::getJdbcUrl);
-        registry.add(SPRING_DATASOURCE_USERNAME, MYSQL::getUsername);
-        registry.add(SPRING_DATASOURCE_PASSWORD, MYSQL::getPassword);
-        registry.add(SPRING_DATA_REDIS_HOST, REDIS::getHost);
+        registry.add("spring.datasource.url", MYSQL::getJdbcUrl);
+        registry.add("spring.datasource.username", MYSQL::getUsername);
+        registry.add("spring.datasource.password", MYSQL::getPassword);
+        registry.add("spring.data.redis.host", REDIS::getHost);
         registry.add(
-                SPRING_DATA_REDIS_PORT,
+                "spring.data.redis.port",
                 () -> String.valueOf(REDIS.getMappedPort(REDIS_PORT))
         );
     }

@@ -3,10 +3,6 @@ package com.michaelyi.personalwebsite.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.personalwebsite.IntegrationTest;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -38,13 +30,6 @@ class AuthIT extends IntegrationTest {
     @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
-    private static final String EXPIRED_TOKEN = String.format(
-            "%s%s%s%s",
-            "eyJhbGciOiJIUzI1NiJ9",
-            ".eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzA5MzI0OTUxLCJleHA",
-            "iOjE3MDkzMjQ5NjF9",
-            ".0kgPiP5MELw6Pq6i9tJMXDxDy7n4Eu-LprqHOD4O2QM"
-    );
 
     @BeforeEach
     void setUp() {
@@ -77,7 +62,9 @@ class AuthIT extends IntegrationTest {
 
     @Test
     void validateToken() throws Exception {
-        String unauthorizedToken = generateUnauthorizedToken();
+        String unauthorizedToken = AuthTestUtil.generateToken(
+                AuthUtil.JWT_EXPIRATION
+        );
         String error = mvc.perform(get("/v2/auth/validate-token")
                         .header(
                                 "Authorization",
@@ -91,10 +78,13 @@ class AuthIT extends IntegrationTest {
 
         assertEquals("Unauthorized", error);
 
+        String expiredToken = AuthTestUtil.generateToken(
+                AuthUtil.JWT_EXPIRATION * -1
+        );
         error = mvc.perform(get("/v2/auth/validate-token")
                         .header(
                                 "Authorization",
-                                String.format("Bearer %s", EXPIRED_TOKEN)
+                                String.format("Bearer %s", expiredToken)
                         )
                         .servletPath("/v2/auth/validate-token"))
                 .andExpect(status().isUnauthorized())
@@ -117,27 +107,5 @@ class AuthIT extends IntegrationTest {
                         .header("Authorization",
                                 String.format("Bearer %s", token)))
                 .andExpect(status().isOk());
-    }
-
-    private String generateUnauthorizedToken() {
-        Map<String, Object> extraClaims = new HashMap<>();
-        byte[] keyBytes = Decoders
-                .BASE64
-                .decode(
-                        "fakesigninkeyfakesigninkeyfakesigninkeyfakesigninkey"
-                );
-
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject("unauthorized@michael-yi.com")
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(
-                        System.currentTimeMillis() + 1L))
-                .signWith(
-                        Keys.hmacShaKeyFor(keyBytes),
-                        SignatureAlgorithm.HS256
-                )
-                .compact();
     }
 }

@@ -50,6 +50,13 @@ class PostIT extends IntegrationTest {
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
+    private static final MockMultipartFile IMAGE = new MockMultipartFile(
+            "image",
+            "image.png",
+            "image/png",
+            "image".getBytes()
+    );
+
     @BeforeEach
     void setUp() {
         dao.deleteAllPosts();
@@ -72,10 +79,7 @@ class PostIT extends IntegrationTest {
 
         String text = "";
         String error = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -85,14 +89,11 @@ class PostIT extends IntegrationTest {
                 .andReturn()
                 .getResolvedException()
                 .getMessage();
-        assertEquals("Fields cannot be blank.", error);
+        assertEquals("Text is invalid", error);
 
         text = "no-title";
         error = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -102,14 +103,11 @@ class PostIT extends IntegrationTest {
                 .andReturn()
                 .getResolvedException()
                 .getMessage();
-        assertEquals("Title cannot be blank.", error);
+        assertEquals("Title cannot be blank", error);
 
         text = "<h1></h1>";
         error = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -119,14 +117,11 @@ class PostIT extends IntegrationTest {
                 .andReturn()
                 .getResolvedException()
                 .getMessage();
-        assertEquals("Title cannot be blank.", error);
+        assertEquals("Title cannot be blank", error);
 
         text = "<h1>no-content</h1>";
         error = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -136,14 +131,11 @@ class PostIT extends IntegrationTest {
                 .andReturn()
                 .getResolvedException()
                 .getMessage();
-        assertEquals("Content cannot be blank.", error);
+        assertEquals("Content cannot be blank", error);
 
         text = "<h1>Oldboy (2003)</h1><p>content</p>";
         String id = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -179,10 +171,7 @@ class PostIT extends IntegrationTest {
         String text = "<h1>Already Exists (1994)</h1>content";
 
         mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -191,10 +180,7 @@ class PostIT extends IntegrationTest {
                 .andExpect(status().isCreated());
 
         String error = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -205,23 +191,17 @@ class PostIT extends IntegrationTest {
                 .getResolvedException()
                 .getMessage();
 
-        assertEquals(error, "A post with the same title already exists.");
+        assertEquals(error, "A post with the same title already exists");
 
         mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text))
                 .andExpect(status().isUnauthorized());
 
         text = "<h1>Title (1994)</h1>Content";
 
         String id = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -251,7 +231,7 @@ class PostIT extends IntegrationTest {
                 .getResponse()
                 .getContentAsByteArray();
 
-        assertArrayEquals("Hello World!".getBytes(), imageRes);
+        assertArrayEquals(IMAGE.getBytes(), imageRes);
     }
 
     @Test
@@ -271,16 +251,13 @@ class PostIT extends IntegrationTest {
                 .andReturn()
                 .getResolvedException()
                 .getMessage();
-        assertEquals("Post not found.", error);
+        assertEquals("Post not found", error);
 
         String text =
                 "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
 
         String id = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -324,16 +301,13 @@ class PostIT extends IntegrationTest {
                 .andReturn()
                 .getResolvedException()
                 .getMessage();
-        assertEquals("Post not found.", error);
+        assertEquals("Post not found", error);
 
         String text =
                 "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
 
         String id = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -349,7 +323,7 @@ class PostIT extends IntegrationTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsByteArray();
-        assertArrayEquals("Hello World!".getBytes(), image);
+        assertArrayEquals(IMAGE.getBytes(), image);
     }
 
     @Test
@@ -366,10 +340,7 @@ class PostIT extends IntegrationTest {
 
         String text = "<h1>Title (1994)</h1>Content";
         mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -382,10 +353,7 @@ class PostIT extends IntegrationTest {
 
         text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
         mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -398,10 +366,7 @@ class PostIT extends IntegrationTest {
 
         text = "<h1>It's A Wonderful Life (1946)</h1><p>by Frank Capra.</p>";
         mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -462,18 +427,12 @@ class PostIT extends IntegrationTest {
 
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
         mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text))
                 .andExpect(status().isUnauthorized());
 
         String error = mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -484,15 +443,12 @@ class PostIT extends IntegrationTest {
                 .getResolvedException()
                 .getMessage();
 
-        assertEquals("Post not found.", error);
+        assertEquals("Post not found", error);
 
         text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
 
         String id = mvc.perform(multipart("/v2/post")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -508,10 +464,7 @@ class PostIT extends IntegrationTest {
         String res = mvc.perform(multipart(
                         HttpMethod.PUT,
                         String.format("/v2/post/%s", id))
-                        .file(new MockMultipartFile(
-                                "image",
-                                "Hello World!".getBytes()
-                        ))
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -546,13 +499,17 @@ class PostIT extends IntegrationTest {
                 .getResponse()
                 .getContentAsByteArray();
 
-        assertArrayEquals("Hello World!".getBytes(), imageRes);
+        assertArrayEquals(IMAGE.getBytes(), imageRes);
 
         mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
-                        .file(new MockMultipartFile(
-                                "image",
-                                "New Hello World!".getBytes()
-                        ))
+                        .file(
+                                new MockMultipartFile(
+                                        "image",
+                                        "image.jpg",
+                                        "image/jpeg",
+                                        "New Hello World!".getBytes()
+                                )
+                        )
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -604,15 +561,10 @@ class PostIT extends IntegrationTest {
                 .getResolvedException()
                 .getMessage();
 
-        assertEquals("Post not found.", error);
+        assertEquals("Post not found", error);
 
         String id = mvc.perform(multipart("/v2/post")
-                        .file(
-                                new MockMultipartFile(
-                                        "image",
-                                        "Hello World!".getBytes()
-                                )
-                        )
+                        .file(IMAGE)
                         .param("text", text)
                         .header(
                                 "Authorization",
@@ -639,13 +591,13 @@ class PostIT extends IntegrationTest {
                                 "Authorization",
                                 String.format("Bearer %s", token)
                         ))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         error = mvc.perform(get("/v2/post/" + id))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException()
                 .getMessage();
-        assertEquals("Post not found.", error);
+        assertEquals("Post not found", error);
     }
 }
