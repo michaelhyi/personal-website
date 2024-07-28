@@ -6,15 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.michaelyi.personalwebsite.util.Constants.SECURITY_AUTH_ADMIN_PW;
-
 @Configuration
 public class AuthConfig {
     private final String adminPassword;
 
     public AuthConfig(
-            @Value(SECURITY_AUTH_ADMIN_PW)
-            String adminPassword
+            @Value("${security.auth.admin-pw}") String adminPassword
     ) {
         this.adminPassword = adminPassword;
     }

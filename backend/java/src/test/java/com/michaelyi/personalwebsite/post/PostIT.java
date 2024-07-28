@@ -3,7 +3,7 @@ package com.michaelyi.personalwebsite.post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.personalwebsite.TestConfig;
+import com.michaelyi.personalwebsite.IntegrationTest;
 import com.michaelyi.personalwebsite.auth.AuthRequest;
 import com.michaelyi.personalwebsite.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestPropertySource("classpath:application-test.properties")
-class PostIT extends TestConfig {
+class PostIT extends IntegrationTest {
     private static final String AUTHORIZED_PASSWORD = "authorized password";
 
     @Autowired

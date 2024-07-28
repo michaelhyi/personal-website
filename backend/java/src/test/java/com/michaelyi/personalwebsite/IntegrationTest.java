@@ -8,7 +8,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-public abstract class TestConfig {
+public abstract class IntegrationTest {
     private static final int REDIS_PORT = 6379;
     private static final String MYSQL_IMAGE = "mysql:8.0.36";
     private static final String REDIS_IMAGE = "redis:6.2.14";

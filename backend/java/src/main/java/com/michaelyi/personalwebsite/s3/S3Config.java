@@ -8,17 +8,19 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
-import static com.michaelyi.personalwebsite.util.Constants.AWS_ACCESS_KEY;
-import static com.michaelyi.personalwebsite.util.Constants.AWS_REGION;
-import static com.michaelyi.personalwebsite.util.Constants.AWS_SECRET_KEY;
-
 @Configuration
 public class S3Config {
-    @Value(AWS_ACCESS_KEY)
-    private String accessKey;
+    private final String accessKey;
+    private final String secretKey;
+    private static final String REGION = "us-west-2";
 
-    @Value(AWS_SECRET_KEY)
-    private String secretKey;
+    public S3Config(
+            @Value("${aws.access-key}") String accessKey,
+            @Value("${aws.secret-key}") String secretKey
+    ) {
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
+    }
 
     @Bean
     public S3Client s3Client() {
@@ -30,7 +32,7 @@ public class S3Config {
                 .credentialsProvider(
                         StaticCredentialsProvider
                                 .create(credentials))
-                .region(Region.of(AWS_REGION))
+                .region(Region.of(REGION))
                 .build();
     }
 }

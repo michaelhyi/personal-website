@@ -13,8 +13,6 @@ import java.util.Map;
 
 import static com.michaelyi.personalwebsite.util.Constants.BEARER_PREFIX_LENGTH;
 import static com.michaelyi.personalwebsite.util.Constants.JWT_EXPIRATION;
-import static com.michaelyi.personalwebsite.util.Constants.SECURITY_AUTH_ADMIN_PW;
-import static com.michaelyi.personalwebsite.util.Constants.SECURITY_JWT_SECRET_KEY;
 
 @Service
 public class AuthService {
@@ -23,10 +21,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public AuthService(
-            @Value(SECURITY_AUTH_ADMIN_PW)
-            String adminPassword,
-            @Value(SECURITY_JWT_SECRET_KEY)
-            String signingKey,
+            @Value("${security.auth.admin-pw}") String adminPassword,
+            @Value("${security.jwt.secret-key}") String signingKey,
             PasswordEncoder passwordEncoder
     ) {
         this.adminPassword = adminPassword;
