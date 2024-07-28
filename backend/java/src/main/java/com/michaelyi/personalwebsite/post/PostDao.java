@@ -17,12 +17,12 @@ public class PostDao {
     }
 
     public void createPost(Post post) {
-        final String SQL = """
+        String sql = """
                 INSERT INTO post (id, date, title, content)
                 VALUES (?, ?, ?, ?)
                 """;
         template.update(
-                SQL,
+                sql,
                 post.getId(),
                 post.getDate(),
                 post.getTitle(),
@@ -31,29 +31,29 @@ public class PostDao {
     }
 
     public Optional<Post> readPost(String id) {
-        final String SQL = "SELECT * FROM post WHERE id = ? LIMIT 1";
-        return template.query(SQL, mapper, id).stream().findFirst();
+        String sql = "SELECT * FROM post WHERE id = ? LIMIT 1";
+        return template.query(sql, mapper, id).stream().findFirst();
     }
 
     public List<Post> readAllPosts() {
-        final String SQL = "SELECT * FROM post ORDER BY date DESC";
-        return template.query(SQL, mapper);
+        String sql = "SELECT * FROM post ORDER BY date DESC";
+        return template.query(sql, mapper);
     }
 
     public void updatePost(Post post) {
-        final String SQL = """
+        String sql = """
                 UPDATE post SET title = ?, content = ? WHERE id = ?
                 """;
-        template.update(SQL, post.getTitle(), post.getContent(), post.getId());
+        template.update(sql, post.getTitle(), post.getContent(), post.getId());
     }
 
     public void deletePost(String id) {
-        final String SQL = "DELETE FROM post WHERE id = ?";
-        template.update(SQL, id);
+        String sql = "DELETE FROM post WHERE id = ?";
+        template.update(sql, id);
     }
 
     public void deleteAllPosts() {
-        final String SQL = "DELETE FROM post";
-        template.update(SQL);
+        String sql = "DELETE FROM post";
+        template.update(sql);
     }
 }

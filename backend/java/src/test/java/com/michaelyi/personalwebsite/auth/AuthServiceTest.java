@@ -1,6 +1,5 @@
 package com.michaelyi.personalwebsite.auth;
 
-import com.michaelyi.personalwebsite.util.Constants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.michaelyi.personalwebsite.util.Constants.JWT_EXPIRATION;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
@@ -89,9 +87,11 @@ class AuthServiceTest {
                 Jwts
                         .builder()
                         .setClaims(claims)
-                        .setSubject(Constants.ADMIN_EMAIL)
+                        .setSubject(AuthUtil.ADMIN_EMAIL)
                         .setIssuedAt(new Date(currentTime))
-                        .setExpiration(new Date(currentTime - JWT_EXPIRATION))
+                        .setExpiration(
+                                new Date(currentTime - AuthUtil.JWT_EXPIRATION)
+                        )
                         .signWith(
                                 AuthUtil.getSigningKey(SIGNING_KEY),
                                 SignatureAlgorithm.HS256
@@ -113,9 +113,11 @@ class AuthServiceTest {
                 Jwts
                         .builder()
                         .setClaims(claims)
-                        .setSubject(Constants.ADMIN_EMAIL)
+                        .setSubject(AuthUtil.ADMIN_EMAIL)
                         .setIssuedAt(new Date(currentTime))
-                        .setExpiration(new Date(currentTime + JWT_EXPIRATION))
+                        .setExpiration(
+                                new Date(currentTime + AuthUtil.JWT_EXPIRATION)
+                        )
                         .signWith(
                                 AuthUtil.getSigningKey(SIGNING_KEY),
                                 SignatureAlgorithm.HS256
