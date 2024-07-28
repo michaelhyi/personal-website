@@ -213,7 +213,7 @@ class PostIT extends IntegrationTest {
                                 "Hello World!".getBytes()
                         ))
                         .param("text", text))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
 
         text = "<h1>Title (1994)</h1>Content";
 
@@ -467,7 +467,7 @@ class PostIT extends IntegrationTest {
                                 "Hello World!".getBytes()
                         ))
                         .param("text", text))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
 
         String error = mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
                         .file(new MockMultipartFile(
@@ -592,7 +592,7 @@ class PostIT extends IntegrationTest {
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
 
         mvc.perform(delete("/v2/post/oldboy"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
 
         String error = mvc.perform(delete("/v2/post/oldboy")
                         .header(
