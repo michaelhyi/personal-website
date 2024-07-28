@@ -18,25 +18,26 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     private final List<String> allowedOrigins;
     private final AuthFilter authFilter;
+    private final AuthEntryPoint authEntryPoint;
     public static final List<String> ALLOWED_AND_EXPOSED_HEADERS =
             List.of("Authorization", "Content-Type");
-
     public static final List<String> ALLOWED_METHODS =
             List.of("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
     public SecurityConfig(
             @Value("${security.cors.allowed-origins}")
             List<String> allowedOrigins,
-            AuthFilter authFilter
+            AuthFilter authFilter,
+            AuthEntryPoint authEntryPoint
     ) {
         this.allowedOrigins = allowedOrigins;
         this.authFilter = authFilter;
+        this.authEntryPoint = authEntryPoint;
     }
 
     @Bean
@@ -60,31 +61,38 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/")
-                        .permitAll()
-                        .requestMatchers(Constants.AUTH_ENDPOINTS)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST)
-                        .hasAnyRole(Constants.ADMIN_ROLE)
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                Constants.POST_ENDPOINTS
-                        )
-                        .permitAll()
-                        .requestMatchers(HttpMethod.PUT)
-                        .hasAnyRole(Constants.ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.DELETE)
-                        .hasAnyRole(Constants.ADMIN_ROLE)
-                        .anyRequest()
-                        .authenticated())
-                .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(
+                .authorizeHttpRequests(
+                        auth -> auth
+                                .requestMatchers("/")
+                                .permitAll()
+                                .requestMatchers(Constants.AUTH_ENDPOINTS)
+                                .permitAll()
+                                .requestMatchers(HttpMethod.POST)
+                                .hasAnyRole(Constants.ADMIN_ROLE)
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        Constants.POST_ENDPOINTS
+                                )
+                                .permitAll()
+                                .requestMatchers(HttpMethod.PUT)
+                                .hasAnyRole(Constants.ADMIN_ROLE)
+                                .requestMatchers(HttpMethod.DELETE)
+                                .hasAnyRole(Constants.ADMIN_ROLE)
+                                .anyRequest()
+                                .authenticated()
+                )
+                .sessionManagement(
+                        sess -> sess.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
-                        ))
+                        )
+                )
                 .addFilterBefore(
                         authFilter,
-                        UsernamePasswordAuthenticationFilter.class)
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .exceptionHandling(
+                        exc -> exc.authenticationEntryPoint(authEntryPoint)
+                )
                 .build();
     }
 }
