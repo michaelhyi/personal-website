@@ -15,6 +15,7 @@ This repository contains the source code to my personal website and film blog. I
 
 ## Tech Stack
 
+### Backend
 - [Java](https://www.java.com/en/)
 - [Spring](https://spring.io/)
 - [Gradle](https://gradle.org/)
@@ -25,6 +26,8 @@ This repository contains the source code to my personal website and film blog. I
 - [JUnit](https://junit.org/junit5/)
 - [Mockito](https://site.mockito.org/)
 - [Testcontainers](https://testcontainers.com/)
+
+### Frontend
 - [Nginx](https://www.nginx.com/)
 - [Node.js](https://nodejs.org/en)
 - [JavaScript](https://www.javascript.com/)
@@ -38,7 +41,3 @@ This repository contains the source code to my personal website and film blog. I
 |![](.github/assets/view-post.png) | ![](.github/assets/auth.png) <tr></tr> |
 |![](.github/assets/create-post.png) | ![](.github/assets/delete-post.png) <tr></tr> |
 |![](.github/assets/edit-post-1.png) | ![](.github/assets/edit-post-2.png) <tr></tr> |
-
-## Project Stats
-
-![Alt](https://repobeats.axiom.co/api/embed/0d0e559984591c9b57adbc13a96171939ad77a0f.svg "Repobeats analytics image")

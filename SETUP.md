@@ -3,7 +3,7 @@
 #### Pre-requisites:
 
 - Node
-- Maven
+- Gradle
 - MySQL 
 - Redis 
 - Docker 
@@ -15,45 +15,24 @@ git clone https://github.com/michaelhyi/personal-website.git
 cd personal-website
 ```
 
-2. In `backend/src/main/resources`, create a file named `application.properties`. Copy the following into the file:
+2. Set up environment variables.
+
+Set environment variables by pasting the following in `.zshrc` or running the following in your terminal:
 
 ```shell
-# app
-spring.application.name=personal-website-api
-
-# aws
-aws.access-key=
-aws.secret-key=
-aws.s3.bucket=
-
-# db
-spring.datasource.url=jdbc:mysql://localhost:3306/personal_website_api
-spring.datasource.username=root
-spring.datasource.password=root
-spring.jpa.hibernate.ddl-auto=validate
-spring.data.redis.host=localhost
-spring.data.redis.port=6379
-
-# security
-security.auth.admin-pw=
-security.cors.allowed-origins=http://localhost:3000,http://localhost:3001
-security.jwt.secret-key=
-
-# upload
-spring.servlet.multipart.max-file-size=10MB
-spring.servlet.multipart.max-request-size=10MB
+export PERSONAL_WEBSITE_AWS_ACCESS_KEY=<your-aws-access-key>
+export PERSONAL_WEBSITE_AWS_SECRET_KEY=<your-aws-secret-key>
+export PERSONAL_WEBSITE_AWS_S3_BUCKET=<your-aws-s3-bucket>
+export PERSONAL_WEBSITE_SECURITY_AUTH_ADMIN_PW=<your-admin-password>
+export PERSONAL_WEBSITE_SECURITY_JWT_SECRET_KEY=<your-jwt-secret-key>
 ```
 
-> To generate AWS secret keys, log in to your [AWS console](https://aws.amazon.com/). Click on your username, and click `Security credentials` on the dropdown menu. Scroll down to `Access keys`, and click `Create access key`.
+- To generate AWS secret keys, log in to your [AWS console](https://aws.amazon.com/). Click on your username, and click `Security credentials` on the dropdown menu. Scroll down to `Access keys`, and click `Create access key`.
+- To set up an AWS S3 bucket, refer to Step 4.
+- Set `PERSONAL_WEBSITE_SECURITY_AUTH_ADMIN_PW` equal to a secure, hashed password. Generate one using `openssl` or any password manager, and then hash it using Spring Security's BCryptPasswordEncoder.
+- To generate a JWT secret key, use `openssl rand -base64 512`.
 
-- Set `aws.access-key` equal to your AWS Access Key in both files.
-- Set `aws.secret-key` equal to your AWS Secret Key in both files.
-
-- Set `security.auth.admin-pw` equal to a secure, hashed password. Generate one using `openssl` or any password manager.
-
-> Use `openssl rand -base64 512` to generate a secret key for JWT signing.
-
-- Set `security.jwt.secret-key` equal to your generated secret key in both files.
+> For any environment variables that have a `$`, escape it with a backslash.
 
 3. Create a new MySQL database. 
 
