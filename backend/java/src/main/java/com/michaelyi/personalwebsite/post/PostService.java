@@ -1,5 +1,7 @@
 package com.michaelyi.personalwebsite.post;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.michaelyi.personalwebsite.cache.CacheService;
 import com.michaelyi.personalwebsite.s3.S3Service;
 import com.michaelyi.personalwebsite.util.StringUtil;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,16 @@ import java.util.NoSuchElementException;
 public class PostService {
     private final PostDao dao;
     private final S3Service s3Service;
+    private final CacheService cacheService;
 
-    public PostService(PostDao dao, S3Service s3Service) {
+    public PostService(
+            PostDao dao,
+            S3Service s3Service,
+            CacheService cacheService
+    ) {
         this.dao = dao;
         this.s3Service = s3Service;
+        this.cacheService = cacheService;
     }
 
     public String createPost(
@@ -27,40 +35,56 @@ public class PostService {
     ) {
         Post post = PostUtil.validateAndConstructPost(text);
 
-        if (PostUtil.isImageValid(image)) {
+        if (PostUtil.isImageInvalid(image)) {
             throw new IllegalArgumentException("Image is invalid");
         }
 
-        try {
-            readPost(post.getId());
+        Post existingPost = readPost(post.getId());
 
+        if (existingPost != null) {
             throw new IllegalArgumentException(
                     "A post with the same title already exists"
             );
-        } catch (NoSuchElementException e) {
-            dao.createPost(post);
-            String id = post.getId();
-
-            try {
-                s3Service.putObject(id, image.getBytes());
-            } catch (IOException err) {
-                throw new IllegalArgumentException("Image could not be read");
-            }
-
-            return id;
         }
+
+        dao.createPost(post);
+
+        try {
+            s3Service.putObject(post.getId(), image.getBytes());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Image could not be read");
+        }
+
+        cacheService.set(String.format("readPost?id=%s", post.getId()), post);
+        cacheService.delete("readAllPosts");
+
+        return post.getId();
     }
 
-    public Post readPost(String id)
-            throws NoSuchElementException {
+    public Post readPost(String id) {
+        Post post = cacheService.get(
+                    String.format("readPost?id=%s", id),
+                    Post.class
+            );
+
+        if (post != null) {
+            return post;
+        }
+
         if (StringUtil.isStringInvalid(id)) {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
-        return dao
-                .readPost(id)
-                .orElseThrow(() ->
-                        new NoSuchElementException("Post not found"));
+        post = dao.readPost(id).orElse(null);
+
+        if (post != null) {
+            cacheService.set(
+                    String.format("readPost?id=%s", post.getId()),
+                    post
+            );
+        }
+
+        return post;
     }
 
     public byte[] readPostImage(String id) {
@@ -68,17 +92,55 @@ public class PostService {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
-        readPost(id);
+        Post post = readPost(id);
+
+        if (post == null) {
+            throw new NoSuchElementException("Post not found");
+        }
+
+        byte[] image = cacheService.get(
+                String.format("readPostImage?id=%s", post.getId()),
+                byte[].class
+        );
+
+        if (image != null) {
+            return image;
+        }
 
         try {
-            return s3Service.getObject(id);
+            image = s3Service.getObject(id);
+
+            if (image != null) {
+                cacheService.set(
+                        String.format("readPostImage?id=%s", post.getId()),
+                        image
+                );
+            }
+
+            return image;
         } catch (NoSuchKeyException | NoSuchElementException err) {
             throw new NoSuchElementException("Post image not found");
         }
     }
 
     public List<Post> readAllPosts() {
-        return dao.readAllPosts();
+        List<Post> posts = cacheService.get(
+                "readAllPosts",
+                new TypeReference<List<Post>>() {
+                }
+        );
+
+        if (posts != null) {
+            return posts;
+        }
+
+        posts = dao.readAllPosts();
+
+        if (posts != null) {
+            cacheService.set("readAllPosts", posts);
+        }
+
+        return posts;
     }
 
     public Post updatePost(
@@ -91,15 +153,24 @@ public class PostService {
         }
 
         Post post = readPost(id);
+
+        if (post == null) {
+            throw new NoSuchElementException("Post not found");
+        }
+
         Post updatedPost = PostUtil.validateAndConstructPost(text);
 
-        if (PostUtil.isImageValid(image)) {
-            throw new IllegalArgumentException("Image is invalid");
-        }
 
         post.setTitle(updatedPost.getTitle());
         post.setContent(updatedPost.getContent());
         dao.updatePost(post);
+
+        cacheService.set(String.format("readPost?id=%s", post.getId()), post);
+        cacheService.delete("readAllPosts");
+
+        if (PostUtil.isImageInvalid(image)) {
+            return post;
+        }
 
         byte[] currentImage = readPostImage(id);
         byte[] newImage;
@@ -111,8 +182,12 @@ public class PostService {
         }
 
         if (newImage != null && !Arrays.equals(currentImage, newImage)) {
-            s3Service.deleteObject(id);
-            s3Service.putObject(id, newImage);
+            s3Service.deleteObject(post.getId());
+            s3Service.putObject(post.getId(), newImage);
+            cacheService.set(
+                    String.format("readPostImage?id=%s", post.getId()),
+                    newImage
+            );
         }
 
         return post;
@@ -124,9 +199,17 @@ public class PostService {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
-        readPost(id);
+        Post post = readPost(id);
 
-        s3Service.deleteObject(id);
-        dao.deletePost(id);
+        if (post == null) {
+            throw new NoSuchElementException("Post not found");
+        }
+
+        s3Service.deleteObject(post.getId());
+        dao.deletePost(post.getId());
+
+        cacheService.delete(String.format("readPost?id=%s", post.getId()));
+        cacheService.delete(String.format("readPostImage?id=%s", post.getId()));
+        cacheService.delete("readAllPosts");
     }
 }

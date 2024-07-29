@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/v2/post")
@@ -35,6 +36,11 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<Post> readPost(@PathVariable String id) {
         Post post = service.readPost(id);
+
+        if (post == null) {
+            throw new NoSuchElementException("Post not found");
+        }
+
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
