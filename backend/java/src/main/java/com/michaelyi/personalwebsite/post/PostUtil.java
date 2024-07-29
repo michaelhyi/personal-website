@@ -49,7 +49,7 @@ public class PostUtil {
         return new Post(id, date, title, content);
     }
 
-    public static boolean isImageValid(MultipartFile image) {
+    public static boolean isImageInvalid(MultipartFile image) {
         return image == null
                 || image.isEmpty()
                 || image.getSize() == 0

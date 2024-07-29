@@ -15,6 +15,7 @@ export default function validateForm(text, image, showImage) {
     if (!image && !showImage) throw new Error("An image is required.");
 
     if (
+        image &&
         image.type !== "image/jpeg" &&
         image.type !== "image/png" &&
         image.type !== "image/webp"

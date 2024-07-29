@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.personalwebsite.IntegrationTest;
 import com.michaelyi.personalwebsite.auth.AuthRequest;
+import com.michaelyi.personalwebsite.cache.CacheService;
 import com.michaelyi.personalwebsite.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,9 @@ class PostIT extends IntegrationTest {
     private S3Service s3Service;
 
     @Autowired
+    private CacheService cacheService;
+
+    @Autowired
     private ObjectMapper mapper;
     private ObjectWriter writer;
 
@@ -59,6 +63,7 @@ class PostIT extends IntegrationTest {
 
     @BeforeEach
     void setUp() {
+        cacheService.flushAll();
         dao.deleteAllPosts();
         writer = mapper.writer().withDefaultPrettyPrinter();
         s3Service.deleteObject("title");

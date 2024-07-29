@@ -1,5 +1,6 @@
 package com.michaelyi.personalwebsite.post;
 
+import com.michaelyi.personalwebsite.cache.CacheService;
 import com.michaelyi.personalwebsite.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -30,6 +32,10 @@ class PostServiceTest {
 
     @Mock
     private S3Service s3Service;
+
+    @Mock
+    private CacheService cacheService;
+
     private PostService underTest;
     private static final Post POST = new Post(
             "title",
@@ -40,7 +46,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new PostService(dao, s3Service);
+        underTest = new PostService(dao, s3Service, cacheService);
     }
 
     @Test
@@ -174,13 +180,12 @@ class PostServiceTest {
     }
 
     @Test
-    void willThrowReadPostWhenPostNotFound() {
+    void willReturnNullDuringReadPostWhenPostNotFound() {
         when(dao.readPost("title")).thenReturn(Optional.empty());
 
-        assertThrows(
-                NoSuchElementException.class,
-                () -> underTest.readPost("title")
-        );
+        Post post = underTest.readPost("title");
+        assertNull(post);
+
         verify(dao).readPost("title");
     }
 
