@@ -84,4 +84,4 @@ jobs:
               -e PERSONAL_WEBSITE_SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
               -e SPRING_PROFILES_ACTIVE=prod \
               michaelyi/personal-website-api:latest
-            EOF
+          EOF
