@@ -17,6 +17,7 @@ This repository contains the source code to my personal website and film blog. I
 
 ### Backend
 - [Java](https://www.java.com/en/)
+- [Go](https://go.dev/)
 - [Spring](https://spring.io/)
 - [Gradle](https://gradle.org/)
 - [MySQL](https://www.mysql.com/)
