@@ -51,7 +51,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
           SPRING_DATA_REDIS_HOST: ${{ secrets.SPRING_DATA_REDIS_HOST }}
           SPRING_DATA_REDIS_PASSWORD: ${{ secrets.SPRING_DATA_REDIS_PASSWORD }}
-          SECURITY_AUTH_ADMIN_PW: ${{ secrets.ADMIN_PW }}
-          SECURITY_JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          ADMIN_PW: ${{ secrets.ADMIN_PW }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
           PERSONAL_WEBSITE_TEST_ADMIN_PW: ${{ secrets.TEST_ADMIN_PW }}
         run: ./gradlew check --info
