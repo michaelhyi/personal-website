@@ -11,7 +11,7 @@ public class AuthConfig {
     private final String adminPassword;
 
     public AuthConfig(
-            @Value("${security.auth.admin-pw}") String adminPassword
+            @Value("${admin.pw}") String adminPassword
     ) {
         this.adminPassword = adminPassword;
     }

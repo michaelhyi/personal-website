@@ -28,11 +28,10 @@ public class SecurityConfig {
             List.of("Authorization", "Content-Type");
     private static final List<String> ALLOWED_METHODS =
             List.of("GET", "POST", "PUT", "DELETE", "OPTIONS");
-    private static final String ADMIN = "ADMIN";
     private static final String[] WHITELISTED_ENDPOINTS = {"/", "/v2/auth/**"};
 
     public SecurityConfig(
-            @Value("${security.cors.allowed-origins}")
+            @Value("${cors.allowed-origins}")
             List<String> allowedOrigins,
             AuthFilter authFilter,
             AuthEntryPoint authEntryPoint
