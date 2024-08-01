@@ -59,6 +59,16 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          AWS_ACCESS_KEY: ${{ secrets.API_AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.API_AWS_SECRET_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.API_AWS_S3_BUCKET }}
+          SPRING_DATASOURCE_URL: ${{ secrets.API_SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.API_SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.API_SPRING_DATASOURCE_PASSWORD }}
+          SPRING_DATA_REDIS_HOST: ${{ secrets.API_SPRING_DATA_REDIS_HOST }}
+          SPRING_DATA_REDIS_PASSWORD: ${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }}
+          SECURITY_AUTH_ADMIN_PW: ${{ secrets.API_SECURITY_AUTH_ADMIN_PW }}
+          SECURITY_JWT_SECRET_KEY: ${{ secrets.API_SECURITY_JWT_SECRET_KEY }}
         run: |
           docker build . -t michaelyi/personal-website-api:latest
           docker build . -t michaelyi/personal-website-api:${{ env.VERSION }}
@@ -73,15 +83,15 @@ jobs:
             sudo docker pull michaelyi/personal-website-api:latest
             sudo docker run --name personal-website-api -d -p 8080:8080 \
               -e SPRING_PROFILES_ACTIVE=prod \
-              -e AWS_ACCESS_KEY=${{ secrets.API_AWS_ACCESS_KEY }} \
-              -e AWS_SECRET_KEY=${{ secrets.API_AWS_SECRET_KEY }} \
-              -e AWS_S3_BUCKET=${{ secrets.API_AWS_S3_BUCKET }} \
-              -e SPRING_DATASOURCE_URL=${{ secrets.API_SPRING_DATASOURCE_URL }} \
-              -e SPRING_DATASOURCE_USERNAME=${{ secrets.API_SPRING_DATASOURCE_USERNAME }} \
-              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.API_SPRING_DATASOURCE_PASSWORD }} \
-              -e SPRING_DATA_REDIS_HOST=${{ secrets.API_SPRING_DATA_REDIS_HOST }} \
-              -e SPRING_DATA_REDIS_PASSWORD=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }} \
-              -e SECURITY_AUTH_ADMIN_PW=${{ secrets.API_SECURITY_AUTH_ADMIN_PW }} \
-              -e SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
+              -e AWS_ACCESS_KEY=${AWS_ACCESS_KEY} \
+              -e AWS_SECRET_KEY=${AWS_SECRET_KEY} \
+              -e AWS_S3_BUCKET=${AWS_S3_BUCKET} \
+              -e SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL} \
+              -e SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME} \
+              -e SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD} \
+              -e SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST} \
+              -e SPRING_DATA_REDIS_PASSWORD=${SPRING_DATA_REDIS_PASSWORD} \
+              -e SECURITY_AUTH_ADMIN_PW=${SECURITY_AUTH_ADMIN_PW} \
+              -e SECURITY_JWT_SECRET_KEY=${SECURITY_JWT_SECRET_KEY} \
               michaelyi/personal-website-api:latest
             '
