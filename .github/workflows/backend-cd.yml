@@ -66,12 +66,13 @@ jobs:
           docker push michaelyi/personal-website-api:${{ env.VERSION }}
           echo "$SSH_PRIVATE_KEY" > personal-website-api-kp.pem
           chmod 400 personal-website-api-kp.pem
-          ssh -o StrictHostKeyChecking=no -i personal-website-api-kp.pem ec2-user@${SSH_HOST} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i personal-website-api-kp.pem ec2-user@${SSH_HOST} '
             sudo docker stop personal-website-api || true
             sudo docker rm personal-website-api || true
             sudo docker rmi -f $(sudo docker image ls -a -q)
             sudo docker pull michaelyi/personal-website-api:latest
             sudo docker run --name personal-website-api -d -p 8080:8080 \
+              -e SPRING_PROFILES_ACTIVE=prod \
               -e PERSONAL_WEBSITE_AWS_ACCESS_KEY=${{ secrets.API_AWS_ACCESS_KEY }} \
               -e PERSONAL_WEBSITE_AWS_SECRET_KEY=${{ secrets.API_AWS_SECRET_KEY }} \
               -e PERSONAL_WEBSITE_AWS_S3_BUCKET=${{ secrets.API_AWS_S3_BUCKET }} \
@@ -82,6 +83,5 @@ jobs:
               -e PERSONAL_WEBSITE_SPRING_DATA_REDIS_PASSWORD=${{ secrets.API_SPRING_DATA_REDIS_PASSWORD }} \
               -e PERSONAL_WEBSITE_SECURITY_AUTH_ADMIN_PW=${{ secrets.API_SECURITY_AUTH_ADMIN_PW }} \
               -e PERSONAL_WEBSITE_SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
-              -e SPRING_PROFILES_ACTIVE=prod \
               michaelyi/personal-website-api:latest
-          EOF
+            ' 
