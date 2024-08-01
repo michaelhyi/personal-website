@@ -84,4 +84,4 @@ jobs:
               -e SECURITY_AUTH_ADMIN_PW=${{ secrets.API_SECURITY_AUTH_ADMIN_PW }} \
               -e SECURITY_JWT_SECRET_KEY=${{ secrets.API_SECURITY_JWT_SECRET_KEY }} \
               michaelyi/personal-website-api:latest
-            ' 
+            '
