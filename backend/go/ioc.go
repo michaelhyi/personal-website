@@ -80,8 +80,8 @@ func GetHealthController() health.HealthController {
 
 func GetAuthServiceAndController() (auth.AuthService, auth.AuthController) {
 	authService := auth.AuthService{
-		AdminPassword: os.Getenv("PERSONAL_WEBSITE_SECURITY_AUTH_ADMIN_PW"),
-		SigningKey:    os.Getenv("PERSONAL_WEBSITE_SECURITY_JWT_SECRET_KEY"),
+		AdminPassword: os.Getenv("PERSONAL_WEBSITE_ADMIN_PW"),
+		SigningKey:    os.Getenv("JWT_SECRET_KEY"),
 	}
 
 	authController := auth.AuthController{
