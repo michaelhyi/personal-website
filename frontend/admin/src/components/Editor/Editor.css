@@ -1,0 +1,23 @@
+.editor-wrapper {
+    margin-top: 32px;
+    border-radius: 6px;
+    background-color: rgb(38 38 38);
+}
+
+.editor-header {
+    display: flex;
+    gap: 8px;
+    margin: 20px 1.5vw;
+}
+
+.editor-header-btn {
+    transition-duration: 500ms;
+}
+
+.editor-header-btn-active {
+    fill: white;
+}
+
+.editor-header-btn-inactive {
+    fill: #737373;
+}

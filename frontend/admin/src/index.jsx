@@ -1,27 +1,24 @@
-import { inject } from "@vercel/analytics";
+import "./index.css";
+
 import React from "react";
-// eslint-disable-next-line react/no-deprecated
-import { render } from "react-dom";
+import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import "./index.css";
-import reportWebVitals from "./reportWebVitals";
-import Blog from "./pages/blog";
-import Home from "./pages/home";
-import Post from "./pages/post";
+import { inject } from "@vercel/analytics";
+
+import { Blog, Home, Post } from "./pages";
 
 const router = createBrowserRouter([
     { path: "/blog", element: <Blog /> },
-    { path: "/blog/post", element: <Post /> },
     { path: "/", element: <Home /> },
+    { path: "/blog/post", element: <Post /> },
 ]);
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-render(
+root.render(
     <React.StrictMode>
         <RouterProvider router={router} />
     </React.StrictMode>,
-    document.getElementById("root"),
 );
 
-reportWebVitals();
 inject();

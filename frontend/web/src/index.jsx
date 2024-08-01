@@ -1,17 +1,13 @@
-import { inject } from "@vercel/analytics";
-import React from "react";
-// eslint-disable-next-line react/no-deprecated
-import { render } from "react-dom";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
 
-import About from "./pages/about";
-import Blog from "./pages/blog";
-import Home from "./pages/home";
-import Lauren from "./pages/lauren";
-import NotFound from "./components/NotFound";
-import Portfolio from "./pages/portfolio";
-import ViewPost from "./pages/view-post";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+import { inject } from "@vercel/analytics";
+
+import { About, Blog, Home, Lauren, Portfolio, ViewPost } from "./pages";
+import { NotFound } from "./components";
 
 const router = createBrowserRouter([
     {
@@ -31,10 +27,6 @@ const router = createBrowserRouter([
         element: <Lauren />,
     },
     {
-        path: "*",
-        element: <NotFound />,
-    },
-    {
         path: "/portfolio",
         element: <Portfolio />,
     },
@@ -42,13 +34,17 @@ const router = createBrowserRouter([
         path: "/blog/:id",
         element: <ViewPost />,
     },
+    {
+        path: "*",
+        element: <NotFound />,
+    },
 ]);
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-render(
+root.render(
     <React.StrictMode>
         <RouterProvider router={router} />
     </React.StrictMode>,
-    document.getElementById("root"),
 );
 
 inject();

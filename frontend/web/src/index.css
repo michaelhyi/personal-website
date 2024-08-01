@@ -1,7 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 * {
+    font-family:
+        ui-sans-serif,
+        system-ui,
+        sans-serif,
+        Apple Color Emoji,
+        Segoe UI Emoji,
+        Segoe UI Symbol,
+        Noto Color Emoji;
     overscroll-behavior: none;
+    color: white;
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0px;
+    margin: 0px;
 }

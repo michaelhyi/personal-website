@@ -1,17 +1,17 @@
 {
     "name": "web",
     "author": "michaelhyi",
-    "version": "5.1.0",
+    "version": "5.1.1",
     "license": "MIT",
     "private": true,
     "dependencies": {
         "@testing-library/jest-dom": "^5.14.1",
-        "@testing-library/react": "^12.1.5",
+        "@testing-library/react": "^16.0.0",
         "@testing-library/user-event": "^12.8.3",
-        "@vercel/analytics": "^1.0.0",
+        "@vercel/analytics": "1.0.0",
         "dompurify": "^3.0.9",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
         "react-router-dom": "^6.22.1",
         "web-vitals": "^2.1.0"
     },
@@ -51,7 +51,6 @@
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "prettier": "3.2.5",
-        "react-scripts": "^5.0.1",
-        "tailwindcss": "^3.4.1"
+        "react-scripts": "^5.0.1"
     }
 }
