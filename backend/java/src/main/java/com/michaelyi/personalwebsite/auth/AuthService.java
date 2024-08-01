@@ -19,8 +19,8 @@ public class AuthService {
     private static final int BEARER_PREFIX_LENGTH = 7;
 
     public AuthService(
-            @Value("${security.auth.admin-pw}") String adminPassword,
-            @Value("${security.jwt.secret-key}") String signingKey,
+            @Value("${admin.pw}") String adminPassword,
+            @Value("${jwt.secret-key}") String signingKey,
             PasswordEncoder passwordEncoder
     ) {
         this.adminPassword = adminPassword;

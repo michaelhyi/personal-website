@@ -17,19 +17,19 @@ cd personal-website
 
 2. Set up environment variables.
 
-Set environment variables by pasting the following in `.zshrc` (if you're using zsh) or running the following in your terminal:
+Set environment variables by running the following in your terminal:
 
 ```shell
-export PERSONAL_WEBSITE_AWS_ACCESS_KEY=<your-aws-access-key>
-export PERSONAL_WEBSITE_AWS_SECRET_KEY=<your-aws-secret-key>
+export AWS_ACCESS_KEY=<your-aws-access-key>
+export _AWS_SECRET_KEY=<your-aws-secret-key>
 export PERSONAL_WEBSITE_AWS_S3_BUCKET=<your-aws-s3-bucket>
-export PERSONAL_WEBSITE_SECURITY_AUTH_ADMIN_PW=<your-admin-password>
-export PERSONAL_WEBSITE_SECURITY_JWT_SECRET_KEY=<your-jwt-secret-key>
+export PERSONAL_WEBSITE_ADMIN_PW=<your-admin-password>
+export JWT_SECRET_KEY=<your-jwt-secret-key>
 ```
 
 - To generate AWS secret keys, log in to your [AWS console](https://aws.amazon.com/). Click on your username, and click `Security credentials` on the dropdown menu. Scroll down to `Access keys`, and click `Create access key`.
 - To set up an AWS S3 bucket, refer to Step 4.
-- Set `PERSONAL_WEBSITE_SECURITY_AUTH_ADMIN_PW` equal to a secure, hashed password. Generate one using `openssl` or any password manager, and then hash it using Spring Security's BCryptPasswordEncoder.
+- Set `PERSONAL_WEBSITE_ADMIN_PW` equal to a secure, hashed password. Generate one using `openssl` or any password manager, and then hash it using Spring Security's BCryptPasswordEncoder.
 - To generate a JWT secret key, use `openssl rand -base64 512`.
 
 > For any environment variables that have a `$`, escape it with a backslash.
