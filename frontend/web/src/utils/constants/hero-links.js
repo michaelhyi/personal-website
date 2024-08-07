@@ -10,9 +10,5 @@ export default [
     {
         name: "Blog",
         href: "/blog",
-    },
-    {
-        name: "Resume",
-        href: "/Resume.pdf",
-    },
+    }
 ];
