@@ -13,7 +13,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      VERSION: 5.1.1
+      VERSION: 5.1.2
 
     steps:
       - uses: actions/checkout@v4
