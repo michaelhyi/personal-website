@@ -15,7 +15,7 @@ import {
     Spinner,
 } from "../../components";
 import useEditor from "../../hooks/useEditor";
-import { createPost, readPost, updatePost } from "../../services/post";
+import { createPost, getPost, updatePost } from "../../services/post";
 import validateForm from "../../utils/validateForm";
 
 export default function Post() {
@@ -56,7 +56,7 @@ export default function Post() {
                 id = await createPost(formData);
             }
 
-            window.location.href = `${process.env.REACT_APP_WEB_URL}/blog/${id}`;
+            window.location.href = `${process.env.REACT_APP_MAIN_URL}/blog/${id}`;
         } catch ({ message }) {
             setError(message);
         } finally {
@@ -70,7 +70,7 @@ export default function Post() {
 
             if (id) {
                 try {
-                    const post = await readPost(id);
+                    const post = await getPost(id);
                     editor.commands.setContent(
                         `<h1>${post.title}</h1>${post.content}`,
                     );

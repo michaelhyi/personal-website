@@ -240,7 +240,7 @@ class PostIT extends IntegrationTest {
     }
 
     @Test
-    void readPost() throws Exception {
+    void getPost() throws Exception {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
@@ -290,7 +290,7 @@ class PostIT extends IntegrationTest {
     }
 
     @Test
-    void readPostImage() throws Exception {
+    void getPostImage() throws Exception {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(
@@ -332,7 +332,7 @@ class PostIT extends IntegrationTest {
     }
 
     @Test
-    void readAllPosts() throws Exception {
+    void getAllPosts() throws Exception {
         String token = mvc.perform(post("/v2/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writer.writeValueAsString(

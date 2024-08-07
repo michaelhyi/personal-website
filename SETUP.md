@@ -21,7 +21,7 @@ Set environment variables by running the following in your terminal:
 
 ```shell
 export AWS_ACCESS_KEY=<your-aws-access-key>
-export _AWS_SECRET_KEY=<your-aws-secret-key>
+export AWS_SECRET_KEY=<your-aws-secret-key>
 export PERSONAL_WEBSITE_AWS_S3_BUCKET=<your-aws-s3-bucket>
 export PERSONAL_WEBSITE_ADMIN_PW=<your-admin-password>
 export JWT_SECRET_KEY=<your-jwt-secret-key>
@@ -54,12 +54,12 @@ npm start
 ```
 
 ```shell
-cd backend 
+cd backend/java
 ./gradlew bootRun
 ```
 
 ```shell
-cd frontend/web 
+cd frontend/main
 npm i
 npm start
 ```
@@ -67,6 +67,6 @@ npm start
 6. Fix linting errors using Prettier and ESLint.
 
 ```shell
-# cd frontend/admin or frontend/web
+# cd frontend/admin or frontend/main
 npm run lint:fix
 ```

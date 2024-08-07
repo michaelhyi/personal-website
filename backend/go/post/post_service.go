@@ -27,7 +27,7 @@ func (s *PostService) CreatePost(text *string, image []byte) (string, error) {
 		return "", fmt.Errorf("Image is required")
 	}
 
-	_, err = s.ReadPost(&post.ID)
+	_, err = s.GetPost(&post.ID)
 
 	if err == nil {
 		return "", fmt.Errorf("Post already exists")
@@ -47,49 +47,49 @@ func (s *PostService) CreatePost(text *string, image []byte) (string, error) {
 		return "", err
 	}
 
-	s.CacheService.Set(fmt.Sprintf("readPost?id=%s", post.ID), string(cacheVal))
-	s.CacheService.Delete("readAllPosts")
+	s.CacheService.Set(fmt.Sprintf("getPost?id=%s", post.ID), string(cacheVal))
+	s.CacheService.Delete("getAllPosts")
 	return post.ID, nil
 }
 
-func (s *PostService) ReadPost(id *string) (Post, error) {
+func (s *PostService) GetPost(id *string) (Post, error) {
 	var noop Post
 
 	if util.IsStringInvalid(id) {
 		return noop, fmt.Errorf("Invalid id")
 	}
 
-	b, err := s.CacheService.Get(fmt.Sprintf("readPost?id=%s", *id))
+	b, err := s.CacheService.Get(fmt.Sprintf("getPost?id=%s", *id))
 
 	if err == nil {
 		var post Post
 		json.Unmarshal([]byte(b), &post)
 	}
 
-	post, err := s.Dao.ReadPost(id)
+	post, err := s.Dao.GetPost(id)
 
 	if err == nil {
 		var b []byte
 		b, _ = json.Marshal(post)
-		s.CacheService.Set(fmt.Sprintf("readPost?id=%s", *id), string(b))
+		s.CacheService.Set(fmt.Sprintf("getPost?id=%s", *id), string(b))
 		return post, nil
 	}
 
 	return noop, err
 }
 
-func (s *PostService) ReadPostImage(id *string) ([]byte, error) {
+func (s *PostService) GetPostImage(id *string) ([]byte, error) {
 	if util.IsStringInvalid(id) {
 		return nil, fmt.Errorf("Invalid id")
 	}
 
-	_, err := s.ReadPost(id)
+	_, err := s.GetPost(id)
 
 	if err != nil {
 		return nil, fmt.Errorf("Post not found")
 	}
 
-	cachedImg, err := s.CacheService.Get(fmt.Sprintf("readPostImage?id=%s", *id))
+	cachedImg, err := s.CacheService.Get(fmt.Sprintf("getPostImage?id=%s", *id))
 
 	if err == nil {
 		return []byte(cachedImg), nil
@@ -101,13 +101,13 @@ func (s *PostService) ReadPostImage(id *string) ([]byte, error) {
 		return nil, fmt.Errorf("Post image not found")
 	}
 
-	s.CacheService.Set(fmt.Sprintf("readPostImage?id=%s", *id), string(image))
+	s.CacheService.Set(fmt.Sprintf("getPostImage?id=%s", *id), string(image))
 
 	return image, nil
 }
 
-func (s *PostService) ReadAllPosts() ([]Post, error) {
-	cachedPosts, err := s.CacheService.Get("readAllPosts")
+func (s *PostService) GetAllPosts() ([]Post, error) {
+	cachedPosts, err := s.CacheService.Get("getAllPosts")
 
 	var posts []Post
 	err = json.Unmarshal([]byte(cachedPosts), &posts)
@@ -116,7 +116,7 @@ func (s *PostService) ReadAllPosts() ([]Post, error) {
 		return posts, nil
 	}
 
-	posts, err = s.Dao.ReadAllPosts()
+	posts, err = s.Dao.GetAllPosts()
 
 	if err != nil {
 		return nil, err
@@ -128,7 +128,7 @@ func (s *PostService) ReadAllPosts() ([]Post, error) {
 		return nil, err
 	}
 
-	s.CacheService.Set("readAllPosts", string(cacheVal))
+	s.CacheService.Set("getAllPosts", string(cacheVal))
 
 	return posts, nil
 }
@@ -139,7 +139,7 @@ func (s *PostService) UpdatePost(id *string, text *string, image []byte) (Post, 
 		return noop, fmt.Errorf("Invalid id")
 	}
 
-	post, err := s.ReadPost(id)
+	post, err := s.GetPost(id)
 
 	if err != nil {
 		return noop, err
@@ -161,14 +161,14 @@ func (s *PostService) UpdatePost(id *string, text *string, image []byte) (Post, 
 		return noop, err
 	}
 
-	s.CacheService.Set(fmt.Sprintf("readPost?id=%s", post.ID), string(cacheVal))
-	s.CacheService.Delete("readAllPosts")
+	s.CacheService.Set(fmt.Sprintf("getPost?id=%s", post.ID), string(cacheVal))
+	s.CacheService.Delete("getAllPosts")
 
 	if image == nil || len(image) <= 0 {
 		return post, nil
 	}
 
-	currImage, err := s.ReadPostImage(id)
+	currImage, err := s.GetPostImage(id)
 
 	if err != nil {
 		return noop, err
@@ -178,7 +178,7 @@ func (s *PostService) UpdatePost(id *string, text *string, image []byte) (Post, 
 		s.S3Service.DeleteObject(id)
 		s.S3Service.PutObject(id, &image)
 
-		s.CacheService.Set(fmt.Sprintf("readPostImage?id=%s", *id), string(image))
+		s.CacheService.Set(fmt.Sprintf("getPostImage?id=%s", *id), string(image))
 	}
 
 	return post, nil
@@ -189,7 +189,7 @@ func (s *PostService) DeletePost(id *string) error {
 		return fmt.Errorf("Invalid id")
 	}
 
-	_, err := s.ReadPost(id)
+	_, err := s.GetPost(id)
 
 	if err != nil {
 		return err
@@ -198,9 +198,9 @@ func (s *PostService) DeletePost(id *string) error {
 	s.S3Service.DeleteObject(id)
 	s.Dao.DeletePost(id)
 
-	s.CacheService.Delete(fmt.Sprintf("readPost?id=%s", *id))
-	s.CacheService.Delete(fmt.Sprintf("readPostImage?id=%s", *id))
-	s.CacheService.Delete("readAllPosts")
+	s.CacheService.Delete(fmt.Sprintf("getPost?id=%s", *id))
+	s.CacheService.Delete(fmt.Sprintf("getPostImage?id=%s", *id))
+	s.CacheService.Delete("getAllPosts")
 
 	return nil
 }

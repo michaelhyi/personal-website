@@ -15,9 +15,9 @@ func SetRoutes(healthController *health.HealthController, authController *auth.A
 	http.HandleFunc("GET /v2/auth/validate-token", authController.ValidateToken)
 
 	http.HandleFunc("POST /v2/post", postController.CreatePost)
-	http.HandleFunc("GET /v2/post/{id}", postController.ReadPost)
-	http.HandleFunc("GET /v2/post/image/{id}", postController.ReadPostImage)
-	http.HandleFunc("GET /v2/post", postController.ReadAllPosts)
+	http.HandleFunc("GET /v2/post/{id}", postController.GetPost)
+	http.HandleFunc("GET /v2/post/image/{id}", postController.GetPostImage)
+	http.HandleFunc("GET /v2/post", postController.GetAllPosts)
 	http.HandleFunc("PUT /v2/post/{id}", postController.UpdatePost)
 	http.HandleFunc("DELETE /v2/post/{id}", postController.DeletePost)
 }

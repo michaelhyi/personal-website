@@ -30,12 +30,12 @@ public class PostDao {
         );
     }
 
-    public Optional<Post> readPost(String id) {
+    public Optional<Post> getPost(String id) {
         String sql = "SELECT * FROM post WHERE id = ? LIMIT 1";
         return template.query(sql, mapper, id).stream().findFirst();
     }
 
-    public List<Post> readAllPosts() {
+    public List<Post> getAllPosts() {
         String sql = "SELECT * FROM post ORDER BY date DESC";
         return template.query(sql, mapper);
     }
