@@ -8,7 +8,7 @@ import java.security.Key;
 
 public class AuthUtil {
     public static final String ADMIN_EMAIL = "admin@michael-yi.com";
-    public static final long JWT_EXPIRATION = 6048000000L;
+    public static final long JWT_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
 
     public static boolean isAuthHeaderInvalid(String authHeader) {
         return StringUtil.isStringInvalid(authHeader)

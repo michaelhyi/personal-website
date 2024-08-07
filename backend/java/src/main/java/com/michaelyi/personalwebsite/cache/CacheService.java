@@ -1,22 +1,23 @@
 package com.michaelyi.personalwebsite.cache;
 
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.personalwebsite.util.StringUtil;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 public class CacheService {
     private final RedisTemplate<String, String> template;
     private final ObjectMapper mapper;
     private final ObjectWriter writer;
-    private static final int CACHE_TTL = 900000;
+    private static final int CACHE_TTL = 1000 * 60 * 15;
 
     public CacheService(
             RedisTemplate<String, String> template,
@@ -30,19 +31,15 @@ public class CacheService {
     public <T> T get(String key, Class<T> clazz) {
         JavaType type = mapper
                 .getTypeFactory()
-                .constructParametricType(CacheEntry.class, clazz);
+                .constructType(clazz);
 
         return get(key, type);
     }
 
     public <T> T get(String key, TypeReference<T> typeReference) {
-        JavaType javaTypeReference = mapper
-                .getTypeFactory()
-                .constructType(typeReference);
-
         JavaType type = mapper
                 .getTypeFactory()
-                .constructParametricType(CacheEntry.class, javaTypeReference);
+                .constructType(typeReference);
 
         return get(key, type);
     }
@@ -58,24 +55,19 @@ public class CacheService {
             return null;
         }
 
-        CacheEntry<T> entry;
+        T data;
 
         try {
-            entry = mapper.readValue(value, type);
+            data = mapper.readValue(value, type);
         } catch (JsonProcessingException e) {
             return null;
         }
 
-        if (entry == null) {
+        if (data == null) {
             return null;
         }
 
-        if (entry.getExpiration().before(new Date())) {
-            template.delete(key);
-            return null;
-        }
-
-        return entry.getData();
+        return data;
     }
 
     public <T> void set(String key, T data) {
@@ -86,12 +78,7 @@ public class CacheService {
         String value;
 
         try {
-            value = writer.writeValueAsString(
-                    new CacheEntry<>(
-                            data,
-                            new Date(System.currentTimeMillis() + CACHE_TTL)
-                    )
-            );
+            value = writer.writeValueAsString(data);
         } catch (JsonProcessingException e) {
             return;
         }
@@ -100,7 +87,7 @@ public class CacheService {
             return;
         }
 
-        template.opsForValue().set(key, value);
+        template.opsForValue().set(key, value, CACHE_TTL, TimeUnit.MILLISECONDS);
     }
 
     public void delete(String key) {
@@ -112,6 +99,6 @@ public class CacheService {
     }
 
     public void flushAll() {
-        template.getConnectionFactory().getConnection().flushAll();
+        template.getConnectionFactory().getConnection().serverCommands().flushAll();
     }
 }
