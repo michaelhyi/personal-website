@@ -56,7 +56,7 @@ export default function Post() {
                 id = await createPost(formData);
             }
 
-            window.location.href = `${process.env.REACT_APP_WEB_URL}/blog/${id}`;
+            window.location.href = `${process.env.REACT_APP_MAIN_URL}/blog/${id}`;
         } catch ({ message }) {
             setError(message);
         } finally {

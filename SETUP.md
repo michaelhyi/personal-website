@@ -59,7 +59,7 @@ cd backend
 ```
 
 ```shell
-cd frontend/web 
+cd frontend/main
 npm i
 npm start
 ```
@@ -67,6 +67,6 @@ npm start
 6. Fix linting errors using Prettier and ESLint.
 
 ```shell
-# cd frontend/admin or frontend/web
+# cd frontend/admin or frontend/main
 npm run lint:fix
 ```

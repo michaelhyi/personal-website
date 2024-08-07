@@ -1,4 +1,4 @@
-name: frontend-web-ci
+name: frontend-main-ci
 
 on:
   pull_request:
@@ -18,7 +18,7 @@ jobs:
           node-version: '18.x'
 
       - name: Build
-        working-directory: ./frontend/web
+        working-directory: ./frontend/main
         run: |
           npm ci
           npm run build

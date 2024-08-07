@@ -1,4 +1,4 @@
-name: frontend-web-cd
+name: frontend-main-cd
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
           node-version: '18.x'
 
       - name: Build 
-        working-directory: ./frontend/web
+        working-directory: ./frontend/main
         run: |
           npm ci
           npm run build
@@ -35,9 +35,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Deploy
-        working-directory: ./frontend/web
+        working-directory: ./frontend/main
         run: |
-          docker build . -t michaelyi/personal-website-web:latest
-          docker build . -t michaelyi/personal-website-web:${{ env.VERSION }}
-          docker push michaelyi/personal-website-web:latest
-          docker push michaelyi/personal-website-web:${{ env.VERSION }}
+          docker build . -t michaelyi/personal-website-main:latest
+          docker build . -t michaelyi/personal-website-main:${{ env.VERSION }}
+          docker push michaelyi/personal-website-main:latest
+          docker push michaelyi/personal-website-main:${{ env.VERSION }}
