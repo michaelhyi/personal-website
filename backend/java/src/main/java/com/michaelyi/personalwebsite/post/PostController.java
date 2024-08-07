@@ -34,8 +34,8 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> readPost(@PathVariable String id) {
-        Post post = service.readPost(id);
+    public ResponseEntity<Post> getPost(@PathVariable String id) {
+        Post post = service.getPost(id);
 
         if (post == null) {
             throw new NoSuchElementException("Post not found");
@@ -45,14 +45,14 @@ public class PostController {
     }
 
     @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> readPostImage(@PathVariable String id) {
-        byte[] image = service.readPostImage(id);
+    public ResponseEntity<byte[]> getPostImage(@PathVariable String id) {
+        byte[] image = service.getPostImage(id);
         return new ResponseEntity<>(image, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Post>> readAllPosts() {
-        List<Post> posts = service.readAllPosts();
+    public ResponseEntity<List<Post>> getAllPosts() {
+        List<Post> posts = service.getAllPosts();
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 

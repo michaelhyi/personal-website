@@ -60,9 +60,9 @@ func (c *PostController) CreatePost(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(id))
 }
 
-func (c *PostController) ReadPost(w http.ResponseWriter, r *http.Request) {
+func (c *PostController) GetPost(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	post, err := c.Service.ReadPost(&id)
+	post, err := c.Service.GetPost(&id)
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -83,9 +83,9 @@ func (c *PostController) ReadPost(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(postJson))
 }
 
-func (c *PostController) ReadPostImage(w http.ResponseWriter, r *http.Request) {
+func (c *PostController) GetPostImage(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	image, err := c.Service.ReadPostImage(&id)
+	image, err := c.Service.GetPostImage(&id)
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -98,8 +98,8 @@ func (c *PostController) ReadPostImage(w http.ResponseWriter, r *http.Request) {
 	w.Write(image)
 }
 
-func (c *PostController) ReadAllPosts(w http.ResponseWriter, r *http.Request) {
-	posts, err := c.Service.ReadAllPosts()
+func (c *PostController) GetAllPosts(w http.ResponseWriter, r *http.Request) {
+	posts, err := c.Service.GetAllPosts()
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

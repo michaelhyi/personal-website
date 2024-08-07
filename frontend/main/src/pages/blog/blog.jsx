@@ -11,7 +11,7 @@ import {
     Loading,
     NotFound,
 } from "../../components";
-import { readAllPosts } from "../../services/post";
+import { getAllPosts } from "../../services/post";
 
 export default function Blog() {
     const [query, setQuery] = useState({
@@ -25,7 +25,7 @@ export default function Blog() {
     useEffect(() => {
         (async () => {
             try {
-                const posts = await readAllPosts();
+                const posts = await getAllPosts();
                 setQuery({ data: posts, loading: false, error: false });
             } catch (e) {
                 setQuery({ data: null, loading: false, error: true });

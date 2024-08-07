@@ -54,7 +54,7 @@ npm start
 ```
 
 ```shell
-cd backend 
+cd backend/java
 ./gradlew bootRun
 ```
 
