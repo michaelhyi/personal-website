@@ -10,5 +10,5 @@ export default [
     {
         name: "Blog",
         href: "/blog",
-    }
+    },
 ];
