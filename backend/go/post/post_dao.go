@@ -15,7 +15,7 @@ func (d *PostDao) CreatePost(post *Post) error {
 	return err
 }
 
-func (d *PostDao) ReadPost(id *string) (Post, error) {
+func (d *PostDao) GetPost(id *string) (Post, error) {
 	sql := "SELECT * FROM post WHERE id = ? LIMIT 1"
 	rows, err := d.Db.Query(sql, id)
 
@@ -44,7 +44,7 @@ func (d *PostDao) ReadPost(id *string) (Post, error) {
 	return post, nil
 }
 
-func (d *PostDao) ReadAllPosts() ([]Post, error) {
+func (d *PostDao) GetAllPosts() ([]Post, error) {
 	sql := "SELECT * FROM post ORDER BY date DESC"
 	rows, err := d.Db.Query(sql)
 

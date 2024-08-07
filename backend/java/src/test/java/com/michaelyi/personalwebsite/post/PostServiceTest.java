@@ -131,7 +131,7 @@ class PostServiceTest {
 
     @Test
     void willThrowCreatePostWhenAlreadyExists() {
-        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+        when(dao.getPost("title")).thenReturn(Optional.of(POST));
 
         assertThrows(IllegalArgumentException.class, () ->
                 underTest.createPost(
@@ -144,13 +144,13 @@ class PostServiceTest {
                         )
                 )
         );
-        verify(dao).readPost("title");
+        verify(dao).getPost("title");
         verifyNoMoreInteractions(dao);
     }
 
     @Test
     void createPost() {
-        when(dao.readPost(POST.getId())).thenReturn(
+        when(dao.getPost(POST.getId())).thenReturn(
                 Optional.empty()
         );
 
@@ -168,7 +168,7 @@ class PostServiceTest {
                 Post.class
         );
 
-        verify(dao).readPost(POST.getId());
+        verify(dao).getPost(POST.getId());
         verify(dao).createPost(postArgumentCaptor.capture());
         verify(s3Service).putObject(POST.getId(), "Hello World!".getBytes());
 
@@ -180,71 +180,71 @@ class PostServiceTest {
     }
 
     @Test
-    void willReturnNullDuringReadPostWhenPostNotFound() {
-        when(dao.readPost("title")).thenReturn(Optional.empty());
+    void willReturnNullDuringgetPostWhenPostNotFound() {
+        when(dao.getPost("title")).thenReturn(Optional.empty());
 
-        Post post = underTest.readPost("title");
+        Post post = underTest.getPost("title");
         assertNull(post);
 
-        verify(dao).readPost("title");
+        verify(dao).getPost("title");
     }
 
     @Test
-    void readPost() {
-        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+    void getPost() {
+        when(dao.getPost("title")).thenReturn(Optional.of(POST));
 
-        Post actual = underTest.readPost("title");
+        Post actual = underTest.getPost("title");
 
-        verify(dao).readPost("title");
+        verify(dao).getPost("title");
         assertEquals(POST.getId(), actual.getId());
         assertEquals(POST.getTitle(), actual.getTitle());
         assertEquals(POST.getContent(), actual.getContent());
     }
 
     @Test
-    void willThrowReadPostImageWhenPostNotFound() {
-        when(dao.readPost("title")).thenReturn(Optional.empty());
+    void willThrowgetPostImageWhenPostNotFound() {
+        when(dao.getPost("title")).thenReturn(Optional.empty());
 
         assertThrows(
                 NoSuchElementException.class,
-                () -> underTest.readPostImage("title")
+                () -> underTest.getPostImage("title")
         );
-        verify(dao).readPost("title");
+        verify(dao).getPost("title");
         verify(s3Service, never()).getObject(any());
     }
 
     @Test
-    void willThrowReadPostImageWhenS3KeyNotFound() {
-        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+    void willThrowgetPostImageWhenS3KeyNotFound() {
+        when(dao.getPost("title")).thenReturn(Optional.of(POST));
         when(s3Service.getObject("title"))
                 .thenThrow(NoSuchKeyException.class);
 
         assertThrows(
                 NoSuchElementException.class,
-                () -> underTest.readPostImage("title")
+                () -> underTest.getPostImage("title")
         );
-        verify(dao).readPost("title");
+        verify(dao).getPost("title");
         verify(s3Service).getObject("title");
     }
 
     @Test
-    void readPostImage() {
+    void getPostImage() {
         byte[] expected = "Hello World!".getBytes();
 
-        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+        when(dao.getPost("title")).thenReturn(Optional.of(POST));
         when(s3Service.getObject("title")).thenReturn(expected);
 
-        byte[] actual = underTest.readPostImage("title");
+        byte[] actual = underTest.getPostImage("title");
 
-        verify(dao).readPost("title");
+        verify(dao).getPost("title");
         verify(s3Service).getObject("title");
         assertEquals(expected, actual);
     }
 
     @Test
-    void readAllPosts() {
-        underTest.readAllPosts();
-        verify(dao).readAllPosts();
+    void getAllPosts() {
+        underTest.getAllPosts();
+        verify(dao).getAllPosts();
     }
 
     @Test
@@ -285,7 +285,7 @@ class PostServiceTest {
                 )
         );
 
-        when(dao.readPost("id")).thenReturn(Optional.of(POST));
+        when(dao.getPost("id")).thenReturn(Optional.of(POST));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -349,7 +349,7 @@ class PostServiceTest {
 
     @Test
     void willThrowUpdatePostWhenPostNotFound() {
-        when(dao.readPost("title")).thenReturn(Optional.empty());
+        when(dao.getPost("title")).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class,
                 () -> underTest.updatePost(
@@ -359,13 +359,13 @@ class PostServiceTest {
                 )
         );
 
-        verify(dao).readPost("title");
+        verify(dao).getPost("title");
         verifyNoMoreInteractions(dao);
     }
 
     @Test
     void updatePost() {
-        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+        when(dao.getPost("title")).thenReturn(Optional.of(POST));
 
         underTest.updatePost(
                 "title",
@@ -382,14 +382,14 @@ class PostServiceTest {
         ArgumentCaptor<Post> postArgumentCaptor =
                 ArgumentCaptor.forClass(Post.class);
 
-        verify(dao, times(2)).readPost("title");
+        verify(dao, times(2)).getPost("title");
         verify(dao).updatePost(postArgumentCaptor.capture());
         verify(s3Service).getObject("title");
     }
 
     @Test
     void updatePostImage() {
-        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+        when(dao.getPost("title")).thenReturn(Optional.of(POST));
 
         underTest.updatePost(
                 "title",
@@ -405,7 +405,7 @@ class PostServiceTest {
         ArgumentCaptor<Post> postArgumentCaptor =
                 ArgumentCaptor.forClass(Post.class);
 
-        verify(dao, times(2)).readPost("title");
+        verify(dao, times(2)).getPost("title");
         verify(dao).updatePost(postArgumentCaptor.capture());
         verify(s3Service).getObject("title");
         verify(s3Service).deleteObject("title");
@@ -414,7 +414,7 @@ class PostServiceTest {
 
     @Test
     void willThrowDeletePostWhenPostNotFound() {
-        when(dao.readPost("title")).thenReturn(Optional.empty());
+        when(dao.getPost("title")).thenReturn(Optional.empty());
 
         assertThrows(
                 NoSuchElementException.class,
@@ -426,7 +426,7 @@ class PostServiceTest {
 
     @Test
     void deletePost() {
-        when(dao.readPost("title")).thenReturn(Optional.of(POST));
+        when(dao.getPost("title")).thenReturn(Optional.of(POST));
 
         underTest.deletePost("title");
 

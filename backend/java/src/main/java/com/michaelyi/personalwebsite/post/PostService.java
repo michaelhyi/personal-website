@@ -39,7 +39,7 @@ public class PostService {
             throw new IllegalArgumentException("Image is invalid");
         }
 
-        Post existingPost = readPost(post.getId());
+        Post existingPost = getPost(post.getId());
 
         if (existingPost != null) {
             throw new IllegalArgumentException(
@@ -55,15 +55,15 @@ public class PostService {
             throw new IllegalArgumentException("Image could not be read");
         }
 
-        cacheService.set(String.format("readPost?id=%s", post.getId()), post);
-        cacheService.delete("readAllPosts");
+        cacheService.set(String.format("getPost?id=%s", post.getId()), post);
+        cacheService.delete("getAllPosts");
 
         return post.getId();
     }
 
-    public Post readPost(String id) {
+    public Post getPost(String id) {
         Post post = cacheService.get(
-                    String.format("readPost?id=%s", id),
+                    String.format("getPost?id=%s", id),
                     Post.class
             );
 
@@ -75,11 +75,11 @@ public class PostService {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
-        post = dao.readPost(id).orElse(null);
+        post = dao.getPost(id).orElse(null);
 
         if (post != null) {
             cacheService.set(
-                    String.format("readPost?id=%s", post.getId()),
+                    String.format("getPost?id=%s", post.getId()),
                     post
             );
         }
@@ -87,19 +87,19 @@ public class PostService {
         return post;
     }
 
-    public byte[] readPostImage(String id) {
+    public byte[] getPostImage(String id) {
         if (StringUtil.isStringInvalid(id)) {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
-        Post post = readPost(id);
+        Post post = getPost(id);
 
         if (post == null) {
             throw new NoSuchElementException("Post not found");
         }
 
         byte[] image = cacheService.get(
-                String.format("readPostImage?id=%s", post.getId()),
+                String.format("getPostImage?id=%s", post.getId()),
                 byte[].class
         );
 
@@ -112,7 +112,7 @@ public class PostService {
 
             if (image != null) {
                 cacheService.set(
-                        String.format("readPostImage?id=%s", post.getId()),
+                        String.format("getPostImage?id=%s", post.getId()),
                         image
                 );
             }
@@ -123,9 +123,9 @@ public class PostService {
         }
     }
 
-    public List<Post> readAllPosts() {
+    public List<Post> getAllPosts() {
         List<Post> posts = cacheService.get(
-                "readAllPosts",
+                "getAllPosts",
                 new TypeReference<List<Post>>() {
                 }
         );
@@ -134,10 +134,10 @@ public class PostService {
             return posts;
         }
 
-        posts = dao.readAllPosts();
+        posts = dao.getAllPosts();
 
         if (posts != null) {
-            cacheService.set("readAllPosts", posts);
+            cacheService.set("getAllPosts", posts);
         }
 
         return posts;
@@ -152,7 +152,7 @@ public class PostService {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
-        Post post = readPost(id);
+        Post post = getPost(id);
 
         if (post == null) {
             throw new NoSuchElementException("Post not found");
@@ -165,14 +165,14 @@ public class PostService {
         post.setContent(updatedPost.getContent());
         dao.updatePost(post);
 
-        cacheService.set(String.format("readPost?id=%s", post.getId()), post);
-        cacheService.delete("readAllPosts");
+        cacheService.set(String.format("getPost?id=%s", post.getId()), post);
+        cacheService.delete("getAllPosts");
 
         if (PostUtil.isImageInvalid(image)) {
             return post;
         }
 
-        byte[] currentImage = readPostImage(id);
+        byte[] currentImage = getPostImage(id);
         byte[] newImage;
 
         try {
@@ -185,7 +185,7 @@ public class PostService {
             s3Service.deleteObject(post.getId());
             s3Service.putObject(post.getId(), newImage);
             cacheService.set(
-                    String.format("readPostImage?id=%s", post.getId()),
+                    String.format("getPostImage?id=%s", post.getId()),
                     newImage
             );
         }
@@ -199,7 +199,7 @@ public class PostService {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
-        Post post = readPost(id);
+        Post post = getPost(id);
 
         if (post == null) {
             throw new NoSuchElementException("Post not found");
@@ -208,8 +208,8 @@ public class PostService {
         s3Service.deleteObject(post.getId());
         dao.deletePost(post.getId());
 
-        cacheService.delete(String.format("readPost?id=%s", post.getId()));
-        cacheService.delete(String.format("readPostImage?id=%s", post.getId()));
-        cacheService.delete("readAllPosts");
+        cacheService.delete(String.format("getPost?id=%s", post.getId()));
+        cacheService.delete(String.format("getPostImage?id=%s", post.getId()));
+        cacheService.delete("getAllPosts");
     }
 }
