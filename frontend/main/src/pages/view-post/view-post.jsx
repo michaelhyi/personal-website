@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { sanitize } from "dompurify";
 
 import { BackButton, Container, Loading, NotFound } from "../../components";
-import { readPost, readPostImage } from "../../services/post";
+import { getPost, getPostImage } from "../../services/post";
 import format from "../../utils/date";
 
 export default function ViewPost() {
@@ -20,7 +20,7 @@ export default function ViewPost() {
     useEffect(() => {
         (async () => {
             try {
-                const post = await readPost(id);
+                const post = await getPost(id);
                 setQuery({ data: post, loading: false, error: false });
             } catch (e) {
                 setQuery({ data: null, loading: false, error: true });
@@ -37,7 +37,7 @@ export default function ViewPost() {
             <h1 className="post-title">{data.title}</h1>
             <p className="post-date">{format(data.date)}</p>
             <img
-                src={readPostImage(id)}
+                src={getPostImage(id)}
                 alt={data.title}
                 className="post-img"
             />

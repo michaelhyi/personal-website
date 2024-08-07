@@ -3,7 +3,7 @@ import "./Dropzone.css";
 import { useCallback } from "react";
 import AiOutlineClose from "../Icons/AiOutlineClose";
 import AiOutlineCloudDownload from "../Icons/AiOutlineCloudDownload";
-import { readPostImage } from "../../services/post";
+import { getPostImage } from "../../services/post";
 import Hoverable from "../Hoverable/Hoverable";
 
 export default function Dropzone({
@@ -52,7 +52,7 @@ export default function Dropzone({
                             className="dropzone-img"
                             src={
                                 !image && id
-                                    ? readPostImage(id)
+                                    ? getPostImage(id)
                                     : URL.createObjectURL(image)
                             }
                         />

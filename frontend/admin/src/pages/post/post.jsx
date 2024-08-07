@@ -15,7 +15,7 @@ import {
     Spinner,
 } from "../../components";
 import useEditor from "../../hooks/useEditor";
-import { createPost, readPost, updatePost } from "../../services/post";
+import { createPost, getPost, updatePost } from "../../services/post";
 import validateForm from "../../utils/validateForm";
 
 export default function Post() {
@@ -70,7 +70,7 @@ export default function Post() {
 
             if (id) {
                 try {
-                    const post = await readPost(id);
+                    const post = await getPost(id);
                     editor.commands.setContent(
                         `<h1>${post.title}</h1>${post.content}`,
                     );
