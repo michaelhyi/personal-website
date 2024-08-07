@@ -36,11 +36,7 @@ export default function ViewPost() {
             <BackButton href="/blog" text="Blog" />
             <h1 className="post-title">{data.title}</h1>
             <p className="post-date">{format(data.date)}</p>
-            <img
-                src={getPostImage(id)}
-                alt={data.title}
-                className="post-img"
-            />
+            <img src={getPostImage(id)} alt={data.title} className="post-img" />
             <article
                 className="post-article"
                 // eslint-disable-next-line react/no-danger -- html data is sanitized
