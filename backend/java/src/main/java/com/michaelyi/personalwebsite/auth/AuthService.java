@@ -1,15 +1,17 @@
 package com.michaelyi.personalwebsite.auth;
 
-import com.michaelyi.personalwebsite.util.StringUtil;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.michaelyi.personalwebsite.util.StringUtil;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class AuthService {
@@ -21,8 +23,7 @@ public class AuthService {
     public AuthService(
             @Value("${admin.pw}") String adminPassword,
             @Value("${jwt.secret-key}") String signingKey,
-            PasswordEncoder passwordEncoder
-    ) {
+            PasswordEncoder passwordEncoder) {
         this.adminPassword = adminPassword;
         this.signingKey = signingKey;
         this.passwordEncoder = passwordEncoder;
@@ -35,8 +36,7 @@ public class AuthService {
 
         boolean authorized = passwordEncoder.matches(
                 req.password(),
-                adminPassword
-        );
+                adminPassword);
 
         if (!authorized) {
             throw new UnauthorizedException();
@@ -53,28 +53,22 @@ public class AuthService {
                 .setExpiration(new Date(currentTime + AuthUtil.JWT_EXPIRATION))
                 .signWith(
                         AuthUtil.getSigningKey(signingKey),
-                        SignatureAlgorithm.HS256
-                )
+                        SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public void validateToken(String authHeader) {
         if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
             throw new IllegalArgumentException(
-                    "Authorization header is invalid"
-            );
+                    "Authorization header is invalid");
         }
 
         String token = authHeader.substring(BEARER_PREFIX_LENGTH);
 
-        try {
-            Jwts
-                    .parserBuilder()
-                    .setSigningKey(AuthUtil.getSigningKey(signingKey))
-                    .build()
-                    .parseClaimsJws(token);
-        } catch (Exception e) {
-            throw new UnauthorizedException();
-        }
+        Jwts
+                .parserBuilder()
+                .setSigningKey(AuthUtil.getSigningKey(signingKey))
+                .build()
+                .parseClaimsJws(token);
     }
 }

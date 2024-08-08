@@ -1,10 +1,11 @@
 package com.michaelyi.personalwebsite.auth;
 
+import java.security.Key;
+
 import com.michaelyi.personalwebsite.util.StringUtil;
+
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-
-import java.security.Key;
 
 public class AuthUtil {
     public static final String ADMIN_EMAIL = "admin@michael-yi.com";
