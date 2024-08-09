@@ -9,7 +9,7 @@
 
 <module name="Checker">
     <module name="LineLength">
-      <property naem="severity" value="warning"/>
+      <property name="severity" value="warning"/>
     </module>
 
     <!-- Checks that a package-info.java file exists for each package.     -->
