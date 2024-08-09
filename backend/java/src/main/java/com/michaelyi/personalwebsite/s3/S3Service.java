@@ -54,7 +54,8 @@ public class S3Service {
                 .key(key)
                 .build();
 
-        ResponseInputStream<GetObjectResponse> res = client.getObject(getObjectRequest);
+        ResponseInputStream<GetObjectResponse> res = client
+                .getObject(getObjectRequest);
 
         try {
             return res.readAllBytes();

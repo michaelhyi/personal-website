@@ -50,11 +50,15 @@ public class AuthController {
             @RequestHeader("Authorization") String authHeader) {
         try {
             service.validateToken(authHeader);
-        } catch (IllegalArgumentException | UnsupportedJwtException | MalformedJwtException e) {
+        } catch (IllegalArgumentException
+                | UnsupportedJwtException
+                | MalformedJwtException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     e.getMessage());
-        } catch (SignatureException | ExpiredJwtException | UnauthorizedException e) {
+        } catch (SignatureException
+                | ExpiredJwtException
+                | UnauthorizedException e) {
             throw new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED,
                     "Unauthorized");

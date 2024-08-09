@@ -85,7 +85,9 @@ public class CacheService {
             return;
         }
 
-        template.opsForValue().set(key, value, CACHE_TTL, TimeUnit.MILLISECONDS);
+        template
+                .opsForValue()
+                .set(key, value, CACHE_TTL, TimeUnit.MILLISECONDS);
     }
 
     public void delete(String key) {

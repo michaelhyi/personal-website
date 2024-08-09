@@ -24,9 +24,19 @@ public class SecurityConfig {
     private final AuthFilter authFilter;
     private final AuthEntryPoint authEntryPoint;
 
-    private static final List<String> ALLOWED_AND_EXPOSED_HEADERS = List.of("Authorization", "Content-Type");
-    private static final List<String> ALLOWED_METHODS = List.of("GET", "POST", "PUT", "DELETE", "OPTIONS");
-    private static final String[] WHITELISTED_ENDPOINTS = { "/", "/v2/auth/**" };
+    private static final List<String> ALLOWED_AND_EXPOSED_HEADERS = List.of(
+            "Authorization",
+            "Content-Type");
+    private static final List<String> ALLOWED_METHODS = List.of(
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "OPTIONS");
+    private static final String[] WHITELISTED_ENDPOINTS = {
+            "/",
+            "/v2/auth/**"
+    };
 
     public SecurityConfig(
             @Value("${cors.allowed-origins}") List<String> allowedOrigins,
