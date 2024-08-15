@@ -39,7 +39,7 @@ public class AuthService {
                 adminPassword);
 
         if (!authorized) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("Invalid password");
         }
 
         Map<String, Object> claims = new HashMap<>();

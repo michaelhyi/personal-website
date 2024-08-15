@@ -1,36 +1,35 @@
-package com.michaelyi.personalwebsite.health;
+package com.michaelyi.personalwebsite.status;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.reflect.Field;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 @ExtendWith(MockitoExtension.class)
-public class HealthServiceTest {
-    private HealthService service;
+public class StatusServiceTest {
+    private StatusService service;
 
     @BeforeEach
     void setUp() {
-        service = new HealthService();
+        service = new StatusService();
     }
 
     @Test
     void check() throws Exception {
-        HealthResponse res = service.check();
+        Status res = service.check();
 
-        assertEquals(res.getStatus(), "UP");
+        assertEquals(res.getServers(), "UP");
         assertNotNull(res.getUptime());
 
         Field[] detailsFields = res.getDetails().getClass().getDeclaredFields();
         for (Field f : detailsFields) {
             f.setAccessible(true);
-            String value = ((HealthStatus) f.get(res.getDetails())).name();
-
+            String value = ((ServerStatus) f.get(res.getDetails())).name();
             assertEquals(value, "UP");
         }
     }

@@ -140,7 +140,7 @@ public class PostService {
         return posts;
     }
 
-    public Post updatePost(
+    public void updatePost(
             String id,
             String text,
             MultipartFile image) {
@@ -157,6 +157,10 @@ public class PostService {
         Response<Post> validationRes = PostUtil.validateAndConstructPost(text);
         Post updatedPost = validationRes.getValue();
 
+        if (validationRes.getError() != null) {
+            throw new IllegalArgumentException(validationRes.getError());
+        }
+
         post.setTitle(updatedPost.getTitle());
         post.setContent(updatedPost.getContent());
         dao.updatePost(post);
@@ -165,7 +169,7 @@ public class PostService {
         cacheService.delete("getAllPosts");
 
         if (PostUtil.isImageInvalid(image)) {
-            return post;
+            return;
         }
 
         byte[] currentImage = getPostImage(id);
@@ -185,7 +189,7 @@ public class PostService {
                     newImage);
         }
 
-        return post;
+        return;
     }
 
     public void deletePost(String id) {

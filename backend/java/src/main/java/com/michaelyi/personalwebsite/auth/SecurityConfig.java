@@ -34,7 +34,7 @@ public class SecurityConfig {
             "DELETE",
             "OPTIONS");
     private static final String[] WHITELISTED_ENDPOINTS = {
-            "/",
+            "/v2/status",
             "/v2/auth/**"
     };
 

@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+
+import com.michaelyi.personalwebsite.util.HttpResponse;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -25,47 +26,50 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest req) {
-        String token;
+    public ResponseEntity<LoginResponse> login(@RequestBody AuthRequest req) {
+        LoginResponse res = new LoginResponse();
 
         try {
-            token = service.login(req);
+            String token = service.login(req);
+            res.setToken(token);
+            res.setHttpStatus(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    e.getMessage());
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.BAD_REQUEST);
         } catch (UnauthorizedException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    e.getMessage());
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            res.setError("Internal server error");
+            res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        return new ResponseEntity<>(res, res.getHttpStatus());
     }
 
     @GetMapping("/validate-token")
-    public ResponseEntity<Void> validateToken(
+    public ResponseEntity<HttpResponse> validateToken(
             @RequestHeader("Authorization") String authHeader) {
+        HttpResponse res = new HttpResponse();
+
         try {
             service.validateToken(authHeader);
+            res.setHttpStatus(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException
                 | UnsupportedJwtException
                 | MalformedJwtException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    e.getMessage());
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.BAD_REQUEST);
         } catch (SignatureException
                 | ExpiredJwtException
                 | UnauthorizedException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    "Unauthorized");
+            res.setError("Unauthorized");
+            res.setHttpStatus(HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            res.setError("Internal server error");
+            res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(res, res.getHttpStatus());
     }
 }
