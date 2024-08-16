@@ -20,10 +20,11 @@ public class CacheService {
 
     public CacheService(
             RedisTemplate<String, String> template,
-            ObjectMapper mapper) {
+            ObjectMapper mapper,
+            ObjectWriter writer) {
         this.template = template;
         this.mapper = mapper;
-        writer = mapper.writer();
+        this.writer = writer;
     }
 
     public <T> T get(String key, Class<T> clazz) {
