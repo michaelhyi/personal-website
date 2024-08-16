@@ -55,21 +55,21 @@ class AuthServiceTest {
     void willThrowLoginWhenUnauthorized() {
         AuthRequest req = new AuthRequest("unauthorized");
 
-        when(passwordEncoder.matches(req.password(), ADMIN_PASSWORD))
+        when(passwordEncoder.matches(req.getPassword(), ADMIN_PASSWORD))
                 .thenReturn(false);
 
         assertThrows(UnauthorizedException.class, () -> underTest.login(req));
 
-        verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
+        verify(passwordEncoder).matches(req.getPassword(), ADMIN_PASSWORD);
     }
 
     @Test
     void login() {
         AuthRequest req = new AuthRequest("authorized");
-        when(passwordEncoder.matches(req.password(), ADMIN_PASSWORD))
+        when(passwordEncoder.matches(req.getPassword(), ADMIN_PASSWORD))
                 .thenReturn(true);
         underTest.login(req);
-        verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
+        verify(passwordEncoder).matches(req.getPassword(), ADMIN_PASSWORD);
     }
 
     @Test

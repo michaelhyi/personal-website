@@ -30,12 +30,12 @@ public class AuthService {
     }
 
     public String login(AuthRequest req) {
-        if (StringUtil.isStringInvalid(req.password())) {
+        if (StringUtil.isStringInvalid(req.getPassword())) {
             throw new IllegalArgumentException("Password cannot be empty");
         }
 
         boolean authorized = passwordEncoder.matches(
-                req.password(),
+                req.getPassword(),
                 adminPassword);
 
         if (!authorized) {
