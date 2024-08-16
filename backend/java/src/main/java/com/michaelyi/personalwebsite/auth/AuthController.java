@@ -2,7 +2,6 @@ package com.michaelyi.personalwebsite.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -47,7 +46,7 @@ public class AuthController {
         return new ResponseEntity<>(res, res.getHttpStatus());
     }
 
-    @GetMapping("/validate-token")
+    @PostMapping("/validate-token")
     public ResponseEntity<HttpResponse> validateToken(
             @RequestHeader("Authorization") String authHeader) {
         HttpResponse res = new HttpResponse();
