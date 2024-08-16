@@ -83,8 +83,8 @@ public class SecurityConfig {
                 .addFilterBefore(
                         authFilter,
                         UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(
-                        exc -> exc.authenticationEntryPoint(authenticationEntryPoint))
+                .exceptionHandling(exc -> exc
+                        .authenticationEntryPoint(authenticationEntryPoint))
                 .build();
     }
 }

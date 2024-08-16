@@ -48,7 +48,9 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
 
         String json = writer.writeValueAsString(res);
 
-        response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        response.setHeader(
+                HttpHeaders.CONTENT_TYPE,
+                MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().print(json);
     }
 
