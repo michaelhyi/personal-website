@@ -176,7 +176,8 @@ class PostIT extends IntegrationTest {
 
         mvc.perform(multipart("/v2/post")
                 .file(IMAGE)
-                .param("text", text))
+                .param("text", text)
+                .servletPath("/v2/post"))
                 .andExpect(status().isUnauthorized());
 
         text = "<h1>Title (1994)</h1>Content";
@@ -374,7 +375,8 @@ class PostIT extends IntegrationTest {
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
         mvc.perform(multipart(HttpMethod.PATCH, "/v2/post/oldboy")
                 .file(IMAGE)
-                .param("text", text))
+                .param("text", text)
+                .servletPath("/v2/post/oldboy"))
                 .andExpect(status().isUnauthorized());
 
         String res = mvc.perform(multipart(HttpMethod.PATCH, "/v2/post/oldboy")
@@ -492,7 +494,7 @@ class PostIT extends IntegrationTest {
         String auth = getAuth(mvc);
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
 
-        mvc.perform(delete("/v2/post/oldboy"))
+        mvc.perform(delete("/v2/post/oldboy").servletPath("/v2/post/oldboy"))
                 .andExpect(status().isUnauthorized());
 
         String res = mvc.perform(delete("/v2/post/oldboy")

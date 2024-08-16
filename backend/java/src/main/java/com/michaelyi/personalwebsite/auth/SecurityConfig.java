@@ -22,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
     private final List<String> allowedOrigins;
     private final AuthFilter authFilter;
-    private final AuthEntryPoint authEntryPoint;
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
 
     private static final List<String> ALLOWED_AND_EXPOSED_HEADERS = List.of(
             "Authorization",
@@ -35,16 +35,17 @@ public class SecurityConfig {
             "OPTIONS");
     private static final String[] WHITELISTED_ENDPOINTS = {
             "/v2/status",
-            "/v2/auth/**"
+            "/v2/auth/login",
+            "/v2/auth/validate-token"
     };
 
     public SecurityConfig(
             @Value("${cors.allowed-origins}") List<String> allowedOrigins,
             AuthFilter authFilter,
-            AuthEntryPoint authEntryPoint) {
+            AuthenticationEntryPointImpl authenticationEntryPoint) {
         this.allowedOrigins = allowedOrigins;
         this.authFilter = authFilter;
-        this.authEntryPoint = authEntryPoint;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Bean
@@ -83,7 +84,7 @@ public class SecurityConfig {
                         authFilter,
                         UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(
-                        exc -> exc.authenticationEntryPoint(authEntryPoint))
+                        exc -> exc.authenticationEntryPoint(authenticationEntryPoint))
                 .build();
     }
 }

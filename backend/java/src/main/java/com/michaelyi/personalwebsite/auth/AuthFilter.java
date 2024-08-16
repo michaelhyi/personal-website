@@ -30,7 +30,7 @@ public class AuthFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().contains("auth")) {
+        if (isWhitelisted(request)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -38,7 +38,6 @@ public class AuthFilter extends OncePerRequestFilter {
         if (SecurityContextHolder
                 .getContext()
                 .getAuthentication() == null) {
-
             String authHeader = request.getHeader("Authorization");
 
             if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
@@ -47,7 +46,13 @@ public class AuthFilter extends OncePerRequestFilter {
             }
 
             String token = authHeader.substring(AuthUtil.BEARER_PREFIX_LENGTH);
-            authService.validateToken(token);
+
+            try {
+                authService.validateToken(token);
+            } catch (Exception e) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     adminUser,
@@ -61,5 +66,15 @@ public class AuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isWhitelisted(HttpServletRequest request) {
+        String path = request.getServletPath();
+        String method = request.getMethod();
+
+        return path.equals("/v2/auth/login")
+                || path.equals("/v2/auth/validate-token")
+                || path.startsWith("/v2/status")
+                || (path.startsWith("/v2/post/") && method.equals("GET"));
     }
 }
