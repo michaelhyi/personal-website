@@ -2,7 +2,6 @@ package com.michaelyi.personalwebsite.auth;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,7 +57,7 @@ class AuthIT extends IntegrationTest {
         String unauthorizedToken = AuthTestUtil.generateToken(
                 AuthUtil.JWT_EXPIRATION);
 
-        String res = mvc.perform(get("/v2/auth/validate-token")
+        String res = mvc.perform(post("/v2/auth/validate-token")
                 .header(
                         "Authorization",
                         String.format("Bearer %s", unauthorizedToken))
@@ -73,7 +72,7 @@ class AuthIT extends IntegrationTest {
 
         String expiredToken = AuthTestUtil.generateToken(
                 AuthUtil.JWT_EXPIRATION * -1);
-        res = mvc.perform(get("/v2/auth/validate-token")
+        res = mvc.perform(post("/v2/auth/validate-token")
                 .header(
                         "Authorization",
                         String.format("Bearer %s", expiredToken))
@@ -100,7 +99,7 @@ class AuthIT extends IntegrationTest {
                 LoginResponse.class);
         String token = loginResponse.getToken();
 
-        mvc.perform(get("/v2/auth/validate-token")
+        mvc.perform(post("/v2/auth/validate-token")
                 .header("Authorization",
                         String.format("Bearer %s", token)))
                 .andExpect(status().isNoContent());
