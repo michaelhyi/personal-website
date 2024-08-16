@@ -372,12 +372,12 @@ class PostIT extends IntegrationTest {
     void updatePost() throws Exception {
         String auth = getAuth(mvc);
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
-        mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
+        mvc.perform(multipart(HttpMethod.PATCH, "/v2/post/oldboy")
                 .file(IMAGE)
                 .param("text", text))
                 .andExpect(status().isUnauthorized());
 
-        String res = mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
+        String res = mvc.perform(multipart(HttpMethod.PATCH, "/v2/post/oldboy")
                 .file(IMAGE)
                 .param("text", text)
                 .header(HttpHeaders.AUTHORIZATION, auth))
@@ -406,7 +406,7 @@ class PostIT extends IntegrationTest {
         text = "<h1>Oldboy (2004)</h1><p>by Park Chan-wook.</p>";
 
         mvc.perform(multipart(
-                HttpMethod.PUT,
+                HttpMethod.PATCH,
                 "/v2/post/" + id)
                 .file(IMAGE)
                 .param("text", text)
@@ -455,7 +455,7 @@ class PostIT extends IntegrationTest {
         assertArrayEquals(IMAGE.getBytes(), getPostImageResponse.getImage());
         byte[] imageRes = getPostImageResponse.getImage();
 
-        mvc.perform(multipart(HttpMethod.PUT, "/v2/post/oldboy")
+        mvc.perform(multipart(HttpMethod.PATCH, "/v2/post/oldboy")
                 .file(
                         new MockMultipartFile(
                                 "image",

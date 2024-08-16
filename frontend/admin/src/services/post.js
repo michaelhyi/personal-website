@@ -52,7 +52,7 @@ export async function getAllPosts() {
 
 export async function updatePost(id, formData) {
     await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
