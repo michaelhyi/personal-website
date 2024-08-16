@@ -35,17 +35,19 @@ public class AuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String authHeader = request.getHeader("Authorization");
-
-        if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         if (SecurityContextHolder
                 .getContext()
                 .getAuthentication() == null) {
-            authService.validateToken(authHeader);
+
+            String authHeader = request.getHeader("Authorization");
+
+            if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            String token = authHeader.substring(AuthUtil.BEARER_PREFIX_LENGTH);
+            authService.validateToken(token);
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     adminUser,

@@ -10,15 +10,18 @@ import org.springframework.stereotype.Service;
 
 import com.michaelyi.personalwebsite.util.StringUtil;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 
 @Service
 public class AuthService {
     private final String adminPassword;
     private final String signingKey;
     private final PasswordEncoder passwordEncoder;
-    private static final int BEARER_PREFIX_LENGTH = 7;
 
     public AuthService(
             @Value("${admin.pw}") String adminPassword,
@@ -29,13 +32,13 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String login(AuthRequest req) {
-        if (StringUtil.isStringInvalid(req.getPassword())) {
+    public String login(String password) {
+        if (StringUtil.isStringInvalid(password)) {
             throw new IllegalArgumentException("Password cannot be empty");
         }
 
         boolean authorized = passwordEncoder.matches(
-                req.getPassword(),
+                password,
                 adminPassword);
 
         if (!authorized) {
@@ -57,18 +60,24 @@ public class AuthService {
                 .compact();
     }
 
-    public void validateToken(String authHeader) {
-        if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
+    public void validateToken(String token) {
+        if (StringUtil.isStringInvalid(token)) {
             throw new IllegalArgumentException(
-                    "Authorization header is invalid");
+                    "Token is invalid");
         }
 
-        String token = authHeader.substring(BEARER_PREFIX_LENGTH);
-
-        Jwts
-                .parserBuilder()
-                .setSigningKey(AuthUtil.getSigningKey(signingKey))
-                .build()
-                .parseClaimsJws(token);
+        try {
+            Jwts
+                    .parserBuilder()
+                    .setSigningKey(AuthUtil.getSigningKey(signingKey))
+                    .build()
+                    .parseClaimsJws(token);
+        } catch (IllegalArgumentException
+                | UnsupportedJwtException
+                | MalformedJwtException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (SignatureException | ExpiredJwtException e) {
+            throw new UnauthorizedException();
+        }
     }
 }

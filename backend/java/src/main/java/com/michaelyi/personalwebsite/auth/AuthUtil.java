@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 
 public class AuthUtil {
     public static final String ADMIN_EMAIL = "admin@michael-yi.com";
+    public static final int BEARER_PREFIX_LENGTH = 7;
     public static final long JWT_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
 
     public static boolean isAuthHeaderInvalid(String authHeader) {
