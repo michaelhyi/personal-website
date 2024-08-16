@@ -6,36 +6,48 @@ export async function createPost(formData) {
         },
         body: formData,
     });
+    const { postId, error } = await res.json();
 
     if (!res.ok) {
-        throw new Error(await res.text());
+        throw new Error(error);
     }
 
-    return res.text();
+    return postId;
 }
 
 export async function getPost(id) {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
+    const { post, error } = await res.json();
 
     if (!res.ok) {
-        throw new Error(await res.text());
+        throw new Error(error);
     }
 
-    return res.json();
+    return post;
 }
 
-export function getPostImage(id) {
-    return `${process.env.REACT_APP_API_URL}/post/image/${id}`;
+export async function getPostImage(id) {
+    const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/post/image/${id}`,
+    );
+    const { image, error } = await res.json();
+
+    if (!res.ok) {
+        throw new Error(error);
+    }
+
+    return image;
 }
 
 export async function getAllPosts() {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
+    const { posts, error } = await res.json();
 
     if (!res.ok) {
-        throw new Error(await res.text());
+        throw new Error(error);
     }
 
-    return res.json();
+    return posts;
 }
 
 export async function updatePost(id, formData) {

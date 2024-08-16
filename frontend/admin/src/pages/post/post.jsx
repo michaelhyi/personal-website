@@ -15,7 +15,12 @@ import {
     Spinner,
 } from "../../components";
 import useEditor from "../../hooks/useEditor";
-import { createPost, getPost, updatePost } from "../../services/post";
+import {
+    createPost,
+    getPost,
+    getPostImage,
+    updatePost,
+} from "../../services/post";
 import validateForm from "../../utils/validateForm";
 
 export default function Post() {
@@ -71,10 +76,16 @@ export default function Post() {
             if (id) {
                 try {
                     const post = await getPost(id);
+                    const postImage = await getPostImage(id);
+
                     editor.commands.setContent(
                         `<h1>${post.title}</h1>${post.content}`,
                     );
-                    setQuery({ data: post, loading: false, error: false });
+                    setQuery({
+                        data: { post, image: postImage },
+                        loading: false,
+                        error: false,
+                    });
                 } catch (e) {
                     setQuery({ data: null, loading: false, error: true });
                 }
@@ -101,7 +112,8 @@ export default function Post() {
                     id={params.get("id")}
                     showImage={showImage}
                     setShowImage={setShowImage}
-                    title={data && data.title}
+                    title={data && data.post.title}
+                    postImage={data && data.image}
                     submitting={submitting}
                     image={image}
                     setImage={setImage}
