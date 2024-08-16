@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.michaelyi.personalwebsite.util.HttpResponse;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SignatureException;
-
 @RestController
 @RequestMapping("/v2/auth")
 public class AuthController {
@@ -29,7 +24,7 @@ public class AuthController {
         LoginResponse res = new LoginResponse();
 
         try {
-            String token = service.login(req);
+            String token = service.login(req.getPassword());
             res.setToken(token);
             res.setHttpStatus(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
@@ -51,17 +46,20 @@ public class AuthController {
             @RequestHeader("Authorization") String authHeader) {
         HttpResponse res = new HttpResponse();
 
+        if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
+            throw new IllegalArgumentException(
+                    "Authorization header is invalid");
+        }
+
+        String token = authHeader.substring(AuthUtil.BEARER_PREFIX_LENGTH);
+
         try {
-            service.validateToken(authHeader);
+            service.validateToken(token);
             res.setHttpStatus(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException
-                | UnsupportedJwtException
-                | MalformedJwtException e) {
+        } catch (IllegalArgumentException e) {
             res.setError(e.getMessage());
             res.setHttpStatus(HttpStatus.BAD_REQUEST);
-        } catch (SignatureException
-                | ExpiredJwtException
-                | UnauthorizedException e) {
+        } catch (UnauthorizedException e) {
             res.setError("Unauthorized");
             res.setHttpStatus(HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
