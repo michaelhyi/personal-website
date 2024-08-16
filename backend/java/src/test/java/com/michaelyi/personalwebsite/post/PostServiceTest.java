@@ -1,20 +1,5 @@
 package com.michaelyi.personalwebsite.post;
 
-import com.michaelyi.personalwebsite.cache.CacheService;
-import com.michaelyi.personalwebsite.s3.S3Service;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
-import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
-
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,6 +9,21 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
+
+import com.michaelyi.personalwebsite.cache.CacheService;
+import com.michaelyi.personalwebsite.s3.S3Service;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -41,8 +41,7 @@ class PostServiceTest {
             "title",
             new Date(),
             "title",
-            "content"
-    );
+            "content");
 
     @BeforeEach
     void setUp() {
@@ -57,10 +56,7 @@ class PostServiceTest {
                         null,
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -68,10 +64,7 @@ class PostServiceTest {
                         "",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -79,10 +72,7 @@ class PostServiceTest {
                         "no-title",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -90,10 +80,7 @@ class PostServiceTest {
                         "<h1></h1>",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -101,10 +88,7 @@ class PostServiceTest {
                         "<h1>no-content</h1>",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -112,10 +96,7 @@ class PostServiceTest {
                         "<h1>no-content</h1><p></p>",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -123,27 +104,20 @@ class PostServiceTest {
                         "<h1>title</h1><p>content</p>",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
     }
 
     @Test
     void willThrowCreatePostWhenAlreadyExists() {
         when(dao.getPost("title")).thenReturn(Optional.of(POST));
 
-        assertThrows(IllegalArgumentException.class, () ->
-                underTest.createPost(
-                        "<h1>title (1994)</h1><p>content</p>",
-                        new MockMultipartFile(
-                                "image",
-                                "image.jpg",
-                                "image/jpeg",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+        assertThrows(IllegalArgumentException.class, () -> underTest.createPost(
+                "<h1>title (1994)</h1><p>content</p>",
+                new MockMultipartFile(
+                        "image",
+                        "image.jpg",
+                        "image/jpeg",
+                        "Hello World!".getBytes())));
         verify(dao).getPost("title");
         verifyNoMoreInteractions(dao);
     }
@@ -151,8 +125,7 @@ class PostServiceTest {
     @Test
     void createPost() {
         when(dao.getPost(POST.getId())).thenReturn(
-                Optional.empty()
-        );
+                Optional.empty());
 
         String actualId = underTest.createPost(
                 "<h1>title (1994)</h1>content",
@@ -160,13 +133,10 @@ class PostServiceTest {
                         "image",
                         "image.jpg",
                         "image/jpeg",
-                        "Hello World!".getBytes()
-                )
-        );
+                        "Hello World!".getBytes()));
 
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(
-                Post.class
-        );
+                Post.class);
 
         verify(dao).getPost(POST.getId());
         verify(dao).createPost(postArgumentCaptor.capture());
@@ -207,8 +177,7 @@ class PostServiceTest {
 
         assertThrows(
                 NoSuchElementException.class,
-                () -> underTest.getPostImage("title")
-        );
+                () -> underTest.getPostImage("title"));
         verify(dao).getPost("title");
         verify(s3Service, never()).getObject(any());
     }
@@ -217,12 +186,11 @@ class PostServiceTest {
     void willThrowgetPostImageWhenS3KeyNotFound() {
         when(dao.getPost("title")).thenReturn(Optional.of(POST));
         when(s3Service.getObject("title"))
-                .thenThrow(NoSuchKeyException.class);
+                .thenReturn(null);
 
         assertThrows(
                 NoSuchElementException.class,
-                () -> underTest.getPostImage("title")
-        );
+                () -> underTest.getPostImage("title"));
         verify(dao).getPost("title");
         verify(s3Service).getObject("title");
     }
@@ -256,10 +224,7 @@ class PostServiceTest {
                         null,
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -268,10 +233,7 @@ class PostServiceTest {
                         null,
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -280,10 +242,7 @@ class PostServiceTest {
                         null,
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         when(dao.getPost("id")).thenReturn(Optional.of(POST));
 
@@ -294,10 +253,7 @@ class PostServiceTest {
                         null,
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
         assertThrows(
                 IllegalArgumentException.class,
                 () -> underTest.updatePost(
@@ -305,10 +261,7 @@ class PostServiceTest {
                         "",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -317,10 +270,7 @@ class PostServiceTest {
                         "no-title",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -329,10 +279,7 @@ class PostServiceTest {
                         "<h1></h1>",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -341,10 +288,7 @@ class PostServiceTest {
                         "<h1>no-content</h1>",
                         new MockMultipartFile(
                                 "Hi",
-                                "Hello World!".getBytes()
-                        )
-                )
-        );
+                                "Hello World!".getBytes())));
     }
 
     @Test
@@ -355,9 +299,7 @@ class PostServiceTest {
                 () -> underTest.updatePost(
                         "title",
                         "<h1>title (1994)</h1>content",
-                        null
-                )
-        );
+                        null));
 
         verify(dao).getPost("title");
         verifyNoMoreInteractions(dao);
@@ -366,6 +308,8 @@ class PostServiceTest {
     @Test
     void updatePost() {
         when(dao.getPost("title")).thenReturn(Optional.of(POST));
+        when(s3Service.getObject("title"))
+                .thenReturn("Hello World!".getBytes());
 
         underTest.updatePost(
                 "title",
@@ -374,13 +318,10 @@ class PostServiceTest {
                         "image",
                         "image.jpg",
                         "image/jpeg",
-                        "Hello World!".getBytes(
-                        )
-                )
-        );
+                        "Hello World!".getBytes()));
 
-        ArgumentCaptor<Post> postArgumentCaptor =
-                ArgumentCaptor.forClass(Post.class);
+        ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor
+                .forClass(Post.class);
 
         verify(dao, times(2)).getPost("title");
         verify(dao).updatePost(postArgumentCaptor.capture());
@@ -390,6 +331,8 @@ class PostServiceTest {
     @Test
     void updatePostImage() {
         when(dao.getPost("title")).thenReturn(Optional.of(POST));
+        when(s3Service.getObject("title"))
+                .thenReturn("Hello World!".getBytes());
 
         underTest.updatePost(
                 "title",
@@ -398,12 +341,10 @@ class PostServiceTest {
                         "image",
                         "image.jpg",
                         "image/jpeg",
-                        "New Hello World!".getBytes()
-                )
-        );
+                        "New Hello World!".getBytes()));
 
-        ArgumentCaptor<Post> postArgumentCaptor =
-                ArgumentCaptor.forClass(Post.class);
+        ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor
+                .forClass(Post.class);
 
         verify(dao, times(2)).getPost("title");
         verify(dao).updatePost(postArgumentCaptor.capture());
@@ -418,8 +359,7 @@ class PostServiceTest {
 
         assertThrows(
                 NoSuchElementException.class,
-                () -> underTest.deletePost("title")
-        );
+                () -> underTest.deletePost("title"));
         verifyNoMoreInteractions(s3Service);
         verifyNoMoreInteractions(dao);
     }

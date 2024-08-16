@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,8 +20,7 @@ public class CacheService {
 
     public CacheService(
             RedisTemplate<String, String> template,
-            ObjectMapper mapper
-    ) {
+            ObjectMapper mapper) {
         this.template = template;
         this.mapper = mapper;
         writer = mapper.writer();
@@ -59,7 +57,7 @@ public class CacheService {
 
         try {
             data = mapper.readValue(value, type);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return null;
         }
 
@@ -79,7 +77,7 @@ public class CacheService {
 
         try {
             value = writer.writeValueAsString(data);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return;
         }
 
@@ -87,7 +85,9 @@ public class CacheService {
             return;
         }
 
-        template.opsForValue().set(key, value, CACHE_TTL, TimeUnit.MILLISECONDS);
+        template
+                .opsForValue()
+                .set(key, value, CACHE_TTL, TimeUnit.MILLISECONDS);
     }
 
     public void delete(String key) {
@@ -99,6 +99,10 @@ public class CacheService {
     }
 
     public void flushAll() {
-        template.getConnectionFactory().getConnection().serverCommands().flushAll();
+        template
+                .getConnectionFactory()
+                .getConnection()
+                .serverCommands()
+                .flushAll();
     }
 }

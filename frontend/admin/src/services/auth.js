@@ -6,12 +6,13 @@ export async function login(password) {
         },
         body: JSON.stringify({ password }),
     });
+    const { token, error } = await res.json();
 
     if (!res.ok) {
-        throw new Error(await res.text());
+        throw new Error(error);
     }
 
-    localStorage.setItem("token", await res.text());
+    localStorage.setItem("token", token);
 }
 
 export async function validateToken() {
@@ -25,6 +26,7 @@ export async function validateToken() {
     );
 
     if (!res.ok) {
-        throw new Error(await res.text());
+        const { error } = await res.json();
+        throw new Error(error);
     }
 }

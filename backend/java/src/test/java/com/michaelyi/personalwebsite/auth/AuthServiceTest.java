@@ -1,14 +1,19 @@
 package com.michaelyi.personalwebsite.auth;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import io.jsonwebtoken.ExpiredJwtException;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
@@ -16,7 +21,6 @@ class AuthServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
-
     private static final String ADMIN_PASSWORD = "admin";
 
     @BeforeEach
@@ -24,107 +28,88 @@ class AuthServiceTest {
         underTest = new AuthService(
                 ADMIN_PASSWORD,
                 AuthTestUtil.SIGNING_KEY,
-                passwordEncoder
-        );
+                passwordEncoder);
     }
 
     @Test
     void willThrowLoginWhenBadRequest() {
-        AuthRequest nullReq = new AuthRequest(null);
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.login(nullReq)
-        );
-
         AuthRequest emptyReq = new AuthRequest("");
 
-        assertThrows(
+        IllegalArgumentException err = assertThrows(
                 IllegalArgumentException.class,
-                () -> underTest.login(emptyReq)
-        );
+                () -> underTest.login(emptyReq));
+
+        assertEquals("Password cannot be empty", err.getMessage());
 
         AuthRequest blankReq = new AuthRequest(" ");
 
-        assertThrows(
+        err = assertThrows(
                 IllegalArgumentException.class,
-                () -> underTest.login(blankReq)
-        );
+                () -> underTest.login(blankReq));
 
-        Mockito.verifyNoInteractions(passwordEncoder);
+        assertEquals("Password cannot be empty", err.getMessage());
+        verifyNoInteractions(passwordEncoder);
     }
 
     @Test
     void willThrowLoginWhenUnauthorized() {
         AuthRequest req = new AuthRequest("unauthorized");
 
-        Mockito.when(
-                passwordEncoder.matches(req.password(), ADMIN_PASSWORD)
-        ).thenReturn(false);
+        when(passwordEncoder.matches(req.password(), ADMIN_PASSWORD))
+                .thenReturn(false);
 
         assertThrows(UnauthorizedException.class, () -> underTest.login(req));
 
-        Mockito.verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
+        verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
     }
 
     @Test
     void login() {
         AuthRequest req = new AuthRequest("authorized");
-
-        Mockito.when(
-                passwordEncoder.matches(req.password(), ADMIN_PASSWORD)
-        ).thenReturn(true);
-
+        when(passwordEncoder.matches(req.password(), ADMIN_PASSWORD))
+                .thenReturn(true);
         underTest.login(req);
-
-        Mockito.verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
+        verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
     }
 
     @Test
     void willThrowValidateTokenWhenBadRequest() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> underTest.validateToken(null)
-        );
+                () -> underTest.validateToken(null));
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> underTest.validateToken("")
-        );
+                () -> underTest.validateToken(""));
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> underTest.validateToken(" ")
-        );
+                () -> underTest.validateToken(" "));
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> underTest.validateToken("Basic")
-        );
+                () -> underTest.validateToken("Basic"));
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> underTest.validateToken("Bearer")
-        );
+                () -> underTest.validateToken("Bearer"));
     }
 
     @Test
     void willThrowValidateTokenWhenTokenIsInvalid() {
         String token = AuthTestUtil.generateToken(
-                AuthUtil.JWT_EXPIRATION * -1
-        );
+                AuthUtil.JWT_EXPIRATION * -1);
 
         assertThrows(
-                UnauthorizedException.class,
-                () -> underTest.validateToken(String.format("Bearer %s", token))
-        );
+                ExpiredJwtException.class,
+                () -> underTest.validateToken(
+                        String.format("Bearer %s", token)));
     }
 
     @Test
     void validateToken() {
         String token = AuthTestUtil.generateToken(
-                AuthUtil.JWT_EXPIRATION
-        );
+                AuthUtil.JWT_EXPIRATION);
 
         underTest.validateToken(String.format("Bearer %s", token));
     }

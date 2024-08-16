@@ -1,36 +1,35 @@
 package com.michaelyi.personalwebsite.auth;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class AuthFilter extends OncePerRequestFilter {
     private final AuthService authService;
-    private final User user;
+    private final AdminUser adminUser;
 
     public AuthFilter(
             AuthService authService,
-            User user
-    ) {
+            AdminUser adminUser) {
         this.authService = authService;
-        this.user = user;
+        this.adminUser = adminUser;
     }
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException {
+            FilterChain filterChain) throws ServletException, IOException {
         if (request.getServletPath().contains("auth")) {
             filterChain.doFilter(request, response);
             return;
@@ -45,27 +44,18 @@ public class AuthFilter extends OncePerRequestFilter {
 
         if (SecurityContextHolder
                 .getContext()
-                .getAuthentication() == null
-        ) {
-            try {
-                authService.validateToken(authHeader);
+                .getAuthentication() == null) {
+            authService.validateToken(authHeader);
 
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                user,
-                                null,
-                                user.getAuthorities()
-                        );
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    adminUser,
+                    null,
+                    adminUser.getAuthorities());
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().
-                                buildDetails(request)
-                );
+            authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            } catch (Exception e) {
-                filterChain.doFilter(request, response);
-            }
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 
         filterChain.doFilter(request, response);

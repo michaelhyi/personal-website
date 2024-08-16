@@ -1,10 +1,10 @@
 package com.michaelyi.personalwebsite.post;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostDao {
@@ -26,8 +26,7 @@ public class PostDao {
                 post.getId(),
                 post.getDate(),
                 post.getTitle(),
-                post.getContent()
-        );
+                post.getContent());
     }
 
     public Optional<Post> getPost(String id) {

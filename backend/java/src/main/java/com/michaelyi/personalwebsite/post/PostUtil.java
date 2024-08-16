@@ -1,5 +1,6 @@
 package com.michaelyi.personalwebsite.post;
 
+import com.michaelyi.personalwebsite.util.Response;
 import com.michaelyi.personalwebsite.util.StringUtil;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,15 +10,15 @@ public class PostUtil {
     public static final int CLOSING_H1_TAG_LENGTH = 5;
     public static final int OPENING_H1_TAG_LENGTH = 4;
 
-    public static Post validateAndConstructPost(String text) {
+    public static Response<Post> validateAndConstructPost(String text) {
         if (StringUtil.isStringInvalid(text)) {
-            throw new IllegalArgumentException("Text is invalid");
+            return new Response<>(null, "Text is invalid");
         }
 
         int titleIndex = text.indexOf("</h1>");
 
         if (titleIndex == -1) {
-            throw new IllegalArgumentException("Title cannot be blank");
+            return new Response<>(null, "Title cannot be blank");
         }
 
         String newTitle = text.substring(
@@ -29,11 +30,11 @@ public class PostUtil {
         );
 
         if (StringUtil.isStringInvalid(newTitle)) {
-            throw new IllegalArgumentException("Title cannot be blank");
+            return new Response<>(null, "Title cannot be blank");
         }
 
         if (StringUtil.isStringInvalid(newContent)) {
-            throw new IllegalArgumentException("Content cannot be blank");
+            return new Response<>(null, "Content cannot be blank");
         }
 
         String newId = newTitle.toLowerCase()
@@ -46,7 +47,9 @@ public class PostUtil {
         String title = newTitle.replaceAll("<[^>]*>", "");
         String content = newContent;
 
-        return new Post(id, date, title, content);
+        Post post = new Post(id, date, title, content);
+
+        return new Response<>(post, null);
     }
 
     public static boolean isImageInvalid(MultipartFile image) {
