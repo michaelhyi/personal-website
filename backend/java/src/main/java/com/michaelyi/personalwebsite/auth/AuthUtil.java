@@ -17,8 +17,8 @@ public class AuthUtil {
                 || !authHeader.startsWith("Bearer ");
     }
 
-    public static Key getSigningKey(String signingKey) {
-        byte[] keyBytes = Decoders.BASE64.decode(signingKey);
+    public static Key getSigningKey(String secret) {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

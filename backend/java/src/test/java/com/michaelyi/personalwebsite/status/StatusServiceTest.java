@@ -20,8 +20,8 @@ public class StatusServiceTest {
     }
 
     @Test
-    void check() throws Exception {
-        Status res = service.check();
+    void getStatus() throws Exception {
+        Status res = service.getStatus();
 
         assertEquals(res.getServers(), "UP");
         assertNotNull(res.getUptime());

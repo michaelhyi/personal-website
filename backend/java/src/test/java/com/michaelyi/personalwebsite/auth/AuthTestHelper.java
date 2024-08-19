@@ -2,6 +2,7 @@ package com.michaelyi.personalwebsite.auth;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-public class AuthTestUtil {
+public class AuthTestHelper {
     protected static final String FAKE_SIGNING_KEY = "fakesigningkeyfakesigningkeyfakesigningkeyfakesigningkey";
 
     protected static MockHttpServletResponse login(
@@ -62,7 +63,8 @@ public class AuthTestUtil {
         return res.getToken();
     }
 
-    protected static String generateBadToken(long expiration) {
+    protected static String generateToken(String key, long expiration) {
+        Key signingKey = AuthUtil.getSigningKey(key);
         Map<String, Object> claims = new HashMap<>();
         long currTime = System.currentTimeMillis();
 
@@ -71,11 +73,8 @@ public class AuthTestUtil {
                 .setClaims(claims)
                 .setSubject(AuthUtil.ADMIN_EMAIL)
                 .setIssuedAt(new Date(currTime))
-                .setExpiration(
-                        new Date(currTime + expiration))
-                .signWith(
-                        AuthUtil.getSigningKey(FAKE_SIGNING_KEY),
-                        SignatureAlgorithm.HS256)
+                .setExpiration(new Date(currTime + expiration))
+                .signWith(signingKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 

@@ -1,5 +1,6 @@
 package com.michaelyi.personalwebsite.auth;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,15 +21,15 @@ import io.jsonwebtoken.security.SignatureException;
 @Service
 public class AuthService {
     private final String adminPassword;
-    private final String signingKey;
+    private final String jwtSecret;
     private final PasswordEncoder passwordEncoder;
 
     public AuthService(
             @Value("${admin.pw}") String adminPassword,
-            @Value("${jwt.secret-key}") String signingKey,
+            @Value("${jwt.secret-key}") String jwtSecret,
             PasswordEncoder passwordEncoder) {
         this.adminPassword = adminPassword;
-        this.signingKey = signingKey;
+        this.jwtSecret = jwtSecret;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -42,7 +43,7 @@ public class AuthService {
                 adminPassword);
 
         if (!authorized) {
-            throw new UnauthorizedException("Invalid password");
+            throw new UnauthorizedException("Wrong password");
         }
 
         Map<String, Object> claims = new HashMap<>();
@@ -55,21 +56,22 @@ public class AuthService {
                 .setIssuedAt(new Date(currentTime))
                 .setExpiration(new Date(currentTime + AuthUtil.JWT_EXPIRATION))
                 .signWith(
-                        AuthUtil.getSigningKey(signingKey),
+                        AuthUtil.getSigningKey(jwtSecret),
                         SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public void validateToken(String token) {
         if (StringUtil.isStringInvalid(token)) {
-            throw new IllegalArgumentException(
-                    "Token is invalid");
+            throw new IllegalArgumentException("Token cannot be empty");
         }
+
+        Key signingKey = AuthUtil.getSigningKey(jwtSecret);
 
         try {
             Jwts
                     .parserBuilder()
-                    .setSigningKey(AuthUtil.getSigningKey(signingKey))
+                    .setSigningKey(signingKey)
                     .build()
                     .parseClaimsJws(token);
         } catch (IllegalArgumentException

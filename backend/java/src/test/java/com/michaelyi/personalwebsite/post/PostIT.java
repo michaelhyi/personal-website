@@ -20,7 +20,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.michaelyi.personalwebsite.IntegrationTest;
-import com.michaelyi.personalwebsite.auth.AuthTestUtil;
+import com.michaelyi.personalwebsite.auth.AuthTestHelper;
 import com.michaelyi.personalwebsite.cache.CacheService;
 import com.michaelyi.personalwebsite.s3.S3Service;
 
@@ -50,7 +50,7 @@ class PostIT extends IntegrationTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        auth = AuthTestUtil.getAuth(mvc, MAPPER, WRITER);
+        auth = AuthTestHelper.getAuth(mvc, MAPPER, WRITER);
         cacheService.flushAll();
         dao.deleteAllPosts();
         s3Service.deleteObject("title");

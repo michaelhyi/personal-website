@@ -11,7 +11,7 @@ public class StatusService {
     private static final int SECONDS_PER_MINUTE = 60;
     private static final int MS_PER_SECOND = 1000;
 
-    public Status check() {
+    public Status getStatus() {
         Date timestamp = new Date();
         long uptime = timestamp.getTime() - START_TIME.getTime();
 
