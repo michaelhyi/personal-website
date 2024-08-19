@@ -4,10 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
 
@@ -16,18 +12,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.michaelyi.personalwebsite.IntegrationTest;
+import com.michaelyi.personalwebsite.auth.AuthTestUtil;
 import com.michaelyi.personalwebsite.cache.CacheService;
 import com.michaelyi.personalwebsite.s3.S3Service;
-import com.michaelyi.personalwebsite.util.HttpResponse;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -51,9 +46,11 @@ class PostIT extends IntegrationTest {
             "image.png",
             "image/png",
             "image".getBytes());
+    private String auth;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
+        auth = AuthTestUtil.getAuth(mvc, MAPPER, WRITER);
         cacheService.flushAll();
         dao.deleteAllPosts();
         s3Service.deleteObject("title");
@@ -62,203 +59,155 @@ class PostIT extends IntegrationTest {
 
     @Test
     void postConstructor() throws Exception {
-        String auth = getAuth(mvc);
-
         String text = "";
-        String res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isBadRequest())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        CreatePostResponse createPostResponse = MAPPER.readValue(
-                res,
-                CreatePostResponse.class);
-        assertEquals("Text is invalid", createPostResponse.getError());
+        MockHttpServletResponse res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals("Text is invalid", getError(res));
 
         text = "no-title";
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isBadRequest())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        createPostResponse = MAPPER.readValue(
-                res,
-                CreatePostResponse.class);
-        assertEquals("Title cannot be blank", createPostResponse.getError());
+        res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals("Title cannot be blank", getError(res));
 
         text = "<h1></h1>";
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isBadRequest())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        createPostResponse = MAPPER.readValue(
-                res,
-                CreatePostResponse.class);
-        assertEquals("Title cannot be blank", createPostResponse.getError());
+        res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals("Title cannot be blank", getError(res));
 
         text = "<h1>no-content</h1>";
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isBadRequest())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        createPostResponse = MAPPER.readValue(
-                res,
-                CreatePostResponse.class);
-        assertEquals("Content cannot be blank", createPostResponse.getError());
+        res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals("Content cannot be blank", getError(res));
 
         text = "<h1>Oldboy (2003)</h1><p>content</p>";
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        createPostResponse = MAPPER.readValue(
-                res,
-                CreatePostResponse.class);
-        String id = createPostResponse.getPostId();
+        res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        String id = PostTestUtil.getPostIdFromResponse(res, MAPPER);
 
-        res = mvc.perform(get("/v2/post/" + id))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        GetPostResponse getPostResponse = MAPPER.readValue(
-            res,
-            GetPostResponse.class);
-        Post actual = getPostResponse.getPost();
-        assertEquals(id, actual.getId());
-        assertEquals("Oldboy (2003)", actual.getTitle());
-        assertEquals("<p>content</p>", actual.getContent());
+        res = PostTestUtil.getPost(id, mvc, MAPPER, WRITER);
+        Post post = PostTestUtil.getPostFromResponse(res, MAPPER);
+        assertEquals(id, post.getId());
+        assertEquals("Oldboy (2003)", post.getTitle());
+        assertEquals("<p>content</p>", post.getContent());
     }
 
     @Test
-    void createPost() throws Exception {
-        String auth = getAuth(mvc);
-        String text = "<h1>Already Exists (1994)</h1>content";
+    void willThrowUnauthorizedDuringCreatePostWhenNoAuth() throws Exception {
+        String text = "<h1>Oldboy (2003)</h1><p>content</p>";
+        MockHttpServletResponse res = PostTestUtil.createPost(
+                "",
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), res.getStatus());
+    }
 
-        mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated());
+    @Test
+    void willThrowBadRequestDuringCreatePostWhenPostWithSameTitleAlreadyExists()
+            throws Exception {
+        String text = "<h1>Oldboy (2003)</h1><p>content</p>";
+        MockHttpServletResponse res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        String res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isBadRequest())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        CreatePostResponse createPostResponse = MAPPER.readValue(
-                res,
-                CreatePostResponse.class);
+        res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), res.getStatus());
         assertEquals(
                 "A post with the same title already exists",
-                createPostResponse.getError());
-
-        mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .servletPath("/v2/post"))
-                .andExpect(status().isUnauthorized());
-
-        text = "<h1>Title (1994)</h1>Content";
-
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        createPostResponse = MAPPER.readValue(
-                res,
-                CreatePostResponse.class);
-        String id = createPostResponse.getPostId();
-
-        res = mvc.perform(get("/v2/post/" + id))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        GetPostResponse getPostResponse = MAPPER.readValue(
-            res,
-            GetPostResponse.class);
-        Post actual = getPostResponse.getPost();
-
-        assertEquals(id, actual.getId());
-        assertEquals("Title (1994)", actual.getTitle());
-        assertEquals("Content", actual.getContent());
-
-        res = mvc.perform(get("/v2/post/image/" + id)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        GetPostImageResponse getPostImageResponse = MAPPER.readValue(
-                res,
-                GetPostImageResponse.class);
-
-        assertArrayEquals(IMAGE.getBytes(), getPostImageResponse.getImage());
+                getError(res));
     }
 
     @Test
-    void getPost() throws Exception {
-        String auth = getAuth(mvc);
-        String res = mvc.perform(get("/v2/post/oldboy"))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        GetPostResponse getPostResponse = MAPPER.readValue(
-            res,
-            GetPostResponse.class);
-        assertEquals("Post not found", getPostResponse.getError());
+    void willCreatePostWhenPostDoesNotAlreadyExist() throws Exception {
+        String text = "<h1>Oldboy (2003)</h1><p>content</p>";
+        MockHttpServletResponse res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        CreatePostResponse createPostResponse = MAPPER.readValue(
+        String id = PostTestUtil.getPostIdFromResponse(res, MAPPER);
+        res = PostTestUtil.getPost(id, mvc, MAPPER, WRITER);
+        Post post = PostTestUtil.getPostFromResponse(res, MAPPER);
+        assertEquals(id, post.getId());
+        assertEquals("Oldboy (2003)", post.getTitle());
+        assertEquals("<p>content</p>", post.getContent());
+
+        res = PostTestUtil.getPostImage(id, mvc, MAPPER, WRITER);
+        byte[] image = PostTestUtil.getImageFromResponse(
                 res,
-                CreatePostResponse.class);
-        String id = createPostResponse.getPostId();
+                MAPPER);
+        assertArrayEquals(IMAGE.getBytes(), image);
+    }
 
-        res = mvc.perform(get("/v2/post/" + id))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        getPostResponse = MAPPER.readValue(res, GetPostResponse.class);
-        Post actual = getPostResponse.getPost();
+    @Test
+    void willThrowNotFoundDuringGetPost() throws Exception {
+        MockHttpServletResponse res = PostTestUtil.getPost(
+                "oldboy",
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals("Post not found", getError(res));
+    }
 
-        assertEquals("oldboy", id);
+    @Test
+    void willGetPostWhenPostExists() throws Exception {
+        String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
+        MockHttpServletResponse res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
+
+        String postId = PostTestUtil.getPostIdFromResponse(res, MAPPER);
+        res = PostTestUtil.getPost(postId, mvc, MAPPER, WRITER);
+        assertEquals(HttpStatus.OK.value(), res.getStatus());
+        Post actual = PostTestUtil.getPostFromResponse(res, MAPPER);
+        assertEquals("oldboy", postId);
         assertEquals("oldboy", actual.getId());
         assertEquals("Oldboy (2003)", actual.getTitle());
         assertEquals(
@@ -267,281 +216,228 @@ class PostIT extends IntegrationTest {
     }
 
     @Test
+    void willThrowGetPostImageWhenPostDoesNotExist() throws Exception {
+        MockHttpServletResponse res = PostTestUtil.getPostImage(
+                "oldboy",
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());
+        assertEquals("Post not found", getError(res));
+    }
+
+    @Test
     void getPostImage() throws Exception {
-        String auth = getAuth(mvc);
-        String res = mvc.perform(get("/v2/post/image/oldboy"))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        GetPostImageResponse getPostImageResponse = MAPPER.readValue(
-                res,
-                GetPostImageResponse.class);
-        assertEquals("Post not found", getPostImageResponse.getError());
-
         String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
+        MockHttpServletResponse res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        CreatePostResponse createPostResponse = MAPPER.readValue(
-                res,
-                CreatePostResponse.class);
-        String id = createPostResponse.getPostId();
-
-        res = mvc.perform(get("/v2/post/image/" + id))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        getPostImageResponse = MAPPER.readValue(
-            res,
-            GetPostImageResponse.class);
-        assertArrayEquals(IMAGE.getBytes(), getPostImageResponse.getImage());
+        String postId = PostTestUtil.getPostIdFromResponse(res, MAPPER);
+        res = PostTestUtil.getPostImage(postId, mvc, MAPPER, WRITER);
+        byte[] actual = PostTestUtil.getImageFromResponse(res, MAPPER);
+        assertArrayEquals(IMAGE.getBytes(), actual);
     }
 
     @Test
     void getAllPosts() throws Exception {
-        String auth = getAuth(mvc);
         String text = "<h1>Title (1994)</h1>Content";
-        mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        MockHttpServletResponse res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-        mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         text = "<h1>It's A Wonderful Life (1946)</h1><p>by Frank Capra.</p>";
-        mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        res = PostTestUtil.createPost(
+                auth,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        String res = mvc.perform(get("/v2/post"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        GetAllPostsResponse getAllPostsResponse = MAPPER.readValue(
-                res,
-                GetAllPostsResponse.class);
-        List<Post> actual = getAllPostsResponse.getPosts();
+        res = PostTestUtil.getAllPosts(mvc, MAPPER, WRITER);
+        assertEquals(HttpStatus.OK.value(), res.getStatus());
 
+        List<Post> posts = PostTestUtil.getPostsFromResponse(res, MAPPER);
         assertEquals(
                 "its-a-wonderful-life",
-                actual.get(0).getId());
+                posts.get(0).getId());
         assertEquals(
                 "It's A Wonderful Life (1946)",
-                actual.get(0).getTitle());
+                posts.get(0).getTitle());
         assertEquals(
                 "<p>by Frank Capra.</p>",
-                actual.get(0).getContent());
+                posts.get(0).getContent());
 
-        assertEquals("oldboy", actual.get(1).getId());
-        assertEquals("Oldboy (2003)", actual.get(1).getTitle());
+        assertEquals("oldboy", posts.get(1).getId());
+        assertEquals("Oldboy (2003)", posts.get(1).getTitle());
         assertEquals(
                 "<p>In Park Chan-wook's film...</p>",
-                actual.get(1).getContent());
+                posts.get(1).getContent());
 
-        assertEquals("title", actual.get(2).getId());
-        assertEquals("Title (1994)", actual.get(2).getTitle());
-        assertEquals("Content", actual.get(2).getContent());
+        assertEquals("title", posts.get(2).getId());
+        assertEquals("Title (1994)", posts.get(2).getTitle());
+        assertEquals("Content", posts.get(2).getContent());
+    }
+
+    @Test
+    void willThrowUnauthorizedDuringUpdatePostWhenNoAuth() throws Exception {
+        String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
+        MockHttpServletResponse res = PostTestUtil.updatePost(
+                "",
+                "oldboy",
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), res.getStatus());
+        assertEquals("Unauthorized", getError(res));
+    }
+
+    @Test
+    void willThrowNotFoundDuringUpdatePostWhenPostNotFound() throws Exception {
+        String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
+        MockHttpServletResponse res = PostTestUtil.updatePost(
+                auth,
+                "oldboy",
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());
+        assertEquals("Post not found", getError(res));
     }
 
     @Test
     void updatePost() throws Exception {
-        String auth = getAuth(mvc);
-        String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
-        mvc.perform(multipart(HttpMethod.PATCH, "/v2/post/oldboy")
-                .file(IMAGE)
-                .param("text", text)
-                .servletPath("/v2/post/oldboy"))
-                .andExpect(status().isUnauthorized());
+        String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
+        MockHttpServletResponse res = PostTestUtil.createPost(auth, text, IMAGE, mvc, MAPPER, WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        String res = mvc.perform(multipart(HttpMethod.PATCH, "/v2/post/oldboy")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        HttpResponse httpResponse = MAPPER.readValue(res, HttpResponse.class);
-        assertEquals("Post not found", httpResponse.getError());
-
-        text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        String resJson = res.getContentAsString();
         CreatePostResponse createPostResponse = MAPPER.readValue(
-                res,
+                resJson,
                 CreatePostResponse.class);
         String id = createPostResponse.getPostId();
 
         text = "<h1>Oldboy (2004)</h1><p>by Park Chan-wook.</p>";
+        res = PostTestUtil.updatePost(
+                auth,
+                id,
+                text,
+                IMAGE,
+                mvc,
+                MAPPER,
+                WRITER);
+        resJson = res.getContentAsString();
+        assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
+        assertEquals("{}", resJson);
 
-        mvc.perform(multipart(
-                HttpMethod.PATCH,
-                "/v2/post/" + id)
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isNoContent())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        res = PostTestUtil.getPost(id, mvc, MAPPER, WRITER);
+        resJson = res.getContentAsString();
+        assertEquals(HttpStatus.OK.value(), res.getStatus());
 
-        res = mvc.perform(get("/v2/post/" + id))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
         GetPostResponse getPostResponse = MAPPER.readValue(
-            res,
-            GetPostResponse.class);
+                resJson,
+                GetPostResponse.class);
         Post actual = getPostResponse.getPost();
-
         assertEquals(id, actual.getId());
         assertEquals("Oldboy (2004)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
-        res = mvc.perform(get("/v2/post/" + id))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        getPostResponse = MAPPER.readValue(res, GetPostResponse.class);
-        actual = getPostResponse.getPost();
+        res = PostTestUtil.getPostImage(id, mvc, MAPPER, WRITER);
+        resJson = res.getContentAsString();
+        assertEquals(HttpStatus.OK.value(), res.getStatus());
 
-        assertEquals(id, actual.getId());
-        assertEquals("Oldboy (2004)", actual.getTitle());
-        assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
-
-        res = mvc.perform(get("/v2/post/image/" + id)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
         GetPostImageResponse getPostImageResponse = MAPPER.readValue(
-                res,
+                resJson,
                 GetPostImageResponse.class);
 
         assertArrayEquals(IMAGE.getBytes(), getPostImageResponse.getImage());
         byte[] imageRes = getPostImageResponse.getImage();
 
-        mvc.perform(multipart(HttpMethod.PATCH, "/v2/post/oldboy")
-                .file(
-                        new MockMultipartFile(
-                                "image",
-                                "image.jpg",
-                                "image/jpeg",
-                                "New Hello World!".getBytes()))
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isNoContent())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        MockMultipartFile image = new MockMultipartFile(
+                "image",
+                "image.jpg",
+                "image/jpeg",
+                "New Hello World!".getBytes());
+        res = PostTestUtil.updatePost(auth, id, text, image, mvc, MAPPER, WRITER);
+        resJson = res.getContentAsString();
+        assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
+        assertEquals("{}", resJson);
 
-        res = mvc.perform(get(String.format(
-                "/v2/post/image/%s",
-                id))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        getPostImageResponse = MAPPER.readValue(
-                res,
-                GetPostImageResponse.class);
+        res = PostTestUtil.getPostImage(id, mvc, MAPPER, WRITER);
+        assertEquals(HttpStatus.OK.value(), res.getStatus());
+        byte[] newImage = PostTestUtil.getImageFromResponse(res, MAPPER);
 
-        assertNotEquals(imageRes, getPostImageResponse.getImage());
+        assertNotEquals(imageRes, newImage);
         assertArrayEquals(
-            "New Hello World!".getBytes(),
-            getPostImageResponse.getImage());
+                "New Hello World!".getBytes(),
+                newImage);
     }
 
     @Test
-    void deletePost() throws Exception {
-        String auth = getAuth(mvc);
+    void willThrowUnauthorizedDuringDeletePostWhenNoAuth() throws Exception {
+        MockHttpServletResponse res = PostTestUtil.deletePost(
+                "",
+                "oldboy",
+                mvc,
+                MAPPER,
+                WRITER);
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), res.getStatus());
+        assertEquals("Unauthorized", getError(res));
+    }
+
+    @Test
+    void willThrowNotFoundDuringDeletePostWhenPostDoesNotExist() throws Exception {
+        MockHttpServletResponse res = PostTestUtil.deletePost(auth, "oldboy", mvc, MAPPER, WRITER);
+        assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());
+        assertEquals("Post not found", getError(res));
+    }
+
+    @Test
+    void willDeletePost() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
+        MockHttpServletResponse res = PostTestUtil.createPost(auth, text, IMAGE, mvc, MAPPER, WRITER);
+        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        mvc.perform(delete("/v2/post/oldboy").servletPath("/v2/post/oldboy"))
-                .andExpect(status().isUnauthorized());
+        String postId = PostTestUtil.getPostIdFromResponse(res, MAPPER);
+        res = PostTestUtil.getPost(postId, mvc, MAPPER, WRITER);
+        Post post = PostTestUtil.getPostFromResponse(res, MAPPER);
+        assertEquals(postId, post.getId());
+        assertEquals("Oldboy (2003)", post.getTitle());
+        assertEquals("<p>by Park Chan-wook.</p>", post.getContent());
 
-        String res = mvc.perform(delete("/v2/post/oldboy")
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        HttpResponse httpResponse = MAPPER.readValue(res, HttpResponse.class);
-        assertEquals("Post not found", httpResponse.getError());
+        res = PostTestUtil.deletePost(auth, postId, mvc, MAPPER, WRITER);
+        String resJson = res.getContentAsString();
+        assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
+        assertEquals("{}", resJson);
 
-        res = mvc.perform(multipart("/v2/post")
-                .file(IMAGE)
-                .param("text", text)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        CreatePostResponse createPostResponse = MAPPER.readValue(
-            res,
-            CreatePostResponse.class);
-        String id = createPostResponse.getPostId();
-
-        res = mvc.perform(get("/v2/post/" + id))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        GetPostResponse getPostResponse = MAPPER.readValue(
-            res,
-            GetPostResponse.class);
-        Post actual = getPostResponse.getPost();
-        assertEquals(id, actual.getId());
-        assertEquals("Oldboy (2003)", actual.getTitle());
-        assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
-
-        mvc.perform(delete("/v2/post/" + id)
-                .header(HttpHeaders.AUTHORIZATION, auth))
-                .andExpect(status().isNoContent());
-
-        res = mvc.perform(get("/v2/post/" + id))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        httpResponse = MAPPER.readValue(res, HttpResponse.class);
-        assertEquals("Post not found", httpResponse.getError());
+        res = PostTestUtil.getPost(postId, mvc, MAPPER, WRITER);
+        assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());
+        assertEquals("Post not found", getError(res));
     }
 }

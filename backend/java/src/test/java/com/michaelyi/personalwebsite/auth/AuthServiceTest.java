@@ -25,13 +25,19 @@ class AuthServiceTest {
     void setUp() {
         underTest = new AuthService(
                 ADMIN_PASSWORD,
-                AuthTestUtil.SIGNING_KEY,
+                AuthTestUtil.FAKE_SIGNING_KEY,
                 passwordEncoder);
     }
 
     @Test
     void willThrowLoginWhenBadRequest() {
         IllegalArgumentException err = assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.login(null));
+
+        assertEquals("Password cannot be empty", err.getMessage());
+
+        err = assertThrows(
                 IllegalArgumentException.class,
                 () -> underTest.login(""));
 
@@ -87,7 +93,7 @@ class AuthServiceTest {
 
     @Test
     void willThrowValidateTokenWhenTokenIsInvalid() {
-        String token = AuthTestUtil.generateToken(
+        String token = AuthTestUtil.generateBadToken(
                 AuthUtil.JWT_EXPIRATION * -1);
         assertThrows(
                 UnauthorizedException.class,
@@ -96,7 +102,7 @@ class AuthServiceTest {
 
     @Test
     void validateToken() {
-        String token = AuthTestUtil.generateToken(
+        String token = AuthTestUtil.generateBadToken(
                 AuthUtil.JWT_EXPIRATION);
         underTest.validateToken(token);
     }

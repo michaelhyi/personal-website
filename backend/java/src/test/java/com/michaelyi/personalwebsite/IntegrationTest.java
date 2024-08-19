@@ -1,12 +1,8 @@
 package com.michaelyi.personalwebsite;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -14,15 +10,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.personalwebsite.auth.AuthRequest;
-import com.michaelyi.personalwebsite.auth.LoginResponse;
+import com.michaelyi.personalwebsite.util.HttpResponse;
 
 @Testcontainers
 public abstract class IntegrationTest {
     private static final int REDIS_PORT = 6379;
     protected static final ObjectMapper MAPPER = new ObjectMapper();
     protected static final ObjectWriter WRITER = MAPPER.writer();
-    protected static final String AUTHORIZED_PASSWORD = "authorized password";
 
     @Container
     private static final MySQLContainer<?> MYSQL = new MySQLContainer<>("mysql:8.0.36");
@@ -42,21 +36,9 @@ public abstract class IntegrationTest {
                 () -> String.valueOf(REDIS.getMappedPort(REDIS_PORT)));
     }
 
-    protected String getAuth(MockMvc mvc) throws Exception {
-        String res = mvc.perform(post("/v2/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(WRITER.writeValueAsString(
-                        new AuthRequest(AUTHORIZED_PASSWORD))))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        LoginResponse loginResponse = MAPPER.readValue(
-            res,
-            LoginResponse.class);
-        String token = loginResponse.getToken();
-
-        return String.format("Bearer %s", token);
+    protected String getError(MockHttpServletResponse servletResponse) throws Exception {
+        String json = servletResponse.getContentAsString();
+        HttpResponse res = MAPPER.readValue(json, HttpResponse.class);
+        return res.getError();
     }
 }
