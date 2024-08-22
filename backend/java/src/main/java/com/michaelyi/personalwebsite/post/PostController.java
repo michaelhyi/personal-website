@@ -34,6 +34,7 @@ public class PostController {
 
         try {
             String postId = service.createPost(text, image);
+
             res.setPostId(postId);
             res.setHttpStatus(HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
@@ -54,6 +55,7 @@ public class PostController {
 
         try {
             post = service.getPost(id);
+
             res.setPost(post);
             res.setHttpStatus(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
@@ -79,6 +81,7 @@ public class PostController {
 
         try {
             byte[] image = service.getPostImage(id);
+
             res.setImage(image);
             res.setHttpStatus(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
@@ -101,6 +104,7 @@ public class PostController {
 
         try {
             List<Post> posts = service.getAllPosts();
+
             res.setPosts(posts);
             res.setHttpStatus(HttpStatus.OK);
         } catch (Exception e) {
@@ -120,6 +124,7 @@ public class PostController {
 
         try {
             service.updatePost(id, text, image);
+
             res.setHttpStatus(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException e) {
             res.setError(e.getMessage());
@@ -141,6 +146,7 @@ public class PostController {
 
         try {
             service.deletePost(id);
+
             res.setHttpStatus(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException e) {
             res.setError(e.getMessage());

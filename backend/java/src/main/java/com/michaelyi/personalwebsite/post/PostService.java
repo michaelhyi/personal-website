@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.michaelyi.personalwebsite.cache.CacheService;
 import com.michaelyi.personalwebsite.s3.S3Service;
-import com.michaelyi.personalwebsite.util.Response;
 import com.michaelyi.personalwebsite.util.StringUtil;
 
 @Service
@@ -31,23 +30,19 @@ public class PostService {
     public String createPost(
             String text,
             MultipartFile image) {
-        Response<Post> validationRes = PostUtil.validateAndConstructPost(text);
-        Post post = validationRes.getValue();
-
-        if (validationRes.getError() != null) {
-            throw new IllegalArgumentException(validationRes.getError());
-        }
-
-        if (PostUtil.isImageInvalid(image)) {
-            throw new IllegalArgumentException("Image is invalid");
-        }
-
-        byte[] imageBytes;
+        Post post;
+        byte[] postImage;
 
         try {
-            imageBytes = image.getBytes();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Image could not be read");
+            post = PostUtil.constructPost(text);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+
+        try {
+            postImage = PostUtil.getImage(image);
+        } catch (IllegalArgumentException e) {
+            throw e;
         }
 
         Post existingPost = getPost(post.getId());
@@ -58,8 +53,14 @@ public class PostService {
         }
 
         dao.createPost(post);
-        s3Service.putObject(post.getId(), imageBytes);
-        cacheService.set(String.format("getPost?id=%s", post.getId()), post);
+        s3Service.putObject(post.getId(), postImage);
+
+        String postKey = String.format("getPost?id=%s", post.getId());
+        String imageKey = String.format(
+                "getPostImage?id=%s",
+                post.getId());
+        cacheService.set(postKey, post);
+        cacheService.set(imageKey, postImage);
         cacheService.delete("getAllPosts");
 
         return post.getId();
@@ -81,9 +82,8 @@ public class PostService {
         post = dao.getPost(id).orElse(null);
 
         if (post != null) {
-            cacheService.set(
-                    String.format("getPost?id=%s", post.getId()),
-                    post);
+            String key = String.format("getPost?id=%s", post.getId());
+            cacheService.set(key, post);
         }
 
         return post;
@@ -100,9 +100,8 @@ public class PostService {
             throw new NoSuchElementException("Post not found");
         }
 
-        byte[] image = cacheService.get(
-                String.format("getPostImage?id=%s", post.getId()),
-                byte[].class);
+        String key = String.format("getPostImage?id=%s", post.getId());
+        byte[] image = cacheService.get(key, byte[].class);
 
         if (image != null) {
             return image;
@@ -114,9 +113,7 @@ public class PostService {
             throw new NoSuchElementException("Image not found");
         }
 
-        cacheService.set(
-                String.format("getPostImage?id=%s", post.getId()),
-                image);
+        cacheService.set(key, image);
 
         return image;
     }
@@ -154,42 +151,39 @@ public class PostService {
             throw new NoSuchElementException("Post not found");
         }
 
-        Response<Post> validationRes = PostUtil.validateAndConstructPost(text);
-        Post updatedPost = validationRes.getValue();
+        Post updatedPost;
 
-        if (validationRes.getError() != null) {
-            throw new IllegalArgumentException(validationRes.getError());
+        try {
+            updatedPost = PostUtil.constructPost(text);
+        } catch (IllegalArgumentException e) {
+            throw e;
         }
 
         post.setTitle(updatedPost.getTitle());
         post.setContent(updatedPost.getContent());
         dao.updatePost(post);
 
-        cacheService.set(String.format("getPost?id=%s", post.getId()), post);
+        String key = String.format("getPost?id=%s", post.getId());
+        cacheService.set(key, post);
         cacheService.delete("getAllPosts");
 
-        if (PostUtil.isImageInvalid(image)) {
-            return;
-        }
-
-        byte[] currentImage = getPostImage(id);
         byte[] newImage;
 
         try {
-            newImage = image.getBytes();
-        } catch (Exception e) {
+            newImage = PostUtil.getImage(image);
+        } catch (IllegalArgumentException e) {
             newImage = null;
         }
 
-        if (newImage != null && !Arrays.equals(currentImage, newImage)) {
+        byte[] currImage = getPostImage(id);
+
+        if (newImage != null && !Arrays.equals(currImage, newImage)) {
             s3Service.deleteObject(post.getId());
             s3Service.putObject(post.getId(), newImage);
-            cacheService.set(
-                    String.format("getPostImage?id=%s", post.getId()),
-                    newImage);
-        }
 
-        return;
+            key = String.format("getPostImage?id=%s", post.getId());
+            cacheService.set(key, newImage);
+        }
     }
 
     public void deletePost(String id) {
@@ -206,8 +200,10 @@ public class PostService {
         s3Service.deleteObject(post.getId());
         dao.deletePost(post.getId());
 
-        cacheService.delete(String.format("getPost?id=%s", post.getId()));
-        cacheService.delete(String.format("getPostImage?id=%s", post.getId()));
+        String postKey = String.format("getPost?id=%s", post.getId());
+        String imageKey = String.format("getPostImage?id=%s", post.getId());
+        cacheService.delete(postKey);
+        cacheService.delete(imageKey);
         cacheService.delete("getAllPosts");
     }
 }

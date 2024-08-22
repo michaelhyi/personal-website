@@ -3,6 +3,7 @@ package com.michaelyi.personalwebsite.auth;
 import java.io.IOException;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -35,9 +36,11 @@ public class AuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (SecurityContextHolder
+        Authentication securityCtx = SecurityContextHolder
                 .getContext()
-                .getAuthentication() == null) {
+                .getAuthentication();
+
+        if (securityCtx == null) {
             String authHeader = request.getHeader("Authorization");
 
             if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
@@ -45,24 +48,16 @@ public class AuthFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String token = authHeader.substring(AuthUtil.BEARER_PREFIX_LENGTH);
-
             try {
+                String token = authHeader.substring(
+                        AuthUtil.BEARER_PREFIX_LENGTH);
                 authService.validateToken(token);
             } catch (Exception e) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    adminUser,
-                    null,
-                    adminUser.getAuthorities());
-
-            authToken.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request));
-
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+            setSecurityContext(request);
         }
 
         filterChain.doFilter(request, response);
@@ -76,5 +71,17 @@ public class AuthFilter extends OncePerRequestFilter {
                 || path.equals("/v2/auth/validate-token")
                 || path.startsWith("/v2/status")
                 || (path.startsWith("/v2/post/") && method.equals("GET"));
+    }
+
+    private void setSecurityContext(HttpServletRequest request) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                adminUser,
+                null,
+                adminUser.getAuthorities());
+
+        token.setDetails(
+                new WebAuthenticationDetailsSource().buildDetails(request));
+
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 }

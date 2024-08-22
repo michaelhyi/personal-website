@@ -25,7 +25,10 @@ public class S3Service {
             S3Client client) {
         this.bucket = bucket;
         this.client = client;
-        testBucket = new HashMap<>();
+
+        if (bucket.equals("test")) {
+            testBucket = new HashMap<>();
+        }
     }
 
     public void putObject(String key, byte[] file) {

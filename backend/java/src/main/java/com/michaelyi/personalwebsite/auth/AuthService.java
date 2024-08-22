@@ -1,36 +1,24 @@
 package com.michaelyi.personalwebsite.auth;
 
-import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.michaelyi.personalwebsite.util.StringUtil;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SignatureException;
-
 @Service
 public class AuthService {
-    private final String adminPassword;
-    private final String jwtSecret;
+    private final String encodedAdminPassword;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public AuthService(
-            @Value("${admin.pw}") String adminPassword,
-            @Value("${jwt.secret-key}") String jwtSecret,
-            PasswordEncoder passwordEncoder) {
-        this.adminPassword = adminPassword;
-        this.jwtSecret = jwtSecret;
+            @Value("${admin.pw}") String encodedAdminPassword,
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService) {
+        this.encodedAdminPassword = encodedAdminPassword;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public String login(String password) {
@@ -38,26 +26,14 @@ public class AuthService {
             throw new IllegalArgumentException("Password cannot be empty");
         }
 
-        boolean authorized = passwordEncoder.matches(
-                password,
-                adminPassword);
+        boolean authorized = passwordEncoder
+                .matches(password, encodedAdminPassword);
 
         if (!authorized) {
             throw new UnauthorizedException("Wrong password");
         }
 
-        Map<String, Object> claims = new HashMap<>();
-        long currentTime = System.currentTimeMillis();
-        Key signingKey = AuthUtil.getSigningKey(jwtSecret);
-
-        return Jwts
-                .builder()
-                .setClaims(claims)
-                .setSubject(AuthUtil.ADMIN_EMAIL)
-                .setIssuedAt(new Date(currentTime))
-                .setExpiration(new Date(currentTime + AuthUtil.JWT_EXPIRATION))
-                .signWith(signingKey, SignatureAlgorithm.HS256)
-                .compact();
+        return jwtService.generateToken();
     }
 
     public void validateToken(String token) {
@@ -65,20 +41,10 @@ public class AuthService {
             throw new IllegalArgumentException("Token cannot be empty");
         }
 
-        Key signingKey = AuthUtil.getSigningKey(jwtSecret);
-
         try {
-            Jwts
-                    .parserBuilder()
-                    .setSigningKey(signingKey)
-                    .build()
-                    .parseClaimsJws(token);
-        } catch (IllegalArgumentException
-                | UnsupportedJwtException
-                | MalformedJwtException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        } catch (SignatureException | ExpiredJwtException e) {
-            throw new UnauthorizedException();
+            jwtService.validateToken(token);
+        } catch (IllegalArgumentException | UnauthorizedException e) {
+            throw e;
         }
     }
 }

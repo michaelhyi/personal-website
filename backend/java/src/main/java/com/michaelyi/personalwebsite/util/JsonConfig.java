@@ -15,6 +15,6 @@ public class JsonConfig {
 
     @Bean
     public ObjectWriter writer() {
-        return mapper().writer();
+        return mapper().writer().withDefaultPrettyPrinter();
     }
 }
