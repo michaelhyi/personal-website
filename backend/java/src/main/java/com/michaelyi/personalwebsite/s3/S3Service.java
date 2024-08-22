@@ -18,19 +18,19 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 public class S3Service {
     private final String bucket;
     private final S3Client client;
-    private Map<String, byte[]> fakeBucket;
+    private Map<String, byte[]> testBucket;
 
     public S3Service(
             @Value("${aws.s3.bucket}") String bucket,
             S3Client client) {
         this.bucket = bucket;
         this.client = client;
-        fakeBucket = new HashMap<>();
+        testBucket = new HashMap<>();
     }
 
     public void putObject(String key, byte[] file) {
         if (bucket.equals("test")) {
-            fakeBucket.put(key, file);
+            testBucket.put(key, file);
             return;
         }
 
@@ -45,7 +45,7 @@ public class S3Service {
 
     public byte[] getObject(String key) {
         if (bucket.equals("test")) {
-            return fakeBucket.containsKey(key) ? fakeBucket.get(key) : null;
+            return testBucket.containsKey(key) ? testBucket.get(key) : null;
         }
 
         GetObjectRequest getObjectRequest = GetObjectRequest
@@ -70,7 +70,7 @@ public class S3Service {
 
     public void deleteObject(String key) {
         if (bucket.equals("test")) {
-            fakeBucket.remove(key);
+            testBucket.remove(key);
             return;
         }
 

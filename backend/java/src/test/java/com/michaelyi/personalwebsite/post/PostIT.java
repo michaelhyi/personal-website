@@ -413,7 +413,8 @@ class PostIT extends IntegrationTest {
 
     @Test
     void willThrowNotFoundDuringDeletePostWhenPostDoesNotExist() throws Exception {
-        MockHttpServletResponse res = PostTestUtil.deletePost(auth, "oldboy", mvc, MAPPER, WRITER);
+        MockHttpServletResponse res = PostTestUtil
+                .deletePost(auth, "oldboy", mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());
         assertEquals("Post not found", getError(res));
     }
@@ -421,7 +422,8 @@ class PostIT extends IntegrationTest {
     @Test
     void willDeletePost() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
-        MockHttpServletResponse res = PostTestUtil.createPost(auth, text, IMAGE, mvc, MAPPER, WRITER);
+        MockHttpServletResponse res = PostTestUtil
+                .createPost(auth, text, IMAGE, mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         String postId = PostTestUtil.getPostIdFromResponse(res, MAPPER);

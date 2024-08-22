@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.security.Key;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,11 +87,13 @@ class AuthServiceTest {
                 .thenReturn(true);
 
         String token = underTest.login(password);
+        Key signingKey = AuthUtil.getSigningKey(
+                AuthTestHelper.FAKE_SIGNING_KEY);
         boolean isJwt = Jwts
                 .parserBuilder()
-                .setSigningKey(
-                        AuthUtil.getSigningKey(AuthTestHelper.FAKE_SIGNING_KEY))
-                .build().isSigned(token);
+                .setSigningKey(signingKey)
+                .build()
+                .isSigned(token);
 
         assertTrue(isJwt);
         verify(passwordEncoder).matches(password, ADMIN_PASSWORD);

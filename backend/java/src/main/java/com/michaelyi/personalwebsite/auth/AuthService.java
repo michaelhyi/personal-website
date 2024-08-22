@@ -48,6 +48,7 @@ public class AuthService {
 
         Map<String, Object> claims = new HashMap<>();
         long currentTime = System.currentTimeMillis();
+        Key signingKey = AuthUtil.getSigningKey(jwtSecret);
 
         return Jwts
                 .builder()
@@ -55,9 +56,7 @@ public class AuthService {
                 .setSubject(AuthUtil.ADMIN_EMAIL)
                 .setIssuedAt(new Date(currentTime))
                 .setExpiration(new Date(currentTime + AuthUtil.JWT_EXPIRATION))
-                .signWith(
-                        AuthUtil.getSigningKey(jwtSecret),
-                        SignatureAlgorithm.HS256)
+                .signWith(signingKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 

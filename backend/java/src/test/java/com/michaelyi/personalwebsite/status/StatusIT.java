@@ -36,8 +36,8 @@ public class StatusIT extends IntegrationTest {
                 .getContentAsString();
 
         StatusResponse statusResponse = MAPPER.readValue(
-            res,
-            StatusResponse.class);
+                res,
+                StatusResponse.class);
 
         assertEquals(statusResponse.getStatus().getServers(), "UP");
         assertNotNull(statusResponse.getStatus().getUptime());
