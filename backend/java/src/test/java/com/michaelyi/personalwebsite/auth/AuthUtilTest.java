@@ -1,42 +1,68 @@
 package com.michaelyi.personalwebsite.auth;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 public class AuthUtilTest {
     @Test
-    void willReturnTrueWhenAuthHeaderIsNull() {
+    void willReturnTrueDuringIsAuthHeaderInvalidWhenHeaderIsNull() {
+        // given
         String authHeader = null;
+
+        // when
         boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+
+        // then
         assertTrue(actual);
     }
 
     @Test
-    void willReturnTrueWhenAuthHeaderIsEmpty() {
+    void willReturnTrueDuringIsAuthHeaderInvalidWhenHeaderIsBlank() {
+        // given
         String authHeader = "";
+
+        // when
         boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+
+        // then
         assertTrue(actual);
     }
 
     @Test
-    void willReturnTrueWhenAuthHeaderIsBlank() {
+    void willReturnTrueDuringIsAuthHeaderInvalidWhenHeaderIsEmpty() {
+        // given
         String authHeader = " ";
+
+        // when
         boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+
+        // then
         assertTrue(actual);
     }
 
     @Test
-    void willReturnTrueWhenAuthHeaderDoesNotStartWithBearer() {
+    void willReturnTrueDuringIsAuthHeaderInvalidWhenHeaderStartsWithWrongPrefix() {
+        // given
         String authHeader = "Basic ";
+
+        // when
         boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+
+        // then
         assertTrue(actual);
     }
 
     @Test
-    void willReturnTrueWhenAuthHeaderIsOnlyBearer() {
-        String authHeader = "Bearer";
+    void willReturnFalseDuringIsAuthHeaderInvalidWhenHeaderIsValid() {
+        // given
+        String authHeader = "Bearer {INSERT_TOKEN_HERE}";
+
+        // when
         boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
-        assertTrue(actual);
+
+        // then
+        assertFalse(actual);
     }
 }

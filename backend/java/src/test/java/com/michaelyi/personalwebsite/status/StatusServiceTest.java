@@ -27,7 +27,7 @@ public class StatusServiceTest {
     void getStatus() throws Exception {
         Status actual = underTest.getStatus();
 
-        String serverStatus = actual.getServers();
+        ServerStatus serverStatus = actual.getServers();
         String uptime = actual.getUptime();
         Details details = actual.getDetails();
 
@@ -35,7 +35,7 @@ public class StatusServiceTest {
                 .compile("^\\d{2}h \\d{2}m \\d{2}s \\d+ms$")
                 .matcher(uptime);
 
-        assertEquals(serverStatus, "UP");
+        assertEquals(ServerStatus.UP, serverStatus);
         assertTrue(uptimeMatcher.matches());
 
         Field[] detailsFields = details.getClass().getDeclaredFields();
@@ -43,8 +43,8 @@ public class StatusServiceTest {
         for (Field f : detailsFields) {
             f.setAccessible(true);
 
-            ServerStatus detail = (ServerStatus) f.get(details);
-            assertEquals(detail.name(), "UP");
+            ServerStatus detailStatus = (ServerStatus) f.get(details);
+            assertEquals(ServerStatus.UP, detailStatus);
         }
     }
 }

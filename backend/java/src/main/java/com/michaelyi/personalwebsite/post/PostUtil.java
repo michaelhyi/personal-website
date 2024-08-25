@@ -15,9 +15,10 @@ public class PostUtil {
             throw new IllegalArgumentException("Text is invalid");
         }
 
+        int openingH1TagIndex = text.indexOf("<h1>");
         int closingH1TagIndex = text.indexOf("</h1>");
 
-        if (closingH1TagIndex == -1) {
+        if (openingH1TagIndex == -1 || closingH1TagIndex == -1) {
             throw new IllegalArgumentException("Title cannot be blank");
         }
 
@@ -41,7 +42,7 @@ public class PostUtil {
     }
 
     private static String convertTitleToId(String title) {
-        // replace spaces with hyphens & remove all non-alphabetic characters 
+        // replace spaces with hyphens & remove all non-alphabetic characters
         String id = title.toLowerCase()
                 .replace(" ", "-")
                 .replaceAll("[^a-z\\-]", "");
@@ -78,9 +79,8 @@ public class PostUtil {
         return image != null
                 && !image.isEmpty()
                 && image.getSize() != 0
-                && image.getOriginalFilename() != null
-                && !image.getOriginalFilename().isEmpty()
-                && !image.getOriginalFilename().isBlank()
+                && !StringUtil.isStringInvalid(
+                        image.getOriginalFilename())
                 && image
                         .getOriginalFilename()
                         .matches(".*\\.(jpg|jpeg|png|webp)")

@@ -1,6 +1,5 @@
 package com.michaelyi.personalwebsite.s3;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -9,7 +8,6 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -27,9 +25,10 @@ public class S3ServiceTest {
 
     @Mock
     private S3Client client;
+
     private static final String BUCKET = "personal-website-api-test";
     private static final String KEY = "oldboy";
-    private static final byte[] FILE = "Oldboy".getBytes();
+    private static final byte[] FILE = "oldboy".getBytes();
 
     @BeforeEach
     void setUp() {
@@ -37,73 +36,53 @@ public class S3ServiceTest {
     }
 
     @Test
-    void willPutObject() throws Exception {
+    void canPutObject() throws Exception {
+        // given
+        PutObjectRequest expectedRequest = PutObjectRequest.builder()
+                .bucket(BUCKET)
+                .key(KEY)
+                .build();
+        RequestBody expectedRequestBody = RequestBody.fromBytes(FILE);
+
+        // when
         underTest.putObject(KEY, FILE);
 
-        ArgumentCaptor<PutObjectRequest> putObjectRequestCaptor = ArgumentCaptor
-                .forClass(PutObjectRequest.class);
-        ArgumentCaptor<RequestBody> requestBodyCaptor = ArgumentCaptor
-                .forClass(RequestBody.class);
-
-        verify(client).putObject(
-                putObjectRequestCaptor.capture(),
-                requestBodyCaptor.capture());
-
-        PutObjectRequest putObjectRequest = putObjectRequestCaptor.getValue();
-        assertEquals(BUCKET, putObjectRequest.bucket());
-        assertEquals(KEY, putObjectRequest.key());
-
-        RequestBody requestBody = requestBodyCaptor.getValue();
-        byte[] expectedRequestBodyFile = RequestBody
-                .fromBytes(FILE)
-                .contentStreamProvider()
-                .newStream()
-                .readAllBytes();
-        byte[] actualRequestBodyFile = requestBody
-                .contentStreamProvider()
-                .newStream()
-                .readAllBytes();
-
-        assertArrayEquals(expectedRequestBodyFile, actualRequestBodyFile);
+        // then
+        verify(client).putObject(expectedRequest, expectedRequestBody);
     }
 
     @Test
-    void willGetObject() throws Exception {
-        GetObjectRequest getObjectRequest = GetObjectRequest
-                .builder()
+    void canGetObject() throws Exception {
+        // given
+        GetObjectRequest expectedRequest = GetObjectRequest.builder()
                 .bucket(BUCKET)
                 .key(KEY)
                 .build();
         ResponseInputStream<GetObjectResponse> res = mock(
                 ResponseInputStream.class);
-        when(client.getObject(getObjectRequest)).thenReturn(res);
+        when(client.getObject(expectedRequest)).thenReturn(res);
         when(res.readAllBytes()).thenReturn(FILE);
 
+        // when
         byte[] actual = underTest.getObject(KEY);
-        ArgumentCaptor<GetObjectRequest> getObjectRequestCaptor = ArgumentCaptor
-                .forClass(GetObjectRequest.class);
-        verify(client).getObject(getObjectRequestCaptor.capture());
 
-        GetObjectRequest actualGetObjectRequest = getObjectRequestCaptor
-                .getValue();
-
-        assertEquals(BUCKET, actualGetObjectRequest.bucket());
-        assertEquals(KEY, actualGetObjectRequest.key());
+        // then
+        verify(client).getObject(expectedRequest);
         assertEquals(FILE, actual);
     }
 
     @Test
     void canDeleteObject() {
-        ArgumentCaptor<DeleteObjectRequest> deleteRequestCaptor = ArgumentCaptor
-                .forClass(DeleteObjectRequest.class);
+        // given
+        DeleteObjectRequest expectedRequest = DeleteObjectRequest.builder()
+                .bucket(BUCKET)
+                .key(KEY)
+                .build();
 
+        // when
         underTest.deleteObject(KEY);
 
-        verify(client).deleteObject(deleteRequestCaptor.capture());
-        DeleteObjectRequest actualDeleteRequest = deleteRequestCaptor
-                .getValue();
-
-        assertEquals(BUCKET, actualDeleteRequest.bucket());
-        assertEquals(KEY, actualDeleteRequest.key());
+        // then
+        verify(client).deleteObject(expectedRequest);
     }
 }

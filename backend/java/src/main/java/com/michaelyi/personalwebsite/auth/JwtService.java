@@ -16,10 +16,13 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
     private final String jwtSecret;
-    public static final long JWT_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
+    public final long jwtExpiration;
 
-    public JwtService(@Value("${jwt.secret-key}") String jwtSecret) {
+    public JwtService(
+            @Value("${jwt.secret-key}") String jwtSecret,
+            @Value("${jwt.expiration}") long jwtExpiration) {
         this.jwtSecret = jwtSecret;
+        this.jwtExpiration = jwtExpiration;
     }
 
     public SecretKey getSigningKey() {
@@ -34,7 +37,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .subject(AuthUtil.ADMIN_EMAIL)
-                .expiration(new Date(currTime + JWT_EXPIRATION))
+                .expiration(new Date(currTime + jwtExpiration))
                 .signWith(signingKey)
                 .compact();
     }

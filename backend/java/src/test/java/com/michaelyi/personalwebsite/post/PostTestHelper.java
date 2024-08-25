@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-public class PostTestUtil {
+public class PostTestHelper {
     protected static MockHttpServletResponse createPost(
             String auth,
             String text,

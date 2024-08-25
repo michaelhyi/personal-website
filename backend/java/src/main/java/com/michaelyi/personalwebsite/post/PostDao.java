@@ -17,10 +17,8 @@ public class PostDao {
     }
 
     public void createPost(Post post) {
-        String sql = """
-                INSERT INTO post (id, date, title, content)
-                VALUES (?, ?, ?, ?)
-                """;
+        String sql = "INSERT INTO post (id, date, title, content) "
+                + "VALUES (?, ?, ?, ?)";
         template.update(
                 sql,
                 post.getId(),
@@ -40,9 +38,7 @@ public class PostDao {
     }
 
     public void updatePost(Post post) {
-        String sql = """
-                UPDATE post SET title = ?, content = ? WHERE id = ?
-                """;
+        String sql = "UPDATE post SET title = ?, content = ? WHERE id = ?";
         template.update(sql, post.getTitle(), post.getContent(), post.getId());
     }
 

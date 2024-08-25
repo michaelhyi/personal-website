@@ -2,92 +2,98 @@ package com.michaelyi.personalwebsite.cache;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.personalwebsite.TestContainers;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.michaelyi.personalwebsite.post.Post;
 
-@DataRedisTest
-public class CacheServiceTest extends TestContainers {
+@ExtendWith(MockitoExtension.class)
+public class CacheServiceTest {
     private CacheService underTest;
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final ObjectWriter WRITER = MAPPER.writer();
+    @Mock
+    private CacheDao dao;
+
+    @Mock
+    private ObjectMapper mapper;
+
+    @Mock
+    private ObjectWriter writer;
+
+    @Mock
+    private TypeFactory typeFactory;
+
     private static final Post POST = new Post(
             "oldboy",
             new Date(),
             "Oldboy (2003)",
             "<p>In Park Chan-wook's 2003 thriller...</p>");
     private static final String KEY = "getPost?id=" + "oldboy";
+    private static final JavaType POST_JAVA_TYPE = new ObjectMapper()
+            .getTypeFactory()
+            .constructType(Post.class);
 
     @BeforeEach
     void setUp() {
-        underTest = new CacheService(redisTemplate, MAPPER, WRITER);
-    }
-
-    @Test
-    void willReturnNullDuringGetWhenKeyIsNull() {
-        // when
-        Post actual = underTest.get(null, Post.class);
-
-        // then
-        assertNull(actual);
-    }
-
-    @Test
-    void willReturnNullDuringGetWhenKeyIsBlank() {
-        // when
-        Post actual = underTest.get("", Post.class);
-
-        // then
-        assertNull(actual);
-    }
-
-    @Test
-    void willReturnNullDuringGetWhenKeyIsEmpty() {
-        // when
-        Post actual = underTest.get(" ", Post.class);
-
-        // then
-        assertNull(actual);
+        underTest = new CacheService(dao, mapper, writer);
     }
 
     @Test
     void willReturnNullDuringGetWhenKeyNotFound() {
+        // given
+        when(mapper.getTypeFactory()).thenReturn(typeFactory);
+        when(mapper.getTypeFactory().constructType(Post.class))
+                .thenReturn(POST_JAVA_TYPE);
+        when(dao.get(KEY)).thenReturn(null);
+
         // when
         Post actual = underTest.get(KEY, Post.class);
 
         // then
         assertNull(actual);
+        verify(mapper.getTypeFactory()).constructType(Post.class);
+        verify(dao).get(KEY);
+        verifyNoMoreInteractions(mapper);
     }
 
     @Test
-    void canGetValueUsingClazz() {
+    void canGetValueUsingClazz() throws Exception {
         // given
-        underTest.set(KEY, POST);
+        String json = new ObjectMapper().writer().writeValueAsString(POST);
+        when(mapper.getTypeFactory()).thenReturn(typeFactory);
+        when(mapper.getTypeFactory().constructType(Post.class))
+                .thenReturn(POST_JAVA_TYPE);
+        when(dao.get(KEY)).thenReturn(json);
+        when(mapper.readValue(json, POST_JAVA_TYPE)).thenReturn(POST);
 
         // when
         Post actual = underTest.get(KEY, Post.class);
 
         // then
         assertEquals(POST, actual);
+        verify(mapper.getTypeFactory()).constructType(Post.class);
+        verify(dao).get(KEY);
+        verify(mapper).readValue(json, POST_JAVA_TYPE);
     }
 
     @Test
-    void canGetValueUsingTypeReference() {
+    void canGetValueUsingTypeReference() throws Exception {
         // given
         Post post2 = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
@@ -100,75 +106,63 @@ public class CacheServiceTest extends TestContainers {
                 "The Dark Knight (2008)",
                 "<p>In Christopher Nolan's 2008 superhero...</p>");
         List<Post> expected = List.of(POST, post2, post3);
-        underTest.set("getAllPosts", expected);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writer().writeValueAsString(expected);
+        TypeReference<List<Post>> typeRef = new TypeReference<List<Post>>() {
+        };
+        JavaType expectedJavaType = objectMapper
+                .getTypeFactory()
+                .constructType(typeRef);
+
+        when(mapper.getTypeFactory()).thenReturn(typeFactory);
+        when(mapper.getTypeFactory().constructType(typeRef))
+                .thenReturn(expectedJavaType);
+        when(dao.get("getAllPosts")).thenReturn(json);
+        when(mapper.readValue(json, expectedJavaType)).thenReturn(expected);
 
         // when
         List<Post> actual = underTest.get(
                 "getAllPosts",
-                new TypeReference<List<Post>>() {
-                });
+                typeRef);
 
         // then
         assertEquals(expected, actual);
+        verify(mapper.getTypeFactory()).constructType(typeRef);
+        verify(dao).get("getAllPosts");
+        verify(mapper).readValue(json, expectedJavaType);
     }
 
     @Test
-    void willReturnDuringSetWhenKeyIsNull() {
+    void willReturnDuringSetWhenDataIsNull() {
         // when
-        underTest.set(null, POST);
+        underTest.set(KEY, null);
 
         // then
+        verifyNoInteractions(writer);
+        verifyNoInteractions(dao);
     }
 
     @Test
-    void willReturnDuringDeleteWhenKeyIsNull() {
+    void canSet() throws Exception {
         // given
-        underTest.set(KEY, POST);
+        String json = new ObjectMapper().writer().writeValueAsString(POST);
+        when(writer.writeValueAsString(POST)).thenReturn(json);
 
         // when
-        underTest.delete(null);
+        underTest.set(KEY, POST);
 
         // then
-        Post actual = underTest.get(KEY, Post.class);
-        assertEquals(POST, actual);
+        verify(writer).writeValueAsString(POST);
+        verify(dao).set(KEY, json, (long) 1000 * 60 * 15);
     }
 
     @Test
-    void willReturnDuringDeleteWhenKeyIsBlank() {
-        // given
-        underTest.set(KEY, POST);
-
-        // when
-        underTest.delete("");
-
-        // then
-        Post actual = underTest.get(KEY, Post.class);
-        assertEquals(POST, actual);
-    }
-
-    @Test
-    void willReturnDuringDeleteWhenKeyIsEmpty() {
-        // given
-        underTest.set(KEY, POST);
-
-        // when
-        underTest.delete(" ");
-
-        // then
-        Post actual = underTest.get(KEY, Post.class);
-        assertEquals(POST, actual);
-    }
-
-    @Test
-    void canDeleteAndWillReturnNullWhenGetAfterDelete() {
-        // given
-        underTest.set(KEY, POST);
-
+    void canDelete() {
         // when
         underTest.delete(KEY);
 
         // then
-        Post actual = underTest.get(KEY, Post.class);
-        assertNull(actual);
+        verify(dao).delete(KEY);
     }
 }

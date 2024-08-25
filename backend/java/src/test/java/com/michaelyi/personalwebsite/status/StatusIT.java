@@ -39,7 +39,7 @@ public class StatusIT extends IntegrationTest {
                 res,
                 StatusResponse.class);
 
-        assertEquals(statusResponse.getStatus().getServers(), "UP");
+        assertEquals(statusResponse.getStatus().getServersAsString(), "UP");
         assertNotNull(statusResponse.getStatus().getUptime());
 
         Details details = statusResponse.getStatus().getDetails();

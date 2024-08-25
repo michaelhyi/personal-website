@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.michaelyi.personalwebsite.IntegrationTest;
 import com.michaelyi.personalwebsite.auth.AuthTestHelper;
-import com.michaelyi.personalwebsite.cache.CacheService;
+import com.michaelyi.personalwebsite.cache.CacheDao;
 import com.michaelyi.personalwebsite.s3.S3Service;
 
 @AutoConfigureMockMvc
@@ -39,7 +39,7 @@ class PostIT extends IntegrationTest {
     private S3Service s3Service;
 
     @Autowired
-    private CacheService cacheService;
+    private CacheDao cacheDao;
 
     private static final MockMultipartFile IMAGE = new MockMultipartFile(
             "image",
@@ -51,7 +51,7 @@ class PostIT extends IntegrationTest {
     @BeforeEach
     void setUp() throws Exception {
         auth = AuthTestHelper.getAuth(mvc, MAPPER, WRITER);
-        cacheService.flushAll();
+        cacheDao.flushAll();
         dao.deleteAllPosts();
         s3Service.deleteObject("title");
         s3Service.deleteObject("oldboy");
@@ -60,7 +60,7 @@ class PostIT extends IntegrationTest {
     @Test
     void postConstructor() throws Exception {
         String text = "";
-        MockHttpServletResponse res = PostTestUtil.createPost(
+        MockHttpServletResponse res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -70,7 +70,7 @@ class PostIT extends IntegrationTest {
         assertEquals("Text is invalid", getError(res));
 
         text = "no-title";
-        res = PostTestUtil.createPost(
+        res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -80,7 +80,7 @@ class PostIT extends IntegrationTest {
         assertEquals("Title cannot be blank", getError(res));
 
         text = "<h1></h1>";
-        res = PostTestUtil.createPost(
+        res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -90,7 +90,7 @@ class PostIT extends IntegrationTest {
         assertEquals("Title cannot be blank", getError(res));
 
         text = "<h1>no-content</h1>";
-        res = PostTestUtil.createPost(
+        res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -100,17 +100,17 @@ class PostIT extends IntegrationTest {
         assertEquals("Content cannot be blank", getError(res));
 
         text = "<h1>Oldboy (2003)</h1><p>content</p>";
-        res = PostTestUtil.createPost(
+        res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
                 mvc,
                 MAPPER,
                 WRITER);
-        String id = PostTestUtil.getPostIdFromResponse(res, MAPPER);
+        String id = PostTestHelper.getPostIdFromResponse(res, MAPPER);
 
-        res = PostTestUtil.getPost(id, mvc, MAPPER, WRITER);
-        Post post = PostTestUtil.getPostFromResponse(res, MAPPER);
+        res = PostTestHelper.getPost(id, mvc, MAPPER, WRITER);
+        Post post = PostTestHelper.getPostFromResponse(res, MAPPER);
         assertEquals(id, post.getId());
         assertEquals("Oldboy (2003)", post.getTitle());
         assertEquals("<p>content</p>", post.getContent());
@@ -119,7 +119,7 @@ class PostIT extends IntegrationTest {
     @Test
     void willThrowUnauthorizedDuringCreatePostWhenNoAuth() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>content</p>";
-        MockHttpServletResponse res = PostTestUtil.createPost(
+        MockHttpServletResponse res = PostTestHelper.createPost(
                 "",
                 text,
                 IMAGE,
@@ -133,7 +133,7 @@ class PostIT extends IntegrationTest {
     void willThrowBadRequestDuringCreatePostWhenPostWithSameTitleAlreadyExists()
             throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>content</p>";
-        MockHttpServletResponse res = PostTestUtil.createPost(
+        MockHttpServletResponse res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -142,7 +142,7 @@ class PostIT extends IntegrationTest {
                 WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        res = PostTestUtil.createPost(
+        res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -158,7 +158,7 @@ class PostIT extends IntegrationTest {
     @Test
     void willCreatePostWhenPostDoesNotAlreadyExist() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>content</p>";
-        MockHttpServletResponse res = PostTestUtil.createPost(
+        MockHttpServletResponse res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -167,15 +167,15 @@ class PostIT extends IntegrationTest {
                 WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        String id = PostTestUtil.getPostIdFromResponse(res, MAPPER);
-        res = PostTestUtil.getPost(id, mvc, MAPPER, WRITER);
-        Post post = PostTestUtil.getPostFromResponse(res, MAPPER);
+        String id = PostTestHelper.getPostIdFromResponse(res, MAPPER);
+        res = PostTestHelper.getPost(id, mvc, MAPPER, WRITER);
+        Post post = PostTestHelper.getPostFromResponse(res, MAPPER);
         assertEquals(id, post.getId());
         assertEquals("Oldboy (2003)", post.getTitle());
         assertEquals("<p>content</p>", post.getContent());
 
-        res = PostTestUtil.getPostImage(id, mvc, MAPPER, WRITER);
-        byte[] image = PostTestUtil.getImageFromResponse(
+        res = PostTestHelper.getPostImage(id, mvc, MAPPER, WRITER);
+        byte[] image = PostTestHelper.getImageFromResponse(
                 res,
                 MAPPER);
         assertArrayEquals(IMAGE.getBytes(), image);
@@ -183,7 +183,7 @@ class PostIT extends IntegrationTest {
 
     @Test
     void willThrowNotFoundDuringGetPost() throws Exception {
-        MockHttpServletResponse res = PostTestUtil.getPost(
+        MockHttpServletResponse res = PostTestHelper.getPost(
                 "oldboy",
                 mvc,
                 MAPPER,
@@ -194,7 +194,7 @@ class PostIT extends IntegrationTest {
     @Test
     void willGetPostWhenPostExists() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-        MockHttpServletResponse res = PostTestUtil.createPost(
+        MockHttpServletResponse res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -203,10 +203,10 @@ class PostIT extends IntegrationTest {
                 WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        String postId = PostTestUtil.getPostIdFromResponse(res, MAPPER);
-        res = PostTestUtil.getPost(postId, mvc, MAPPER, WRITER);
+        String postId = PostTestHelper.getPostIdFromResponse(res, MAPPER);
+        res = PostTestHelper.getPost(postId, mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.OK.value(), res.getStatus());
-        Post actual = PostTestUtil.getPostFromResponse(res, MAPPER);
+        Post actual = PostTestHelper.getPostFromResponse(res, MAPPER);
         assertEquals("oldboy", postId);
         assertEquals("oldboy", actual.getId());
         assertEquals("Oldboy (2003)", actual.getTitle());
@@ -217,7 +217,7 @@ class PostIT extends IntegrationTest {
 
     @Test
     void willThrowGetPostImageWhenPostDoesNotExist() throws Exception {
-        MockHttpServletResponse res = PostTestUtil.getPostImage(
+        MockHttpServletResponse res = PostTestHelper.getPostImage(
                 "oldboy",
                 mvc,
                 MAPPER,
@@ -229,7 +229,7 @@ class PostIT extends IntegrationTest {
     @Test
     void getPostImage() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-        MockHttpServletResponse res = PostTestUtil.createPost(
+        MockHttpServletResponse res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -238,16 +238,16 @@ class PostIT extends IntegrationTest {
                 WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        String postId = PostTestUtil.getPostIdFromResponse(res, MAPPER);
-        res = PostTestUtil.getPostImage(postId, mvc, MAPPER, WRITER);
-        byte[] actual = PostTestUtil.getImageFromResponse(res, MAPPER);
+        String postId = PostTestHelper.getPostIdFromResponse(res, MAPPER);
+        res = PostTestHelper.getPostImage(postId, mvc, MAPPER, WRITER);
+        byte[] actual = PostTestHelper.getImageFromResponse(res, MAPPER);
         assertArrayEquals(IMAGE.getBytes(), actual);
     }
 
     @Test
     void getAllPosts() throws Exception {
         String text = "<h1>Title (1994)</h1>Content";
-        MockHttpServletResponse res = PostTestUtil.createPost(
+        MockHttpServletResponse res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -257,7 +257,7 @@ class PostIT extends IntegrationTest {
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-        res = PostTestUtil.createPost(
+        res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -267,7 +267,7 @@ class PostIT extends IntegrationTest {
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         text = "<h1>It's A Wonderful Life (1946)</h1><p>by Frank Capra.</p>";
-        res = PostTestUtil.createPost(
+        res = PostTestHelper.createPost(
                 auth,
                 text,
                 IMAGE,
@@ -276,10 +276,10 @@ class PostIT extends IntegrationTest {
                 WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        res = PostTestUtil.getAllPosts(mvc, MAPPER, WRITER);
+        res = PostTestHelper.getAllPosts(mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.OK.value(), res.getStatus());
 
-        List<Post> posts = PostTestUtil.getPostsFromResponse(res, MAPPER);
+        List<Post> posts = PostTestHelper.getPostsFromResponse(res, MAPPER);
         assertEquals(
                 "its-a-wonderful-life",
                 posts.get(0).getId());
@@ -304,7 +304,7 @@ class PostIT extends IntegrationTest {
     @Test
     void willThrowUnauthorizedDuringUpdatePostWhenNoAuth() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
-        MockHttpServletResponse res = PostTestUtil.updatePost(
+        MockHttpServletResponse res = PostTestHelper.updatePost(
                 "",
                 "oldboy",
                 text,
@@ -319,7 +319,7 @@ class PostIT extends IntegrationTest {
     @Test
     void willThrowNotFoundDuringUpdatePostWhenPostNotFound() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
-        MockHttpServletResponse res = PostTestUtil.updatePost(
+        MockHttpServletResponse res = PostTestHelper.updatePost(
                 auth,
                 "oldboy",
                 text,
@@ -334,7 +334,7 @@ class PostIT extends IntegrationTest {
     @Test
     void updatePost() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-        MockHttpServletResponse res = PostTestUtil.createPost(auth, text, IMAGE, mvc, MAPPER, WRITER);
+        MockHttpServletResponse res = PostTestHelper.createPost(auth, text, IMAGE, mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         String resJson = res.getContentAsString();
@@ -344,7 +344,7 @@ class PostIT extends IntegrationTest {
         String id = createPostResponse.getPostId();
 
         text = "<h1>Oldboy (2004)</h1><p>by Park Chan-wook.</p>";
-        res = PostTestUtil.updatePost(
+        res = PostTestHelper.updatePost(
                 auth,
                 id,
                 text,
@@ -356,7 +356,7 @@ class PostIT extends IntegrationTest {
         assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
         assertEquals("{}", resJson);
 
-        res = PostTestUtil.getPost(id, mvc, MAPPER, WRITER);
+        res = PostTestHelper.getPost(id, mvc, MAPPER, WRITER);
         resJson = res.getContentAsString();
         assertEquals(HttpStatus.OK.value(), res.getStatus());
 
@@ -368,7 +368,7 @@ class PostIT extends IntegrationTest {
         assertEquals("Oldboy (2004)", actual.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
 
-        res = PostTestUtil.getPostImage(id, mvc, MAPPER, WRITER);
+        res = PostTestHelper.getPostImage(id, mvc, MAPPER, WRITER);
         resJson = res.getContentAsString();
         assertEquals(HttpStatus.OK.value(), res.getStatus());
 
@@ -384,14 +384,14 @@ class PostIT extends IntegrationTest {
                 "image.jpg",
                 "image/jpeg",
                 "New Hello World!".getBytes());
-        res = PostTestUtil.updatePost(auth, id, text, image, mvc, MAPPER, WRITER);
+        res = PostTestHelper.updatePost(auth, id, text, image, mvc, MAPPER, WRITER);
         resJson = res.getContentAsString();
         assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
         assertEquals("{}", resJson);
 
-        res = PostTestUtil.getPostImage(id, mvc, MAPPER, WRITER);
+        res = PostTestHelper.getPostImage(id, mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.OK.value(), res.getStatus());
-        byte[] newImage = PostTestUtil.getImageFromResponse(res, MAPPER);
+        byte[] newImage = PostTestHelper.getImageFromResponse(res, MAPPER);
 
         assertNotEquals(imageRes, newImage);
         assertArrayEquals(
@@ -401,7 +401,7 @@ class PostIT extends IntegrationTest {
 
     @Test
     void willThrowUnauthorizedDuringDeletePostWhenNoAuth() throws Exception {
-        MockHttpServletResponse res = PostTestUtil.deletePost(
+        MockHttpServletResponse res = PostTestHelper.deletePost(
                 "",
                 "oldboy",
                 mvc,
@@ -413,7 +413,7 @@ class PostIT extends IntegrationTest {
 
     @Test
     void willThrowNotFoundDuringDeletePostWhenPostDoesNotExist() throws Exception {
-        MockHttpServletResponse res = PostTestUtil
+        MockHttpServletResponse res = PostTestHelper
                 .deletePost(auth, "oldboy", mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());
         assertEquals("Post not found", getError(res));
@@ -422,23 +422,23 @@ class PostIT extends IntegrationTest {
     @Test
     void willDeletePost() throws Exception {
         String text = "<h1>Oldboy (2003)</h1><p>by Park Chan-wook.</p>";
-        MockHttpServletResponse res = PostTestUtil
+        MockHttpServletResponse res = PostTestHelper
                 .createPost(auth, text, IMAGE, mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
-        String postId = PostTestUtil.getPostIdFromResponse(res, MAPPER);
-        res = PostTestUtil.getPost(postId, mvc, MAPPER, WRITER);
-        Post post = PostTestUtil.getPostFromResponse(res, MAPPER);
+        String postId = PostTestHelper.getPostIdFromResponse(res, MAPPER);
+        res = PostTestHelper.getPost(postId, mvc, MAPPER, WRITER);
+        Post post = PostTestHelper.getPostFromResponse(res, MAPPER);
         assertEquals(postId, post.getId());
         assertEquals("Oldboy (2003)", post.getTitle());
         assertEquals("<p>by Park Chan-wook.</p>", post.getContent());
 
-        res = PostTestUtil.deletePost(auth, postId, mvc, MAPPER, WRITER);
+        res = PostTestHelper.deletePost(auth, postId, mvc, MAPPER, WRITER);
         String resJson = res.getContentAsString();
         assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
         assertEquals("{}", resJson);
 
-        res = PostTestUtil.getPost(postId, mvc, MAPPER, WRITER);
+        res = PostTestHelper.getPost(postId, mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());
         assertEquals("Post not found", getError(res));
     }

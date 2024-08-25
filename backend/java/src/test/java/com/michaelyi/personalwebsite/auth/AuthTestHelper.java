@@ -2,10 +2,8 @@ package com.michaelyi.personalwebsite.auth;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
+import java.util.Base64;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,11 +13,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.netty.util.internal.ThreadLocalRandom;
 
 public class AuthTestHelper {
-    protected static final String FAKE_SIGNING_KEY = "fakesigningkeyfakesigningkeyfakesigningkeyfakesigningkey";
+    protected static String generateJwtSecret() {
+        Random random = ThreadLocalRandom.current();
+        byte[] bytes = new byte[64];
+        random.nextBytes(bytes);
+        return Base64.getEncoder().encodeToString(bytes);
+    }
 
     protected static MockHttpServletResponse login(
             AuthRequest req,
@@ -61,21 +63,6 @@ public class AuthTestHelper {
                 json,
                 LoginResponse.class);
         return res.getToken();
-    }
-
-    protected static String generateToken(String key, long expiration) {
-        Key signingKey = AuthUtil.getSigningKey(key);
-        Map<String, Object> claims = new HashMap<>();
-        long currTime = System.currentTimeMillis();
-
-        return Jwts
-                .builder()
-                .setClaims(claims)
-                .setSubject(AuthUtil.ADMIN_EMAIL)
-                .setIssuedAt(new Date(currTime))
-                .setExpiration(new Date(currTime + expiration))
-                .signWith(signingKey, SignatureAlgorithm.HS256)
-                .compact();
     }
 
     public static String getAuth(
