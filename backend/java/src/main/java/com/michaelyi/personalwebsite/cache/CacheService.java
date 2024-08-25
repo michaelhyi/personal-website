@@ -41,13 +41,13 @@ public class CacheService {
     }
 
     private <T> T get(String key, JavaType type) {
-        if (StringUtil.isStringInvalid(key)) {
+        if (!StringUtil.isStringValid(key)) {
             return null;
         }
 
         String value = dao.get(key);
 
-        if (StringUtil.isStringInvalid(value)) {
+        if (!StringUtil.isStringValid(value)) {
             return null;
         }
 
@@ -67,7 +67,7 @@ public class CacheService {
     }
 
     public <T> void set(String key, T data) {
-        if (StringUtil.isStringInvalid(key) || data == null) {
+        if (!StringUtil.isStringValid(key) || data == null) {
             return;
         }
 
@@ -79,7 +79,7 @@ public class CacheService {
             return;
         }
 
-        if (StringUtil.isStringInvalid(value)) {
+        if (!StringUtil.isStringValid(value)) {
             return;
         }
 
@@ -87,7 +87,7 @@ public class CacheService {
     }
 
     public void delete(String key) {
-        if (StringUtil.isStringInvalid(key)) {
+        if (!StringUtil.isStringValid(key)) {
             return;
         }
 

@@ -67,7 +67,7 @@ public class PostService {
     }
 
     public Post getPost(String id) {
-        if (StringUtil.isStringInvalid(id)) {
+        if (!StringUtil.isStringValid(id)) {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
@@ -90,7 +90,7 @@ public class PostService {
     }
 
     public byte[] getPostImage(String id) {
-        if (StringUtil.isStringInvalid(id)) {
+        if (!StringUtil.isStringValid(id)) {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
@@ -141,7 +141,7 @@ public class PostService {
             String id,
             String text,
             MultipartFile image) {
-        if (StringUtil.isStringInvalid(id)) {
+        if (!StringUtil.isStringValid(id)) {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
@@ -187,7 +187,7 @@ public class PostService {
     }
 
     public void deletePost(String id) {
-        if (StringUtil.isStringInvalid(id)) {
+        if (!StringUtil.isStringValid(id)) {
             throw new IllegalArgumentException("Id cannot be empty");
         }
 
