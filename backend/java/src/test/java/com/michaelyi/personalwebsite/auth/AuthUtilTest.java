@@ -7,62 +7,62 @@ import org.junit.jupiter.api.Test;
 
 public class AuthUtilTest {
     @Test
-    void willReturnTrueDuringIsAuthHeaderInvalidWhenHeaderIsNull() {
+    void willReturnFalseDuringIsAuthHeaderValidWhenHeaderIsNull() {
         // given
         String authHeader = null;
 
         // when
-        boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+        boolean actual = AuthUtil.isAuthHeaderValid(authHeader);
 
         // then
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
-    void willReturnTrueDuringIsAuthHeaderInvalidWhenHeaderIsBlank() {
+    void willReturnFalseDuringIsAuthHeaderValidWhenHeaderIsBlank() {
         // given
         String authHeader = "";
 
         // when
-        boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+        boolean actual = AuthUtil.isAuthHeaderValid(authHeader);
 
         // then
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
-    void willReturnTrueDuringIsAuthHeaderInvalidWhenHeaderIsEmpty() {
+    void willReturnFalseDuringIsAuthHeaderValidWhenHeaderIsEmpty() {
         // given
         String authHeader = " ";
 
         // when
-        boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+        boolean actual = AuthUtil.isAuthHeaderValid(authHeader);
 
         // then
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
-    void willReturnTrueDuringIsAuthHeaderInvalidWhenHeaderStartsWithWrongPrefix() {
+    void willReturnFalseDuringIsAuthHeaderValidWhenHeaderStartsWithWrongPrefix() {
         // given
         String authHeader = "Basic ";
 
         // when
-        boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+        boolean actual = AuthUtil.isAuthHeaderValid(authHeader);
 
         // then
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
-    void willReturnFalseDuringIsAuthHeaderInvalidWhenHeaderIsValid() {
+    void willReturnTrueDuringIsAuthHeaderValidWhenHeaderIsValid() {
         // given
         String authHeader = "Bearer {INSERT_TOKEN_HERE}";
 
         // when
-        boolean actual = AuthUtil.isAuthHeaderInvalid(authHeader);
+        boolean actual = AuthUtil.isAuthHeaderValid(authHeader);
 
         // then
-        assertFalse(actual);
+        assertTrue(actual);
     }
 }

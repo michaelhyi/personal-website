@@ -7,50 +7,50 @@ import org.junit.jupiter.api.Test;
 
 public class StringUtilTest {
     @Test
-    void willReturnTrueDuringIsStringInvalidWhenStringIsNull() {
+    void willReturnFalseDuringIsStringValidWhenStringIsNull() {
         // given
         String s = null;
 
         // when
-        boolean actual = StringUtil.isStringInvalid(s);
+        boolean actual = StringUtil.isStringValid(s);
 
         // then
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
-    void willReturnTrueDuringIsStringInvalidWhenStringIsBlank() {
+    void willReturnFalseDuringIsStringValidWhenStringIsBlank() {
         // given
         String s = "";
-        
+
         // when
-        boolean actual = StringUtil.isStringInvalid(s);
+        boolean actual = StringUtil.isStringValid(s);
 
         // then
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
-    void willReturnTrueDuringIsStringInvalidWhenStringIsEmpty() {
+    void willReturnFalseDuringIsStringValidWhenStringIsEmpty() {
         // given
         String s = " ";
 
         // when
-        boolean actual = StringUtil.isStringInvalid(s);
+        boolean actual = StringUtil.isStringValid(s);
 
         // then
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
-    void willReturnFalseDuringIsStringInvalidWhenStringIsValid() {
+    void willReturnTrueDuringIsStringValidWhenStringIsValid() {
         // given
         String s = "Hello, World!";
 
         // when
-        boolean actual = StringUtil.isStringInvalid(s);
+        boolean actual = StringUtil.isStringValid(s);
 
         // then
-        assertFalse(actual);
+        assertTrue(actual);
     }
 }

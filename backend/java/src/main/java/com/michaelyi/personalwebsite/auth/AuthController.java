@@ -46,7 +46,7 @@ public class AuthController {
             @RequestHeader("Authorization") String authHeader) {
         HttpResponse res = new HttpResponse();
 
-        if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
+        if (!AuthUtil.isAuthHeaderValid(authHeader)) {
             res.setError("Authorization header is invalid");
             res.setHttpStatus(HttpStatus.BAD_REQUEST);
         }

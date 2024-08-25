@@ -22,7 +22,7 @@ public class AuthService {
     }
 
     public String login(String password) {
-        if (StringUtil.isStringInvalid(password)) {
+        if (!StringUtil.isStringValid(password)) {
             throw new IllegalArgumentException("Password cannot be empty");
         }
 
@@ -37,7 +37,7 @@ public class AuthService {
     }
 
     public void validateToken(String token) {
-        if (StringUtil.isStringInvalid(token)) {
+        if (!StringUtil.isStringValid(token)) {
             throw new IllegalArgumentException("Token cannot be empty");
         }
 

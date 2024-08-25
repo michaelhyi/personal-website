@@ -11,7 +11,7 @@ public class PostUtil {
     public static final int CLOSING_H1_TAG_LENGTH = "</h1>".length();
 
     public static Post constructPost(String text) {
-        if (StringUtil.isStringInvalid(text)) {
+        if (!StringUtil.isStringValid(text)) {
             throw new IllegalArgumentException("Text is invalid");
         }
 
@@ -26,11 +26,11 @@ public class PostUtil {
         String content = text.substring(
                 closingH1TagIndex + CLOSING_H1_TAG_LENGTH);
 
-        if (StringUtil.isStringInvalid(title)) {
+        if (!StringUtil.isStringValid(title)) {
             throw new IllegalArgumentException("Title cannot be blank");
         }
 
-        if (StringUtil.isStringInvalid(content)) {
+        if (!StringUtil.isStringValid(content)) {
             throw new IllegalArgumentException("Content cannot be blank");
         }
 
@@ -79,7 +79,7 @@ public class PostUtil {
         return image != null
                 && !image.isEmpty()
                 && image.getSize() != 0
-                && !StringUtil.isStringInvalid(
+                && StringUtil.isStringValid(
                         image.getOriginalFilename())
                 && image
                         .getOriginalFilename()
