@@ -202,7 +202,9 @@ class PostServiceTest {
         // then
         assertEquals(IMAGE.getBytes(), actual);
         verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
-        verify(cacheService).get("getPostImage?id=" + POST.getId(), byte[].class);
+        verify(cacheService).get(
+                "getPostImage?id=" + POST.getId(),
+                byte[].class);
         verifyNoInteractions(dao);
         verifyNoInteractions(s3Service);
         verifyNoMoreInteractions(cacheService);
@@ -225,7 +227,9 @@ class PostServiceTest {
         // then
         assertEquals("Image not found", err.getMessage());
         verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
-        verify(cacheService).get("getPostImage?id=" + POST.getId(), byte[].class);
+        verify(cacheService).get(
+                "getPostImage?id=" + POST.getId(),
+                byte[].class);
         verify(s3Service).getObject(POST.getId());
         verifyNoMoreInteractions(cacheService);
     }
@@ -245,9 +249,13 @@ class PostServiceTest {
         // then
         assertEquals(IMAGE.getBytes(), actual);
         verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
-        verify(cacheService).get("getPostImage?id=" + POST.getId(), byte[].class);
+        verify(cacheService).get(
+                "getPostImage?id=" + POST.getId(),
+                byte[].class);
         verify(s3Service).getObject(POST.getId());
-        verify(cacheService).set("getPostImage?id=" + POST.getId(), IMAGE.getBytes());
+        verify(cacheService).set(
+                "getPostImage?id=" + POST.getId(),
+                IMAGE.getBytes());
     }
 
     @Test
@@ -265,9 +273,9 @@ class PostServiceTest {
                 "<p>In Christopher Nolan's 2008 superhero...</p>");
         List<Post> expected = List.of(POST, post2, post3);
 
-        ArgumentCaptor<TypeReference<List<Post>>> typeReferenceCaptor = ArgumentCaptor
+        ArgumentCaptor<TypeReference<List<Post>>> typeRefCaptor = ArgumentCaptor
                 .forClass(TypeReference.class);
-        when(cacheService.get(eq("getAllPosts"), typeReferenceCaptor.capture()))
+        when(cacheService.get(eq("getAllPosts"), typeRefCaptor.capture()))
                 .thenReturn(expected);
 
         // when
@@ -275,7 +283,7 @@ class PostServiceTest {
 
         // then
         assertEquals(expected, actual);
-        verify(cacheService).get("getAllPosts", typeReferenceCaptor.getValue());
+        verify(cacheService).get("getAllPosts", typeRefCaptor.getValue());
         verifyNoInteractions(dao);
         verifyNoMoreInteractions(cacheService);
     }
@@ -295,9 +303,9 @@ class PostServiceTest {
                 "<p>In Christopher Nolan's 2008 superhero...</p>");
         List<Post> expected = List.of(POST, post2, post3);
 
-        ArgumentCaptor<TypeReference<List<Post>>> typeReferenceCaptor = ArgumentCaptor
+        ArgumentCaptor<TypeReference<List<Post>>> typeRefCaptor = ArgumentCaptor
                 .forClass(TypeReference.class);
-        when(cacheService.get(eq("getAllPosts"), typeReferenceCaptor.capture()))
+        when(cacheService.get(eq("getAllPosts"), typeRefCaptor.capture()))
                 .thenReturn(null);
         when(dao.getAllPosts()).thenReturn(expected);
 
@@ -308,7 +316,7 @@ class PostServiceTest {
         assertEquals(expected, actual);
         verify(cacheService).get(
                 "getAllPosts",
-                typeReferenceCaptor.getValue());
+                typeRefCaptor.getValue());
         verify(dao).getAllPosts();
         verify(cacheService).set("getAllPosts", expected);
     }
@@ -355,12 +363,20 @@ class PostServiceTest {
         underTest.updatePost(POST.getId(), text, IMAGE);
 
         // then
-        Post updatedPost = new Post(POST.getId(), POST.getDate(), title, content);
-        verify(cacheService, times(2)).get("getPost?id=" + POST.getId(), Post.class);
+        Post updatedPost = new Post(
+                POST.getId(),
+                POST.getDate(),
+                title,
+                content);
+        verify(cacheService, times(2)).get(
+                "getPost?id=" + POST.getId(),
+                Post.class);
         verify(dao).updatePost(updatedPost);
         verify(cacheService).set("getPost?id=" + POST.getId(), updatedPost);
         verify(cacheService).delete("getAllPosts");
-        verify(cacheService).get("getPostImage?id=" + POST.getId(), byte[].class);
+        verify(cacheService).get(
+                "getPostImage?id=" + POST.getId(),
+                byte[].class);
         verifyNoInteractions(s3Service);
         verifyNoMoreInteractions(cacheService);
     }
@@ -391,15 +407,25 @@ class PostServiceTest {
         underTest.updatePost(POST.getId(), text, image);
 
         // then
-        Post updatedPost = new Post(POST.getId(), POST.getDate(), title, content);
-        verify(cacheService, times(2)).get("getPost?id=" + POST.getId(), Post.class);
+        Post updatedPost = new Post(
+                POST.getId(),
+                POST.getDate(),
+                title,
+                content);
+        verify(cacheService, times(2)).get(
+                "getPost?id=" + POST.getId(),
+                Post.class);
         verify(dao).updatePost(updatedPost);
         verify(cacheService).set("getPost?id=" + POST.getId(), updatedPost);
         verify(cacheService).delete("getAllPosts");
-        verify(cacheService).get("getPostImage?id=" + POST.getId(), byte[].class);
+        verify(cacheService).get(
+                "getPostImage?id=" + POST.getId(),
+                byte[].class);
         verify(s3Service).deleteObject(POST.getId());
         verify(s3Service).putObject(POST.getId(), image.getBytes());
-        verify(cacheService).set("getPostImage?id=" + POST.getId(), image.getBytes());
+        verify(cacheService).set(
+                "getPostImage?id=" + POST.getId(),
+                image.getBytes());
     }
 
     @Test

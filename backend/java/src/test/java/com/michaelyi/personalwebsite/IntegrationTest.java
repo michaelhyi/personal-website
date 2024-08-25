@@ -17,10 +17,12 @@ public abstract class IntegrationTest {
     private static final int REDIS_PORT = 6379;
 
     @Container
-    private static final MySQLContainer<?> MYSQL = new MySQLContainer<>("mysql:8.0.36");
+    private static final MySQLContainer<?> MYSQL = new MySQLContainer<>(
+            "mysql:8.0.36");
 
     @Container
-    private static final GenericContainer<?> REDIS = new GenericContainer<>("redis:6.2.14")
+    private static final GenericContainer<?> REDIS = new GenericContainer<>(
+            "redis:6.2.14")
             .withExposedPorts(REDIS_PORT);
     protected static final ObjectMapper MAPPER = new ObjectMapper();
     protected static final ObjectWriter WRITER = MAPPER.writer();
@@ -36,7 +38,8 @@ public abstract class IntegrationTest {
                 () -> String.valueOf(REDIS.getMappedPort(REDIS_PORT)));
     }
 
-    protected String getError(MockHttpServletResponse servletResponse) throws Exception {
+    protected String getError(MockHttpServletResponse servletResponse)
+            throws Exception {
         String json = servletResponse.getContentAsString();
         HttpResponse res = MAPPER.readValue(json, HttpResponse.class);
         return res.getError();

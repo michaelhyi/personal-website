@@ -32,7 +32,7 @@ public class StringUtilTest {
 
     @Test
     void willReturnTrueDuringIsStringInvalidWhenStringIsEmpty() {
-        // given 
+        // given
         String s = " ";
 
         // when
@@ -44,7 +44,7 @@ public class StringUtilTest {
 
     @Test
     void willReturnFalseDuringIsStringInvalidWhenStringIsValid() {
-        // given 
+        // given
         String s = "Hello, World!";
 
         // when

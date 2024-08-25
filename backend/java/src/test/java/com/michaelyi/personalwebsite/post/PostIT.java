@@ -193,7 +193,8 @@ class PostIT extends IntegrationTest {
 
     @Test
     void willGetPostWhenPostExists() throws Exception {
-        String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
+        String text = "<h1>Oldboy (2003)</h1>"
+                + "<p>In Park Chan-wook's film...</p>";
         MockHttpServletResponse res = PostTestHelper.createPost(
                 auth,
                 text,
@@ -228,7 +229,8 @@ class PostIT extends IntegrationTest {
 
     @Test
     void getPostImage() throws Exception {
-        String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
+        String text = "<h1>Oldboy (2003)</h1>"
+                + "<p>In Park Chan-wook's film...</p>";
         MockHttpServletResponse res = PostTestHelper.createPost(
                 auth,
                 text,
@@ -333,8 +335,10 @@ class PostIT extends IntegrationTest {
 
     @Test
     void updatePost() throws Exception {
-        String text = "<h1>Oldboy (2003)</h1><p>In Park Chan-wook's film...</p>";
-        MockHttpServletResponse res = PostTestHelper.createPost(auth, text, IMAGE, mvc, MAPPER, WRITER);
+        String text = "<h1>Oldboy (2003)</h1>"
+                + "<p>In Park Chan-wook's film...</p>";
+        MockHttpServletResponse res = PostTestHelper.createPost(
+                auth, text, IMAGE, mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         String resJson = res.getContentAsString();
@@ -384,7 +388,8 @@ class PostIT extends IntegrationTest {
                 "image.jpg",
                 "image/jpeg",
                 "New Hello World!".getBytes());
-        res = PostTestHelper.updatePost(auth, id, text, image, mvc, MAPPER, WRITER);
+        res = PostTestHelper.updatePost(
+                auth, id, text, image, mvc, MAPPER, WRITER);
         resJson = res.getContentAsString();
         assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
         assertEquals("{}", resJson);
@@ -412,7 +417,8 @@ class PostIT extends IntegrationTest {
     }
 
     @Test
-    void willThrowNotFoundDuringDeletePostWhenPostDoesNotExist() throws Exception {
+    void willThrowNotFoundDuringDeletePostWhenPostDoesNotExist()
+            throws Exception {
         MockHttpServletResponse res = PostTestHelper
                 .deletePost(auth, "oldboy", mvc, MAPPER, WRITER);
         assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());

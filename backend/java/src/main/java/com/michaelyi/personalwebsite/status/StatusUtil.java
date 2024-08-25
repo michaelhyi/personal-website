@@ -10,7 +10,8 @@ public class StatusUtil {
     }
 
     public static long getMinutes(long uptime) {
-        return (uptime / (MS_PER_SECOND * SECONDS_PER_MINUTE)) % MINUTES_PER_HOUR;
+        return (uptime / (MS_PER_SECOND * SECONDS_PER_MINUTE))
+                % MINUTES_PER_HOUR;
     }
 
     public static long getSeconds(long uptime) {

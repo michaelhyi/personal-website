@@ -80,7 +80,7 @@ class AuthServiceTest {
         IllegalArgumentException err = assertThrows(
                 IllegalArgumentException.class,
                 () -> underTest.validateToken(token));
-        
+
         // then
         assertEquals("Token cannot be malformed", err.getMessage());
         verify(jwtService).validateToken(token);
@@ -98,7 +98,7 @@ class AuthServiceTest {
         UnauthorizedException err = assertThrows(
                 UnauthorizedException.class,
                 () -> underTest.validateToken(token));
-        
+
         // then
         assertEquals("Unauthorized", err.getMessage());
         verify(jwtService).validateToken(token);
