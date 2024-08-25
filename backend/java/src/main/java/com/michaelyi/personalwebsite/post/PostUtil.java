@@ -1,66 +1,91 @@
 package com.michaelyi.personalwebsite.post;
 
-import com.michaelyi.personalwebsite.util.Response;
-import com.michaelyi.personalwebsite.util.StringUtil;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.michaelyi.personalwebsite.util.StringUtil;
+
 public class PostUtil {
-    public static final int CLOSING_H1_TAG_LENGTH = 5;
-    public static final int OPENING_H1_TAG_LENGTH = 4;
+    public static final int OPENING_H1_TAG_LENGTH = "<h1>".length();
+    public static final int CLOSING_H1_TAG_LENGTH = "</h1>".length();
 
-    public static Response<Post> validateAndConstructPost(String text) {
+    public static Post constructPost(String text) {
         if (StringUtil.isStringInvalid(text)) {
-            return new Response<>(null, "Text is invalid");
+            throw new IllegalArgumentException("Text is invalid");
         }
 
-        int titleIndex = text.indexOf("</h1>");
+        int openingH1TagIndex = text.indexOf("<h1>");
+        int closingH1TagIndex = text.indexOf("</h1>");
 
-        if (titleIndex == -1) {
-            return new Response<>(null, "Title cannot be blank");
+        if (openingH1TagIndex == -1 || closingH1TagIndex == -1) {
+            throw new IllegalArgumentException("Title cannot be blank");
         }
 
-        String newTitle = text.substring(
-                PostUtil.OPENING_H1_TAG_LENGTH,
-                titleIndex
-        );
-        String newContent = text.substring(
-                titleIndex + PostUtil.CLOSING_H1_TAG_LENGTH
-        );
+        String title = text.substring(OPENING_H1_TAG_LENGTH, closingH1TagIndex);
+        String content = text.substring(
+                closingH1TagIndex + CLOSING_H1_TAG_LENGTH);
 
-        if (StringUtil.isStringInvalid(newTitle)) {
-            return new Response<>(null, "Title cannot be blank");
+        if (StringUtil.isStringInvalid(title)) {
+            throw new IllegalArgumentException("Title cannot be blank");
         }
 
-        if (StringUtil.isStringInvalid(newContent)) {
-            return new Response<>(null, "Content cannot be blank");
+        if (StringUtil.isStringInvalid(content)) {
+            throw new IllegalArgumentException("Content cannot be blank");
         }
 
-        String newId = newTitle.toLowerCase()
+        String id = convertTitleToId(title);
+        Date date = new Date();
+        title = removeHtmlTags(title);
+
+        return new Post(id, date, title, content);
+    }
+
+    private static String convertTitleToId(String title) {
+        // replace spaces with hyphens & remove all non-alphabetic characters
+        String id = title.toLowerCase()
                 .replace(" ", "-")
                 .replaceAll("[^a-z\\-]", "");
 
-        String id = newId.charAt(newId.length() - 1) == '-'
-                ? newId.substring(0, newId.length() - 1) : newId;
-        Date date = new Date();
-        String title = newTitle.replaceAll("<[^>]*>", "");
-        String content = newContent;
+        // remove trailing hyphens
+        if (id.charAt(id.length() - 1) == '-') {
+            id = id.substring(0, id.length() - 1);
+        }
 
-        Post post = new Post(id, date, title, content);
-
-        return new Response<>(post, null);
+        return id;
     }
 
-    public static boolean isImageInvalid(MultipartFile image) {
-        return image == null
-                || image.isEmpty()
-                || image.getSize() == 0
-                || image.getOriginalFilename() == null
-                || image.getOriginalFilename().isEmpty()
-                || image.getOriginalFilename().isBlank()
-                || !image.getOriginalFilename()
-                        .matches(".*\\.(jpg|jpeg|png|webp)$")
-                || !image.getContentType().matches("image/(jpeg|png|webp)");
+    private static String removeHtmlTags(String s) {
+        return s.replaceAll("<[^>]*>", "");
+    }
+
+    public static byte[] getImage(MultipartFile image) {
+        if (!isImageValid(image)) {
+            throw new IllegalArgumentException("Image is invalid");
+        }
+
+        byte[] res;
+
+        try {
+            res = image.getBytes();
+        } catch (Exception e) {
+            res = null;
+        }
+
+        return res;
+    }
+
+    private static boolean isImageValid(MultipartFile image) {
+        return image != null
+                && !image.isEmpty()
+                && image.getSize() != 0
+                && !StringUtil.isStringInvalid(
+                        image.getOriginalFilename())
+                && image
+                        .getOriginalFilename()
+                        .matches(".*\\.(jpg|jpeg|png|webp)")
+                && image
+                        .getContentType()
+                        .matches("image/(jpeg|png|webp)");
     }
 }

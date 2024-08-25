@@ -47,8 +47,8 @@ public class AuthController {
         HttpResponse res = new HttpResponse();
 
         if (AuthUtil.isAuthHeaderInvalid(authHeader)) {
-            throw new IllegalArgumentException(
-                    "Authorization header is invalid");
+            res.setError("Authorization header is invalid");
+            res.setHttpStatus(HttpStatus.BAD_REQUEST);
         }
 
         String token = authHeader.substring(AuthUtil.BEARER_PREFIX_LENGTH);

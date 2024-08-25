@@ -24,7 +24,12 @@ public class Status {
         this(ServerStatus.UP, uptime, new Details());
     }
 
-    public String getServers() {
+    public ServerStatus getServers() {
+        return servers;
+    }
+
+    @JsonProperty("servers")
+    public String getServersAsString() {
         return servers.name();
     }
 
@@ -49,11 +54,21 @@ public class Status {
             this(ServerStatus.UP, ServerStatus.UP);
         }
 
-        public String getMysql() {
+        public ServerStatus getMysql() {
+            return mysql;
+        }
+
+        @JsonProperty("mysql")
+        public String getMysqlAsString() {
             return mysql.name();
         }
 
-        public String getRedis() {
+        public ServerStatus getRedis() {
+            return redis;
+        }
+
+        @JsonProperty("redis")
+        public String getRedisAsString() {
             return redis.name();
         }
     }

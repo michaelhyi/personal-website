@@ -1,8 +1,5 @@
 package com.michaelyi.personalwebsite.cache;
 
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -13,16 +10,16 @@ import com.michaelyi.personalwebsite.util.StringUtil;
 
 @Service
 public class CacheService {
-    private final RedisTemplate<String, String> template;
+    private final CacheDao dao;
     private final ObjectMapper mapper;
     private final ObjectWriter writer;
     private static final int CACHE_TTL = 1000 * 60 * 15;
 
     public CacheService(
-            RedisTemplate<String, String> template,
+            CacheDao dao,
             ObjectMapper mapper,
             ObjectWriter writer) {
-        this.template = template;
+        this.dao = dao;
         this.mapper = mapper;
         this.writer = writer;
     }
@@ -48,7 +45,7 @@ public class CacheService {
             return null;
         }
 
-        String value = template.opsForValue().get(key);
+        String value = dao.get(key);
 
         if (StringUtil.isStringInvalid(value)) {
             return null;
@@ -86,9 +83,7 @@ public class CacheService {
             return;
         }
 
-        template
-                .opsForValue()
-                .set(key, value, CACHE_TTL, TimeUnit.MILLISECONDS);
+        dao.set(key, value, CACHE_TTL);
     }
 
     public void delete(String key) {
@@ -96,14 +91,6 @@ public class CacheService {
             return;
         }
 
-        template.delete(key);
-    }
-
-    public void flushAll() {
-        template
-                .getConnectionFactory()
-                .getConnection()
-                .serverCommands()
-                .flushAll();
+        dao.delete(key);
     }
 }

@@ -20,7 +20,7 @@ public class StatusController {
         StatusResponse res = new StatusResponse();
 
         try {
-            Status health = healthService.check();
+            Status health = healthService.getStatus();
             res.setStatus(health);
             res.setHttpStatus(HttpStatus.OK);
         } catch (Exception e) {
