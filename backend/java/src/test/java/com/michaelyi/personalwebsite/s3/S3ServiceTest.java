@@ -1,6 +1,8 @@
 package com.michaelyi.personalwebsite.s3;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -8,6 +10,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -42,13 +45,29 @@ public class S3ServiceTest {
                 .bucket(BUCKET)
                 .key(KEY)
                 .build();
-        RequestBody expectedRequestBody = RequestBody.fromBytes(FILE);
+
+        ArgumentCaptor<RequestBody> requestBodyCaptor = ArgumentCaptor
+                .forClass(RequestBody.class);
+        byte[] expectedRequestBodyBytes = RequestBody
+                .fromBytes(FILE)
+                .contentStreamProvider()
+                .newStream()
+                .readAllBytes();
 
         // when
         underTest.putObject(KEY, FILE);
 
         // then
-        verify(client).putObject(expectedRequest, expectedRequestBody);
+        verify(client).putObject(
+                eq(expectedRequest),
+                requestBodyCaptor.capture());
+
+        RequestBody actualRequestBody = requestBodyCaptor.getValue();
+        byte[] actualRequestBodyBytes = actualRequestBody
+                .contentStreamProvider()
+                .newStream()
+                .readAllBytes();
+        assertArrayEquals(expectedRequestBodyBytes, actualRequestBodyBytes);
     }
 
     @Test
