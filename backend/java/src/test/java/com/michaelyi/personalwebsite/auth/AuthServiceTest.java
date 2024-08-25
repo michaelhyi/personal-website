@@ -1,14 +1,18 @@
 package com.michaelyi.personalwebsite.auth;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
@@ -17,115 +21,98 @@ class AuthServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    private static final String ADMIN_PASSWORD = "admin";
+    @Mock
+    private JwtService jwtService;
+
+    private static final String ENCODED_ADMIN_PASSWORD = "admin";
 
     @BeforeEach
     void setUp() {
         underTest = new AuthService(
-                ADMIN_PASSWORD,
-                AuthTestUtil.SIGNING_KEY,
-                passwordEncoder
-        );
+                ENCODED_ADMIN_PASSWORD,
+                passwordEncoder,
+                jwtService);
     }
 
     @Test
-    void willThrowLoginWhenBadRequest() {
-        AuthRequest nullReq = new AuthRequest(null);
+    void willThrowLoginWhenWrongPassword() {
+        // given
+        String password = "wrong";
+        when(passwordEncoder.matches(
+                password,
+                ENCODED_ADMIN_PASSWORD)).thenReturn(false);
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.login(nullReq)
-        );
-
-        AuthRequest emptyReq = new AuthRequest("");
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.login(emptyReq)
-        );
-
-        AuthRequest blankReq = new AuthRequest(" ");
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.login(blankReq)
-        );
-
-        Mockito.verifyNoInteractions(passwordEncoder);
-    }
-
-    @Test
-    void willThrowLoginWhenUnauthorized() {
-        AuthRequest req = new AuthRequest("unauthorized");
-
-        Mockito.when(
-                passwordEncoder.matches(req.password(), ADMIN_PASSWORD)
-        ).thenReturn(false);
-
-        assertThrows(UnauthorizedException.class, () -> underTest.login(req));
-
-        Mockito.verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
-    }
-
-    @Test
-    void login() {
-        AuthRequest req = new AuthRequest("authorized");
-
-        Mockito.when(
-                passwordEncoder.matches(req.password(), ADMIN_PASSWORD)
-        ).thenReturn(true);
-
-        underTest.login(req);
-
-        Mockito.verify(passwordEncoder).matches(req.password(), ADMIN_PASSWORD);
-    }
-
-    @Test
-    void willThrowValidateTokenWhenBadRequest() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.validateToken(null)
-        );
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.validateToken("")
-        );
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.validateToken(" ")
-        );
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.validateToken("Basic")
-        );
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> underTest.validateToken("Bearer")
-        );
-    }
-
-    @Test
-    void willThrowValidateTokenWhenTokenIsInvalid() {
-        String token = AuthTestUtil.generateToken(
-                AuthUtil.JWT_EXPIRATION * -1
-        );
-
-        assertThrows(
+        // when
+        UnauthorizedException err = assertThrows(
                 UnauthorizedException.class,
-                () -> underTest.validateToken(String.format("Bearer %s", token))
-        );
+                () -> underTest.login(password));
+
+        // then
+        assertEquals("Wrong password", err.getMessage());
+        verify(passwordEncoder).matches(password, ENCODED_ADMIN_PASSWORD);
+        verifyNoInteractions(jwtService);
     }
 
     @Test
-    void validateToken() {
-        String token = AuthTestUtil.generateToken(
-                AuthUtil.JWT_EXPIRATION
-        );
+    void canLogin() {
+        // given
+        String password = "correct";
+        when(passwordEncoder.matches(password, ENCODED_ADMIN_PASSWORD))
+                .thenReturn(true);
 
-        underTest.validateToken(String.format("Bearer %s", token));
+        // when
+        underTest.login(password);
+
+        // then
+        verify(passwordEncoder).matches(password, ENCODED_ADMIN_PASSWORD);
+        verify(jwtService).generateToken();
+    }
+
+    @Test
+    void willThrowValidateTokenWhenTokenIsMalformed() {
+        // given
+        String token = "malformed token";
+        doThrow(new IllegalArgumentException("Token cannot be malformed"))
+            .when(jwtService)
+            .validateToken(token);
+
+        // when
+        IllegalArgumentException err = assertThrows(
+                IllegalArgumentException.class,
+                () -> underTest.validateToken(token));
+
+        // then
+        assertEquals("Token cannot be malformed", err.getMessage());
+        verify(jwtService).validateToken(token);
+    }
+
+    @Test
+    void willThrowValidateTokenWhenTokenIsUnauthorized() {
+        // given
+        String token = "unauthorized token";
+        doThrow(new UnauthorizedException())
+            .when(jwtService)
+            .validateToken(token);
+
+        // when
+        UnauthorizedException err = assertThrows(
+                UnauthorizedException.class,
+                () -> underTest.validateToken(token));
+
+        // then
+        assertEquals("Unauthorized", err.getMessage());
+        verify(jwtService).validateToken(token);
+    }
+
+    @Test
+    void canValidateToken() {
+        // given
+        String token = "token";
+
+        // when
+        underTest.validateToken(token);
+
+        // then
+        verify(jwtService).validateToken(token);
     }
 }

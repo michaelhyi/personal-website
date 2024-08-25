@@ -1,4 +1,4 @@
-import "./view-post.css";
+import "./read-post.css";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import { BackButton, Container, Loading, NotFound } from "../../components";
 import { getPost, getPostImage } from "../../services/post";
 import format from "../../utils/date";
 
-export default function ViewPost() {
+export default function ReadPost() {
     const { id } = useParams();
     const [query, setQuery] = useState({
         data: null,
@@ -21,7 +21,12 @@ export default function ViewPost() {
         (async () => {
             try {
                 const post = await getPost(id);
-                setQuery({ data: post, loading: false, error: false });
+                const image = await getPostImage(id);
+                setQuery({
+                    data: { post, image },
+                    loading: false,
+                    error: false,
+                });
             } catch (e) {
                 setQuery({ data: null, loading: false, error: true });
             }
@@ -34,14 +39,18 @@ export default function ViewPost() {
     return (
         <Container>
             <BackButton href="/blog" text="Blog" />
-            <h1 className="post-title">{data.title}</h1>
-            <p className="post-date">{format(data.date)}</p>
-            <img src={getPostImage(id)} alt={data.title} className="post-img" />
+            <h1 className="post-title">{data.post.title}</h1>
+            <p className="post-date">{format(data.post.date)}</p>
+            <img
+                src={`data:image/png;base64,${data.image}`}
+                alt={data.post.title}
+                className="post-img"
+            />
             <article
                 className="post-article"
                 // eslint-disable-next-line react/no-danger -- html data is sanitized
                 dangerouslySetInnerHTML={{
-                    __html: sanitize(data.content),
+                    __html: sanitize(data.post.content),
                 }}
             />
         </Container>

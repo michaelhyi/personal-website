@@ -12,7 +12,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 public class S3Config {
     private final String accessKey;
     private final String secretKey;
-    private static final String REGION = "us-west-2";
+    private static final Region REGION = Region.of("us-west-2");
 
     public S3Config(
             @Value("${aws.access-key}") String accessKey,
@@ -26,13 +26,13 @@ public class S3Config {
     public S3Client s3Client() {
         AwsBasicCredentials credentials = AwsBasicCredentials
                 .create(accessKey, secretKey);
+        StaticCredentialsProvider credentialsProvider = StaticCredentialsProvider
+                .create(credentials);
 
         return S3Client
                 .builder()
-                .credentialsProvider(
-                        StaticCredentialsProvider
-                                .create(credentials))
-                .region(Region.of(REGION))
+                .credentialsProvider(credentialsProvider)
+                .region(REGION)
                 .build();
     }
 }

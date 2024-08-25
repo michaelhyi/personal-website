@@ -10,15 +10,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AuthConfig {
     private final String adminPassword;
 
-    public AuthConfig(
-            @Value("${admin.pw}") String adminPassword
-    ) {
+    public AuthConfig(@Value("${admin.pw}") String adminPassword) {
         this.adminPassword = adminPassword;
     }
 
     @Bean
-    public User user() {
-        return new User(adminPassword);
+    public AdminUser adminUser() {
+        return new AdminUser(adminPassword);
     }
 
     @Bean

@@ -19,20 +19,16 @@ This repository contains the source code to my personal website and film blog. I
 - [Java](https://www.java.com/en/)
 - [Go](https://go.dev/)
 - [Spring](https://spring.io/)
-- [Gradle](https://gradle.org/)
 - [MySQL](https://www.mysql.com/)
 - [Redis](https://redis.io/)
 - [Docker](https://www.docker.com/)
-- [AWS VPC, EC2, S3](https://aws.amazon.com/)
+- [AWS S3](https://aws.amazon.com/)
 - [JUnit](https://junit.org/junit5/)
-- [Mockito](https://site.mockito.org/)
-- [Testcontainers](https://testcontainers.com/)
 
 ### Frontend
-- [Nginx](https://www.nginx.com/)
+- [React](https://react.dev/)
 - [Node.js](https://nodejs.org/en)
 - [JavaScript](https://www.javascript.com/)
-- [React](https://react.dev/)
 
 ## Screenshots
 

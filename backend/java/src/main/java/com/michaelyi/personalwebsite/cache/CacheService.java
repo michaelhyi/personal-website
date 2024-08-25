@@ -1,117 +1,96 @@
 package com.michaelyi.personalwebsite.cache;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.personalwebsite.util.StringUtil;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 public class CacheService {
-    private final RedisTemplate<String, String> template;
+    private final CacheDao dao;
     private final ObjectMapper mapper;
     private final ObjectWriter writer;
-    private static final int CACHE_TTL = 900000;
+    private static final int CACHE_TTL = 1000 * 60 * 15;
 
     public CacheService(
-            RedisTemplate<String, String> template,
-            ObjectMapper mapper
-    ) {
-        this.template = template;
+            CacheDao dao,
+            ObjectMapper mapper,
+            ObjectWriter writer) {
+        this.dao = dao;
         this.mapper = mapper;
-        writer = mapper.writer();
+        this.writer = writer;
     }
 
     public <T> T get(String key, Class<T> clazz) {
         JavaType type = mapper
                 .getTypeFactory()
-                .constructParametricType(CacheEntry.class, clazz);
+                .constructType(clazz);
 
         return get(key, type);
     }
 
     public <T> T get(String key, TypeReference<T> typeReference) {
-        JavaType javaTypeReference = mapper
-                .getTypeFactory()
-                .constructType(typeReference);
-
         JavaType type = mapper
                 .getTypeFactory()
-                .constructParametricType(CacheEntry.class, javaTypeReference);
+                .constructType(typeReference);
 
         return get(key, type);
     }
 
     private <T> T get(String key, JavaType type) {
-        if (StringUtil.isStringInvalid(key)) {
+        if (!StringUtil.isStringValid(key)) {
             return null;
         }
 
-        String value = template.opsForValue().get(key);
+        String value = dao.get(key);
 
-        if (StringUtil.isStringInvalid(value)) {
+        if (!StringUtil.isStringValid(value)) {
             return null;
         }
 
-        CacheEntry<T> entry;
+        T data;
 
         try {
-            entry = mapper.readValue(value, type);
-        } catch (JsonProcessingException e) {
+            data = mapper.readValue(value, type);
+        } catch (Exception e) {
             return null;
         }
 
-        if (entry == null) {
+        if (data == null) {
             return null;
         }
 
-        if (entry.getExpiration().before(new Date())) {
-            template.delete(key);
-            return null;
-        }
-
-        return entry.getData();
+        return data;
     }
 
     public <T> void set(String key, T data) {
-        if (StringUtil.isStringInvalid(key) || data == null) {
+        if (!StringUtil.isStringValid(key) || data == null) {
             return;
         }
 
         String value;
 
         try {
-            value = writer.writeValueAsString(
-                    new CacheEntry<>(
-                            data,
-                            new Date(System.currentTimeMillis() + CACHE_TTL)
-                    )
-            );
-        } catch (JsonProcessingException e) {
+            value = writer.writeValueAsString(data);
+        } catch (Exception e) {
             return;
         }
 
-        if (StringUtil.isStringInvalid(value)) {
+        if (!StringUtil.isStringValid(value)) {
             return;
         }
 
-        template.opsForValue().set(key, value);
+        dao.set(key, value, CACHE_TTL);
     }
 
     public void delete(String key) {
-        if (StringUtil.isStringInvalid(key)) {
+        if (!StringUtil.isStringValid(key)) {
             return;
         }
 
-        template.delete(key);
-    }
-
-    public void flushAll() {
-        template.getConnectionFactory().getConnection().flushAll();
+        dao.delete(key);
     }
 }

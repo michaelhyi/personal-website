@@ -1,10 +1,10 @@
 package com.michaelyi.personalwebsite.post;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostDao {
@@ -17,17 +17,14 @@ public class PostDao {
     }
 
     public void createPost(Post post) {
-        String sql = """
-                INSERT INTO post (id, date, title, content)
-                VALUES (?, ?, ?, ?)
-                """;
+        String sql = "INSERT INTO post (id, date, title, content) "
+                + "VALUES (?, ?, ?, ?)";
         template.update(
                 sql,
                 post.getId(),
                 post.getDate(),
                 post.getTitle(),
-                post.getContent()
-        );
+                post.getContent());
     }
 
     public Optional<Post> getPost(String id) {
@@ -41,9 +38,7 @@ public class PostDao {
     }
 
     public void updatePost(Post post) {
-        String sql = """
-                UPDATE post SET title = ?, content = ? WHERE id = ?
-                """;
+        String sql = "UPDATE post SET title = ?, content = ? WHERE id = ?";
         template.update(sql, post.getTitle(), post.getContent(), post.getId());
     }
 

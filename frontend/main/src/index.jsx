@@ -6,7 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { inject } from "@vercel/analytics";
 
-import { About, Blog, Home, Lauren, Portfolio, ViewPost } from "./pages";
+import { About, Blog, Home, Lauren, Portfolio, ReadPost } from "./pages";
 import { NotFound } from "./components";
 
 const router = createBrowserRouter([
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/blog/:id",
-        element: <ViewPost />,
+        element: <ReadPost />,
     },
     {
         path: "*",

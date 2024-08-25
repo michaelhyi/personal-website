@@ -1,28 +1,28 @@
 package com.michaelyi.personalwebsite.auth;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class User implements UserDetails {
+public class AdminUser implements UserDetails {
     private String password;
 
-    public User(String password) {
+    public AdminUser(String password) {
         this.password = password;
     }
 
-    public User() {
+    public AdminUser() {
     }
 
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority role
-                = new SimpleGrantedAuthority("ROLE_ADMIN");
+        SimpleGrantedAuthority role = new SimpleGrantedAuthority("ROLE_ADMIN");
         return List.of(role);
     }
 
