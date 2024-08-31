@@ -24,12 +24,4 @@ public class CacheDao {
     public void delete(String key) {
         template.delete(key);
     }
-
-    public void flushAll() {
-        template
-                .getConnectionFactory()
-                .getConnection()
-                .serverCommands()
-                .flushAll();
-    }
 }
