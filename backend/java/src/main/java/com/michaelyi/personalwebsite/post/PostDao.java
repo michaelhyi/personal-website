@@ -46,9 +46,4 @@ public class PostDao {
         String sql = "DELETE FROM post WHERE id = ?";
         template.update(sql, id);
     }
-
-    public void deleteAllPosts() {
-        String sql = "DELETE FROM post";
-        template.update(sql);
-    }
 }

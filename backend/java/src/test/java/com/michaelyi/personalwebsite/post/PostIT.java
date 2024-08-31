@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
@@ -21,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.michaelyi.personalwebsite.IntegrationTest;
 import com.michaelyi.personalwebsite.auth.AuthTestHelper;
-import com.michaelyi.personalwebsite.cache.CacheDao;
 import com.michaelyi.personalwebsite.s3.S3Service;
 
 @AutoConfigureMockMvc
@@ -33,13 +34,13 @@ class PostIT extends IntegrationTest {
     private MockMvc mvc;
 
     @Autowired
-    private PostDao dao;
+    private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private S3Service s3Service;
-
-    @Autowired
-    private CacheDao cacheDao;
 
     private static final MockMultipartFile IMAGE = new MockMultipartFile(
             "image",
@@ -51,8 +52,15 @@ class PostIT extends IntegrationTest {
     @BeforeEach
     void setUp() throws Exception {
         auth = AuthTestHelper.getAuth(mvc, MAPPER, WRITER);
-        cacheDao.flushAll();
-        dao.deleteAllPosts();
+
+        redisTemplate
+                .getConnectionFactory()
+                .getConnection()
+                .serverCommands()
+                .flushAll();
+
+        jdbcTemplate.execute("DELETE FROM post");
+
         s3Service.deleteObject("title");
         s3Service.deleteObject("oldboy");
     }
