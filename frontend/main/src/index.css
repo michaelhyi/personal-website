@@ -15,3 +15,21 @@
     padding: 0px;
     margin: 0px;
 }
+
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hoverable {
+    cursor: pointer;
+    transition-duration: 300ms;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+}
+
+.hoverable:hover {
+    opacity: 0.5;
+}

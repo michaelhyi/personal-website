@@ -1,0 +1,40 @@
+.portfolio-projects {
+    display: flex;
+    flex-direction: column;
+    padding-top: 24px;
+    gap: 32px;
+}
+
+.portfolio-projects-header {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.portfolio-hackathons {
+    display: flex;
+    flex-direction: column;
+    margin-top: 64px;
+    gap: 8px;
+}
+
+.portfolio-hackathons-header {
+    font-size: 30px;
+    font-weight: 700;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.portfolio-hackathons-card {
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+.portfolio-hackathons-card-anchor {
+    font-size: 14px;
+    font-weight: 500;
+    padding-bottom: 8px;
+}
+
+.portfolio-hackathons-card-anchor-arrow {
+    display: inline-block;
+}

@@ -6,8 +6,13 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { inject } from "@vercel/analytics";
 
-import { About, Blog, Home, Lauren, Portfolio, ReadPost } from "./pages";
-import { NotFound } from "./components";
+import About from "./pages/about";
+import Blog from "./pages/blog";
+import Home from "./pages/home";
+import Lauren from "./pages/lauren";
+import Portfolio from "./pages/portfolio";
+import ReadPost from "./pages/read-post";
+import NotFound from "./pages/not-found";
 
 const router = createBrowserRouter([
     {
