@@ -1,11 +1,10 @@
-import "./BlogHeader.css";
+import "../css/blog-header.css";
 
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import FaArrowLeftLong from "../Icons/FaArrowLeftLong";
-import FaPlus from "../Icons/FaPlus";
-import Hoverable from "../Hoverable/Hoverable";
+import FaArrowLeftLong from "./Icons/FaArrowLeftLong";
+import FaPlus from "./Icons/FaPlus";
 
 export default function BlogHeader() {
     const navigate = useNavigate();
@@ -20,17 +19,15 @@ export default function BlogHeader() {
             <button
                 type="button"
                 onClick={logout}
-                className="header-logout-btn"
+                className="hoverable header-logout-btn"
             >
-                <Hoverable className="header-logout-btn-content">
+                <div className="header-logout-btn-content">
                     <FaArrowLeftLong /> Logout
-                </Hoverable>
+                </div>
             </button>
-            <Hoverable>
-                <a aria-label="Create post" href="/blog/post">
-                    <FaPlus />
-                </a>
-            </Hoverable>
+            <a aria-label="Create post" href="/blog/post" className="hoverable">
+                <FaPlus />
+            </a>
         </header>
     );
 }

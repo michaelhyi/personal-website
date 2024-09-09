@@ -1,27 +1,27 @@
-import "./post.css";
+import "../css/post.css";
 
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import {
-    AuthorizedRoute,
-    BackButton,
-    Container,
-    DeleteModal,
-    Dropzone,
-    Editor,
-    Loading,
-    NotFound,
-    Spinner,
-} from "../../components";
-import useEditor from "../../hooks/useEditor";
+import AuthorizedRoute from "../components/AuthorizedRoute";
+import BackButton from "../components/BackButton";
+import Container from "../components/Container";
+import DeleteModal from "../components/DeleteModal";
+import Dropzone from "../components/Dropzone";
+import Editor from "../components/Editor";
+import Spinner from "../components/Spinner";
+
+import Loading from "./loading";
+import NotFound from "./not-found";
+
+import useEditor from "../util/useEditor";
 import {
     createPost,
     getPost,
     getPostImage,
     updatePost,
-} from "../../services/post";
-import validateForm from "../../utils/validateForm";
+} from "../services/post";
+import validateForm from "../util/validateForm";
 
 export default function Post() {
     const [params] = useSearchParams();

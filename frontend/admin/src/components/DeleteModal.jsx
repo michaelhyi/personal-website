@@ -1,10 +1,11 @@
-import "./DeleteModal.css";
+import "../css/delete-modal.css";
 
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import IoMdClose from "../Icons/IoMdClose";
-import { deletePost } from "../../services/post";
+import IoMdClose from "./Icons/IoMdClose";
+
+import { deletePost } from "../services/post";
 
 export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
     const navigate = useNavigate();

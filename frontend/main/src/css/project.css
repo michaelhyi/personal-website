@@ -1,4 +1,4 @@
-.project-link {
+.project-card {
     display: flex;
     text-align: left;
 }
@@ -15,11 +15,14 @@
 }
 
 .project-name {
+    display: flex;
     font-weight: 600;
 }
 
-.project-name-arrow {
-    display: inline-block;
+.project-arrow {
+    padding-left: 4px;
+    padding-top: 4px;
+    font-size: 10px;
 }
 
 .project-description {

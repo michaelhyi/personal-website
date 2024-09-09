@@ -1,14 +1,9 @@
-import "../css/blog.css";
-
 import { useEffect, useState } from "react";
-
-import BackButton from "../components/BackButton";
-import Container from "../components/Container";
-import FiArrowUpRight from "../components/FiArrowUpRight";
+import "../css/blog.css";
+import { getAllPosts } from "../js/post-service";
 import Loading from "./loading";
 import NotFound from "./not-found";
-
-import { getAllPosts } from "../services/post";
+import Footer from "../components/Footer";
 
 export default function Blog() {
     const [query, setQuery] = useState({
@@ -42,22 +37,25 @@ export default function Blog() {
     if (loading) return <Loading />;
 
     return (
-        <Container absoluteFooter>
-            <BackButton href="/" />
-            <section className="blog-section">
-                {data.map(({ id, title }) => (
-                    <a
-                        key={id}
-                        className="blog-post-anchor hoverable"
-                        href={`/blog/${id}`}
-                    >
-                        {title}
-                        <span className="blog-post-arrow">
-                            <FiArrowUpRight />
-                        </span>
-                    </a>
-                ))}
+        <main>
+            <section className="content">
+                <a href="/" className="back-arrow">
+                    &#8592;
+                </a>
+                <section className="blog-section">
+                    {data.map(({ id, title }) => (
+                        <a
+                            key={id}
+                            className="blog-post-anchor"
+                            href={`/blog/${id}`}
+                        >
+                            {title}
+                            <span className="blog-post-arrow">&#8599;</span>
+                        </a>
+                    ))}
+                </section>
             </section>
-        </Container>
+            <Footer absolute />
+        </main>
     );
 }

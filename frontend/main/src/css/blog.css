@@ -13,8 +13,10 @@
 .blog-post-anchor {
     font-size: 14px;
     font-weight: 500;
+    display: flex;
 }
 
 .blog-post-arrow {
-    display: inline-block;
+    padding-left: 4px;
+    font-size: 10px;
 }

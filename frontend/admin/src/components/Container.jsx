@@ -1,7 +1,8 @@
-import "./Container.css";
+import "../css/container.css";
 
 import { useEffect, useState } from "react";
-import Footer from "../Footer/Footer";
+
+import Footer from "./Footer";
 
 export default function Container({
     children,

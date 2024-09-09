@@ -1,13 +1,13 @@
 import lauren from "../img/lauren.png";
-
-import Container from "../components/Container";
+import Footer from "../components/Footer";
 
 export default function Lauren() {
     return (
-        <Container absoluteFooter>
+        <main>
             <section className="center">
                 <img style={{ scale: "0.125" }} src={lauren} alt="la" />
             </section>
-        </Container>
+            <Footer absolute />
+        </main>
     );
 }

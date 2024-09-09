@@ -1,14 +1,12 @@
-import "./NotFound.css";
-
-import Center from "../Center/Center";
-import Container from "../Container/Container";
+import "../css/not-found.css";
+import Container from "../components/Container";
 
 export default function NotFound() {
     return (
         <Container absoluteFooter>
-            <Center>
+            <section className="center">
                 <p className="not-found-text">Not Found</p>
-            </Center>
+            </section>
         </Container>
     );
 }

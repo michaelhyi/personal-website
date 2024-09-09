@@ -1,10 +1,12 @@
-import "./home.css";
+import "../css/home.css";
 
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Center, Container, UnauthorizedRoute } from "../../components";
-import { login } from "../../services/auth";
+import Container from "../components/Container";
+import UnauthorizedRoute from "../components/UnauthorizedRoute";
+
+import { login } from "../services/auth";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -27,7 +29,7 @@ export default function Home() {
     return (
         <UnauthorizedRoute>
             <Container absoluteFooter>
-                <Center className="home-content">
+                <section className="center home-content">
                     <form onSubmit={handleSubmit}>
                         <input
                             type="password"
@@ -36,7 +38,7 @@ export default function Home() {
                         />
                     </form>
                     <p className="home-error-message">{error || ""}</p>
-                </Center>
+                </section>
             </Container>
         </UnauthorizedRoute>
     );

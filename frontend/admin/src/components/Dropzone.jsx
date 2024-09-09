@@ -1,9 +1,7 @@
-import "./Dropzone.css";
-
+import "../css/dropzone.css";
 import { useCallback } from "react";
-import AiOutlineClose from "../Icons/AiOutlineClose";
-import AiOutlineCloudDownload from "../Icons/AiOutlineCloudDownload";
-import Hoverable from "../Hoverable/Hoverable";
+import AiOutlineClose from "./Icons/AiOutlineClose";
+import AiOutlineCloudDownload from "./Icons/AiOutlineCloudDownload";
 
 export default function Dropzone({
     id,
@@ -56,9 +54,14 @@ export default function Dropzone({
                                     : URL.createObjectURL(image)
                             }
                         />
-                        <Hoverable onClick={handleImageDelete}>
+                        <button
+                            aria-label="delete image"
+                            type="button"
+                            className="hoverable"
+                            onClick={handleImageDelete}
+                        >
                             <AiOutlineClose />
-                        </Hoverable>
+                        </button>
                     </div>
                     <p className="dropzone-img-name">
                         {!image ? `${title}.jpg` : image.name}

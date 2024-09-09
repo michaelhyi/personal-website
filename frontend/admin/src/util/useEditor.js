@@ -1,4 +1,4 @@
-import "./editor.css";
+import "../hooks/editor.css";
 
 import { useEditor as editor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";

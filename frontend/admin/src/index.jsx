@@ -6,7 +6,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { inject } from "@vercel/analytics";
 
-import { Blog, Home, Post } from "./pages";
+import Blog from "./pages/blog";
+import Home from "./pages/home";
+import Post from "./pages/post";
 
 const router = createBrowserRouter([
     { path: "/blog", element: <Blog /> },
