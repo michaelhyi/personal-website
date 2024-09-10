@@ -19,6 +19,9 @@
 main {
     color: rgb(255 255 255);
     background-color: rgb(23 23 23);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     min-height: 100vh;
 }
 
@@ -33,6 +36,22 @@ button {
 a:hover,
 button:hover {
     opacity: 0.5;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    font-size: 10px;
+    padding-top: 64px;
+    padding-bottom: 16px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 8px;
 }
 
 .back-arrow {
@@ -75,5 +94,22 @@ button:hover {
 @media (min-width: 1280px) {
     .content {
         width: 768px;
+    }
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    fill: rgb(23 23 23);
+    animation: spin 1s linear infinite;
+    color: white;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }

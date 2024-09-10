@@ -4,10 +4,12 @@ import "../css/not-found.css";
 export default function NotFound() {
     return (
         <main>
-            <section className="center">
-                <p className="not-found-text">Not Found</p>
+            <section>
+                <div className="center">
+                    <p className="not-found-text">Not Found</p>
+                </div>
             </section>
-            <Footer absolute />
+            <Footer />
         </main>
     );
 }

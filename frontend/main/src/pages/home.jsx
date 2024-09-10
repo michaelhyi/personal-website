@@ -22,7 +22,7 @@ export default function Home() {
                     </section>
                 </div>
             </section>
-            <Footer absolute />
+            <Footer />
         </main>
     );
 }

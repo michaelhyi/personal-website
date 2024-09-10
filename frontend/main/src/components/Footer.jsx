@@ -1,10 +1,6 @@
-import "../css/footer.css";
-
-export default function Footer({ absolute }) {
+export default function Footer() {
     return (
-        <footer
-            className={`${absolute ? "footer-absolute" : "footer-relative"}`}
-        >
+        <footer>
             <section className="footer-links">
                 <a
                     aria-label="Github"
