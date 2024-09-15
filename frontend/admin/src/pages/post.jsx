@@ -96,49 +96,51 @@ export default function Post() {
         <AuthorizedRoute>
             <main>
                 <div className="content">
-                <a aria-label="back button" href="/blog">&#8592;</a>
-                <Editor editor={editor} disabled={submitting} />
-                <div
-                    style={{
-                        marginTop: "16px",
-                    }}
-                />
-                <Dropzone
-                    id={params.get("id")}
-                    showImage={showImage}
-                    setShowImage={setShowImage}
-                    title={data && data.post.title}
-                    postImage={data && data.image}
-                    submitting={submitting}
-                    image={image}
-                    setImage={setImage}
-                />
-                <p className="post-error-message">{error || ""}</p>
-                <div className="post-btns">
-                    {params.get("id") && (
+                    <a aria-label="back button" href="/blog">
+                        &#8592;
+                    </a>
+                    <Editor editor={editor} disabled={submitting} />
+                    <div
+                        style={{
+                            marginTop: "16px",
+                        }}
+                    />
+                    <Dropzone
+                        id={params.get("id")}
+                        showImage={showImage}
+                        setShowImage={setShowImage}
+                        title={data && data.post.title}
+                        postImage={data && data.image}
+                        submitting={submitting}
+                        image={image}
+                        setImage={setImage}
+                    />
+                    <p className="post-error-message">{error || ""}</p>
+                    <div className="post-btns">
+                        {params.get("id") && (
+                            <button
+                                type="submit"
+                                onClick={toggleDeleteModal}
+                                className="post-delete-btn"
+                            >
+                                {submitting ? <Spinner /> : "Delete"}
+                            </button>
+                        )}
                         <button
                             type="submit"
-                            onClick={toggleDeleteModal}
-                            className="post-delete-btn"
+                            onClick={handleSubmit}
+                            className="post-submit-btn"
                         >
-                            {submitting ? <Spinner /> : "Delete"}
+                            {submitting ? <Spinner /> : "Submit"}
                         </button>
-                    )}
-                    <button
-                        type="submit"
-                        onClick={handleSubmit}
-                        className="post-submit-btn"
-                    >
-                        {submitting ? <Spinner /> : "Submit"}
-                    </button>
+                    </div>
+                    <DeleteModal
+                        id={params.get("id")}
+                        modalOpen={deleteModalOpen}
+                        handleToggleModal={toggleDeleteModal}
+                    />
                 </div>
-                <DeleteModal
-                    id={params.get("id")}
-                    modalOpen={deleteModalOpen}
-                    handleToggleModal={toggleDeleteModal}
-                />
-                </div>
-</main>
+            </main>
         </AuthorizedRoute>
     );
 }

@@ -24,7 +24,7 @@ export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
                             </p>
                         </div>
                         <button
-			    aria-label="close modal btn"
+                            aria-label="close modal btn"
                             type="button"
                             className="close-modal-btn"
                             onClick={handleToggleModal}

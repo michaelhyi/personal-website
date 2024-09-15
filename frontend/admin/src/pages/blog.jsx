@@ -38,9 +38,7 @@ export default function Blog() {
                             onClick={logout}
                             className="header-logout-btn"
                         >
-                            <p className="back-arrow">
-                                &#8592;
-                            </p>
+                            <p className="back-arrow">&#8592;</p>
                         </button>
                         <a aria-label="Create post" href="/blog/post">
                             <FaPlus />

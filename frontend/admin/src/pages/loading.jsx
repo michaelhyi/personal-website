@@ -5,11 +5,11 @@ export default function Loading() {
     return (
         <main>
             <div className="content">
-            <section className="center">
-                <Spinner />
-            </section>
-            <Footer/>
+                <section className="center">
+                    <Spinner />
+                </section>
+                <Footer />
             </div>
-</main>
+        </main>
     );
 }
