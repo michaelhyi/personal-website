@@ -1,13 +1,11 @@
-import "../css/blog.css";
-
 import { useEffect, useState } from "react";
-
 import AuthorizedRoute from "../components/AuthorizedRoute";
-import BlogHeader from "../components/BlogHeader";
-import Container from "../components/Container";
+import Footer from "../components/Footer";
+import FaPlus from "../components/Icons/FaPlus";
+import "../css/blog.css";
+import logout from "../js/auth-util";
+import { getAllPosts } from "../js/post-service";
 import Loading from "./loading";
-
-import { getAllPosts } from "../services/post";
 
 export default function Blog() {
     const [query, setQuery] = useState({
@@ -32,22 +30,38 @@ export default function Blog() {
 
     return (
         <AuthorizedRoute>
-            <Container absoluteFooter>
-                <BlogHeader />
-                <section className="blog-body">
-                    {data &&
-                        data.map((post) => (
-                            <div key={post.id} className="blog-post-card">
-                                <a
-                                    className="hoverable blog-post-title"
-                                    href={`/blog/post?id=${post.id}`}
-                                >
-                                    {post.title}
-                                </a>
-                            </div>
-                        ))}
-                </section>
-            </Container>
+            <main>
+                <div className="content">
+                    <header className="header-wrapper">
+                        <button
+                            type="button"
+                            onClick={logout}
+                            className="header-logout-btn"
+                        >
+                            <p className="back-arrow">
+                                &#8592;
+                            </p>
+                        </button>
+                        <a aria-label="Create post" href="/blog/post">
+                            <FaPlus />
+                        </a>
+                    </header>
+                    <section className="blog-body">
+                        {data &&
+                            data.map((post) => (
+                                <div key={post.id} className="blog-post-card">
+                                    <a
+                                        className="blog-post-title"
+                                        href={`/blog/post?id=${post.id}`}
+                                    >
+                                        {post.title}
+                                    </a>
+                                </div>
+                            ))}
+                    </section>
+                </div>
+                <Footer />
+            </main>
         </AuthorizedRoute>
     );
 }

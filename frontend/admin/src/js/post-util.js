@@ -1,4 +1,4 @@
-export default function validateForm(text, image, showImage) {
+export default function validateCreatePostForm(text, image, showImage) {
     if (!text || text.length === 0) {
         throw new Error("Fields cannot be blank.");
     }

@@ -57,7 +57,6 @@ export default function Dropzone({
                         <button
                             aria-label="delete image"
                             type="button"
-                            className="hoverable"
                             onClick={handleImageDelete}
                         >
                             <AiOutlineClose />

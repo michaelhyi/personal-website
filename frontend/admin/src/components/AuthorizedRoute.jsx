@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Loading from "../pages/loading";
-import { validateToken } from "../services/auth";
+import { validateToken } from "../js/auth-service";
+import logout from "../js/auth-util";
 
 export default function AuthorizedRoute({ children }) {
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -13,8 +12,7 @@ export default function AuthorizedRoute({ children }) {
                 await validateToken();
                 setLoading(false);
             } catch {
-                localStorage.removeItem("token");
-                navigate("/");
+                logout();
             }
         })();
     }, []);

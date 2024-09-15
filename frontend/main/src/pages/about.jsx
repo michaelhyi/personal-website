@@ -34,7 +34,7 @@ export default function About() {
                     </section>
                 </div>
             </section>
-            <Footer absolute />
+            <Footer />
         </main>
     );
 }

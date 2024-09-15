@@ -1,27 +1,21 @@
 import "../css/post.css";
-
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
 import AuthorizedRoute from "../components/AuthorizedRoute";
-import BackButton from "../components/BackButton";
-import Container from "../components/Container";
 import DeleteModal from "../components/DeleteModal";
 import Dropzone from "../components/Dropzone";
 import Editor from "../components/Editor";
 import Spinner from "../components/Spinner";
-
 import Loading from "./loading";
 import NotFound from "./not-found";
-
 import useEditor from "../util/useEditor";
 import {
     createPost,
     getPost,
     getPostImage,
     updatePost,
-} from "../services/post";
-import validateForm from "../util/validateForm";
+} from "../js/post-service";
+import validateCreatePostForm from "../js/post-util";
 
 export default function Post() {
     const [params] = useSearchParams();
@@ -48,7 +42,7 @@ export default function Post() {
 
         try {
             const text = editor.getHTML();
-            validateForm(text, image, showImage);
+            validateCreatePostForm(text, image, showImage);
 
             let id = params.get("id");
             const formData = new FormData();
@@ -100,8 +94,9 @@ export default function Post() {
 
     return (
         <AuthorizedRoute>
-            <Container footer={false}>
-                <BackButton href="/blog" text="Blog" />
+            <main>
+                <div className="content">
+                <a aria-label="back button" href="/blog">&#8592;</a>
                 <Editor editor={editor} disabled={submitting} />
                 <div
                     style={{
@@ -142,7 +137,8 @@ export default function Post() {
                     modalOpen={deleteModalOpen}
                     handleToggleModal={toggleDeleteModal}
                 />
-            </Container>
+                </div>
+</main>
         </AuthorizedRoute>
     );
 }

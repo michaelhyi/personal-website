@@ -55,7 +55,7 @@ export default function Blog() {
                     ))}
                 </section>
             </section>
-            <Footer absolute />
+            <Footer />
         </main>
     );
 }

@@ -5,7 +5,7 @@ import { sanitize } from "dompurify";
 import Loading from "./loading";
 import NotFound from "./not-found";
 import { getPost, getPostImage } from "../js/post-service";
-import format from "../js/date";
+import format from "../js/date-util";
 import Footer from "../components/Footer";
 
 export default function ReadPost() {

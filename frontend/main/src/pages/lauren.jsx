@@ -7,7 +7,7 @@ export default function Lauren() {
             <section className="center">
                 <img style={{ scale: "0.125" }} src={lauren} alt="la" />
             </section>
-            <Footer absolute />
+            <Footer />
         </main>
     );
 }

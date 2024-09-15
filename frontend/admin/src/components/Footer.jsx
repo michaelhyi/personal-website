@@ -1,13 +1,6 @@
-import "../css/footer.css";
-
-export default function Footer({ absolute }) {
+export default function Footer() {
     return (
-        <footer
-            className={`
-                footer-wrapper
-                  ${absolute ? "footer-absolute" : "footer-relative"}
-                `}
-        >
+        <footer>
             <p>&copy; 2023 Michael Yi, All Rights Reserved.</p>
         </footer>
     );

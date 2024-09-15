@@ -1,12 +1,9 @@
-import "../css/home.css";
-
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import Container from "../components/Container";
+import Footer from "../components/Footer";
 import UnauthorizedRoute from "../components/UnauthorizedRoute";
-
-import { login } from "../services/auth";
+import "../css/home.css";
+import { login } from "../js/auth-service";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -28,18 +25,21 @@ export default function Home() {
 
     return (
         <UnauthorizedRoute>
-            <Container absoluteFooter>
-                <section className="center home-content">
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="password"
-                            className="home-pw-input"
-                            placeholder="Password"
-                        />
-                    </form>
-                    <p className="home-error-message">{error || ""}</p>
-                </section>
-            </Container>
+            <main>
+                <div className="content">
+                    <section className="center home-content">
+                        <form onSubmit={handleSubmit}>
+                            <input
+                                type="password"
+                                className="home-pw-input"
+                                placeholder="Password"
+                            />
+                        </form>
+                        <p className="home-error-message">{error || ""}</p>
+                    </section>
+                </div>
+                <Footer />
+            </main>
         </UnauthorizedRoute>
     );
 }

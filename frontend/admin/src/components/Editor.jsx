@@ -24,7 +24,6 @@ export default function Editor({ editor, disabled }) {
                     <button
                         label="rtf control"
                         className={`
-                                hoverable
                                 editor-header-btn ${
                                     editor?.isActive(id)
                                         ? "editor-header-btn-active"

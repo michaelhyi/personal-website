@@ -1,20 +1,14 @@
 import "../css/delete-modal.css";
-
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-
 import IoMdClose from "./Icons/IoMdClose";
-
-import { deletePost } from "../services/post";
+import { deletePost } from "../js/post-service";
 
 export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
-    const navigate = useNavigate();
-
     const handleDeletePost = useCallback(async () => {
         await deletePost(id);
         handleToggleModal();
-        navigate("/blog");
-    }, [id, navigate]);
+        window.location.href = "/blog";
+    }, [id]);
 
     return (
         modalOpen && (
@@ -30,7 +24,7 @@ export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
                             </p>
                         </div>
                         <button
-                            aria-label="Close Modal"
+			    aria-label="close modal btn"
                             type="button"
                             className="close-modal-btn"
                             onClick={handleToggleModal}

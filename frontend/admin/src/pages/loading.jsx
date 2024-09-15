@@ -1,12 +1,15 @@
-import Container from "../components/Container";
 import Spinner from "../components/Spinner";
+import Footer from "../components/Footer";
 
 export default function Loading() {
     return (
-        <Container absoluteFooter>
+        <main>
+            <div className="content">
             <section className="center">
                 <Spinner />
             </section>
-        </Container>
+            <Footer/>
+            </div>
+</main>
     );
 }

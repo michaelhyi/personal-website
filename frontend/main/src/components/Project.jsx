@@ -1,10 +1,10 @@
 export default function Project({ project }) {
     return (
         <a
+            href={project.href}
             className="project-card"
             rel="noopener noreferrer"
             target="_blank"
-            href={project.href}
         >
             <p className="project-date">{project.date}</p>
             <section className="project-details">
