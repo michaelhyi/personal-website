@@ -1,0 +1,22 @@
+.blog-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 24px;
+}
+
+.blog-post {
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+.blog-post-anchor {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+}
+
+.blog-post-arrow {
+    padding-left: 4px;
+    font-size: 10px;
+}
