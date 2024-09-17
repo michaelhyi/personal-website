@@ -7,7 +7,7 @@ export default function Home() {
             <section className="content">
                 <div className="center home-section">
                     <img
-                        src="/michael.png"
+                        src="/michael.jpeg"
                         alt="michael"
                         className="home-headshot"
                     />
