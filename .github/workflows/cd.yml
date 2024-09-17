@@ -65,6 +65,6 @@ jobs:
             kill $(lsof -t -i:80)
             rm -f app.jar
           '
-          scp -i key.pem ./build/libs/app.jar ubuntu@${SSH_HOST}:~
+          scp -i key.pem ./build/libs/app.jar root@${SSH_HOST}:~
           ssh -i key.pem root@${SSH_HOST} "java -jar app.jar"
 
