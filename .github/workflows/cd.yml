@@ -30,13 +30,15 @@ jobs:
 
       - name: Build
         working-directory: ./backend/java
-        run: ./gradlew clean bootJar --info
+        run: |
+          ./gradlew clean bootJar --info
+          mv ./build/libs/java-${{ env.VERSION }}.jar ./build/libs/app.jar
 
       - name: Archive .jar File 
         uses: actions/upload-artifact@v4
         with:
           name: app.jar 
-          path: ./backend/java/build/libs/java-${{ env.VERSION }}.jar
+          path: ./backend/java/build/libs/app.jar
 
   deploy:
     needs: build 
