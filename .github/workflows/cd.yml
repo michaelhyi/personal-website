@@ -62,9 +62,9 @@ jobs:
           echo "$SSH_KEY" > key.pem
           chmod 400 key.pem
           ssh -i key.pem root@${SSH_HOST} '
-            kill $(lsof -t -i:80)
+            tmux kill-server
             rm -f app.jar
           '
           scp -i key.pem ./build/libs/app.jar root@${SSH_HOST}:~
-          ssh -i key.pem root@${SSH_HOST} "java -jar app.jar"
+          ssh -i key.pem root@${SSH_HOST} 'tmux new -d -s app "java -jar app.jar"'
 
