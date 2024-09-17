@@ -2,6 +2,7 @@
 .vscode
 .idea
 .settings
+.metadata
 bin
 build
 coverage
@@ -13,4 +14,3 @@ node_modules
 .factorypath
 .project
 
-/.metadata/
