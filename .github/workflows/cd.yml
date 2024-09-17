@@ -59,7 +59,10 @@ jobs:
           ssh-keyscan -H ${SSH_HOST} >> ~/.ssh/known_hosts
           echo "$SSH_KEY" > key.pem
           chmod 400 key.pem
-          ssh -i key.pem root@${SSH_HOST} "kill $(lsof -t -i:80) rm app.jar"
+          ssh -i key.pem root@${SSH_HOST} '
+            kill $(lsof -t -i:80)
+            rm app.jar
+          '
           scp -i key.pem ./build/libs/app.jar ubuntu@${SSH_HOST}:~
           ssh key.pem root@${SSH_HOST} "java -jar app.jar"
 
