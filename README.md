@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://michael-yi.com/michael.png" width="100" height="100" />
+    <img src="https://michael-yi.com/michael.jpeg" width="100" height="100" />
     <h2>Michael Yi's Personal Website & Film Blog</h2>
     <p>© 2023 Michael Yi, All Rights Reserved.</p>
     <p>
