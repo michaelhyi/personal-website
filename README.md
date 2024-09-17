@@ -21,7 +21,6 @@ This repository contains the source code to my personal website and film blog. I
 - [Spring](https://spring.io/)
 - [MySQL](https://www.mysql.com/)
 - [Redis](https://redis.io/)
-- [Docker](https://www.docker.com/)
 - [AWS S3](https://aws.amazon.com/)
 - [JUnit](https://junit.org/junit5/)
 
