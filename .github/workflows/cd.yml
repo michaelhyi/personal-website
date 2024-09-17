@@ -64,5 +64,5 @@ jobs:
             rm -f app.jar
           '
           scp -i key.pem ./build/libs/app.jar ubuntu@${SSH_HOST}:~
-          ssh key.pem root@${SSH_HOST} "java -jar app.jar"
+          ssh -i key.pem root@${SSH_HOST} "java -jar app.jar"
 
