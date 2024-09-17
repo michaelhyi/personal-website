@@ -2,6 +2,7 @@
 .vscode
 .idea
 .settings
+.metadata
 bin
 build
 coverage

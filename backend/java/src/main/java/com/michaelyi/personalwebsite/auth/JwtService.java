@@ -15,18 +15,18 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-    private final String jwtSecret;
+    private final String signingKey;
     private final long jwtExpiration;
 
     public JwtService(
-            @Value("${jwt.secret-key}") String jwtSecret,
+            @Value("${jwt.signing-key}") String signingKey,
             @Value("${jwt.expiration}") long jwtExpiration) {
-        this.jwtSecret = jwtSecret;
+        this.signingKey = signingKey;
         this.jwtExpiration = jwtExpiration;
     }
 
     public SecretKey getSigningKey() {
-        byte[] secretBytes = Decoders.BASE64.decode(jwtSecret);
+        byte[] secretBytes = Decoders.BASE64.decode(signingKey);
         return Keys.hmacShaKeyFor(secretBytes);
     }
 
