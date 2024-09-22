@@ -71,6 +71,7 @@ public class PostUtilTest {
                 "eternal-sunshine-of-the-spotless-mind",
                 actual.getDate(),
                 "Eternal Sunshine of the Spotless Mind (2004)",
+                "Eternal Sunshine of the Spotless Mind".getBytes(),
                 "<p>In Michel Gondry's romance/sci-fi film...</p>");
         assertEquals(expected, actual);
     }

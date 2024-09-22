@@ -30,7 +30,7 @@ public class SecurityConfig {
     private static final List<String> ALLOWED_METHODS = List.of(
             "GET",
             "POST",
-            "PUT",
+            "PATCH",
             "DELETE",
             "OPTIONS");
     private static final String[] WHITELISTED_ENDPOINTS = {

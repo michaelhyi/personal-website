@@ -1,51 +1,43 @@
 plugins {
-    id 'java'
-    id 'eclipse'
-    id 'checkstyle'
-    id 'org.springframework.boot' version '3.2.2'
-    id 'io.spring.dependency-management' version '1.1.4'
+        id 'java'
+        id 'org.springframework.boot' version '3.2.2'
+        id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.michaelyi.personalwebsite'
 version = '2.1.4'
 
 java {
-    sourceCompatibility = 17 
+        sourceCompatibility = 17
 }
 
 repositories {
-    mavenCentral()
+        mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    implementation 'mysql:mysql-connector-java:8.0.26'
-    implementation 'software.amazon.awssdk:s3:2.20.26'
+        implementation 'mysql:mysql-connector-java:8.0.26'
+        implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+        runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+        runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.testcontainers:testcontainers:1.19.7'
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:mysql'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.testcontainers:testcontainers:1.19.7'
+        testImplementation 'org.testcontainers:junit-jupiter'
+        testImplementation 'org.testcontainers:mysql'
 }
 
 jar {
-    manifest {
-        attributes 'Main-Class': 'com.michaelyi.personalwebsite.PersonalWebsiteApiApplication'
-    }
-}
-
-checkstyle {
-    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+        manifest {
+                attributes 'Main-Class': 'com.michaelyi.personalwebsite.PersonalWebsiteApiApplication'
+        }
 }
 
 test {
-    useJUnitPlatform()
+        useJUnitPlatform()
 }

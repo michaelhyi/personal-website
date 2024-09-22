@@ -12,7 +12,6 @@ import useEditor from "../util/useEditor";
 import {
     createPost,
     getPost,
-    getPostImage,
     updatePost,
 } from "../js/post-service";
 import validateCreatePostForm from "../js/post-util";
@@ -70,13 +69,12 @@ export default function Post() {
             if (id) {
                 try {
                     const post = await getPost(id);
-                    const postImage = await getPostImage(id);
 
                     editor.commands.setContent(
                         `<h1>${post.title}</h1>${post.content}`,
                     );
                     setQuery({
-                        data: { post, image: postImage },
+                        data: { post },
                         loading: false,
                         error: false,
                     });
@@ -110,7 +108,7 @@ export default function Post() {
                         showImage={showImage}
                         setShowImage={setShowImage}
                         title={data && data.post.title}
-                        postImage={data && data.image}
+                        postImage={data && data.post.image}
                         submitting={submitting}
                         image={image}
                         setImage={setImage}

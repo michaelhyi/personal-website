@@ -9,19 +9,6 @@ export async function getPost(id) {
     return data;
 }
 
-export async function getPostImage(id) {
-    const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/post/image/${id}`,
-    );
-    const { image: data, error } = await res.json();
-
-    if (!res.ok) {
-        throw new Error(error);
-    }
-
-    return data;
-}
-
 export async function getAllPosts() {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/post`);
     const { posts: data, error } = await res.json();

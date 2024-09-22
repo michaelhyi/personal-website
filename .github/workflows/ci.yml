@@ -52,4 +52,4 @@ jobs:
           ADMIN_PW: ${{ secrets.ADMIN_PW }}
           JWT_SIGNING_KEY: ${{ secrets.JWT_SIGNING_KEY }}
           TEST_ADMIN_PW: ${{ secrets.TEST_ADMIN_PW }}
-        run: ./gradlew check --info
+        run: ./gradlew test --info

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { sanitize } from "dompurify";
 import Loading from "./loading";
 import NotFound from "./not-found";
-import { getPost, getPostImage } from "../js/post-service";
+import { getPost } from "../js/post-service";
 import format from "../js/date-util";
 import Footer from "../components/Footer";
 
@@ -21,9 +21,9 @@ export default function ReadPost() {
         (async () => {
             try {
                 const post = await getPost(id);
-                const image = await getPostImage(id);
+
                 setQuery({
-                    data: { post, image },
+                    data: { post },
                     loading: false,
                     error: false,
                 });
@@ -50,7 +50,7 @@ export default function ReadPost() {
                 <h1 className="post-title">{data.post.title}</h1>
                 <p className="post-date">{format(data.post.date)}</p>
                 <img
-                    src={`data:image/png;base64,${data.image}`}
+                    src={`data:image/png;base64,${data.post.image}`}
                     alt={data.post.title}
                     className="post-img"
                 />
