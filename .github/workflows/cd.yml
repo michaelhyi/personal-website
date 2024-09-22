@@ -1,9 +1,9 @@
-name: cd
+name cd
 
 on:
   push:
     branches:
-      - prod
+      - main
 
 permissions:
   contents: read
