@@ -1,9 +1,0 @@
-node_modules
-build
-coverage
-public
-
-.env
-.env.production
-.prettierignore
-.prettierrc

@@ -1,27 +1,27 @@
 .editor-props {
-    margin: 20px 1.5vw 20px 1.5vw;
-    outline: 2px solid transparent;
-    outline-offset: 2px;
+        margin: 20px 1.5vw 20px 1.5vw;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
 }
 
 .editor-props h1 {
-    font-size: 32px;
-    font-weight: 700;
+        font-size: 32px;
+        font-weight: 700;
 }
 
 .editor-props p {
-    padding-top: 16px;
-    font-size: 15px;
-    font-weight: 300;
+        padding-top: 16px;
+        font-size: 15px;
+        font-weight: 300;
 }
 
 .empty-node {
-    cursor: text;
+        cursor: text;
 }
 
 .empty-node:before {
-    position: absolute;
-    opacity: 0.5;
-    pointer-events: none;
-    content: attr(data-placeholder);
+        position: absolute;
+        opacity: 0.5;
+        pointer-events: none;
+        content: attr(data-placeholder);
 }
