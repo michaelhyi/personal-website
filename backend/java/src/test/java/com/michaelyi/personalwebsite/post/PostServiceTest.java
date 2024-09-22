@@ -43,7 +43,7 @@ class PostServiceTest {
                 "Oldboy",
                 "Oldboy.jpg",
                 "image/jpeg",
-                "Oldboy (2003)".getBytes());
+                "Oldboy".getBytes());
         private static final Post POST = new Post(
                 "oldboy",
                 new Date(),

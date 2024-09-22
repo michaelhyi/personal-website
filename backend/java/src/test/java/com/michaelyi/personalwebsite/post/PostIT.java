@@ -340,7 +340,7 @@ class PostIT extends IntegrationTest {
                 assertEquals(id, actual.getId());
                 assertEquals("Oldboy (2004)", actual.getTitle());
                 assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
-                assertArrayEquals(IMAGE.getBytes(), actual.getImage());
+                assertArrayEquals(image.getBytes(), actual.getImage());
         }
 
         @Test
