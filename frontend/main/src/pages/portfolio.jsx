@@ -12,7 +12,7 @@ const PROJECTS = [
                 name: "Film Blog",
                 date: "Aug 2023 - Present",
                 description: "A showcase of my passion for cinema.",
-                tech: "Java, Spring, MySQL, Redis, Docker, AWS, JUnit, React",
+                tech: "Java, Spring, MySQL, Redis, JUnit, React",
                 href: "/blog",
         },
         {
