@@ -279,7 +279,7 @@ class PostServiceTest {
                         content);
                 verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
                 verify(dao).updatePost(updatedPost);
-                verify(cacheService).set("getPost?id=" + POST.getId(), updatedPost);
+                verify(cacheService).delete("getPost?id=" + POST.getId());
                 verify(cacheService).delete("getAllPosts");
         }
 
