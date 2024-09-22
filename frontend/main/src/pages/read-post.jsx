@@ -4,65 +4,71 @@ import { useParams } from "react-router-dom";
 import { sanitize } from "dompurify";
 import Loading from "./loading";
 import NotFound from "./not-found";
-import { getPost, getPostImage } from "../js/post-service";
+import { getPost } from "../js/post-service";
 import format from "../js/date-util";
 import Footer from "../components/Footer";
 
 export default function ReadPost() {
-    const { id } = useParams();
-    const [query, setQuery] = useState({
-        data: null,
-        error: false,
-        loading: true,
-    });
-    const { data, error, loading } = query;
+        const { id } = useParams();
+        const [query, setQuery] = useState({
+                data: null,
+                error: false,
+                loading: true,
+        });
+        const { data, error, loading } = query;
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const post = await getPost(id);
-                const image = await getPostImage(id);
-                setQuery({
-                    data: { post, image },
-                    loading: false,
-                    error: false,
-                });
-            } catch (e) {
-                setQuery({
-                    data: null,
-                    loading: false,
-                    error: true,
-                });
-            }
-        })();
-    }, []);
+        useEffect(() => {
+                (async () => {
+                        try {
+                                const post = await getPost(id);
 
-    if (error) return <NotFound />;
-    if (loading) return <Loading />;
+                                setQuery({
+                                        data: { post },
+                                        loading: false,
+                                        error: false,
+                                });
+                        } catch (e) {
+                                setQuery({
+                                        data: null,
+                                        loading: false,
+                                        error: true,
+                                });
+                        }
+                })();
+        }, []);
 
-    return (
-        <main>
-            <section className="content">
-                <a href="/blog" className="back-arrow">
-                    &#8592;
-                </a>
+        if (error) return <NotFound />;
+        if (loading) return <Loading />;
 
-                <h1 className="post-title">{data.post.title}</h1>
-                <p className="post-date">{format(data.post.date)}</p>
-                <img
-                    src={`data:image/png;base64,${data.image}`}
-                    alt={data.post.title}
-                    className="post-img"
-                />
-                <article
-                    className="post-article"
-                    // eslint-disable-next-line react/no-danger -- html data is sanitized
-                    dangerouslySetInnerHTML={{
-                        __html: sanitize(data.post.content),
-                    }}
-                />
-            </section>
-            <Footer />
-        </main>
-    );
+        return (
+                <main>
+                        <section className="content">
+                                <a href="/blog" className="back-arrow">
+                                        &#8592;
+                                </a>
+
+                                <h1 className="post-title">
+                                        {data.post.title}
+                                </h1>
+                                <p className="post-date">
+                                        {format(data.post.date)}
+                                </p>
+                                <img
+                                        src={`data:image/png;base64,${data.post.image}`}
+                                        alt={data.post.title}
+                                        className="post-img"
+                                />
+                                <article
+                                        className="post-article"
+                                        // eslint-disable-next-line react/no-danger -- html data is sanitized
+                                        dangerouslySetInnerHTML={{
+                                                __html: sanitize(
+                                                        data.post.content,
+                                                ),
+                                        }}
+                                />
+                        </section>
+                        <Footer />
+                </main>
+        );
 }

@@ -1,4 +1,3 @@
-import { inject } from "@vercel/analytics";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -12,41 +11,39 @@ import Portfolio from "./pages/portfolio";
 import ReadPost from "./pages/read-post";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Home />,
-    },
-    {
-        path: "/about",
-        element: <About />,
-    },
-    {
-        path: "/blog",
-        element: <Blog />,
-    },
-    {
-        path: "/blog/:id",
-        element: <ReadPost />,
-    },
-    {
-        path: "/lauren",
-        element: <Lauren />,
-    },
-    {
-        path: "/portfolio",
-        element: <Portfolio />,
-    },
-    {
-        path: "*",
-        element: <NotFound />,
-    },
+        {
+                path: "/",
+                element: <Home />,
+        },
+        {
+                path: "/about",
+                element: <About />,
+        },
+        {
+                path: "/blog",
+                element: <Blog />,
+        },
+        {
+                path: "/blog/:id",
+                element: <ReadPost />,
+        },
+        {
+                path: "/lauren",
+                element: <Lauren />,
+        },
+        {
+                path: "/portfolio",
+                element: <Portfolio />,
+        },
+        {
+                path: "*",
+                element: <NotFound />,
+        },
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-    <React.StrictMode>
-        <RouterProvider router={router} />
-    </React.StrictMode>,
+        <React.StrictMode>
+                <RouterProvider router={router} />
+        </React.StrictMode>,
 );
-
-inject();

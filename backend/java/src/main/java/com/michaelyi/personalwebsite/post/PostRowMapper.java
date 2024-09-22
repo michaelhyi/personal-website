@@ -14,6 +14,7 @@ public class PostRowMapper implements RowMapper<Post> {
                 rs.getString("id"),
                 rs.getDate("date"),
                 rs.getString("title"),
+                rs.getBytes("image"),
                 rs.getString("content")
         );
     }
