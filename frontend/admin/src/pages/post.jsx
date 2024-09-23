@@ -56,7 +56,7 @@ export default function Post() {
         } finally {
             setSubmitting(false);
         }
-    }, [setSubmitting, editor, image]);
+    }, [params, setSubmitting, editor, image, showImage]);
 
     useEffect(() => {
         (async () => {
@@ -89,7 +89,7 @@ export default function Post() {
                 });
             }
         })();
-    }, [editor]);
+    }, [editor, params]);
 
     if (loading) return <Loading />;
     if (notFound) return <NotFound />;
