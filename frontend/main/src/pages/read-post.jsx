@@ -35,7 +35,7 @@ export default function ReadPost() {
                 });
             }
         })();
-    }, []);
+    }, [id]);
 
     if (error) return <NotFound />;
     if (loading) return <Loading />;

@@ -31,6 +31,7 @@ export default function Dropzone({
             <section className="dropzone">
                 <input
                     type="file"
+                    accept=".jpg,.jpeg,.png,.webp"
                     className="dropzone-input"
                     onChange={(e) => onDrop(e.target.files)}
                     disabled={submitting}
