@@ -1,33 +1,33 @@
 .home-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .home-pw-input {
-        margin-top: 16px;
-        padding: 4px 12px;
-        width: 160px;
-        background-color: rgb(23 23 23);
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: rgb(82 82 82);
-        color: white;
-        border-radius: 6px;
-        font-size: 12px;
+    margin-top: 16px;
+    padding: 4px 12px;
+    width: 160px;
+    background-color: rgb(23 23 23);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(82 82 82);
+    color: white;
+    border-radius: 6px;
+    font-size: 12px;
 }
 
 .home-pw-input:placeholder {
-        color: rgb(82 82 82);
-        font-size: 12px;
+    color: rgb(82 82 82);
+    font-size: 12px;
 }
 
 .home-error-message {
-        min-height: 14px;
-        margin-top: 8px;
-        font-weight: 300;
-        font-size: 12px;
-        color: rgb(252 165 165);
+    min-height: 14px;
+    margin-top: 8px;
+    font-weight: 300;
+    font-size: 12px;
+    color: rgb(252 165 165);
 }

@@ -16,7 +16,8 @@ public class Status {
     public Status(
             @JsonProperty("servers") String servers,
             @JsonProperty("uptime") String uptime,
-            @JsonProperty("details") Details details) {
+            @JsonProperty("details") Details details
+    ) {
         this(ServerStatus.valueOf(servers), uptime, details);
     }
 

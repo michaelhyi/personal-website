@@ -1,68 +1,68 @@
 .delete-modal-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        inset: 0px;
-        z-index: 50;
-        background-color: rgba(23, 23, 23, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0px;
+    z-index: 50;
+    background-color: rgba(23, 23, 23, 0.7);
 }
 
 .delete-modal-body {
-        width: 40%;
-        max-height: 768px;
-        border-radius: 12px;
-        background-color: rgb(38 38 38);
-        overflow-y: auto;
+    width: 40%;
+    max-height: 768px;
+    border-radius: 12px;
+    background-color: rgb(38 38 38);
+    overflow-y: auto;
 }
 
 .delete-modal-header {
-        display: flex;
-        align-items: start;
-        margin: 20px 16px 0px 24px;
+    display: flex;
+    align-items: start;
+    margin: 20px 16px 0px 24px;
 }
 
 .delete-modal-header-title {
-        color: white;
-        font-size: 20px;
-        font-weight: 600;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .delete-modal-header-subtitle {
-        padding-top: 4px;
-        font-size: 12px;
-        font-weight: 300;
-        color: rgb(212 212 212);
+    padding-top: 4px;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgb(212 212 212);
 }
 
 .close-modal-btn {
-        margin-left: auto;
-        cursor: pointer;
-        transition-duration: 500ms;
+    margin-left: auto;
+    cursor: pointer;
+    transition-duration: 500ms;
 }
 
 .close-modal-btn:hover {
-        opacity: 0.5;
+    opacity: 0.5;
 }
 
 .delete-modal-footer {
-        display: flex;
-        padding-right: 16px;
-        padding-bottom: 24px;
-        margin-top: 48px;
+    display: flex;
+    padding-right: 16px;
+    padding-bottom: 24px;
+    margin-top: 48px;
 }
 
 .delete-btn {
-        margin-left: auto;
-        background-color: rgb(248 113 113);
-        padding: 12px 16px;
-        border-radius: 8px;
-        transition-duration: 500ms;
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: 600;
+    margin-left: auto;
+    background-color: rgb(248 113 113);
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition-duration: 500ms;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .delete-btn:hover {
-        opacity: 0.5;
+    opacity: 0.5;
 }

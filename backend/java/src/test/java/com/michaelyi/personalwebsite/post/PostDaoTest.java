@@ -19,128 +19,128 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PostDaoTest {
-        private PostDao underTest;
+    private PostDao underTest;
 
-        @Mock
-        private JdbcTemplate template;
+    @Mock
+    private JdbcTemplate template;
 
-        @Mock
-        private PostRowMapper mapper;
+    @Mock
+    private PostRowMapper mapper;
 
-        private static final Post POST = new Post(
-                "oldboy",
+    private static final Post POST = new Post(
+            "oldboy",
+            new Date(),
+            "Oldboy (2003)",
+            "Oldboy".getBytes(),
+            "<p>In Park Chan-wook's 2003 thriller...</p>");
+
+    @BeforeEach
+    void setup() {
+        underTest = new PostDao(template, mapper);
+    }
+
+    @Test
+    void canCreatePost() throws Exception {
+        // when
+        underTest.createPost(POST);
+
+        // then
+        verify(template).update(
+                "INSERT INTO post (id, date, title, image, content) "
+                        + "VALUES (?, ?, ?, ?, ?)",
+                POST.getId(),
+                POST.getDate(),
+                POST.getTitle(),
+                POST.getImage(),
+                POST.getContent());
+    }
+
+    @Test
+    void willReturnEmptyOptionalDuringGetPostWhenNotFound() {
+        // given
+        when(template.query(
+                "SELECT * FROM post WHERE id = ? LIMIT 1",
+                mapper,
+                POST.getId()))
+                .thenReturn(List.of());
+
+        // when
+        Optional<Post> actual = underTest.getPost(POST.getId());
+        assertFalse(actual.isPresent());
+        verify(template).query(
+                "SELECT * FROM post WHERE id = ? LIMIT 1",
+                mapper,
+                POST.getId());
+    }
+
+    @Test
+    void canGetPost() {
+        // given
+        when(template.query(
+                "SELECT * FROM post WHERE id = ? LIMIT 1",
+                mapper,
+                POST.getId()))
+                .thenReturn(List.of(POST));
+
+        // when
+        Optional<Post> actual = underTest.getPost(POST.getId());
+
+        // then
+        assertTrue(actual.isPresent());
+        assertEquals(POST, actual.get());
+        verify(template).query(
+                "SELECT * FROM post WHERE id = ? LIMIT 1",
+                mapper,
+                POST.getId());
+    }
+
+    @Test
+    void canGetAllPosts() {
+        // given
+        Post post2 = new Post(
+                "eternal-sunshine-of-the-spotless-mind",
                 new Date(),
-                "Oldboy (2003)",
-                "Oldboy".getBytes(),
-                "<p>In Park Chan-wook's 2003 thriller...</p>");
+                "Eternal Sunshine of the Spotless Mind (2004)",
+                "Eternal Sunshine of the Spotless Mind".getBytes(),
+                "<p>In Michel Gondry's 2004 romantic...</p>");
+        Post post3 = new Post(
+                "the-dark-knight",
+                new Date(),
+                "The Dark Knight (2008)",
+                "The Dark Knight".getBytes(),
+                "<p>In Christopher Nolan's 2008 superhero...</p>");
+        List<Post> expected = List.of(POST, post2, post3);
+        when(template.query("SELECT * FROM post ORDER BY date DESC", mapper))
+                .thenReturn(expected);
 
-        @BeforeEach
-        void setup() {
-                underTest = new PostDao(template, mapper);
-        }
+        // when
+        List<Post> actual = underTest.getAllPosts();
 
-        @Test
-        void canCreatePost() throws Exception {
-                // when
-                underTest.createPost(POST);
+        // then
+        assertEquals(expected, actual);
+        verify(template).query("SELECT * FROM post ORDER BY date DESC", mapper);
+    }
 
-                // then
-                verify(template).update(
-                        "INSERT INTO post (id, date, title, image, content) "
-                                + "VALUES (?, ?, ?, ?, ?)",
-                        POST.getId(),
-                        POST.getDate(),
-                        POST.getTitle(),
-                        POST.getImage(),
-                        POST.getContent());
-        }
+    @Test
+    void canUpdatePost() {
+        // when
+        underTest.updatePost(POST);
 
-        @Test
-        void willReturnEmptyOptionalDuringGetPostWhenNotFound() {
-                // given
-                when(template.query(
-                        "SELECT * FROM post WHERE id = ? LIMIT 1",
-                        mapper,
-                        POST.getId()))
-                        .thenReturn(List.of());
+        // then
+        verify(template).update(
+                "UPDATE post SET title = ?, image = ?, content = ? WHERE id = ?",
+                POST.getTitle(),
+                POST.getImage(),
+                POST.getContent(),
+                POST.getId());
+    }
 
-                // when
-                Optional<Post> actual = underTest.getPost(POST.getId());
-                assertFalse(actual.isPresent());
-                verify(template).query(
-                        "SELECT * FROM post WHERE id = ? LIMIT 1",
-                        mapper,
-                        POST.getId());
-        }
+    @Test
+    void canDeletePost() {
+        // when
+        underTest.deletePost(POST.getId());
 
-        @Test
-        void canGetPost() {
-                // given
-                when(template.query(
-                        "SELECT * FROM post WHERE id = ? LIMIT 1",
-                        mapper,
-                        POST.getId()))
-                        .thenReturn(List.of(POST));
-
-                // when
-                Optional<Post> actual = underTest.getPost(POST.getId());
-
-                // then
-                assertTrue(actual.isPresent());
-                assertEquals(POST, actual.get());
-                verify(template).query(
-                        "SELECT * FROM post WHERE id = ? LIMIT 1",
-                        mapper,
-                        POST.getId());
-        }
-
-        @Test
-        void canGetAllPosts() {
-                // given
-                Post post2 = new Post(
-                        "eternal-sunshine-of-the-spotless-mind",
-                        new Date(),
-                        "Eternal Sunshine of the Spotless Mind (2004)",
-                        "Eternal Sunshine of the Spotless Mind".getBytes(),
-                        "<p>In Michel Gondry's 2004 romantic...</p>");
-                Post post3 = new Post(
-                        "the-dark-knight",
-                        new Date(),
-                        "The Dark Knight (2008)",
-                        "The Dark Knight".getBytes(),
-                        "<p>In Christopher Nolan's 2008 superhero...</p>");
-                List<Post> expected = List.of(POST, post2, post3);
-                when(template.query("SELECT * FROM post ORDER BY date DESC", mapper))
-                        .thenReturn(expected);
-
-                // when
-                List<Post> actual = underTest.getAllPosts();
-
-                // then
-                assertEquals(expected, actual);
-                verify(template).query("SELECT * FROM post ORDER BY date DESC", mapper);
-        }
-
-        @Test
-        void canUpdatePost() {
-                // when
-                underTest.updatePost(POST);
-
-                // then
-                verify(template).update(
-                        "UPDATE post SET title = ?, image = ?, content = ? WHERE id = ?",
-                        POST.getTitle(),
-                        POST.getImage(),
-                        POST.getContent(),
-                        POST.getId());
-        }
-
-        @Test
-        void canDeletePost() {
-                // when
-                underTest.deletePost(POST.getId());
-
-                // then
-                verify(template).update("DELETE FROM post WHERE id = ?", POST.getId());
-        }
+        // then
+        verify(template).update("DELETE FROM post WHERE id = ?", POST.getId());
+    }
 }

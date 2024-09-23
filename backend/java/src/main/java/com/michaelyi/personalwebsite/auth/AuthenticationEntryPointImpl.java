@@ -1,19 +1,17 @@
 package com.michaelyi.personalwebsite.auth;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.michaelyi.personalwebsite.util.HttpResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.michaelyi.personalwebsite.util.HttpResponse;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
@@ -34,7 +32,8 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     public void commence(
             HttpServletRequest request,
             HttpServletResponse response,
-            AuthenticationException authException) throws IOException, ServletException {
+            AuthenticationException authException
+    ) throws IOException, ServletException {
         HttpResponse res = new HttpResponse();
         String path = request.getServletPath();
 
@@ -47,7 +46,6 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         }
 
         String json = writer.writeValueAsString(res);
-
         response.setHeader(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_JSON_VALUE);

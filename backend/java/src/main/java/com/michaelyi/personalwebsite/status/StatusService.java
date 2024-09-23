@@ -1,8 +1,8 @@
 package com.michaelyi.personalwebsite.status;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class StatusService {

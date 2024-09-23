@@ -1,25 +1,25 @@
 .about-details {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-        font-size: 13px;
-        line-height: 20px;
-        gap: 16px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-size: 13px;
+    line-height: 20px;
+    gap: 16px;
 }
 
 @media (min-width: 320px) {
-        .about-details {
-                width: 360px;
-        }
+    .about-details {
+        width: 360px;
+    }
 }
 
 @media (min-width: 768px) {
-        .about-details {
-                width: 576px;
-        }
+    .about-details {
+        width: 576px;
+    }
 }
 
 .about-contact {
-        color: rgb(163 163 163);
-        text-decoration-line: underline;
+    color: rgb(163 163 163);
+    text-decoration-line: underline;
 }

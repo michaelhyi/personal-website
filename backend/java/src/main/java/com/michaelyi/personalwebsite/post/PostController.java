@@ -19,121 +19,121 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/v2/post")
 public class PostController {
-        private final PostService service;
+    private final PostService service;
 
-        public PostController(PostService service) {
-                this.service = service;
+    public PostController(PostService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public ResponseEntity<CreatePostResponse> createPost(
+            @RequestParam("text") String text,
+            @RequestParam("image") MultipartFile image) {
+        CreatePostResponse res = new CreatePostResponse();
+
+        try {
+            String postId = service.createPost(text, image);
+
+            res.setPostId(postId);
+            res.setHttpStatus(HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            res.setError("Internal server error");
+            res.setHttpStatus(HttpStatus.BAD_REQUEST);
         }
 
-        @PostMapping
-        public ResponseEntity<CreatePostResponse> createPost(
-                        @RequestParam("text") String text,
-                        @RequestParam("image") MultipartFile image) {
-                CreatePostResponse res = new CreatePostResponse();
+        return new ResponseEntity<>(res, res.getHttpStatus());
+    }
 
-                try {
-                        String postId = service.createPost(text, image);
+    @GetMapping("/{id}")
+    public ResponseEntity<GetPostResponse> getPost(@PathVariable String id) {
+        GetPostResponse res = new GetPostResponse();
+        Post post = null;
 
-                        res.setPostId(postId);
-                        res.setHttpStatus(HttpStatus.CREATED);
-                } catch (IllegalArgumentException e) {
-                        res.setError(e.getMessage());
-                        res.setHttpStatus(HttpStatus.BAD_REQUEST);
-                } catch (Exception e) {
-                        res.setError("Internal server error");
-                        res.setHttpStatus(HttpStatus.BAD_REQUEST);
-                }
+        try {
+            post = service.getPost(id);
 
-                return new ResponseEntity<>(res, res.getHttpStatus());
+            res.setPost(post);
+            res.setHttpStatus(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            res.setError("Internal server error");
+            res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        @GetMapping("/{id}")
-        public ResponseEntity<GetPostResponse> getPost(@PathVariable String id) {
-                GetPostResponse res = new GetPostResponse();
-                Post post = null;
-
-                try {
-                        post = service.getPost(id);
-
-                        res.setPost(post);
-                        res.setHttpStatus(HttpStatus.OK);
-                } catch (IllegalArgumentException e) {
-                        res.setError(e.getMessage());
-                        res.setHttpStatus(HttpStatus.BAD_REQUEST);
-                } catch (Exception e) {
-                        res.setError("Internal server error");
-                        res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-
-                if (post == null) {
-                        res.setError("Post not found");
-                        res.setHttpStatus(HttpStatus.NOT_FOUND);
-                }
-
-                return new ResponseEntity<>(res, res.getHttpStatus());
+        if (post == null) {
+            res.setError("Post not found");
+            res.setHttpStatus(HttpStatus.NOT_FOUND);
         }
 
-        @GetMapping
-        public ResponseEntity<GetAllPostsResponse> getAllPosts() {
-                GetAllPostsResponse res = new GetAllPostsResponse();
+        return new ResponseEntity<>(res, res.getHttpStatus());
+    }
 
-                try {
-                        List<Post> posts = service.getAllPosts();
+    @GetMapping
+    public ResponseEntity<GetAllPostsResponse> getAllPosts() {
+        GetAllPostsResponse res = new GetAllPostsResponse();
 
-                        res.setPosts(posts);
-                        res.setHttpStatus(HttpStatus.OK);
-                } catch (Exception e) {
-                        res.setError("Internal server error");
-                        res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
+        try {
+            List<Post> posts = service.getAllPosts();
 
-                return new ResponseEntity<>(res, res.getHttpStatus());
+            res.setPosts(posts);
+            res.setHttpStatus(HttpStatus.OK);
+        } catch (Exception e) {
+            res.setError("Internal server error");
+            res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        @PatchMapping("/{id}")
-        public ResponseEntity<HttpResponse> updatePost(
-                        @PathVariable String id,
-                        @RequestParam("text") String text,
-                        @RequestParam(value = "image", required = false) MultipartFile image) {
-                HttpResponse res = new HttpResponse();
+        return new ResponseEntity<>(res, res.getHttpStatus());
+    }
 
-                try {
-                        service.updatePost(id, text, image);
+    @PatchMapping("/{id}")
+    public ResponseEntity<HttpResponse> updatePost(
+            @PathVariable String id,
+            @RequestParam("text") String text,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
+        HttpResponse res = new HttpResponse();
 
-                        res.setHttpStatus(HttpStatus.NO_CONTENT);
-                } catch (IllegalArgumentException e) {
-                        res.setError(e.getMessage());
-                        res.setHttpStatus(HttpStatus.BAD_REQUEST);
-                } catch (NoSuchElementException e) {
-                        res.setError(e.getMessage());
-                        res.setHttpStatus(HttpStatus.NOT_FOUND);
-                } catch (Exception e) {
-                        res.setError("Internal server error");
-                        res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
+        try {
+            service.updatePost(id, text, image);
 
-                return new ResponseEntity<>(res, res.getHttpStatus());
+            res.setHttpStatus(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.BAD_REQUEST);
+        } catch (NoSuchElementException e) {
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            res.setError("Internal server error");
+            res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        @DeleteMapping("/{id}")
-        public ResponseEntity<HttpResponse> deletePost(@PathVariable String id) {
-                HttpResponse res = new HttpResponse();
+        return new ResponseEntity<>(res, res.getHttpStatus());
+    }
 
-                try {
-                        service.deletePost(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpResponse> deletePost(@PathVariable String id) {
+        HttpResponse res = new HttpResponse();
 
-                        res.setHttpStatus(HttpStatus.NO_CONTENT);
-                } catch (IllegalArgumentException e) {
-                        res.setError(e.getMessage());
-                        res.setHttpStatus(HttpStatus.BAD_REQUEST);
-                } catch (NoSuchElementException e) {
-                        res.setError(e.getMessage());
-                        res.setHttpStatus(HttpStatus.NOT_FOUND);
-                } catch (Exception e) {
-                        res.setError("Internal server error");
-                        res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
+        try {
+            service.deletePost(id);
 
-                return new ResponseEntity<>(res, res.getHttpStatus());
+            res.setHttpStatus(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.BAD_REQUEST);
+        } catch (NoSuchElementException e) {
+            res.setError(e.getMessage());
+            res.setHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            res.setError("Internal server error");
+            res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity<>(res, res.getHttpStatus());
+    }
 }

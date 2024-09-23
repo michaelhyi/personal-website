@@ -1,17 +1,17 @@
 .blog-section {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 24px;
 }
 
 .blog-post-anchor {
-        font-size: 14px;
-        font-weight: 500;
-        display: flex;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
 }
 
 .blog-post-arrow {
-        padding-left: 4px;
-        font-size: 10px;
+    padding-left: 4px;
+    font-size: 10px;
 }

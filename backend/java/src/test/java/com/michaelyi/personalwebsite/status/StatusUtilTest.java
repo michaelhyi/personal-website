@@ -1,8 +1,8 @@
 package com.michaelyi.personalwebsite.status;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class StatusUtilTest {
     private static final int MS_PER_SECOND = 1000;
