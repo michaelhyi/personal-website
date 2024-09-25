@@ -41,6 +41,7 @@ public class CacheServiceTest {
     private static final Post POST = new Post(
             "oldboy",
             new Date(),
+            new Date(),
             "Oldboy (2003)",
             "Oldboy".getBytes(),
             "<p>In Park Chan-wook's 2003 thriller...</p>");
@@ -98,11 +99,13 @@ public class CacheServiceTest {
         Post post2 = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
                 new Date(),
+                new Date(),
                 "Eternal Sunshine of the Spotless Mind (2004)",
                 "Eternal Sunshine of the Spotless Mind".getBytes(),
                 "<p>In Michel Gondry's 2004 romantic...</p>");
         Post post3 = new Post(
                 "the-dark-knight",
+                new Date(),
                 new Date(),
                 "The Dark Knight (2008)",
                 "The Dark Knight".getBytes(),
