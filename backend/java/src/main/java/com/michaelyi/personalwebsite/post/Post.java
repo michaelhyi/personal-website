@@ -1,14 +1,31 @@
 package com.michaelyi.personalwebsite.post;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
+@Entity
 public class Post {
+    @Id
     private String id;
+
+    @Column(columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP", updatable = false)
     private Date createdAt;
+
+    @Column(columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date updatedAt;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL UNIQUE")
     private String title;
+
+    @Column(columnDefinition = "MEDIUMBLOB NOT NULL")
     private byte[] image;
+
+    @Column(columnDefinition = "TEXT NOT NULL")
     private String content;
 
     public Post(String id,
@@ -84,12 +101,12 @@ public class Post {
         }
 
         final Post other = (Post) obj;
-        return id.equals(other.id)
-                && createdAt.equals(other.createdAt)
-                && updatedAt.equals(other.updatedAt)
-                && title.equals(other.title)
+        return Objects.equals(id, other.id)
+                && Objects.equals(createdAt, other.createdAt)
+                && Objects.equals(updatedAt, other.updatedAt)
+                && Objects.equals(title, other.title)
                 && Arrays.equals(image, other.image)
-                && content.equals(other.content);
+                && Objects.equals(content, other.content);
     }
 
     @Override
@@ -97,12 +114,12 @@ public class Post {
         int hash = 17;
         int prime = 31;
 
-        hash = hash * prime + id.hashCode();
-        hash = hash * prime + (createdAt != null ? createdAt.hashCode() : 0);
-        hash = hash * prime + (updatedAt != null ? updatedAt.hashCode() : 0);
-        hash = hash * prime + (title != null ? title.hashCode() : 0);
-        hash = hash * prime + (image != null ? Arrays.hashCode(image) : 0);
-        hash = hash * prime + (content != null ? content.hashCode() : 0);
+        hash = hash * prime + Objects.hashCode(id);
+        hash = hash * prime + Objects.hashCode(createdAt);
+        hash = hash * prime + Objects.hashCode(updatedAt);
+        hash = hash * prime + Objects.hashCode(title);
+        hash = hash * prime + Arrays.hashCode(image);
+        hash = hash * prime + Objects.hashCode(content);
 
         return hash;
     }

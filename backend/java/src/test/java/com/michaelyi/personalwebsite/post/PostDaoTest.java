@@ -112,7 +112,7 @@ public class PostDaoTest {
                 "The Dark Knight".getBytes(),
                 "<p>In Christopher Nolan's 2008 superhero...</p>");
         List<Post> expected = List.of(POST, post2, post3);
-        when(template.query("SELECT * FROM post ORDER BY date DESC", mapper))
+        when(template.query("SELECT * FROM post ORDER BY created_at DESC", mapper))
                 .thenReturn(expected);
 
         // when

@@ -17,7 +17,7 @@ public class PostDao {
     }
 
     public void createPost(Post post) {
-        String sql = "INSERT INTO post (id, title, image, content)"
+        String sql = "INSERT INTO post (id, title, image, content) "
                 + "VALUES (?, ?, ?, ?)";
         template.update(
                 sql,
