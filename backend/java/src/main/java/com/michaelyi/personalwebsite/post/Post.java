@@ -1,35 +1,33 @@
 package com.michaelyi.personalwebsite.post;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
 import java.util.Arrays;
 import java.util.Date;
 
-@Entity
 public class Post {
-    @Id
     private String id;
-
-    @Column(nullable = false, updatable = false)
-    private Date date;
-
-    @Column(nullable = false, unique = true)
+    private Date createdAt;
+    private Date updatedAt;
     private String title;
-
-    @Column(nullable = false, columnDefinition = "BLOB")
     private byte[] image;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    public Post(String id, Date date, String title, byte[] image, String content) {
+    public Post(String id,
+                Date createdAt,
+                Date updatedAt,
+                String title,
+                byte[] image,
+                String content
+    ) {
         this.id = id;
-        this.date = date;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.title = title;
         this.image = image;
         this.content = content;
+    }
+
+    public Post(String id, String title, String content) {
+        this(id, null, null, title, null, content);
     }
 
     public Post() {
@@ -39,8 +37,12 @@ public class Post {
         return id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     public String getTitle() {
@@ -83,7 +85,8 @@ public class Post {
 
         final Post other = (Post) obj;
         return id.equals(other.id)
-                && date.equals(other.date)
+                && createdAt.equals(other.createdAt)
+                && updatedAt.equals(other.updatedAt)
                 && title.equals(other.title)
                 && Arrays.equals(image, other.image)
                 && content.equals(other.content);
@@ -95,7 +98,8 @@ public class Post {
         int prime = 31;
 
         hash = hash * prime + id.hashCode();
-        hash = hash * prime + (date != null ? date.hashCode() : 0);
+        hash = hash * prime + (createdAt != null ? createdAt.hashCode() : 0);
+        hash = hash * prime + (updatedAt != null ? updatedAt.hashCode() : 0);
         hash = hash * prime + (title != null ? title.hashCode() : 0);
         hash = hash * prime + (image != null ? Arrays.hashCode(image) : 0);
         hash = hash * prime + (content != null ? content.hashCode() : 0);
