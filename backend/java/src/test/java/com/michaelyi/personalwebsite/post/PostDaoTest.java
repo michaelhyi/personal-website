@@ -30,6 +30,7 @@ public class PostDaoTest {
     private static final Post POST = new Post(
             "oldboy",
             new Date(),
+            new Date(),
             "Oldboy (2003)",
             "Oldboy".getBytes(),
             "<p>In Park Chan-wook's 2003 thriller...</p>");
@@ -46,10 +47,9 @@ public class PostDaoTest {
 
         // then
         verify(template).update(
-                "INSERT INTO post (id, date, title, image, content) "
-                        + "VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO post (id, title, image, content) "
+                        + "VALUES (?, ?, ?, ?)",
                 POST.getId(),
-                POST.getDate(),
                 POST.getTitle(),
                 POST.getImage(),
                 POST.getContent());
@@ -100,17 +100,19 @@ public class PostDaoTest {
         Post post2 = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
                 new Date(),
+                new Date(),
                 "Eternal Sunshine of the Spotless Mind (2004)",
                 "Eternal Sunshine of the Spotless Mind".getBytes(),
                 "<p>In Michel Gondry's 2004 romantic...</p>");
         Post post3 = new Post(
                 "the-dark-knight",
                 new Date(),
+                new Date(),
                 "The Dark Knight (2008)",
                 "The Dark Knight".getBytes(),
                 "<p>In Christopher Nolan's 2008 superhero...</p>");
         List<Post> expected = List.of(POST, post2, post3);
-        when(template.query("SELECT * FROM post ORDER BY date DESC", mapper))
+        when(template.query("SELECT * FROM post ORDER BY created_at DESC", mapper))
                 .thenReturn(expected);
 
         // when
@@ -118,7 +120,7 @@ public class PostDaoTest {
 
         // then
         assertEquals(expected, actual);
-        verify(template).query("SELECT * FROM post ORDER BY date DESC", mapper);
+        verify(template).query("SELECT * FROM post ORDER BY created_at DESC", mapper);
     }
 
     @Test

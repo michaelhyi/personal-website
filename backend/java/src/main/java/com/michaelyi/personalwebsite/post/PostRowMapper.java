@@ -12,7 +12,8 @@ public class PostRowMapper implements RowMapper<Post> {
     public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Post(
                 rs.getString("id"),
-                rs.getDate("date"),
+                rs.getTimestamp("created_at"),
+                rs.getTimestamp("updated_at"),
                 rs.getString("title"),
                 rs.getBytes("image"),
                 rs.getString("content")

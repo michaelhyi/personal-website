@@ -17,12 +17,11 @@ public class PostDao {
     }
 
     public void createPost(Post post) {
-        String sql = "INSERT INTO post (id, date, title, image, content)"
-                + "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO post (id, title, image, content) "
+                + "VALUES (?, ?, ?, ?)";
         template.update(
                 sql,
                 post.getId(),
-                post.getDate(),
                 post.getTitle(),
                 post.getImage(),
                 post.getContent()
@@ -35,7 +34,7 @@ public class PostDao {
     }
 
     public List<Post> getAllPosts() {
-        String sql = "SELECT * FROM post ORDER BY date DESC";
+        String sql = "SELECT * FROM post ORDER BY created_at DESC";
         return template.query(sql, mapper);
     }
 

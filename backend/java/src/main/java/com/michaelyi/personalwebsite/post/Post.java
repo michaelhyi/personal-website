@@ -6,30 +6,45 @@ import jakarta.persistence.Id;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Post {
     @Id
     private String id;
 
-    @Column(nullable = false, updatable = false)
-    private Date date;
+    @Column(columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP", updatable = false)
+    private Date createdAt;
 
-    @Column(nullable = false, unique = true)
+    @Column(columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updatedAt;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL UNIQUE")
     private String title;
 
-    @Column(nullable = false, columnDefinition = "BLOB")
+    @Column(columnDefinition = "MEDIUMBLOB NOT NULL")
     private byte[] image;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT NOT NULL")
     private String content;
 
-    public Post(String id, Date date, String title, byte[] image, String content) {
+    public Post(String id,
+                Date createdAt,
+                Date updatedAt,
+                String title,
+                byte[] image,
+                String content
+    ) {
         this.id = id;
-        this.date = date;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.title = title;
         this.image = image;
         this.content = content;
+    }
+
+    public Post(String id, String title, String content) {
+        this(id, null, null, title, null, content);
     }
 
     public Post() {
@@ -39,8 +54,12 @@ public class Post {
         return id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     public String getTitle() {
@@ -82,11 +101,12 @@ public class Post {
         }
 
         final Post other = (Post) obj;
-        return id.equals(other.id)
-                && date.equals(other.date)
-                && title.equals(other.title)
+        return Objects.equals(id, other.id)
+                && Objects.equals(createdAt, other.createdAt)
+                && Objects.equals(updatedAt, other.updatedAt)
+                && Objects.equals(title, other.title)
                 && Arrays.equals(image, other.image)
-                && content.equals(other.content);
+                && Objects.equals(content, other.content);
     }
 
     @Override
@@ -94,11 +114,12 @@ public class Post {
         int hash = 17;
         int prime = 31;
 
-        hash = hash * prime + id.hashCode();
-        hash = hash * prime + (date != null ? date.hashCode() : 0);
-        hash = hash * prime + (title != null ? title.hashCode() : 0);
-        hash = hash * prime + (image != null ? Arrays.hashCode(image) : 0);
-        hash = hash * prime + (content != null ? content.hashCode() : 0);
+        hash = hash * prime + Objects.hashCode(id);
+        hash = hash * prime + Objects.hashCode(createdAt);
+        hash = hash * prime + Objects.hashCode(updatedAt);
+        hash = hash * prime + Objects.hashCode(title);
+        hash = hash * prime + Arrays.hashCode(image);
+        hash = hash * prime + Objects.hashCode(content);
 
         return hash;
     }

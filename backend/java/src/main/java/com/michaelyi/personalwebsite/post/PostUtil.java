@@ -3,8 +3,6 @@ package com.michaelyi.personalwebsite.post;
 import com.michaelyi.personalwebsite.util.StringUtil;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-
 public class PostUtil {
     public static final int OPENING_H1_TAG_LENGTH = "<h1>".length();
     public static final int CLOSING_H1_TAG_LENGTH = "</h1>".length();
@@ -34,10 +32,9 @@ public class PostUtil {
         }
 
         String id = convertTitleToId(title);
-        Date date = new Date();
         title = removeHtmlTags(title);
 
-        return new Post(id, date, title, null, content);
+        return new Post(id, title, content);
     }
 
     private static String convertTitleToId(String title) {

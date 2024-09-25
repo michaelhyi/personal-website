@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @AutoConfigureMockMvc
@@ -163,15 +164,19 @@ class PostIT extends IntegrationTest {
                 IMAGE,
                 mvc,
                 MAPPER,
-                WRITER);
+                WRITER
+        );
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         String id = PostTestHelper.getPostIdFromResponse(res, MAPPER);
         res = PostTestHelper.getPost(id, mvc, MAPPER, WRITER);
-        Post post = PostTestHelper.getPostFromResponse(res, MAPPER);
-        assertEquals(id, post.getId());
-        assertEquals("Oldboy (2003)", post.getTitle());
-        assertEquals("<p>content</p>", post.getContent());
+        Post actual = PostTestHelper.getPostFromResponse(res, MAPPER);
+
+        assertEquals(id, actual.getId());
+        assertEquals(actual.getCreatedAt(), actual.getUpdatedAt());
+        assertEquals("Oldboy (2003)", actual.getTitle());
+        assertArrayEquals(IMAGE.getBytes(), actual.getImage());
+        assertEquals("<p>content</p>", actual.getContent());
     }
 
     @Test
@@ -337,10 +342,12 @@ class PostIT extends IntegrationTest {
                 resJson,
                 GetPostResponse.class);
         Post actual = getPostResponse.getPost();
+
         assertEquals(id, actual.getId());
+        // assertTrue(actual.getCreatedAt().before(actual.getUpdatedAt()));
         assertEquals("Oldboy (2004)", actual.getTitle());
-        assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
         assertArrayEquals(image.getBytes(), actual.getImage());
+        assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
     }
 
     @Test

@@ -48,7 +48,7 @@ export default function ReadPost() {
                 </a>
 
                 <h1 className="post-title">{data.post.title}</h1>
-                <p className="post-date">{format(data.post.date)}</p>
+                <p className="post-date">{format(data.post.createdAt)}</p>
                 <img
                     src={`data:image/png;base64,${data.post.image}`}
                     alt={data.post.title}

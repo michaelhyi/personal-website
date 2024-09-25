@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -46,6 +45,7 @@ class PostServiceTest {
             "Oldboy".getBytes());
     private static final Post POST = new Post(
             "oldboy",
+            new Date(),
             new Date(),
             "Oldboy (2003)",
             "Oldboy".getBytes(),
@@ -99,7 +99,6 @@ class PostServiceTest {
         Post actualPost = postCaptor.getValue();
 
         assertEquals(POST.getId(), actualPost.getId());
-        assertTrue(POST.getDate().before(actualPost.getDate()));
         assertEquals(POST.getTitle(), actualPost.getTitle());
         assertArrayEquals(POST.getImage(), actualPost.getImage());
         assertEquals(POST.getContent(), actualPost.getContent());
@@ -164,11 +163,13 @@ class PostServiceTest {
         Post post2 = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
                 new Date(),
+                new Date(),
                 "Eternal Sunshine of the Spotless Mind (2004)",
                 "Eternal Sunshine of the Spotless Mind".getBytes(),
                 "<p>In Michel Gondry's 2004 romantic...</p>");
         Post post3 = new Post(
                 "the-dark-knight",
+                new Date(),
                 new Date(),
                 "The Dark Knight (2008)",
                 "The Dark Knight ".getBytes(),
@@ -197,11 +198,13 @@ class PostServiceTest {
         Post post2 = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
                 new Date(),
+                new Date(),
                 "Eternal Sunshine of the Spotless Mind (2004)",
                 "Eternal Sunshine of the Spotless Mind".getBytes(),
                 "<p>In Michel Gondry's 2004 romantic...</p>");
         Post post3 = new Post(
                 "the-dark-knight",
+                new Date(),
                 new Date(),
                 "The Dark Knight (2008)",
                 "The Dark Knight ".getBytes(),
@@ -259,7 +262,8 @@ class PostServiceTest {
         String text = "<h1>" + title + "</h1>" + content;
         Post deepCopy = new Post(
                 POST.getId(),
-                POST.getDate(),
+                POST.getCreatedAt(),
+                POST.getUpdatedAt(),
                 POST.getTitle(),
                 POST.getImage(),
                 POST.getContent());
@@ -273,7 +277,8 @@ class PostServiceTest {
         // then
         Post updatedPost = new Post(
                 POST.getId(),
-                POST.getDate(),
+                POST.getCreatedAt(),
+                POST.getUpdatedAt(),
                 title,
                 image.getBytes(),
                 content);

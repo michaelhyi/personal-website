@@ -69,7 +69,8 @@ public class PostUtilTest {
         // then
         Post expected = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
-                actual.getDate(),
+                null,
+                null,
                 "Eternal Sunshine of the Spotless Mind (2004)",
                 null,
                 "<p>In Michel Gondry's romance/sci-fi film...</p>");

@@ -24,7 +24,7 @@ jobs:
 
       - name: Build
         working-directory: ./backend/java
-        run: ./gradlew clean bootJar --info
+        run: ./gradlew clean bootJar
 
   test:
     runs-on: ubuntu-latest
@@ -49,4 +49,4 @@ jobs:
           ADMIN_PW: ${{ secrets.ADMIN_PW }}
           JWT_SIGNING_KEY: ${{ secrets.JWT_SIGNING_KEY }}
           TEST_ADMIN_PW: ${{ secrets.TEST_ADMIN_PW }}
-        run: ./gradlew test --info
+        run: ./gradlew test
