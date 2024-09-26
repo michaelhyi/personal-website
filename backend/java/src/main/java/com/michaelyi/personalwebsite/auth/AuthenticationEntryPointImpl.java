@@ -17,7 +17,7 @@ import java.io.IOException;
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     private final ObjectWriter writer;
     private static final String[] ENDPOINTS = {
-            "/v2/status",
+            "/",
             "/v2/auth/login",
             "/v2/auth/validate-token",
             "/v2/post",

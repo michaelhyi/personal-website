@@ -1,10 +1,10 @@
-package com.michaelyi.personalwebsite.status;
+package com.michaelyi.personalwebsite.util;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class StatusUtilTest {
+public class DateUtilTest {
     private static final int MS_PER_SECOND = 1000;
     private static final int SECONDS_PER_MINUTE = 60;
     private static final int MINUTES_PER_HOUR = 60;
@@ -19,42 +19,42 @@ public class StatusUtilTest {
     private static final long TWENTY_FOUR_SECONDS = 24 * MS_PER_SECOND;
     private static final long TWO_HUNDRED_THIRTY_FIVE_MILLISECONDS = 235;
 
-    private static final long UPTIME = HUNDRED_EIGHTY_SEVEN_HOURS
+    private static final long MS = HUNDRED_EIGHTY_SEVEN_HOURS
             + FORTY_THREE_MINUTES
             + TWENTY_FOUR_SECONDS
             + TWO_HUNDRED_THIRTY_FIVE_MILLISECONDS;
 
     @Test
-    void canGetHours() {
+    void canGetTotalHours() {
         // when
-        long hours = StatusUtil.getHours(UPTIME);
+        long hours = DateUtil.getTotalHours(MS);
 
         // then
         assertEquals(hours, 187);
     }
 
     @Test
-    void canGetMinutes() {
+    void canGetRemainingMinutes() {
         // when
-        long minutes = StatusUtil.getMinutes(UPTIME);
+        long minutes = DateUtil.getRemainingMinutes(MS);
 
         // then
         assertEquals(minutes, 43);
     }
 
     @Test
-    void canGetSeconds() {
+    void canGetRemainingSeconds() {
         // when
-        long seconds = StatusUtil.getSeconds(UPTIME);
+        long seconds = DateUtil.getRemainingSeconds(MS);
 
         // then
         assertEquals(seconds, 24);
     }
 
     @Test
-    void canGetMilliseconds() {
+    void canGetRemainingMillis() {
         // when
-        long ms = StatusUtil.getMilliseconds(UPTIME);
+        long ms = DateUtil.getRemainingMillis(MS);
 
         // then
         assertEquals(ms, 235);

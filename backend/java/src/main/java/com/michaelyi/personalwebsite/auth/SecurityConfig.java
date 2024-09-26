@@ -36,7 +36,7 @@ public class SecurityConfig {
             "OPTIONS"
     );
     private static final String[] WHITELISTED_ENDPOINTS = {
-            "/v2/status",
+            "/",
             "/v2/auth/login",
             "/v2/auth/validate-token"
     };
