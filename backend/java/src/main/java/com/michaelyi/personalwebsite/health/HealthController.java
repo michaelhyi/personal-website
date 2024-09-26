@@ -1,27 +1,25 @@
-package com.michaelyi.personalwebsite.status;
+package com.michaelyi.personalwebsite.health;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v2/status")
-public class StatusController {
-    private final StatusService healthService;
+public class HealthController {
+    private final HealthService healthService;
 
-    public StatusController(StatusService healthService) {
+    public HealthController(HealthService healthService) {
         this.healthService = healthService;
     }
 
-    @GetMapping
-    public ResponseEntity<StatusResponse> getStatus() {
-        StatusResponse res = new StatusResponse();
+    @GetMapping("/")
+    public ResponseEntity<HealthResponse> getHealth() {
+        HealthResponse res = new HealthResponse();
 
         try {
-            Status health = healthService.getStatus();
-            res.setStatus(health);
+            Health health = healthService.getHealth();
+            res.setHealth(health);
             res.setHttpStatus(HttpStatus.OK);
         } catch (Exception e) {
             res.setError("Internal server error");
