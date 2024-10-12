@@ -1,12 +1,10 @@
 import format from "./date-util.js"
-import { loading } from "./loading.js";
-import { notFound } from "./not-found.js";
 import { getPost } from "./post-service.js";
 
 let data = null;
 let error = null;
 
-document.getElementById("content").innerHTML = loading;
+document.getElementById("content").innerHTML = await fetch("/static/html/loading.html").then(res => res.text());
 
 try {
     id = window.location.pathname.split("/").pop();
@@ -25,5 +23,5 @@ try {
 } catch (e) {
     error = e;
 
-    document.getElementById("content").innerHTML = notFound;
+    document.getElementById("content").innerHTML = await fetch("/static/html/not-found.html").then(res => res.text());
 }

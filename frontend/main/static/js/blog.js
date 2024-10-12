@@ -1,11 +1,10 @@
-import { loading } from "./loading.js";
-import { notFound } from "./not-found.js";
 import { getAllPosts } from "./post-service.js";
 
 let data = null;
 let error = null;
 
-document.getElementById("blog-section").innerHTML = loading;
+document.getElementById("blog-section").innerHTML = await fetch("/static/html/loading.html").then(res => res.text());
+document.getElementById("loading").innerHTML = await fetch("/static/html/spinner.html").then(res => res.text());
 
 try {
     data = await getAllPosts();
@@ -21,5 +20,5 @@ try {
 } catch (e) {
     error = e;
 
-    document.getElementById("blog-section").innerHTML = notFound;
+    document.getElementById("blog-section").innerHTML = await fetch("/static/html/not-found.html").then(res => res.text());
 }
