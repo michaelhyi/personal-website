@@ -42,7 +42,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: main 
-          path: ./main
+          path: .
 
       - name: Deploy
         env:
