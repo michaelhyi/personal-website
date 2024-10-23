@@ -1,9 +1,9 @@
 package com.michaelyi.personalwebsite.auth;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.jupiter.api.Test;
 
 public class AuthUtilTest {
     @Test

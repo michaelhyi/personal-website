@@ -21,19 +21,9 @@ This repository contains the source code to my personal website and film blog. I
 - [Spring](https://spring.io/)
 - [MySQL](https://www.mysql.com/)
 - [Redis](https://redis.io/)
-- [AWS S3](https://aws.amazon.com/)
 - [JUnit](https://junit.org/junit5/)
 
 ### Frontend
 - [React](https://react.dev/)
 - [Node.js](https://nodejs.org/en)
 - [JavaScript](https://www.javascript.com/)
-
-## Screenshots
-
-| | |
-| - | - |
-|![](.github/assets/home.png) | ![](.github/assets/portfolio.png) <tr></tr> |
-|![](.github/assets/readPost.png) | ![](.github/assets/login.png) <tr></tr> |
-|![](.github/assets/blog.png) | ![](.github/assets/createPost.png) <tr></tr> |
-|![](.github/assets/updatePost.png) | ![](.github/assets/deletePost.png)<tr></tr> |

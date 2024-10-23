@@ -1,21 +1,7 @@
 package com.michaelyi.personalwebsite.post;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.michaelyi.personalwebsite.cache.CacheService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,9 +11,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.michaelyi.personalwebsite.cache.CacheService;
-import com.michaelyi.personalwebsite.s3.S3Service;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -35,9 +32,6 @@ class PostServiceTest {
 
     @Mock
     private PostDao dao;
-
-    @Mock
-    private S3Service s3Service;
 
     @Mock
     private CacheService cacheService;
@@ -48,16 +42,18 @@ class PostServiceTest {
             "Oldboy",
             "Oldboy.jpg",
             "image/jpeg",
-            "Oldboy (2003)".getBytes());
+            "Oldboy".getBytes());
     private static final Post POST = new Post(
             "oldboy",
             new Date(),
+            new Date(),
             "Oldboy (2003)",
+            "Oldboy".getBytes(),
             "<p>In Park Chan-wook's revenge thriller...</p>");
 
     @BeforeEach
     void setUp() {
-        underTest = new PostService(dao, s3Service, cacheService);
+        underTest = new PostService(dao, cacheService);
     }
 
     @Test
@@ -78,7 +74,6 @@ class PostServiceTest {
         verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
         verifyNoInteractions(dao);
         verifyNoMoreInteractions(cacheService);
-        verifyNoInteractions(s3Service);
     }
 
     @Test
@@ -104,15 +99,10 @@ class PostServiceTest {
         Post actualPost = postCaptor.getValue();
 
         assertEquals(POST.getId(), actualPost.getId());
-        assertTrue(POST.getDate().before(actualPost.getDate()));
         assertEquals(POST.getTitle(), actualPost.getTitle());
+        assertArrayEquals(POST.getImage(), actualPost.getImage());
         assertEquals(POST.getContent(), actualPost.getContent());
 
-        verify(s3Service).putObject(POST.getId(), IMAGE.getBytes());
-        verify(cacheService).set("getPost?id=" + POST.getId(), actualPost);
-        verify(cacheService).set(
-                "getPostImage?id=" + POST.getId(),
-                IMAGE.getBytes());
         verify(cacheService).delete("getAllPosts");
     }
 
@@ -168,109 +158,23 @@ class PostServiceTest {
     }
 
     @Test
-    void willThrowGetPostImageWhenPostNotFound() {
-        // given
-        when(cacheService.get("getPost?id=" + POST.getId(), Post.class))
-                .thenReturn(null);
-        when(dao.getPost(POST.getId())).thenReturn(Optional.empty());
-
-        // when
-        NoSuchElementException err = assertThrows(
-                NoSuchElementException.class,
-                () -> underTest.getPostImage(POST.getId()));
-
-        // then
-        assertEquals("Post not found", err.getMessage());
-        verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
-        verify(dao).getPost(POST.getId());
-        verifyNoInteractions(s3Service);
-        verifyNoMoreInteractions(cacheService);
-        verifyNoMoreInteractions(dao);
-    }
-
-    @Test
-    void canGetPostImageWhenCacheHit() throws Exception {
-        // given
-        when(cacheService.get("getPost?id=" + POST.getId(), Post.class))
-                .thenReturn(POST);
-        when(cacheService.get("getPostImage?id=" + POST.getId(), byte[].class))
-                .thenReturn(IMAGE.getBytes());
-
-        // when
-        byte[] actual = underTest.getPostImage(POST.getId());
-
-        // then
-        assertEquals(IMAGE.getBytes(), actual);
-        verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
-        verify(cacheService).get(
-                "getPostImage?id=" + POST.getId(),
-                byte[].class);
-        verifyNoInteractions(dao);
-        verifyNoInteractions(s3Service);
-        verifyNoMoreInteractions(cacheService);
-    }
-
-    @Test
-    void willThrowGetPostImageWhenNotFound() {
-        // given
-        when(cacheService.get("getPost?id=" + POST.getId(), Post.class))
-                .thenReturn(POST);
-        when(cacheService.get("getPostImage?id=" + POST.getId(), byte[].class))
-                .thenReturn(null);
-        when(s3Service.getObject(POST.getId())).thenReturn(null);
-
-        // when
-        NoSuchElementException err = assertThrows(
-                NoSuchElementException.class,
-                () -> underTest.getPostImage(POST.getId()));
-
-        // then
-        assertEquals("Image not found", err.getMessage());
-        verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
-        verify(cacheService).get(
-                "getPostImage?id=" + POST.getId(),
-                byte[].class);
-        verify(s3Service).getObject(POST.getId());
-        verifyNoMoreInteractions(cacheService);
-    }
-
-    @Test
-    void canGetPostImage() throws Exception {
-        // given
-        when(cacheService.get("getPost?id=" + POST.getId(), Post.class))
-                .thenReturn(POST);
-        when(cacheService.get("getPostImage?id=" + POST.getId(), byte[].class))
-                .thenReturn(null);
-        when(s3Service.getObject(POST.getId())).thenReturn(IMAGE.getBytes());
-
-        // when
-        byte[] actual = underTest.getPostImage(POST.getId());
-
-        // then
-        assertEquals(IMAGE.getBytes(), actual);
-        verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
-        verify(cacheService).get(
-                "getPostImage?id=" + POST.getId(),
-                byte[].class);
-        verify(s3Service).getObject(POST.getId());
-        verify(cacheService).set(
-                "getPostImage?id=" + POST.getId(),
-                IMAGE.getBytes());
-    }
-
-    @Test
     void canGetAllPostsWhenCacheHit() {
         // given
         Post post2 = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
                 new Date(),
+                new Date(),
                 "Eternal Sunshine of the Spotless Mind (2004)",
+                "Eternal Sunshine of the Spotless Mind".getBytes(),
                 "<p>In Michel Gondry's 2004 romantic...</p>");
         Post post3 = new Post(
                 "the-dark-knight",
                 new Date(),
+                new Date(),
                 "The Dark Knight (2008)",
+                "The Dark Knight ".getBytes(),
                 "<p>In Christopher Nolan's 2008 superhero...</p>");
+
         List<Post> expected = List.of(POST, post2, post3);
 
         ArgumentCaptor<TypeReference<List<Post>>> typeRefCaptor = ArgumentCaptor
@@ -294,12 +198,16 @@ class PostServiceTest {
         Post post2 = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
                 new Date(),
+                new Date(),
                 "Eternal Sunshine of the Spotless Mind (2004)",
+                "Eternal Sunshine of the Spotless Mind".getBytes(),
                 "<p>In Michel Gondry's 2004 romantic...</p>");
         Post post3 = new Post(
                 "the-dark-knight",
                 new Date(),
+                new Date(),
                 "The Dark Knight (2008)",
+                "The Dark Knight ".getBytes(),
                 "<p>In Christopher Nolan's 2008 superhero...</p>");
         List<Post> expected = List.of(POST, post2, post3);
 
@@ -339,69 +247,29 @@ class PostServiceTest {
         verify(dao).getPost(POST.getId());
         verifyNoMoreInteractions(dao);
         verifyNoMoreInteractions(cacheService);
-        verifyNoInteractions(s3Service);
     }
 
     @Test
-    void canUpdatePostWithoutUpdatingImage() throws Exception {
+    void canUpdatePost() throws Exception {
         // given
         String title = "Oldboy (2013)";
         String content = "<p>In Spike Lee's 2013 remake...</p>";
-        String text = "<h1>" + title + "</h1>" + content;
-        Post deepCopy = new Post(
-                POST.getId(),
-                POST.getDate(),
-                POST.getTitle(),
-                POST.getContent());
-
-        when(cacheService.get("getPost?id=" + POST.getId(), Post.class))
-                .thenReturn(deepCopy);
-        when(cacheService.get("getPostImage?id=" + POST.getId(), byte[].class))
-                .thenReturn(IMAGE.getBytes());
-
-        // when
-        underTest.updatePost(POST.getId(), text, IMAGE);
-
-        // then
-        Post updatedPost = new Post(
-                POST.getId(),
-                POST.getDate(),
-                title,
-                content);
-        verify(cacheService, times(2)).get(
-                "getPost?id=" + POST.getId(),
-                Post.class);
-        verify(dao).updatePost(updatedPost);
-        verify(cacheService).set("getPost?id=" + POST.getId(), updatedPost);
-        verify(cacheService).delete("getAllPosts");
-        verify(cacheService).get(
-                "getPostImage?id=" + POST.getId(),
-                byte[].class);
-        verifyNoInteractions(s3Service);
-        verifyNoMoreInteractions(cacheService);
-    }
-
-    @Test
-    void canUpdatePostAndImage() throws Exception {
-        // given
-        String title = "Oldboy (2013)";
-        String content = "<p>In Spike Lee's 2013 remake...</p>";
-        String text = "<h1>" + title + "</h1>" + content;
         MultipartFile image = new MockMultipartFile(
                 "Oldboy",
                 "Oldboy.jpg",
                 "image/jpeg",
                 "Oldboy (2013)".getBytes());
+        String text = "<h1>" + title + "</h1>" + content;
         Post deepCopy = new Post(
                 POST.getId(),
-                POST.getDate(),
+                POST.getCreatedAt(),
+                POST.getUpdatedAt(),
                 POST.getTitle(),
+                POST.getImage(),
                 POST.getContent());
 
         when(cacheService.get("getPost?id=" + POST.getId(), Post.class))
                 .thenReturn(deepCopy);
-        when(cacheService.get("getPostImage?id=" + POST.getId(), byte[].class))
-                .thenReturn(IMAGE.getBytes());
 
         // when
         underTest.updatePost(POST.getId(), text, image);
@@ -409,23 +277,15 @@ class PostServiceTest {
         // then
         Post updatedPost = new Post(
                 POST.getId(),
-                POST.getDate(),
+                POST.getCreatedAt(),
+                POST.getUpdatedAt(),
                 title,
+                image.getBytes(),
                 content);
-        verify(cacheService, times(2)).get(
-                "getPost?id=" + POST.getId(),
-                Post.class);
+        verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
         verify(dao).updatePost(updatedPost);
-        verify(cacheService).set("getPost?id=" + POST.getId(), updatedPost);
+        verify(cacheService).delete("getPost?id=" + POST.getId());
         verify(cacheService).delete("getAllPosts");
-        verify(cacheService).get(
-                "getPostImage?id=" + POST.getId(),
-                byte[].class);
-        verify(s3Service).deleteObject(POST.getId());
-        verify(s3Service).putObject(POST.getId(), image.getBytes());
-        verify(cacheService).set(
-                "getPostImage?id=" + POST.getId(),
-                image.getBytes());
     }
 
     @Test
@@ -446,7 +306,6 @@ class PostServiceTest {
         verify(dao).getPost(POST.getId());
         verifyNoMoreInteractions(cacheService);
         verifyNoMoreInteractions(dao);
-        verifyNoInteractions(s3Service);
     }
 
     @Test
@@ -460,10 +319,8 @@ class PostServiceTest {
 
         // then
         verify(cacheService).get("getPost?id=" + POST.getId(), Post.class);
-        verify(s3Service).deleteObject(POST.getId());
         verify(dao).deletePost(POST.getId());
         verify(cacheService).delete("getPost?id=" + POST.getId());
-        verify(cacheService).delete("getPostImage?id=" + POST.getId());
         verify(cacheService).delete("getAllPosts");
     }
 }

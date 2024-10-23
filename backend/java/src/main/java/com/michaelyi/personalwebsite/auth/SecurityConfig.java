@@ -1,7 +1,5 @@
 package com.michaelyi.personalwebsite.auth;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +15,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -26,15 +26,17 @@ public class SecurityConfig {
 
     private static final List<String> ALLOWED_AND_EXPOSED_HEADERS = List.of(
             "Authorization",
-            "Content-Type");
+            "Content-Type"
+    );
     private static final List<String> ALLOWED_METHODS = List.of(
             "GET",
             "POST",
-            "PUT",
+            "PATCH",
             "DELETE",
-            "OPTIONS");
+            "OPTIONS"
+    );
     private static final String[] WHITELISTED_ENDPOINTS = {
-            "/v2/status",
+            "/",
             "/v2/auth/login",
             "/v2/auth/validate-token"
     };
@@ -42,7 +44,8 @@ public class SecurityConfig {
     public SecurityConfig(
             @Value("${cors.allowed-origins}") List<String> allowedOrigins,
             AuthFilter authFilter,
-            AuthenticationEntryPointImpl authenticationEntryPoint) {
+            AuthenticationEntryPointImpl authenticationEntryPoint
+    ) {
         this.allowedOrigins = allowedOrigins;
         this.authFilter = authFilter;
         this.authenticationEntryPoint = authenticationEntryPoint;
@@ -63,7 +66,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http) throws Exception {
+            HttpSecurity http
+    ) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
@@ -76,7 +80,8 @@ public class SecurityConfig {
                                         "/v2/post/**")
                                 .permitAll()
                                 .anyRequest()
-                                .authenticated())
+                                .authenticated()
+                )
                 .sessionManagement(
                         sess -> sess.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS))

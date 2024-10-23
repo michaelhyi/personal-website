@@ -1,9 +1,9 @@
-name: cd
+name cd
 
 on:
   push:
     branches:
-      - prod
+      - main
 
 permissions:
   contents: read
@@ -31,7 +31,7 @@ jobs:
       - name: Build
         working-directory: ./backend/java
         run: |
-          ./gradlew clean bootJar --info
+          ./gradlew clean bootJar
           mv ./build/libs/java-${{ env.VERSION }}.jar ./build/libs/app.jar
 
       - name: Archive .jar File 

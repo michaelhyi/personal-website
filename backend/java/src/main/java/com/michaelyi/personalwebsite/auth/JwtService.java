@@ -1,17 +1,15 @@
 package com.michaelyi.personalwebsite.auth;
 
-import java.util.Date;
-
-import javax.crypto.SecretKey;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
 
 @Service
 public class JwtService {
@@ -20,7 +18,8 @@ public class JwtService {
 
     public JwtService(
             @Value("${jwt.signing-key}") String signingKey,
-            @Value("${jwt.expiration}") long jwtExpiration) {
+            @Value("${jwt.expiration}") long jwtExpiration
+    ) {
         this.signingKey = signingKey;
         this.jwtExpiration = jwtExpiration;
     }

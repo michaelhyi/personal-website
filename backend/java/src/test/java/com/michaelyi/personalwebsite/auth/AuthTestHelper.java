@@ -1,19 +1,17 @@
 package com.michaelyi.personalwebsite.auth;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-import java.util.Random;
-import java.util.Base64;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import io.netty.util.internal.ThreadLocalRandom;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import java.util.Base64;
+import java.util.Random;
 
-import io.netty.util.internal.ThreadLocalRandom;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 public class AuthTestHelper {
     protected static String generateJwtSecret() {
@@ -32,8 +30,8 @@ public class AuthTestHelper {
         String reqJson = writer.writeValueAsString(req);
 
         return mvc.perform(post(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(reqJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(reqJson))
                 .andReturn()
                 .getResponse();
     }
@@ -46,10 +44,10 @@ public class AuthTestHelper {
         String endpoint = "/v2/auth/validate-token";
 
         return mvc.perform(post(endpoint)
-                .servletPath(endpoint)
-                .header(
-                        HttpHeaders.AUTHORIZATION,
-                        String.format("Bearer %s", token)))
+                        .servletPath(endpoint)
+                        .header(
+                                HttpHeaders.AUTHORIZATION,
+                                String.format("Bearer %s", token)))
                 .andReturn()
                 .getResponse();
     }

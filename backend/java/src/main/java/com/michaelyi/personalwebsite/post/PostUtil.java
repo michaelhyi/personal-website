@@ -1,10 +1,7 @@
 package com.michaelyi.personalwebsite.post;
 
-import java.util.Date;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import com.michaelyi.personalwebsite.util.StringUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 public class PostUtil {
     public static final int OPENING_H1_TAG_LENGTH = "<h1>".length();
@@ -35,10 +32,9 @@ public class PostUtil {
         }
 
         String id = convertTitleToId(title);
-        Date date = new Date();
         title = removeHtmlTags(title);
 
-        return new Post(id, date, title, content);
+        return new Post(id, title, content);
     }
 
     private static String convertTitleToId(String title) {
@@ -80,12 +76,12 @@ public class PostUtil {
                 && !image.isEmpty()
                 && image.getSize() != 0
                 && StringUtil.isStringValid(
-                        image.getOriginalFilename())
+                image.getOriginalFilename())
                 && image
-                        .getOriginalFilename()
-                        .matches(".*\\.(jpg|jpeg|png|webp)")
+                .getOriginalFilename()
+                .matches(".*\\.(jpg|jpeg|png|webp)")
                 && image
-                        .getContentType()
-                        .matches("image/(jpeg|png|webp)");
+                .getContentType()
+                .matches("image/(jpeg|png|webp)");
     }
 }

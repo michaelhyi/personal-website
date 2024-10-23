@@ -8,7 +8,7 @@ export default function DeleteModal({ id, modalOpen, handleToggleModal }) {
         await deletePost(id);
         handleToggleModal();
         window.location.href = "/blog";
-    }, [id]);
+    }, [handleToggleModal, id]);
 
     return (
         modalOpen && (

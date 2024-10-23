@@ -1,16 +1,16 @@
 package com.michaelyi.personalwebsite.post;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PostUtilTest {
@@ -69,8 +69,10 @@ public class PostUtilTest {
         // then
         Post expected = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
-                actual.getDate(),
+                null,
+                null,
                 "Eternal Sunshine of the Spotless Mind (2004)",
+                null,
                 "<p>In Michel Gondry's romance/sci-fi film...</p>");
         assertEquals(expected, actual);
     }

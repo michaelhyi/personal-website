@@ -1,11 +1,7 @@
-import "./index.css";
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-import { inject } from "@vercel/analytics";
-
+import "./index.css";
 import Blog from "./pages/blog";
 import Home from "./pages/home";
 import Post from "./pages/post";
@@ -22,5 +18,3 @@ root.render(
         <RouterProvider router={router} />
     </React.StrictMode>,
 );
-
-inject();

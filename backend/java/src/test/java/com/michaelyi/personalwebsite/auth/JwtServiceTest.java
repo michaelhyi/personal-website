@@ -1,16 +1,15 @@
 package com.michaelyi.personalwebsite.auth;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-
-import javax.crypto.SecretKey;
-
+import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.jsonwebtoken.Jwts;
+import javax.crypto.SecretKey;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 
 public class JwtServiceTest {
     private JwtService underTest;

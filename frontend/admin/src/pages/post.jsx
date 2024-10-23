@@ -9,12 +9,7 @@ import Spinner from "../components/Spinner";
 import Loading from "./loading";
 import NotFound from "./not-found";
 import useEditor from "../util/useEditor";
-import {
-    createPost,
-    getPost,
-    getPostImage,
-    updatePost,
-} from "../js/post-service";
+import { createPost, getPost, updatePost } from "../js/post-service";
 import validateCreatePostForm from "../js/post-util";
 
 export default function Post() {
@@ -61,7 +56,7 @@ export default function Post() {
         } finally {
             setSubmitting(false);
         }
-    }, [setSubmitting, editor, image]);
+    }, [params, setSubmitting, editor, image, showImage]);
 
     useEffect(() => {
         (async () => {
@@ -70,24 +65,31 @@ export default function Post() {
             if (id) {
                 try {
                     const post = await getPost(id);
-                    const postImage = await getPostImage(id);
 
                     editor.commands.setContent(
                         `<h1>${post.title}</h1>${post.content}`,
                     );
                     setQuery({
-                        data: { post, image: postImage },
+                        data: { post },
                         loading: false,
                         error: false,
                     });
                 } catch (e) {
-                    setQuery({ data: null, loading: false, error: true });
+                    setQuery({
+                        data: null,
+                        loading: false,
+                        error: true,
+                    });
                 }
             } else {
-                setQuery({ data: null, loading: false, error: false });
+                setQuery({
+                    data: null,
+                    loading: false,
+                    error: false,
+                });
             }
         })();
-    }, [editor]);
+    }, [editor, params]);
 
     if (loading) return <Loading />;
     if (notFound) return <NotFound />;
@@ -110,7 +112,7 @@ export default function Post() {
                         showImage={showImage}
                         setShowImage={setShowImage}
                         title={data && data.post.title}
-                        postImage={data && data.image}
+                        postImage={data && data.post.image}
                         submitting={submitting}
                         image={image}
                         setImage={setImage}

@@ -1,10 +1,9 @@
 package com.michaelyi.personalwebsite.auth;
 
+import com.michaelyi.personalwebsite.util.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.michaelyi.personalwebsite.util.StringUtil;
 
 @Service
 public class AuthService {
@@ -15,7 +14,8 @@ public class AuthService {
     public AuthService(
             @Value("${admin.pw}") String encodedAdminPassword,
             PasswordEncoder passwordEncoder,
-            JwtService jwtService) {
+            JwtService jwtService
+    ) {
         this.encodedAdminPassword = encodedAdminPassword;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;

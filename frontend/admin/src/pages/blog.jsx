@@ -19,9 +19,17 @@ export default function Blog() {
         (async () => {
             try {
                 const posts = await getAllPosts();
-                setQuery({ data: posts, loading: false, error: false });
+                setQuery({
+                    data: posts,
+                    loading: false,
+                    error: false,
+                });
             } catch (e) {
-                setQuery({ data: null, loading: false, error: true });
+                setQuery({
+                    data: null,
+                    loading: false,
+                    error: true,
+                });
             }
         })();
     }, []);

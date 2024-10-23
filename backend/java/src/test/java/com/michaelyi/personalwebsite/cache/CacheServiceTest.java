@@ -1,27 +1,26 @@
 package com.michaelyi.personalwebsite.cache;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.util.Date;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.michaelyi.personalwebsite.post.Post;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CacheServiceTest {
@@ -42,7 +41,9 @@ public class CacheServiceTest {
     private static final Post POST = new Post(
             "oldboy",
             new Date(),
+            new Date(),
             "Oldboy (2003)",
+            "Oldboy".getBytes(),
             "<p>In Park Chan-wook's 2003 thriller...</p>");
     private static final String KEY = "getPost?id=" + "oldboy";
     private static final JavaType POST_JAVA_TYPE = new ObjectMapper()
@@ -98,12 +99,16 @@ public class CacheServiceTest {
         Post post2 = new Post(
                 "eternal-sunshine-of-the-spotless-mind",
                 new Date(),
+                new Date(),
                 "Eternal Sunshine of the Spotless Mind (2004)",
+                "Eternal Sunshine of the Spotless Mind".getBytes(),
                 "<p>In Michel Gondry's 2004 romantic...</p>");
         Post post3 = new Post(
                 "the-dark-knight",
                 new Date(),
+                new Date(),
                 "The Dark Knight (2008)",
+                "The Dark Knight".getBytes(),
                 "<p>In Christopher Nolan's 2008 superhero...</p>");
         List<Post> expected = List.of(POST, post2, post3);
 

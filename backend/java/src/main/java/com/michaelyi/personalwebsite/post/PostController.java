@@ -1,8 +1,6 @@
 package com.michaelyi.personalwebsite.post;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
+import com.michaelyi.personalwebsite.util.HttpResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.michaelyi.personalwebsite.util.HttpResponse;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/v2/post")
@@ -69,30 +68,6 @@ public class PostController {
         if (post == null) {
             res.setError("Post not found");
             res.setHttpStatus(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(res, res.getHttpStatus());
-    }
-
-    @GetMapping("/image/{id}")
-    public ResponseEntity<GetPostImageResponse> getPostImage(
-            @PathVariable String id) {
-        GetPostImageResponse res = new GetPostImageResponse();
-
-        try {
-            byte[] image = service.getPostImage(id);
-
-            res.setImage(image);
-            res.setHttpStatus(HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            res.setError(e.getMessage());
-            res.setHttpStatus(HttpStatus.BAD_REQUEST);
-        } catch (NoSuchElementException e) {
-            res.setError(e.getMessage());
-            res.setHttpStatus(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            res.setError("Internal server error");
-            res.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(res, res.getHttpStatus());

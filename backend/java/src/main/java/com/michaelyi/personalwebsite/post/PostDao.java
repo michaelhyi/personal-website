@@ -1,10 +1,10 @@
 package com.michaelyi.personalwebsite.post;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PostDao {
@@ -17,14 +17,15 @@ public class PostDao {
     }
 
     public void createPost(Post post) {
-        String sql = "INSERT INTO post (id, date, title, content) "
+        String sql = "INSERT INTO post (id, title, image, content) "
                 + "VALUES (?, ?, ?, ?)";
         template.update(
                 sql,
                 post.getId(),
-                post.getDate(),
                 post.getTitle(),
-                post.getContent());
+                post.getImage(),
+                post.getContent()
+        );
     }
 
     public Optional<Post> getPost(String id) {
@@ -33,13 +34,13 @@ public class PostDao {
     }
 
     public List<Post> getAllPosts() {
-        String sql = "SELECT * FROM post ORDER BY date DESC";
+        String sql = "SELECT * FROM post ORDER BY created_at DESC";
         return template.query(sql, mapper);
     }
 
     public void updatePost(Post post) {
-        String sql = "UPDATE post SET title = ?, content = ? WHERE id = ?";
-        template.update(sql, post.getTitle(), post.getContent(), post.getId());
+        String sql = "UPDATE post SET title = ?, image = ?, content = ? WHERE id = ?";
+        template.update(sql, post.getTitle(), post.getImage(), post.getContent(), post.getId());
     }
 
     public void deletePost(String id) {

@@ -1,12 +1,7 @@
 package com.michaelyi.personalwebsite.post;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-
-import java.util.List;
-
+import com.michaelyi.personalwebsite.IntegrationTest;
+import com.michaelyi.personalwebsite.auth.AuthTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +16,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.michaelyi.personalwebsite.IntegrationTest;
-import com.michaelyi.personalwebsite.auth.AuthTestHelper;
-import com.michaelyi.personalwebsite.s3.S3Service;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -38,9 +36,6 @@ class PostIT extends IntegrationTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private S3Service s3Service;
 
     private static final MockMultipartFile IMAGE = new MockMultipartFile(
             "image",
@@ -60,9 +55,6 @@ class PostIT extends IntegrationTest {
                 .flushAll();
 
         jdbcTemplate.execute("DELETE FROM post");
-
-        s3Service.deleteObject("title");
-        s3Service.deleteObject("oldboy");
     }
 
     @Test
@@ -172,21 +164,19 @@ class PostIT extends IntegrationTest {
                 IMAGE,
                 mvc,
                 MAPPER,
-                WRITER);
+                WRITER
+        );
         assertEquals(HttpStatus.CREATED.value(), res.getStatus());
 
         String id = PostTestHelper.getPostIdFromResponse(res, MAPPER);
         res = PostTestHelper.getPost(id, mvc, MAPPER, WRITER);
-        Post post = PostTestHelper.getPostFromResponse(res, MAPPER);
-        assertEquals(id, post.getId());
-        assertEquals("Oldboy (2003)", post.getTitle());
-        assertEquals("<p>content</p>", post.getContent());
+        Post actual = PostTestHelper.getPostFromResponse(res, MAPPER);
 
-        res = PostTestHelper.getPostImage(id, mvc, MAPPER, WRITER);
-        byte[] image = PostTestHelper.getImageFromResponse(
-                res,
-                MAPPER);
-        assertArrayEquals(IMAGE.getBytes(), image);
+        assertEquals(id, actual.getId());
+        assertEquals(actual.getCreatedAt(), actual.getUpdatedAt());
+        assertEquals("Oldboy (2003)", actual.getTitle());
+        assertArrayEquals(IMAGE.getBytes(), actual.getImage());
+        assertEquals("<p>content</p>", actual.getContent());
     }
 
     @Test
@@ -222,36 +212,6 @@ class PostIT extends IntegrationTest {
         assertEquals(
                 "<p>In Park Chan-wook's film...</p>",
                 actual.getContent());
-    }
-
-    @Test
-    void willThrowGetPostImageWhenPostDoesNotExist() throws Exception {
-        MockHttpServletResponse res = PostTestHelper.getPostImage(
-                "oldboy",
-                mvc,
-                MAPPER,
-                WRITER);
-        assertEquals(HttpStatus.NOT_FOUND.value(), res.getStatus());
-        assertEquals("Post not found", getError(res));
-    }
-
-    @Test
-    void getPostImage() throws Exception {
-        String text = "<h1>Oldboy (2003)</h1>"
-                + "<p>In Park Chan-wook's film...</p>";
-        MockHttpServletResponse res = PostTestHelper.createPost(
-                auth,
-                text,
-                IMAGE,
-                mvc,
-                MAPPER,
-                WRITER);
-        assertEquals(HttpStatus.CREATED.value(), res.getStatus());
-
-        String postId = PostTestHelper.getPostIdFromResponse(res, MAPPER);
-        res = PostTestHelper.getPostImage(postId, mvc, MAPPER, WRITER);
-        byte[] actual = PostTestHelper.getImageFromResponse(res, MAPPER);
-        assertArrayEquals(IMAGE.getBytes(), actual);
     }
 
     @Test
@@ -356,14 +316,20 @@ class PostIT extends IntegrationTest {
         String id = createPostResponse.getPostId();
 
         text = "<h1>Oldboy (2004)</h1><p>by Park Chan-wook.</p>";
+        MockMultipartFile image = new MockMultipartFile(
+                "image",
+                "image.jpg",
+                "image/jpeg",
+                "New Hello World!".getBytes());
         res = PostTestHelper.updatePost(
                 auth,
                 id,
                 text,
-                IMAGE,
+                image,
                 mvc,
                 MAPPER,
-                WRITER);
+                WRITER
+        );
         resJson = res.getContentAsString();
         assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
         assertEquals("{}", resJson);
@@ -376,40 +342,12 @@ class PostIT extends IntegrationTest {
                 resJson,
                 GetPostResponse.class);
         Post actual = getPostResponse.getPost();
+
         assertEquals(id, actual.getId());
+        // assertTrue(actual.getCreatedAt().before(actual.getUpdatedAt()));
         assertEquals("Oldboy (2004)", actual.getTitle());
+        assertArrayEquals(image.getBytes(), actual.getImage());
         assertEquals("<p>by Park Chan-wook.</p>", actual.getContent());
-
-        res = PostTestHelper.getPostImage(id, mvc, MAPPER, WRITER);
-        resJson = res.getContentAsString();
-        assertEquals(HttpStatus.OK.value(), res.getStatus());
-
-        GetPostImageResponse getPostImageResponse = MAPPER.readValue(
-                resJson,
-                GetPostImageResponse.class);
-
-        assertArrayEquals(IMAGE.getBytes(), getPostImageResponse.getImage());
-        byte[] imageRes = getPostImageResponse.getImage();
-
-        MockMultipartFile image = new MockMultipartFile(
-                "image",
-                "image.jpg",
-                "image/jpeg",
-                "New Hello World!".getBytes());
-        res = PostTestHelper.updatePost(
-                auth, id, text, image, mvc, MAPPER, WRITER);
-        resJson = res.getContentAsString();
-        assertEquals(HttpStatus.NO_CONTENT.value(), res.getStatus());
-        assertEquals("{}", resJson);
-
-        res = PostTestHelper.getPostImage(id, mvc, MAPPER, WRITER);
-        assertEquals(HttpStatus.OK.value(), res.getStatus());
-        byte[] newImage = PostTestHelper.getImageFromResponse(res, MAPPER);
-
-        assertNotEquals(imageRes, newImage);
-        assertArrayEquals(
-                "New Hello World!".getBytes(),
-                newImage);
     }
 
     @Test

@@ -1,9 +1,8 @@
 package com.michaelyi.personalwebsite.util;
 
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.http.HttpStatus;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class HttpResponse {

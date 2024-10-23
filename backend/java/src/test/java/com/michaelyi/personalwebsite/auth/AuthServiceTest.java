@@ -1,18 +1,18 @@
 package com.michaelyi.personalwebsite.auth;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
@@ -73,8 +73,8 @@ class AuthServiceTest {
         // given
         String token = "malformed token";
         doThrow(new IllegalArgumentException("Token cannot be malformed"))
-            .when(jwtService)
-            .validateToken(token);
+                .when(jwtService)
+                .validateToken(token);
 
         // when
         IllegalArgumentException err = assertThrows(
@@ -91,8 +91,8 @@ class AuthServiceTest {
         // given
         String token = "unauthorized token";
         doThrow(new UnauthorizedException())
-            .when(jwtService)
-            .validateToken(token);
+                .when(jwtService)
+                .validateToken(token);
 
         // when
         UnauthorizedException err = assertThrows(

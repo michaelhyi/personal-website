@@ -1,12 +1,11 @@
 package com.michaelyi.personalwebsite.cache;
 
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.michaelyi.personalwebsite.util.StringUtil;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CacheService {
@@ -18,7 +17,8 @@ public class CacheService {
     public CacheService(
             CacheDao dao,
             ObjectMapper mapper,
-            ObjectWriter writer) {
+            ObjectWriter writer
+    ) {
         this.dao = dao;
         this.mapper = mapper;
         this.writer = writer;
