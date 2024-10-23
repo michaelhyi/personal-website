@@ -18,12 +18,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Zip Static Assets
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -r -j app.zip ./frontend/main
 
-      - name: Archive Static Assets + Executable
+      - name: Setup zip
+        uses: montudor/action-zip@v1
+
+      - name: Zip Static Assets
+        working-directory: ./frontend/main
+        run: |
+          rm server.go
+          zip -r app.zip .
+          mv app.zip ../../app.zip
+
+      - name: Archive Static Assets
         uses: actions/upload-artifact@v4
         with:
           name: main 
@@ -57,5 +63,4 @@ jobs:
             mv ~/app.zip app.zip
             unzip -o app.zip
             rm app.zip
-            rm server.go
           '
