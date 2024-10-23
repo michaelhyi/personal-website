@@ -1,0 +1,62 @@
+name cd
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  VERSION: 2.1.4
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22.5
+
+      - name: Build
+        working-directory: ./frontend/main
+        run: go build
+
+      - name: Archive Executable 
+        uses: actions/upload-artifact@v4
+        with:
+          name: main 
+          path: ./main
+
+  deploy:
+    needs: build 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Executable
+        uses: actions/download-artifact@v4
+        with:
+          name: main 
+          path: ./main
+
+      - name: Deploy
+        env:
+          FRONTEND_SSH_HOST: ${{ secrets.FRONTEND_SSH_HOST }}
+          FRONTEND_SSH_KEY: ${{ secrets.FRONTEND_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${FRONTEND_SSH_HOST} >> ~/.ssh/known_hosts
+          echo "$FRONTEND_SSH_KEY" > key.pem
+          chmod 400 key.pem
+          ssh -i key.pem root@${FRONTEND_SSH_HOST} '
+            tmux kill-server
+            rm -f ./main
+          '
+          scp -i key.pem ./main root@${FRONTEND_SSH_HOST}:~
+          ssh -i key.pem root@${FRONTEND_SSH_HOST} 'tmux new -d -s app "./main"'
+
