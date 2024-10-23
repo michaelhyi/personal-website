@@ -1,12 +1,3 @@
-import Footer from "../components/Footer";
-import Project from "../components/Project";
-import "../css/portfolio.css";
-import HEALTHRELAY from "../img/healthrelay.png";
-import HEALTHHACKS from "../img/hhacks.png";
-import RETINAOCT from "../img/retinaoct.png";
-import SCRIBEAI from "../img/scribeai.png";
-import SHINE from "../img/shine.png";
-
 const PROJECTS = [
     {
         name: "Film Blog",
@@ -21,7 +12,7 @@ const PROJECTS = [
         description:
             "1st Place @ HackGT X. HIPAA-compliant, decentralized healthcare management platform that uses AI to transform physical healthcare documents into electronic health records.",
         tech: "Java, JavaScript, Spring, PostgreSQL, Docker, Kubernetes, React, Tesseract, OpenAI",
-        image: SCRIBEAI,
+        image: "/static/img/scribeai.png",
         href: "https://devpost.com/software/scribeai",
     },
     {
@@ -29,7 +20,7 @@ const PROJECTS = [
         date: "Jan - Jun 2023",
         description: "Assembling the future innovators of medicine.",
         tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
-        image: HEALTHHACKS,
+        image: "/static/img/hhacks.png",
         href: "https://www.joinhealthhacks.com/",
     },
     {
@@ -38,7 +29,7 @@ const PROJECTS = [
         description:
             "Streamlining secure communication between radiologists and ordering physicians.",
         tech: "TypeScript, React Native, PostgreSQL, GraphQL",
-        image: HEALTHRELAY,
+        image: "/static/img/healthrelay.png",
         href: "https://healthrelay.vercel.app/",
     },
     {
@@ -47,7 +38,7 @@ const PROJECTS = [
         description:
             "Enhancing Retinal Abnormality Detection through Deep-Learning-based Optical Coherence Tomography Analysis",
         tech: "Python, Tensorflow, Keras, TypeScript, React Native, PostgreSQL, GraphQL",
-        image: RETINAOCT,
+        image: "/static/img/retinaoct.png",
         href: "https://github.com/michaelhyi/retinaoct",
     },
     {
@@ -56,7 +47,7 @@ const PROJECTS = [
         description:
             "An NLP + Vision model that generates coherent sentences given respective keywords (concepts) and a coresponding image.",
         tech: "Python, PyTorch",
-        image: SHINE,
+        image: "/static/img/shine.png",
         href: "https://github.com/michaelhyi/usc-shine",
     },
     {
@@ -117,38 +108,35 @@ const HACKATHONS = [
     },
 ];
 
-export default function Portfolio() {
-    return (
-        <main>
-            <section className="content">
-                <a href="/" className="back-arrow">
-                    &#8592;
-                </a>
-                <section className="portfolio-projects">
-                    <h1 className="portfolio-projects-header">Projects</h1>
-                    {PROJECTS.map((project) => (
-                        <Project key={project.name} project={project} />
-                    ))}
-                </section>
-                <section className="portfolio-hackathons">
-                    <h1 className="portfolio-hackathons-header">Hackathons</h1>
-                    {HACKATHONS.map((hackathon) => (
-                        <a
-                            className="portfolio-hackathons-card-anchor"
-                            key={hackathon.name}
-                            href={hackathon.href}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
-                            {hackathon.name}
-                            <span className="portfolio-hackathons-card-anchor-arrow">
-                                &#8599;
-                            </span>
-                        </a>
-                    ))}
-                </section>
-            </section>
-            <Footer />
-        </main>
-    );
-}
+const projects = PROJECTS.map((project) =>
+    `<a
+            href="${project.href}"
+            class="project-card"
+            rel="noopener noreferrer"
+            target="_blank"
+        >
+            <p class="project-date">${project.date}</p>
+            <section class="project-details">
+                <h3 class="project-name">
+                    ${project.name}&nbsp;
+                    <span class="project-arrow">&#8599;</span>
+                </h3>
+                <p class="project-description">${project.description}</p>
+                <p class="project-tech">${project.tech}</p>`
+        .concat(project.image ? `<img class="project-img" src="${project.image}" />` : "", "</section></a>")).join("");
+const hackathons = HACKATHONS.map((hackathon) =>
+    `<a
+            class="portfolio-hackathons-card-anchor"
+            href="${hackathon.href}"
+            rel="noopener noreferrer"
+            target="_blank"
+        >
+            ${hackathon.name}
+            <span class="portfolio-hackathons-card-anchor-arrow">
+                &#8599;
+            </span>
+        </a>`
+).join("");
+
+document.getElementById("portfolio-projects").insertAdjacentHTML("beforeend", projects);
+document.getElementById("portfolio-hackathons").insertAdjacentHTML("beforeend", hackathons);
