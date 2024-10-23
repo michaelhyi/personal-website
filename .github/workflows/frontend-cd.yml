@@ -10,7 +10,7 @@ permissions:
   packages: write
 
 env:
-  VERSION: 2.1.4
+  VERSION: 5.3.0
 
 jobs:
   build:
