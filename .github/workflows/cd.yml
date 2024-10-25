@@ -9,50 +9,49 @@ permissions:
   contents: read
   packages: write
 
-env:
-  VERSION: 2.1.4
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Java
-        uses: actions/setup-java@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
+          go-version: 1.21.x
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Setup zip
+        uses: montudor/action-zip@v1
 
-      - name: Build
-        working-directory: ./backend/java
+      - name: Build Web Server
         run: |
-          ./gradlew clean bootJar
-          mv ./build/libs/java-${{ env.VERSION }}.jar ./build/libs/app.jar
+          go build -o app server.go
 
-      - name: Archive .jar File 
+      - name: Zip Build
+        run: |
+          rm server.go
+          zip -r app.zip .
+          mv app.zip ../../app.zip
+
+      - name: Archive Build
         uses: actions/upload-artifact@v4
         with:
-          name: app.jar 
-          path: ./backend/java/build/libs/app.jar
+          name: main 
+          path: ./app.zip
 
   deploy:
     needs: build 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download .jar File 
+      - name: Download Build 
         uses: actions/download-artifact@v4
         with:
-          name: app.jar 
-          path: ./backend/java/build/libs/
+          name: main 
+          path: .
 
       - name: Deploy
-        working-directory: ./backend/java
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
@@ -63,8 +62,13 @@ jobs:
           chmod 400 key.pem
           ssh -i key.pem root@${SSH_HOST} '
             tmux kill-server
-            rm -f app.jar
+            rm -rf -f pages 
+            rm -rf -f static
+            rm -f app
           '
-          scp -i key.pem ./build/libs/app.jar root@${SSH_HOST}:~
-          ssh -i key.pem root@${SSH_HOST} 'tmux new -d -s app "java -jar app.jar"'
-
+          scp -i key.pem app.zip root@${SSH_HOST}:~
+          ssh -i key.pem root@${SSH_HOST} '
+            unzip -o app.zip
+            rm app.zip
+            tmux new -d -s app "./app"
+          '

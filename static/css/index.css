@@ -1,0 +1,37 @@
+* {
+    font-family: sans-serif;
+    overscroll-behavior: none;
+    text-decoration: none;
+    background: none;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+a {
+    color: black;
+    text-decoration: underline;
+}
+
+footer {
+    font-size: 10px;
+    padding-top: 64px;
+    padding-bottom: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
