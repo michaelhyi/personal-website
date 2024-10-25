@@ -5,3 +5,15 @@
     flex-direction: column;
     gap: 16px;
 }
+
+@media (min-width: 380px) {
+    .content{
+        width: 360px;
+    }
+}
+
+@media (min-width: 768px) {
+    .content {
+        width: 480px;
+    }
+}

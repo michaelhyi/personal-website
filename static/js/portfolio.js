@@ -90,7 +90,6 @@ const HACKATHONS = [
         href: "https://devpost.com/software/scribeai",
     },
     {
-        // eslint-disable-next-line quotes -- must use backtick for double quotes within string
         name: `Best Access to Healthcare Hack at PennApps "Health Hacks"`,
         href: "https://devpost.com/software/n-a-dek950",
     },
@@ -110,32 +109,27 @@ const HACKATHONS = [
 
 const projects = PROJECTS.map((project) =>
     `<a
-            href="${project.href}"
             class="project-card"
+            href="${project.href}"
             rel="noopener noreferrer"
             target="_blank"
         >
-            <p class="project-date">${project.date}</p>
-            <section class="project-details">
-                <h3 class="project-name">
-                    ${project.name}&nbsp;
-                    <span class="project-arrow">&#8599;</span>
-                </h3>
-                <p class="project-description">${project.description}</p>
-                <p class="project-tech">${project.tech}</p>`
-        .concat(project.image ? `<img class="project-img" src="${project.image}" />` : "", "</section></a>")).join("");
+            <p class="date">${project.date}</p>
+            <section class="details">
+                <h3 class="name">${project.name}</h3>
+                <p class="description">${project.description}</p>
+                <p class="tech">${project.tech}</p>`
+        .concat(project.image ? `<img src="${project.image}" />` : "", "</section></a>")).join("");
+
 const hackathons = HACKATHONS.map((hackathon) =>
     `<a
-            class="hackathons-card-anchor"
-            href="${hackathon.href}"
-            rel="noopener noreferrer"
-            target="_blank"
-        >
-            ${hackathon.name}
-            <span class="hackathons-card-anchor-arrow">
-                &#8599;
-            </span>
-        </a>`
+        class="hackathon-card"
+        href="${hackathon.href}"
+        rel="noopener noreferrer"
+        target="_blank"
+    >
+        ${hackathon.name}
+    </a>`
 ).join("");
 
 document.getElementById("projects").innerHTML = projects;
