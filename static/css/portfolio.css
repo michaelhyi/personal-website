@@ -1,22 +1,15 @@
 .content {
     display: flex;
     flex-direction: column;
-    padding-top: 48px;
+    padding-top: 80px;
     margin-left: auto;
     margin-right: auto;
-    width: 768px;
 }
 
 .projects {
     display: flex;
     flex-direction: column;
-    padding-top: 24px;
     gap: 32px;
-}
-
-.projects-header {
-    font-size: 30px;
-    font-weight: 700;
 }
 
 .project-card {
@@ -25,61 +18,61 @@
     text-decoration: none;
 }
 
-.project-date {
+.date {
     width: 224px;
     font-size: 13px;
-    font-weight: 300;
 }
 
-.project-details {
+.details {
     width: 100%;
 }
 
-.project-name {
+.name {
     display: flex;
     font-weight: 600;
 }
 
-.project-arrow {
-    padding-left: 4px;
-    padding-top: 4px;
-    font-size: 10px;
-}
-
-.project-description {
+.description {
     margin-top: 8px;
     font-size: 12px;
 }
 
-.project-tech {
+.tech {
     margin-top: 6px;
     font-size: 10px;
     font-family: 300;
 }
 
-.project-img {
+img {
+    margin-top: 16px;
     width: 200px;
     height: 120px;
-    margin-top: 16px;
-    border-radius: 6px;
 }
 
-@media (min-width: 320px) {
-    .project-link {
+@media (min-width: 380px) {
+    .content {
+        width: 360px;
+    }
+
+    .project-card {
         flex-direction: column;
     }
 
-    .project-date {
+    .date {
         margin-bottom: 8px;
     }
 }
 
 @media (min-width: 768px) {
-    .project-link {
+    .content {
+        width: 600px;
+    }
+
+    .project-card {
         flex-direction: row;
     }
 
-    .project-date {
+    .date {
         margin-bottom: 0px;
     }
 }
@@ -87,24 +80,11 @@
 .hackathons {
     display: flex;
     flex-direction: column;
-    margin-top: 64px;
-    gap: 8px;
-}
-
-.hackathons-card {
-    text-align: left;
-    margin-bottom: 6px;
-}
-
-.hackathons-card-anchor {
+    margin-top: 48px;
     font-size: 14px;
-    font-weight: 500;
-    padding-bottom: 8px;
-    display: flex;
-    text-decoration: none;
+    gap: 14px;
 }
 
-.hackathons-card-anchor-arrow {
-    padding-left: 4px;
-    font-size: 10px;
+.hackathon-card {
+    text-decoration: none;
 }

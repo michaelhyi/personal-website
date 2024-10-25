@@ -20,18 +20,27 @@ a {
     text-decoration: underline;
 }
 
-footer {
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.absolute-footer {
+    font-size: 10px;
+    padding-bottom: 14px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 0;
+}
+
+.relative-footer {
     font-size: 10px;
     padding-top: 64px;
     padding-bottom: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.center {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
 }
