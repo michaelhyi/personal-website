@@ -8,13 +8,6 @@
     padding: 0px;
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
-}
-
 a {
     color: black;
     text-decoration: underline;
