@@ -1,0 +1,19 @@
+.content {
+    padding-top: 36px;
+    padding-left: 36px;
+}
+
+.header {
+    font-weight: 500;
+}
+
+.subheader {
+    font-weight: 400;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.links {
+    font-size: 10px;
+    margin-top: 12px;
+}

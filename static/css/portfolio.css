@@ -1,0 +1,110 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    padding-top: 48px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 768px;
+}
+
+.projects {
+    display: flex;
+    flex-direction: column;
+    padding-top: 24px;
+    gap: 32px;
+}
+
+.projects-header {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.project-card {
+    display: flex;
+    text-align: left;
+    text-decoration: none;
+}
+
+.project-date {
+    width: 224px;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.project-details {
+    width: 100%;
+}
+
+.project-name {
+    display: flex;
+    font-weight: 600;
+}
+
+.project-arrow {
+    padding-left: 4px;
+    padding-top: 4px;
+    font-size: 10px;
+}
+
+.project-description {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.project-tech {
+    margin-top: 6px;
+    font-size: 10px;
+    font-family: 300;
+}
+
+.project-img {
+    width: 200px;
+    height: 120px;
+    margin-top: 16px;
+    border-radius: 6px;
+}
+
+@media (min-width: 320px) {
+    .project-link {
+        flex-direction: column;
+    }
+
+    .project-date {
+        margin-bottom: 8px;
+    }
+}
+
+@media (min-width: 768px) {
+    .project-link {
+        flex-direction: row;
+    }
+
+    .project-date {
+        margin-bottom: 0px;
+    }
+}
+
+.hackathons {
+    display: flex;
+    flex-direction: column;
+    margin-top: 64px;
+    gap: 8px;
+}
+
+.hackathons-card {
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+.hackathons-card-anchor {
+    font-size: 14px;
+    font-weight: 500;
+    padding-bottom: 8px;
+    display: flex;
+    text-decoration: none;
+}
+
+.hackathons-card-anchor-arrow {
+    padding-left: 4px;
+    font-size: 10px;
+}
