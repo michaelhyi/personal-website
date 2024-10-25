@@ -14,8 +14,10 @@ func main() {
 	}
 
 	for route, file := range pages {
+		f := file
+
 		http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, file)
+			http.ServeFile(w, r, f)
 		})
 	}
 
