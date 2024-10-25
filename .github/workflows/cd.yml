@@ -30,6 +30,8 @@ jobs:
 
       - name: Zip Build
         run: |
+          rm LICENSE
+          rm README.md
           rm server.go
           zip -r app.zip .
 
@@ -64,6 +66,7 @@ jobs:
             tmux kill-server
             rm -rf -f pages 
             rm -rf -f static
+            rm -f index.html 
             rm -f app
           '
           scp -i key.pem app.zip root@${SSH_HOST}:~
