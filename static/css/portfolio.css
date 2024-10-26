@@ -49,9 +49,9 @@ img {
     height: 120px;
 }
 
-@media (min-width: 380px) {
+@media (min-width: 320px) {
     .content {
-        width: 360px;
+        width: 280px;
     }
 
     .project-card {
