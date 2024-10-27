@@ -10,9 +10,15 @@
 
 This repository contains the source code to my personal website. It is a showcase of my software engineering experience, portfolio, and resume.
 
+## Tech Stack
+
+- HTML/CSS/JS
+- Go
+
 ## Backlog
 
-- [ ] Add Documentation in README
+- [ ] Update Project Structure
 - [ ] Write Tests for Go / CI Pipeline
+- [ ] Remove Tech Stack Section in README?
 - [ ] Preen 
 - [ ] CDN Caching

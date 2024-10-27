@@ -6,20 +6,22 @@ import (
 )
 
 func main() {
-	pages := map[string]string{
+	routes := map[string]string{
 		"/":          "./index.html",
 		"/about":     "./pages/about.html",
 		"/lauren":    "./pages/lauren.html",
 		"/portfolio": "./pages/portfolio.html",
 	}
 
-	for route, file := range pages {
-		f := file
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		file, ok := routes[r.URL.Path]
 
-		http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, f)
-		})
-	}
+		if ok {
+			http.ServeFile(w, r, file)
+		} else {
+			http.NotFound(w, r)
+		}
+	})
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
