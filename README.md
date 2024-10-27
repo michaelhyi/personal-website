@@ -19,6 +19,5 @@ This repository contains the source code to my personal website. It is a showcas
 
 - [ ] Update Project Structure
 - [ ] Write Tests for Go / CI Pipeline
-- [ ] Remove Tech Stack Section in README?
 - [ ] Preen 
 - [ ] CDN Caching
