@@ -5,7 +5,9 @@ import (
 	"net/http"
 )
 
-func main() {
+func getMux() *http.ServeMux {
+	mux := http.NewServeMux()
+
 	routes := map[string]string{
 		"/":          "./index.html",
 		"/about":     "./pages/about.html",
@@ -13,7 +15,7 @@ func main() {
 		"/portfolio": "./pages/portfolio.html",
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		file, ok := routes[r.URL.Path]
 
 		if ok {
@@ -24,10 +26,16 @@ func main() {
 	})
 
 	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	return mux
+}
+
+func main() {
+	mux := getMux()
 
 	log.Printf("Server started on port 3000")
-	err := http.ListenAndServe(":3000", nil)
+	err := http.ListenAndServe(":3000", mux)
 
 	if err != nil {
 		log.Fatal(err)

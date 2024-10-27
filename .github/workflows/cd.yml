@@ -19,21 +19,18 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.x
+          go-version: 1.22.5
 
       - name: Setup zip
         uses: montudor/action-zip@v1
 
-      - name: Build Web Server
+      - name: Build
         run: |
-          go build -o app server.go
+          go build -o app
 
       - name: Zip Build
         run: |
-          rm LICENSE
-          rm README.md
-          rm server.go
-          zip -r app.zip .
+          zip -r app.zip pages static app index.html
 
       - name: Archive Build
         uses: actions/upload-artifact@v4
