@@ -9,3 +9,10 @@
 ## About 
 
 This repository contains the source code to my personal website. It is a showcase of my software engineering experience, portfolio, and resume.
+
+## Backlog
+
+- [ ] Add Documentation in README
+- [ ] Write Tests for Go / CI Pipeline
+- [ ] Preen 
+- [ ] CDN Caching
