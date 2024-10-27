@@ -17,6 +17,5 @@ This repository contains the source code to my personal website. It is a showcas
 
 ## Backlog
 
-- [ ] Update Project Structure
 - [ ] Preen 
 - [ ] CDN Caching
