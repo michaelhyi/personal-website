@@ -18,6 +18,5 @@ This repository contains the source code to my personal website. It is a showcas
 ## Backlog
 
 - [ ] Update Project Structure
-- [ ] Write Tests for Go / CI Pipeline
 - [ ] Preen 
 - [ ] CDN Caching

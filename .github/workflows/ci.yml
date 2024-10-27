@@ -17,8 +17,23 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.x
+          go-version: 1.22.5
 
-      - name: Build Web Server
+      - name: Build
         run: |
-          go build -o app server.go
+          go build
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22.5
+
+      - name: Test
+        run: |
+          go test
