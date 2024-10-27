@@ -25,8 +25,8 @@ func getMux() *http.ServeMux {
 		}
 	})
 
-	fs := http.FileServer(http.Dir("./static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	fs := http.FileServer(http.Dir("./assets"))
+	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	return mux
 }

@@ -12,7 +12,7 @@ const PROJECTS = [
         description:
             "1st Place @ HackGT X. HIPAA-compliant, decentralized healthcare management platform that uses AI to transform physical healthcare documents into electronic health records.",
         tech: "Java, JavaScript, Spring, PostgreSQL, Docker, Kubernetes, React, Tesseract, OpenAI",
-        image: "/static/img/scribeai.png",
+        image: "/assets/img/scribeai.png",
         href: "https://devpost.com/software/scribeai",
     },
     {
@@ -20,7 +20,7 @@ const PROJECTS = [
         date: "Jan - Jun 2023",
         description: "Assembling the future innovators of medicine.",
         tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
-        image: "/static/img/hhacks.png",
+        image: "/assets/img/hhacks.png",
         href: "https://www.joinhealthhacks.com/",
     },
     {
@@ -29,7 +29,7 @@ const PROJECTS = [
         description:
             "Streamlining secure communication between radiologists and ordering physicians.",
         tech: "TypeScript, React Native, PostgreSQL, GraphQL",
-        image: "/static/img/healthrelay.png",
+        image: "/assets/img/healthrelay.png",
         href: "https://healthrelay.vercel.app/",
     },
     {
@@ -38,7 +38,7 @@ const PROJECTS = [
         description:
             "Enhancing Retinal Abnormality Detection through Deep-Learning-based Optical Coherence Tomography Analysis",
         tech: "Python, Tensorflow, Keras, TypeScript, React Native, PostgreSQL, GraphQL",
-        image: "/static/img/retinaoct.png",
+        image: "/assets/img/retinaoct.png",
         href: "https://github.com/michaelhyi/retinaoct",
     },
     {
@@ -47,7 +47,7 @@ const PROJECTS = [
         description:
             "An NLP + Vision model that generates coherent sentences given respective keywords (concepts) and a coresponding image.",
         tech: "Python, PyTorch",
-        image: "/static/img/shine.png",
+        image: "/assets/img/shine.png",
         href: "https://github.com/michaelhyi/usc-shine",
     },
     {

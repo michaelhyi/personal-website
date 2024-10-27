@@ -30,7 +30,7 @@ jobs:
 
       - name: Zip Build
         run: |
-          zip -r app.zip pages static app index.html
+          zip -r app.zip pages assets app index.html
 
       - name: Archive Build
         uses: actions/upload-artifact@v4
@@ -41,6 +41,7 @@ jobs:
   deploy:
     needs: build 
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -62,7 +63,7 @@ jobs:
           ssh -i key.pem root@${SSH_HOST} '
             tmux kill-server
             rm -rf -f pages 
-            rm -rf -f static
+            rm -rf -f assets
             rm -f index.html 
             rm -f app
           '
