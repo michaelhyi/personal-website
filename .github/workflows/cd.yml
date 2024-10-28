@@ -28,7 +28,7 @@ jobs:
         run: go build
 
       - name: Zip Build
-        run: zip -r app.zip assets pages index.html main
+        run: zip -r app.zip assets pages index.html personal-website
 
       - name: Archive Build
         uses: actions/upload-artifact@v4
@@ -71,5 +71,5 @@ jobs:
             cd app
             unzip -o app.zip
             rm app.zip
-            tmux new -d -s app "./main"
+            tmux new -d -s app "./personal-website"
           '
