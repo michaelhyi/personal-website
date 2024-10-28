@@ -62,6 +62,7 @@ jobs:
           ssh -i key.pem root@${SSH_HOST} '
             tmux kill-server
             rm -rf -f app
+            mkdir app
           '
 
           scp -i key.pem app.zip root@${SSH_HOST}:app/
