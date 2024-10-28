@@ -14,8 +14,3 @@ This repository contains the source code to my personal website. It is a showcas
 
 - HTML/CSS/JS
 - Go
-
-## Backlog
-
-- [ ] Preen 
-- [ ] CDN Caching

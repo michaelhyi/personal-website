@@ -15,19 +15,20 @@ a {
     transform: translate(-50%, -50%);
 }
 
-.absolute-footer {
+footer {
     font-size: 10px;
     padding-bottom: 14px;
+}
+
+.absolute-footer {
     position: absolute;
     left: 50%;
-    transform: translate(-50%);
     bottom: 0;
+    transform: translate(-50%);
 }
 
 .relative-footer {
-    font-size: 10px;
     padding-top: 64px;
-    padding-bottom: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
