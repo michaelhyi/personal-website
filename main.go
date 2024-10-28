@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func getMux() *http.ServeMux {
+func getServeMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	routes := map[string]string{
@@ -32,9 +32,9 @@ func getMux() *http.ServeMux {
 }
 
 func main() {
-	mux := getMux()
+	mux := getServeMux()
 
-	log.Printf("Server started on port 3000")
+	log.Printf("server started on port 3000")
 	err := http.ListenAndServe(":3000", mux)
 
 	if err != nil {

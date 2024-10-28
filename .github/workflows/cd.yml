@@ -25,12 +25,10 @@ jobs:
         uses: montudor/action-zip@v1
 
       - name: Build
-        run: |
-          go build -o app
+        run: go build
 
       - name: Zip Build
-        run: |
-          zip -r app.zip pages assets app index.html
+        run: zip -r app.zip assets pages index.html personal_website
 
       - name: Archive Build
         uses: actions/upload-artifact@v4
@@ -60,16 +58,17 @@ jobs:
           ssh-keyscan -H ${SSH_HOST} >> ~/.ssh/known_hosts
           echo "$SSH_KEY" > key.pem
           chmod 400 key.pem
+
           ssh -i key.pem root@${SSH_HOST} '
             tmux kill-server
-            rm -rf -f pages 
-            rm -rf -f assets
-            rm -f index.html 
-            rm -f app
+            rm -rf -f app
           '
-          scp -i key.pem app.zip root@${SSH_HOST}:~
+
+          scp -i key.pem app.zip root@${SSH_HOST}:app/
+
           ssh -i key.pem root@${SSH_HOST} '
+            cd app
             unzip -o app.zip
             rm app.zip
-            tmux new -d -s app "./app"
+            tmux new -d -s app "./personal_website"
           '

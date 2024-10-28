@@ -1,27 +1,87 @@
 const PROJECTS = [
     {
-        name: "Film Blog",
-        date: "Aug 2023 - Present",
-        description: "A showcase of my passion for cinema.",
-        tech: "Java, Spring, MySQL, Redis, JUnit, React",
-        href: "https://film.michael-yi.com/",
+        name: "Personal Website",
+        date: "Oct 2022 - Oct 2024",
+        description: "",
+        tech: "HTML, CSS, JS, Go",
+        href: "https://michael-yi.com",
     },
     {
-        name: "ScribeAI",
+        name: "ScribeAI (1st Place Overall at HackGT)",
         date: "Oct 2023",
         description:
-            "1st Place @ HackGT X. HIPAA-compliant, decentralized healthcare management platform that uses AI to transform physical healthcare documents into electronic health records.",
-        tech: "Java, JavaScript, Spring, PostgreSQL, Docker, Kubernetes, React, Tesseract, OpenAI",
+            "A HIPAA-compliant, decentralized healthcare management platform that uses AI to transform physical healthcare documents into electronic health records.",
+        tech: "Java, Spring, PostgreSQL, Docker, Kubernetes, TypeScript, Next.js, Tailwind, Tesseract, OpenAI",
         image: "/assets/img/scribeai.png",
-        href: "https://devpost.com/software/scribeai",
+        href: "https://github.com/michaelhyi/scribeai",
+    },
+    {
+        name: "Sales Invoice Automation Platform",
+        date: "Apr - Jun 2024",
+        description:
+            "A platform for a logistics company that generates and bills invoices from Excel sales data.",
+        tech: "Java, Spring, gRPC, Kafka, GraphQL, MySQL, AWS S3, Docker, React, Tailwind",
+    },
+    {
+        name: "Film Blog",
+        date: "Aug 2023 - Oct 2024",
+        description: "A showcase of my passion for cinema.",
+        tech: "Java, Go, Spring, MySQL, Redis, JUnit, React",
+        href: "https://film.michael-yi.com/",
     },
     {
         name: "health{hacks} Website",
         date: "Jan - Jun 2023",
         description: "Assembling the future innovators of medicine.",
-        tech: "TypeScript, Next.js, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
+        tech: "TypeScript, Next.js, Tailwind, Node.js, Express.js, PostgreSQL, MongoDB, GraphQL",
         image: "/assets/img/hhacks.png",
         href: "https://www.joinhealthhacks.com/",
+    },
+    {
+        name: "WeVote",
+        date: "Oct 2022",
+        description: "A platform built for a nonprofit that empowers and promotes voter registration.",
+        tech: "TypeScript, Next.js, Tailwind",
+        href: "https://wevote18.com/"
+    },
+    {
+        name: "Enhancing Generative Commonsense Reasoning Using Image Cues",
+        date: "Jun - Jul 2022",
+        description:
+            "An NLP + Vision model that generates coherent sentences given respective keywords (concepts) and a coresponding image.",
+        tech: "Python, PyTorch",
+        image: "/assets/img/shine.png",
+        href: "https://github.com/michaelhyi/usc-shine",
+    },
+    {
+        name: "Linkix",
+        date: "Apr 2022",
+        description: "A social media platform tailored for pre-professional students aiming to connect and collaborate.",
+        tech: "TypeScript, Python, React Native, Flask, MongoDB",
+    },
+    {
+        name: "MelaModel",
+        date: "Mar 2022",
+        description:
+            "Best Access to Healthcare Hack @ PennApps Health Hacks. An image-recognition software that differentiates between benign and malignant skin moles using Artificial Intelligence.",
+        tech: "Python, Tensorflow, Keras, TypeScript, React Native, Node.js, AWS Lambda, AWS DynamoDB, AWS CloudWatch",
+        href: "https://github.com/michaelhyi/melamodel",
+    },
+    {
+        name: "ChestRay",
+        date: "Jan 2022",
+        description:
+            "2nd Place @ Coding Your Future Hackathon. A powerful bridge between doctors, patients, and Artificial Intelligence based x-ray diagnosis.",
+        tech: "Python, JavaScript, Tensorflow, Keras, React Native, Firebase",
+        href: "https://github.com/michaelhyi/chestray",
+    },
+    {
+        name: "LeafX",
+        date: "Jan 2022",
+        description:
+            "Best Environmental Hack @ Unlock Hacks. A powerful medical tool for plant health.",
+        tech: "Python, JavaScript, Tensorflow, Keras, React Native",
+        href: "https://github.com/michaelhyi/leafx",
     },
     {
         name: "HealthRelay",
@@ -42,15 +102,6 @@ const PROJECTS = [
         href: "https://github.com/michaelhyi/retinaoct",
     },
     {
-        name: "Enhancing Generative Commonsense Reasoning Using Image Cues",
-        date: "Jun - Jul 2022",
-        description:
-            "An NLP + Vision model that generates coherent sentences given respective keywords (concepts) and a coresponding image.",
-        tech: "Python, PyTorch",
-        image: "/assets/img/shine.png",
-        href: "https://github.com/michaelhyi/usc-shine",
-    },
-    {
         name: "CarCam",
         date: "Jun - Oct 2021",
         description:
@@ -59,34 +110,16 @@ const PROJECTS = [
         href: "https://github.com/michaelhyi/carcam",
     },
     {
-        name: "MelaModel",
-        date: "Mar 2022",
-        description:
-            "Best Access to Healthcare Hack @ PennApps Health Hacks. An image-recognition software that differentiates between benign and malignant skin moles using Artificial Intelligence.",
-        tech: "Python, Tensorflow, Keras, TypeScript, React Native, Node.js, AWS Lambda, AWS DynamoDB, AWS CloudWatch",
-        href: "https://github.com/michaelhyi/melamodel",
-    },
-    {
-        name: "ChestRay",
-        date: "Jan 2022",
-        description:
-            "2nd Place @ Coding Your Future Hackathon. A powerful bridge between doctors, patients, and Artificial Intelligence based x-ray diagnosis.",
-        tech: "Python, Tensorflow, Keras, JavaScript, React Native, Firebase",
-        href: "https://github.com/michaelhyi/chestray",
-    },
-    {
-        name: "LeafX",
-        date: "Jan 2022",
-        description:
-            "Best Environmental Hack @ Unlock Hacks. A powerful medical tool for plant health.",
-        tech: "Python, Tensorflow, Keras, JavaScript, React Native",
-        href: "https://github.com/michaelhyi/leafx",
-    },
+        name: "Medixly",
+        date: "Jan 2021 - Oct 2022",
+        description: "A mobile application that uses machine learning to diagnose skin cancer through images.",
+        tech: "JavaScript, React Native",
+    }
 ];
 
 const HACKATHONS = [
     {
-        name: "1st Place at HackGT X",
+        name: "1st Place Overall at HackGT X",
         href: "https://devpost.com/software/scribeai",
     },
     {
@@ -103,34 +136,42 @@ const HACKATHONS = [
     },
     {
         name: "3rd Place at CA45 Congressional App Challenge",
-        href: "https://github.com/michaelhyi/carcam",
-    },
+        href: "https://www.youtube.com/watch?v=oFE0Inj-pr8",
+    }
 ];
 
-const projects = PROJECTS.map((project) =>
-    `<a
-            class="project-card"
-            href="${project.href}"
-            rel="noopener noreferrer"
-            target="_blank"
-        >
-            <p class="date">${project.date}</p>
-            <section class="details">
-                <h3 class="name">${project.name}</h3>
-                <p class="description">${project.description}</p>
-                <p class="tech">${project.tech}</p>`
-        .concat(project.image ? `<img src="${project.image}" />` : "", "</section></a>")).join("");
+function getProjectComponent({ href, date, name, description, tech, image }) {
+    const content = `
+        <p class="date">${date}</p>
+        <section class="details">
+            <h3 class="name">${name}</h3>
+            <p class="description">${description}</p>
+            <p class="tech">${tech}</p>
+            ${image ? `<img src="${image}" />` : ""}
+        </section>
+    `;
 
-const hackathons = HACKATHONS.map((hackathon) =>
-    `<a
-        class="hackathon-card"
-        href="${hackathon.href}"
-        rel="noopener noreferrer"
-        target="_blank"
-    >
-        ${hackathon.name}
-    </a>`
-).join("");
+    if (href) {
+        return `
+            <a class="project-card" href="${href}" rel="noopener noreferrer" target="_blank">
+                ${content}
+            </a>
+        `;
+    }
 
-document.getElementById("projects").innerHTML = projects;
-document.getElementById("hackathons").innerHTML = hackathons;
+    return `<div class="project-card">${content}</div>`;
+}
+
+function getHackathonComponent({ name, href }) {
+    return `
+        <a class="hackathon-card" href="${href}" rel="noopener noreferrer" target="_blank">
+            ${name}
+        </a>
+    `;
+}
+
+const projectsHtml = PROJECTS.map(getProjectComponent).join("");
+const hackathonsHtml = HACKATHONS.map(getHackathonComponent).join("");
+
+document.getElementById("projects").innerHTML = projectsHtml;
+document.getElementById("hackathons").innerHTML = hackathonsHtml;

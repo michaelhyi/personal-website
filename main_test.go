@@ -24,7 +24,7 @@ func TestWebServer(t *testing.T) {
 		{"/assets/js/portfolio.js", "text/javascript; charset=utf-8", http.StatusOK},
 	}
 
-	mux := getMux()
+	mux := getServeMux()
 
 	for _, test := range tests {
 		req, err := http.NewRequest(http.MethodGet, test.url, nil)
@@ -42,14 +42,18 @@ func TestWebServer(t *testing.T) {
 		actualContentType := res.Header().Get("Content-Type")
 		actualStatusCode := res.Code
 
-		if actualContentType != expectedContentType {
-			t.Errorf("req: %v; expected content-type header: %s, actual content-type header: %s",
-				req, expectedContentType, actualContentType)
+		if expectedContentType != actualContentType {
+			t.Errorf(
+				"req: %v; expected content-type header: %s, actual content-type header: %s",
+				req, expectedContentType, actualContentType,
+			)
 		}
 
-		if actualStatusCode != expectedStatusCode {
-			t.Errorf("req: %v; expected status code: %d, actual status code: %d",
-				req, expectedStatusCode, actualStatusCode)
+		if expectedStatusCode != actualStatusCode {
+			t.Errorf(
+				"req: %v; expected status code: %d, actual status code: %d",
+				req, expectedStatusCode, actualStatusCode,
+			)
 		}
 	}
 }

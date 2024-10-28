@@ -1,13 +1,12 @@
 .content {
     font-size: 12px;
-    width: 480px;
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
 @media (min-width: 320px) {
-    .content{
+    .content {
         width: 280px;
     }
 }
