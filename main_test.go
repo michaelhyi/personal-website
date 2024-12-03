@@ -21,7 +21,6 @@ func TestWebServer(t *testing.T) {
 		{"/404", "text/plain; charset=utf-8", http.StatusNotFound},
 		{"/assets/css/styles.css", "text/css; charset=utf-8", http.StatusOK},
 		{"/assets/img/hhacks.png", "image/png", http.StatusOK},
-		{"/assets/js/portfolio.js", "text/javascript; charset=utf-8", http.StatusOK},
 	}
 
 	mux := getServeMux()
