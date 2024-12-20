@@ -15,26 +15,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - uses: actions/setup-java@v4
         with:
-          go-version: 1.22.5
-
-      - name: Setup zip
-        uses: montudor/action-zip@v1
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Build
-        run: go build
+        run: |
+          mvn package
+          mv target/personalwebsite-*.jar app.jar
 
-      - name: Zip Build
-        run: zip -r app.zip assets pages index.html personal-website
-
-      - name: Archive Build
+      - name: Upload Build
         uses: actions/upload-artifact@v4
         with:
           name: app
-          path: ./app.zip
+          path: ./app.jar
 
   deploy:
     needs: build 
@@ -61,15 +56,11 @@ jobs:
 
           ssh -i key.pem root@${SSH_HOST} '
             tmux kill-server
-            rm -rf -f app
-            mkdir app
+            rm -f app.jar 
           '
 
-          scp -i key.pem app.zip root@${SSH_HOST}:app/
+          scp -i key.pem app.jar root@${SSH_HOST}:./
 
           ssh -i key.pem root@${SSH_HOST} '
-            cd app
-            unzip -o app.zip
-            rm app.zip
-            tmux new -d -s app "./personal-website"
+            tmux new -d -s app "java -jar app.jar"
           '
