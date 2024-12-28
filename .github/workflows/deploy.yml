@@ -55,12 +55,12 @@ jobs:
           chmod 400 key.pem
 
           ssh -i key.pem root@${SSH_HOST} '
-            tmux kill-server
+            sudo systemctl stop personal-website
             rm -f app.jar 
           '
 
           scp -i key.pem app.jar root@${SSH_HOST}:./
 
           ssh -i key.pem root@${SSH_HOST} '
-            tmux new -d -s app "java -jar app.jar"
+            sudo systemctl start personal-website
           '
