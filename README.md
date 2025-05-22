@@ -1,6 +1,6 @@
 <div align="center">
     <h2>Michael Yi's Personal Website</h2>
-    <p>© 2022 Michael Yi, All Rights Reserved</p>
+    <p>© 2025 Michael Yi, All Rights Reserved</p>
     <a href="https://michael-yi.com/">Website</a>
 </div>
 
