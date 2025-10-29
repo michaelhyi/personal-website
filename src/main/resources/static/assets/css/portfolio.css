@@ -17,25 +17,25 @@
     text-decoration: none;
 }
 
-.date {
+.project-date {
     width: 224px;
     font-size: 13px;
 }
 
-.details {
+.project-details {
     width: 100%;
 }
 
-.name {
+.project-name {
     font-weight: 600;
 }
 
-.description {
+.project-description {
     margin-top: 8px;
     font-size: 12px;
 }
 
-.tech {
+.project-tech {
     margin-top: 6px;
     font-size: 10px;
 }
@@ -55,7 +55,7 @@ img {
         flex-direction: column;
     }
 
-    .date {
+    .project-date {
         margin-bottom: 8px;
     }
 }
@@ -69,19 +69,7 @@ img {
         flex-direction: row;
     }
 
-    .date {
+    .project-date {
         margin-bottom: 0px;
     }
-}
-
-.hackathons {
-    margin-top: 48px;
-    font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.hackathon-card {
-    text-decoration: none;
 }
