@@ -15,6 +15,20 @@ a {
     cursor: pointer;
 }
 
+.absolute-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.social-icons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding-top: 8px;
+}
+
 .icon {
     width: 20px;
 }
@@ -46,6 +60,10 @@ a {
 
 .project-description {
     padding-top: 8px;
+}
+
+.error {
+    font-size: 14px;
 }
 
 @media (min-width: 375px) {
