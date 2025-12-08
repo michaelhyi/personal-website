@@ -1,29 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Michael Yi</title>
+        <meta name="description" content="Michael Yi's Personal Website" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="/assets/css/style.css">
+    </head>
+    <body>
+        <main>
+            <header>
+                <h2>Michael Yi</h2>
+                <div style="padding-top: 8px;">
+                    <a href="https://github.com/michaelhyi/">
+                        <img class="icon" src="/assets/icons/github.svg"/>
+                    </a>
+                    <a href="https://linkedin.com/in/michaelhyi/" style="margin-left: 4px;">
+                        <img class="icon" src="/assets/icons/linkedin.png"/>
+                    </a>
+                </div>
+            </header>
 
-<head>
-    <meta charset="utf-8" />
-    <title>Michael Yi</title>
-    <meta name="description" content="© 2025 Michael Yi, All Rights Reserved" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/home.css" />
-</head>
+            <section class="about">
+                <p>
+                    Hi! I'm Michael, a software engineer interested in operating
+                    systems, distributed systems, and infrastructure.
+                </p>
 
-<body>
-    <main>
-        <section class="content">
-            <h1 class="header">Michael Yi</h1>
-            <h3 class="subheader">Software Engineer</h3>
-            <p class="links">
-                <a href="/about">About</a>, <a href="/portfolio">Portfolio</a>
-            </p>
-        </section>
-        <footer class="absolute-footer">&copy; 2025 Michael Yi, All Rights Reserved</footer>
-    </main>
-</body>
+                <p>
+                    I'm a computer science student at Georgia Tech pursuing both my
+                    Master's and Bachelor's, specializing in low-level systems and
+                    networking.
+                </p>
 
+                <p>
+                    I'll be interning at Palantir Technologies this summer in New
+                    York City, and I previously worked at Capital One and T-Mobile.
+                </p>
+
+                <p>
+                    When I'm not programming, I enjoy playing and watching sports
+                    (basketball and baseball), guitar, and movies.
+                </p>
+
+                <p>Reach me at <a href="mailto:michaelyi@gatech.edu">michaelyi@gatech.edu</a>.</p>
+            </section>
+            <section class="projects">
+                <h3>Projects</h3>
+
+                <div class="project-header">
+                    <h4>xv6 Operating System Kernel</h4>
+                    <p>Aug. 2025 - Dec. 2025</p>
+                </div>
+                <p class="project-tech">C, x86 Assembly</p>
+                <ul>
+                    <li class="project-description">
+                        Implemented virtual memory optimizations, kernel
+                        threading, scheduling, user login, and file system
+                        extensions
+                    </li>
+                </ul>
+
+                <div class="project-header">
+                    <a href="https://github.com/michaelhyi/pipelined-vm">
+                        <h4>16-Bit Pipelined Virtual Machine</h4>
+                    </a>
+                    <p>May 2025</p>
+                </div>
+                <p class="project-tech">C, LC-3 Assembly</p>
+                <ul>
+                    <li class="project-description">
+                        16-bit VM simulating a pipelined processor using
+                        multithreading. Runs LC-3 Assembly programs
+                    </li>
+                </ul>
+
+                <div class="project-header">
+                    <a href="https://github.com/michaelhyi/apiveil">
+                        <h4>APIVeil</h4>
+                    </a>
+                    <p>Jan. 2025 - Apr. 2025</p>
+                </div>
+                <p class="project-tech">
+                    C++, WebSocket, Python, AWS, PostgreSQL, Flask, RAG,
+                    LangChain
+                </p>
+                <ul>
+                    <li class="project-description">
+                        An AI-powered reverse proxy for monitoring and debugging
+                        APIs in realtime using LLMs and RAG
+                    </li>
+                </ul>
+
+                <div class="project-header">
+                    <h4>Invoice Generator</h4>
+                    <p>Apr. 2024 - Jun. 2024</p>
+                </div>
+                <p class="project-tech">
+                    Java, Spring, gRPC, Kafka, GraphQL, MySQL, AWS S3
+                </p>
+                <ul>
+                    <li class="project-description">
+                        A platform for a logistics company that generates
+                        pivot tables and bills invoices from Excel sales
+                        data. Wrote a custom API gateway to distribute
+                        GraphQL requests to microservices
+                    </li>
+                </ul>
+
+                <div class="project-header">
+                    <a href="https://github.com/michaelhyi/scribeai">
+                        <h4>ScribeAI (1st Place Overall, HackGT)</h4>
+                    </a>
+                    <p>Oct. 2023</p>
+                </div>
+                <p class="project-tech">Java, Spring, PostgreSQL, Kubernetes</p>
+                <ul>
+                    <li class="project-description">
+                        A HIPAA-compliant platform that uses OCR and AI to
+                        convert scanned medical files into encrypted electronic
+                        health records
+                    </li>
+                </ul>
+
+            </section>
+        </main>
+    </body>
 </html>
