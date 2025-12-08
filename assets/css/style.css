@@ -22,6 +22,12 @@ a {
     transform: translate(-50%, -50%);
 }
 
+.headshot {
+    width: 128px;
+    padding-bottom: 24px;
+}
+
+
 .social-icons {
     display: flex;
     gap: 8px;
