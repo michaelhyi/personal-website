@@ -6,7 +6,6 @@
 
 main {
     padding-top: 72px;
-    width: 512px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -30,12 +29,12 @@ a {
 
 .projects {
     padding-top: 36px;
-    padding-bottom: 48px;
+    padding-bottom: 36px;
     font-size: 14px;
 }
 
 .project-header {
-    padding-top: 16px;
+    padding-top: 20px;
     display: flex;
     justify-content: space-between;
 }
@@ -47,4 +46,16 @@ a {
 
 .project-description {
     padding-top: 8px;
+}
+
+@media (min-width: 375px) {
+    main {
+        width: 384px;
+    }
+}
+
+@media (min-width: 768px) {
+    main {
+        width: 512px;
+    }
 }
