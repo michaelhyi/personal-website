@@ -1,22 +1,22 @@
 * {
-    font-family: system-ui;
     margin: 0px;
     outline: none;
+    font-family: system-ui;
     font-size: 14px;
 }
 
-main {
+body {
     margin: 0 auto;
 }
 
 @media (min-width: 375px) {
-    main {
+    body {
         width: 352px;
     }
 }
 
 @media (min-width: 768px) {
-    main {
+    body {
         width: 576px;
     }
 }
