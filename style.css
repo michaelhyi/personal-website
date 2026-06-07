@@ -17,21 +17,11 @@ main {
 a {
     text-decoration: none;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .headshot {
     width: 256px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    padding-top: 8px;
-}
-
-.icon {
-    width: 20px;
 }
 
 .project-description {
