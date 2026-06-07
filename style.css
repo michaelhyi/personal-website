@@ -4,6 +4,11 @@
     outline: none;
 }
 
+/* TODO: decouple from h2 tag */
+*:not(h2) {
+    font-size: 14px;
+}
+
 main {
     margin-left: auto;
     margin-right: auto;
@@ -29,14 +34,6 @@ a {
     width: 20px;
 }
 
-.about {
-    font-size: 14px;
-}
-
-.projects {
-    font-size: 14px;
-}
-
 .project-description {
     padding-top: 8px;
     padding-bottom: 20px;
@@ -50,6 +47,6 @@ a {
 
 @media (min-width: 768px) {
     main {
-        width: 512px;
+        width: 576px;
     }
 }
