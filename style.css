@@ -2,10 +2,6 @@
     font-family: sans-serif;
     margin: 0px;
     outline: none;
-}
-
-/* TODO: decouple from h2 tag */
-*:not(h2) {
     font-size: 14px;
 }
 
