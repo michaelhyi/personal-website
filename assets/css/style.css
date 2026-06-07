@@ -53,12 +53,9 @@ a {
     font-size: 14px;
 }
 
-.project-header {
-    padding-top: 20px;
-}
-
 .project-description {
     padding-top: 8px;
+    padding-bottom: 20px;
 }
 
 @media (min-width: 375px) {
