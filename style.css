@@ -26,11 +26,8 @@ h1 {
     font-size: 1.5rem;
 }
 
-h2 {
-    font-weight: normal;
-}
-
 h2, h3 {
+    font-weight: normal;
     font-size: inherit;
 }
 
@@ -40,11 +37,13 @@ img {
 }
 
 a {
-    text-decoration: none;
     cursor: pointer;
-    font-weight: bold;
 }
 
-.project-desc {
+span {
+    font-weight: lighter;
+}
+
+li {
     padding-top: 8px;
 }
