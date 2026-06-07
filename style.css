@@ -1,5 +1,5 @@
 * {
-    font-family: sans-serif;
+    font-family: system-ui;
     margin: 0px;
     outline: none;
     font-size: 14px;
@@ -44,4 +44,3 @@ a {
 .project-desc {
     padding-top: 8px;
 }
-
