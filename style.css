@@ -41,10 +41,10 @@ a {
   cursor: pointer;
 }
 
-span {
-  font-weight: lighter;
-}
-
 li {
   padding-top: 8px;
+}
+
+span {
+  font-weight: lighter;
 }
