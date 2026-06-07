@@ -61,10 +61,6 @@ a {
     padding-top: 8px;
 }
 
-.error {
-    font-size: 14px;
-}
-
 @media (min-width: 375px) {
     main {
         width: 352px;
