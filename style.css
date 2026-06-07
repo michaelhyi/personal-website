@@ -1,49 +1,50 @@
 * {
-    margin: 0px;
-    outline: none;
+  margin: 0px;
+  outline: none;
 }
 
 body {
-    font-family: system-ui;
-    font-size: 14px;
-    margin: 0 auto;
+  font-family: system-ui;
+  font-size: 14px;
+  margin: 0 auto;
 }
 
 @media (min-width: 375px) {
-    body {
-        width: 352px;
-    }
+  body {
+    width: 352px;
+  }
 }
 
 @media (min-width: 768px) {
-    body {
-        width: 576px;
-    }
+  body {
+    width: 576px;
+  }
 }
 
 h1 {
-    font-weight: bold;
-    font-size: 1.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
-h2, h3 {
-    font-weight: normal;
-    font-size: inherit;
+h2,
+h3 {
+  font-weight: normal;
+  font-size: inherit;
 }
 
 img {
-    width: 256px;
-    height: 256px;
+  width: 256px;
+  height: 256px;
 }
 
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 span {
-    font-weight: lighter;
+  font-weight: lighter;
 }
 
 li {
-    padding-top: 8px;
+  padding-top: 8px;
 }
