@@ -1,11 +1,11 @@
 * {
     margin: 0px;
     outline: none;
-    font-family: system-ui;
-    font-size: 14px;
 }
 
 body {
+    font-family: system-ui;
+    font-size: 14px;
     margin: 0 auto;
 }
 
@@ -28,6 +28,10 @@ h1 {
 
 h2 {
     font-weight: normal;
+}
+
+h2, h3 {
+    font-size: inherit;
 }
 
 img {
