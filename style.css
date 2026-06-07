@@ -9,6 +9,18 @@ main {
     margin: 0 auto;
 }
 
+@media (min-width: 375px) {
+    main {
+        width: 352px;
+    }
+}
+
+@media (min-width: 768px) {
+    main {
+        width: 576px;
+    }
+}
+
 h1 {
     font-weight: bold;
     font-size: 1.5rem;
@@ -33,14 +45,3 @@ a {
     padding-top: 8px;
 }
 
-@media (min-width: 375px) {
-    main {
-        width: 352px;
-    }
-}
-
-@media (min-width: 768px) {
-    main {
-        width: 576px;
-    }
-}
